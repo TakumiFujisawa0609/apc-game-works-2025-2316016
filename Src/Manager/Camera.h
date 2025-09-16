@@ -65,9 +65,10 @@ public:
 		FOLLOW_ROTATION,	//ついじゅうしながら自動回転操作不能
 		//SELF_SHOT,
 		//FPS,
-		FREE_CONTROLL,
+		//FREE_CONTROLL,
 		FIXED_UP,
 		FIXED_DIAGONAL,	//斜め固定
+		TWO_TARGET,	//2人同時追従中心
 	};
 
 
@@ -104,6 +105,7 @@ public:
 
 	// 追従対象の設定
 	void SetFollow(const Transform* follow);
+	void SetFollow(const Transform* follow1, const Transform* follow2);
 
 	void SetPos(VECTOR pos) { pos_ = pos; }
 	void SetAngles(VECTOR angles) { angles_ = angles; }
@@ -114,7 +116,8 @@ private:
 	VECTOR localPos_;
 
 	// カメラが追従対象とするTransform
-	const Transform* followTransform_;
+	const Transform* followTransform1_;
+	const Transform* followTransform2_;
 
 	//PADの番号
 	KeyConfig::JOYPAD_NO padNo_;
@@ -160,8 +163,9 @@ private:
 	void SetBeforeDrawFollowRotation(void);
 	//void SetBeforeDrawSelfShot(void);
 	//void SetBeforeDrawFPS(void);
-	void SetBeforeDrawFreeControll(void);
+	//void SetBeforeDrawFreeControll(void);
 	void SetBeforeDrawFixedUp(void);
 	void SetBeforeDrawFixedDiagonal(void);
+	void SetBeforeDrawTwoTarget(void);
 };
 

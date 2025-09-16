@@ -22,6 +22,7 @@
     <ClCompile Include="Src\Object\Common\Transform.cpp" />
     <ClCompile Include="Src\Object\Player\PlayerBase.cpp" />
     <ClCompile Include="Src\Object\Common\Gravity.cpp" />
+    <ClCompile Include="Src\Object\Stage\Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Common\IntVector3.h" />
@@ -45,5 +46,6 @@
     <ClInclude Include="Src\Object\Common\Transform.h" />
     <ClInclude Include="Src\Object\Player\PlayerBase.h" />
     <ClInclude Include="Src\Object\Common\Gravity.h" />
+    <ClInclude Include="Src\Object\Stage\Stage.h" />
   </ItemGroup>
 </Project>

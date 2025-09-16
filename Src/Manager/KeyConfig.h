@@ -85,17 +85,6 @@ public:
 		PHASE_CHENGE,			//フェーズ変更
 		PHASE_CHENGE_CHECK,		//フェーズ変更
 
-		EDIT_CAMERA_ROT_UP,		//エディット時のカメラ回転上
-		EDIT_CAMERA_ROT_DOWN,	//エディット時のカメラ回転下
-		EDIT_CAMERA_ROT_RIGHT,	//エディット時のカメラ回転右
-		EDIT_CAMERA_ROT_LEFT,	//エディット時のカメラ回転左
-		EDIT_CAMERA_MOVE_FRONT,	//エディット時のカメラ移動前
-		EDIT_CAMERA_MOVE_BACK,	//エディット時のカメラ移動後ろ
-		EDIT_CAMERA_MOVE_LEFT,	//エディット時のカメラ移動左
-		EDIT_CAMERA_MOVE_RIGHT,	//エディット時のカメラ移動右
-		EDIT_CAMERA_MOVE_UP,	//エディット時のカメラ移動上
-		EDIT_CAMERA_MOVE_DOWN,	//エディット時のカメラ移動下
-
 		PLAY_CAMERA_MOVE_UP,	//プレイのカメラ移動上
 		PLAY_CAMERA_MOVE_DOWN,	//プレイのカメラ移動下
 		PLAY_CAMERA_MOVE_RIGHT,	//プレイのカメラ移動右
