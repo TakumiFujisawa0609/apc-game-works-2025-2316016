@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Object\Common\Gravity.cpp" />
+    <ClCompile Include="Src\Object\Player\PlayerBase.cpp" />
     <ClCompile Include="Src\Common\IntVector3.cpp" />
     <ClCompile Include="Src\Manager\Camera.cpp" />
     <ClCompile Include="Src\Manager\InputManager.cpp" />
@@ -40,6 +42,8 @@
     <ClCompile Include="Src\Utility\Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Object\Common\Gravity.h" />
+    <ClInclude Include="Src\Object\Player\PlayerBase.h" />
     <ClInclude Include="Src\Manager\Camera.h" />
     <ClInclude Include="Src\Manager\InputManager.h" />
     <ClInclude Include="Src\Manager\KeyConfig.h" />

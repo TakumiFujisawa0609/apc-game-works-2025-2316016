@@ -28,11 +28,16 @@ bool SceneTitle::Init(void)
 //更新処理
 void SceneTitle::Update(void)
 {
-	
+	//ゲームシーンへ
+	if (KeyConfig::GetInstance().IsNew(KeyConfig::CONTROL_TYPE::ENTER,KeyConfig::JOYPAD_NO::PAD1))
+	{
+		SoundManager::GetInstance().Play(SoundManager::SRC::ENTER_SOUND, Sound::TIMES::ONCE);
+		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::GAME, true);
+	}
 	
 }
 //描画処理
 void SceneTitle::Draw(void)
 {
-
+	DrawString(100, 100, "Title", GetColor(255, 255, 255));
 }
