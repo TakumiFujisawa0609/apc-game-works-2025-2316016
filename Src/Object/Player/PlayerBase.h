@@ -10,6 +10,9 @@ class PlayerBase
 public:
 
 	static constexpr float MAX_HP = 100.0f; //最大体力
+	static constexpr float MOVE_SPEED = 5.0f; //移動速度
+	static constexpr VECTOR MOVE_LIMIT_MIN = { -500.0f,-500.0f,-500.0f }; //移動制限最小座標
+	static constexpr VECTOR MOVE_LIMIT_MAX = { 500.0f,500.0f,500.0f }; //移動制限最小座標
 
 	enum class PLACE
 	{
@@ -38,7 +41,7 @@ public:
 	/// コンストラクタ
 	/// </summary>
 	/// <param name=""></param>
-	PlayerBase(void);
+	PlayerBase(int playerNum);
 
 	/// <summary>
 	/// デストラクタ
@@ -70,8 +73,11 @@ public:
 	/// <param name=""></param>
 	virtual void ChengeGravityDir(void);
 
+	Transform& GetTransform(void) { return *transform_; }
+
 protected:
 
+	int playerNum_; //プレイヤー番号
 	//基本情報
 	std::unique_ptr<Transform> transform_;
 	//重力
@@ -81,7 +87,11 @@ protected:
 	//体力
 	float hp_;
 
+	void PlayerMove(void); //移動処理
+
+	void ApplyGravity(void); //重力適用
+
+	void MoveLimit(void); //移動制限
 private:
 
 };
-

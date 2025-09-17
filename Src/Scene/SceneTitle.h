@@ -3,8 +3,6 @@
 #include <vector>
 #include "../Common/Vector2.h"
 
-class Camera;
-
 class SceneTitle: public SceneBase
 {
 public:

@@ -1,5 +1,6 @@
 #include<DxLib.h>
 #include"SceneManager.h"
+#include "Camera.h"
 #include"../Scene/SceneBase.h"
 #include"../Common/Fader.h"
 #include"../Scene/SceneTitle.h"
@@ -28,6 +29,7 @@ SceneManager::~SceneManager(void)
 
 bool SceneManager::Init(void)
 {
+	camera_ = std::make_unique<Camera>(0);
 	sceneID_ = SCENE_ID::NONE;
 	nextSceneID_ = SCENE_ID::TITLE;
 	oldPushSpace = nowPushSpace;
@@ -89,6 +91,8 @@ void SceneManager::Update(void)
 //•`‰æˆ—
 void SceneManager::Draw(void)
 {
+	ClearDrawScreen(); // ‰æ–ÊƒNƒŠƒA
+	camera_->SetBeforeDraw();
 	scene_->Draw();
 	fader_->Draw();
 

@@ -1,10 +1,14 @@
 #pragma once
-#include"SceneBase.h"
-#include"../Common/Vector2.h"
+#include "SceneBase.h"
+#include "../Common/Vector2.h"
+
+class PlayerBase;
 
 class SceneGame :public SceneBase
 {
 public:
+	static constexpr int MAX_PLAYER = 2; //最大プレイヤー数
+
 	//メンバー関数
 	//-----------------------------------------------------------
 	//初期化処理(初回の1度のみ実行される)
@@ -22,5 +26,8 @@ public:
 
 	void DebugDraw(void);
 protected:
+
+	//プレイヤー
+	std::unique_ptr<PlayerBase> players_[MAX_PLAYER];
 
 };

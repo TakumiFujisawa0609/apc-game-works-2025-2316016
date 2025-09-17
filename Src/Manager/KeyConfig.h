@@ -92,6 +92,17 @@ public:
 		PLAY_CAMERA_ZOOM_IN,	//プレイのカメラズームイン
 		PLAY_CAMERA_ZOOM_OUT,	//プレイのカメラズームアウト
 
+		PLAYER1_MOVE_UP,		//プレイヤー1移動上
+		PLAYER1_MOVE_DOWN,		//プレイヤー1移動下
+		PLAYER1_MOVE_RIGHT,		//プレイヤー1移動右
+		PLAYER1_MOVE_LEFT,		//プレイヤー1移動左
+
+		PLAYER2_MOVE_UP,		//プレイヤー2移動上
+		PLAYER2_MOVE_DOWN,		//プレイヤー2移動下
+		PLAYER2_MOVE_RIGHT,		//プレイヤー2移動右
+		PLAYER2_MOVE_LEFT,		//プレイヤー2移動左
+
+
 		MAX,
 	};
 

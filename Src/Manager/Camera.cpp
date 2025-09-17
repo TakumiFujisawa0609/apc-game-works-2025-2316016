@@ -456,7 +456,7 @@ void Camera::SetBeforeDrawTwoTarget(void)
 	// 2つのターゲットの中間地点を注視点にする
 	targetPos_ = VScale(VAdd(followTransform1_->pos, followTransform2_->pos), 0.5f);
 	// 2つのターゲットの距離に応じてカメラの距離を調整する
-	auto dis = VSub(targetPos_, followTransform1_->pos);
+	auto dis = VSub(followTransform2_->pos, followTransform1_->pos);
 
-	pos_ = VAdd(targetPos_ ,VScale(VGet(0.0f,1.0f,0.0f),std::sqrt(dis.x * dis.x + dis.y * dis.y + dis.z * dis.z)));
+	pos_ = VAdd(targetPos_ ,VScale(VNorm(TWO_TARGET_ANGLE), std::max(std::sqrt(dis.x * dis.x + dis.y * dis.y + dis.z * dis.z), TWO_TARGET_MIN_DISTANCE)));
 }

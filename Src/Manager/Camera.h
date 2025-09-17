@@ -55,7 +55,11 @@ public:
 	static constexpr float FPS_LIMIT_X_UP_RAD = -80.0f * (DX_PI_F / 180.0f);
 	static constexpr float FPS_LIMIT_X_DW_RAD = 70.0f * (DX_PI_F / 180.0f);
 
-	
+	//カメラの２人同時追従時の最低距離
+	static constexpr float TWO_TARGET_MIN_DISTANCE = 100.0f;
+	//2人同時追従の基本角度
+	static constexpr VECTOR TWO_TARGET_ANGLE = { 0.0f,1.0f,1.0f };
+
 	// カメラモード
 	enum class MODE
 	{

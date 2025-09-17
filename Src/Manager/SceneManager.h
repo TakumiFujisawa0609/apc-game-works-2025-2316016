@@ -4,6 +4,7 @@
 
 class SceneBase;
 class Fader;
+class Camera;
 
 class SceneManager
 {
@@ -45,6 +46,7 @@ public:
 	//外部でインスタンスを利用するため
 	static SceneManager& GetInstance(void);
 
+	Camera& GetCamera(void) { return *camera_; }
 
 private:
 	//メンバー変数
@@ -60,6 +62,8 @@ private:
 	std::unique_ptr<Fader> fader_;                   //フェードのインスタンス
 
 	std::unique_ptr<SceneBase> scene_;
+
+	std::unique_ptr<Camera> camera_; //カメラインスタンス
 
 	//メンバー関数
 	void DoChangeScene(void); //シーンを切り替える
