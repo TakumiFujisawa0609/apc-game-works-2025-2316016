@@ -453,10 +453,17 @@ void Camera::SetBeforeDrawFixedDiagonal(void)
 void Camera::SetBeforeDrawTwoTarget(void)
 {
 	if (followTransform1_ == nullptr || followTransform2_ == nullptr) return;
+	VECTOR prePos = pos_;
 	// 2つのターゲットの中間地点を注視点にする
 	targetPos_ = VScale(VAdd(followTransform1_->pos, followTransform2_->pos), 0.5f);
 	// 2つのターゲットの距離に応じてカメラの距離を調整する
 	auto dis = VSub(followTransform2_->pos, followTransform1_->pos);
-
-	pos_ = VAdd(targetPos_ ,VScale(VNorm(TWO_TARGET_ANGLE), std::max(std::sqrt(dis.x * dis.x + dis.y * dis.y + dis.z * dis.z), TWO_TARGET_MIN_DISTANCE)));
-}
+	auto vec = dis;
+	vec.y = 0.0f;
+	vec = Utility::EqualsVZero(vec) ? vec : VNorm(vec);
+	std::swap(vec.x, vec.z);
+	vec = VAdd(vec, TWO_TARGET_ANGLE);
+	vec = VNorm(vec);
+	pos_ = VAdd(targetPos_, VScale(VNorm(vec), std::max((Utility::EqualsVZero(dis) ? 1.0f : std::sqrt(dis.x * dis.x + dis.y * dis.y + dis.z * dis.z)), TWO_TARGET_MIN_DISTANCE)));
+	pos_ = VAdd(prePos, VScale(VSub(pos_, prePos), 0.5f));
+};

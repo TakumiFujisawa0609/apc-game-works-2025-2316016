@@ -13,6 +13,7 @@ public:
 	static constexpr float MOVE_SPEED = 5.0f; //移動速度
 	static constexpr VECTOR MOVE_LIMIT_MIN = { -500.0f,-500.0f,-500.0f }; //移動制限最小座標
 	static constexpr VECTOR MOVE_LIMIT_MAX = { 500.0f,500.0f,500.0f }; //移動制限最小座標
+	static constexpr float JUMP_POWER = 40.0f; //ジャンプ力
 
 	enum class PLACE
 	{
@@ -88,6 +89,7 @@ protected:
 	float hp_;
 
 	void PlayerMove(void); //移動処理
+	void Jump(void); //ジャンプ処理
 
 	void ApplyGravity(void); //重力適用
 

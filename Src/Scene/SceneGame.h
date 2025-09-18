@@ -3,6 +3,7 @@
 #include "../Common/Vector2.h"
 
 class PlayerBase;
+class SkyDome;
 
 class SceneGame :public SceneBase
 {
@@ -29,5 +30,6 @@ protected:
 
 	//ÉvÉåÉCÉÑÅ[
 	std::unique_ptr<PlayerBase> players_[MAX_PLAYER];
+	std::unique_ptr<SkyDome> skyDome_;
 
 };

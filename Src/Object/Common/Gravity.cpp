@@ -11,6 +11,8 @@ Gravity::~Gravity(void)
 
 void Gravity::Init(void)
 {
+	state_ = STATE::NONE;
+	ChengeState(STATE::JUMP);
 }
 
 void Gravity::Update(void)
@@ -24,7 +26,7 @@ void Gravity::Draw(void)
 
 void Gravity::SetInitPower(float power)
 {
-	if (power != 0.0f)
+	if (power_ != 0.0f)
 	{
 		return;
 	}

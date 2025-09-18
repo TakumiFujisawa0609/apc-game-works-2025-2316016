@@ -23,7 +23,8 @@ void ResourceManager::Init(void)
 {
 
 	Resource res;
-
+	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "SkyDome/SkyDome.mv1");
+	resourcesMap_.emplace(SRC::SKY_DOME, std::move(res));
 }
 
 void ResourceManager::Release(void)

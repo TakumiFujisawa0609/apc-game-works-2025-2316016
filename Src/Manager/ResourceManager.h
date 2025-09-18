@@ -11,6 +11,7 @@ public:
 	// リソース名
 	enum class SRC
 	{
+		SKY_DOME,
 	};
 
 	// 明示的にインステンスを生成する

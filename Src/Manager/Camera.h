@@ -58,7 +58,8 @@ public:
 	//カメラの２人同時追従時の最低距離
 	static constexpr float TWO_TARGET_MIN_DISTANCE = 100.0f;
 	//2人同時追従の基本角度
-	static constexpr VECTOR TWO_TARGET_ANGLE = { 0.0f,1.0f,1.0f };
+	static constexpr VECTOR TWO_TARGET_ANGLE = { 0.0f,0.5f,0.2f };
+	static constexpr float TWO_TARGET_Y = 0.2f;
 
 	// カメラモード
 	enum class MODE
