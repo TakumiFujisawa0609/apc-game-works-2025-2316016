@@ -1,25 +1,21 @@
 #pragma once
 #include <DxLib.h>
 #include <memory>
+#include <functional>
+#include <vector>
 
 class Transform;
+class Gravity;
+class AttackBase;
 
-class PlayerBase
+class EnemyBase
 {
 public:
-
-	static constexpr float MAX_HP = 100.0f; //最大体力
-	static constexpr float MOVE_SPEED = 5.0f; //移動速度
-	static constexpr VECTOR MOVE_LIMIT_MIN = { -500.0f,-500.0f,-500.0f }; //移動制限最小座標
-	static constexpr VECTOR MOVE_LIMIT_MAX = { 500.0f,500.0f,500.0f }; //移動制限最小座標
 
 	enum class STATE
 	{
 		IDLE,	//待機
-		MOVE,	//移動
-		AVOID,  //回避
 		ATTACK, //攻撃
-		DAMAGE, //ダメージ
 		DEAD,   //死亡
 	};
 
@@ -27,13 +23,13 @@ public:
 	/// コンストラクタ
 	/// </summary>
 	/// <param name=""></param>
-	PlayerBase(int playerNum);
+	EnemyBase(Transform& target);
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
 	/// <param name=""></param>
-	~PlayerBase(void);
+	virtual ~EnemyBase(void);
 
 	/// <summary>
 	/// 初期化処理
@@ -55,17 +51,25 @@ public:
 
 	Transform& GetTransform(void) { return *transform_; }
 
+	void Damage(float damage); //ダメージ処理
+
 protected:
 
-	int playerNum_; //プレイヤー番号
 	//基本情報
 	std::unique_ptr<Transform> transform_;
+	STATE state_; //状態
+	std::unique_ptr<Gravity> gravity_; //重力
+
+	Transform& target_; //ターゲット
+	std::vector<AttackBase*> attackList_; //攻撃リスト
 	//体力
-	float hp_;
+	float maxHP_; //最大体力
+	float hp_; //体力
+	float speed_; //移動速度
 
-	void PlayerMove(void); //移動処理
 
-	void MoveLimit(void); //移動制限
 private:
 
+
 };
+
