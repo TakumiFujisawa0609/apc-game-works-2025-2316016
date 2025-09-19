@@ -61,6 +61,9 @@ public:
 	static constexpr VECTOR TWO_TARGET_ANGLE = { 0.0f,0.5f,0.2f };
 	static constexpr float TWO_TARGET_Y = 0.2f;
 
+	// 2人同時追従の相対座標
+	static constexpr VECTOR TWO_TARGET_LOCAL_POS = { 100.0f, 200.0f, -300.0f };
+
 	// カメラモード
 	enum class MODE
 	{
@@ -74,6 +77,7 @@ public:
 		FIXED_UP,
 		FIXED_DIAGONAL,	//斜め固定
 		TWO_TARGET,	//2人同時追従中心
+		TWO_TARGET_FOLLOW, //2人同時追従でズーム操作可能1P追従
 	};
 
 
@@ -172,5 +176,6 @@ private:
 	void SetBeforeDrawFixedUp(void);
 	void SetBeforeDrawFixedDiagonal(void);
 	void SetBeforeDrawTwoTarget(void);
+	void SetBeforeDrawTwoTargetFollow(void);
 };
 

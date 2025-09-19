@@ -69,6 +69,9 @@ void Camera::SetBeforeDraw(void)
 	case Camera::MODE::TWO_TARGET:
 		SetBeforeDrawTwoTarget();
 		break;
+	case Camera::MODE::TWO_TARGET_FOLLOW:
+		SetBeforeDrawTwoTargetFollow();
+		break;
 	}
 
 	//ƒJƒƒ‰‚ÌÝ’è
@@ -463,7 +466,22 @@ void Camera::SetBeforeDrawTwoTarget(void)
 	vec = Utility::EqualsVZero(vec) ? vec : VNorm(vec);
 	std::swap(vec.x, vec.z);
 	vec = VAdd(vec, TWO_TARGET_ANGLE);
+	//vec.z = -vec.z;
 	vec = VNorm(vec);
 	pos_ = VAdd(targetPos_, VScale(VNorm(vec), std::max((Utility::EqualsVZero(dis) ? 1.0f : std::sqrt(dis.x * dis.x + dis.y * dis.y + dis.z * dis.z)), TWO_TARGET_MIN_DISTANCE)));
-	pos_ = VAdd(prePos, VScale(VSub(pos_, prePos), 0.5f));
-};
+	pos_ = VAdd(prePos, VScale(VSub(pos_, prePos), 0.2f));
+}
+void Camera::SetBeforeDrawTwoTargetFollow(void)
+{
+	if (followTransform1_ == nullptr || followTransform2_ == nullptr) return;
+	targetPos_ = followTransform2_->pos;
+	auto dis = VSub(followTransform2_->pos, followTransform1_->pos);
+	auto vec = dis;
+	vec = VNorm(vec);
+	auto back = VScale(vec, TWO_TARGET_LOCAL_POS.z);
+	auto up = VGet(0.0f, TWO_TARGET_LOCAL_POS.y, 0.0f);
+	VECTOR right = VCross(Utility::DIR_U, vec);
+	right = VNorm(right);
+	right = VScale(right, TWO_TARGET_LOCAL_POS.x);
+	pos_ = VAdd(followTransform1_->pos, VAdd(up, VAdd(back, right)));
+}

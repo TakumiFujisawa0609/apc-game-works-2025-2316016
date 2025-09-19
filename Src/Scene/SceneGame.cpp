@@ -32,7 +32,7 @@ bool SceneGame::Init(void)
 		players_[i]->Init();
 	}
 	auto& cam = SceneManager::GetInstance().GetCamera();
-	cam.ChangeMode(Camera::MODE::TWO_TARGET);
+	cam.ChangeMode(Camera::MODE::TWO_TARGET_FOLLOW);
 	cam.SetFollow(&players_[0]->GetTransform(), &players_[1]->GetTransform());
 	skyDome_ = std::make_unique<SkyDome>();
 	skyDome_->Init();
