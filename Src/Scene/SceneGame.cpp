@@ -8,6 +8,9 @@
 #include"../Manager/Camera.h"
 #include "../Object/Player/PlayerBase.h"
 #include "../Object/SkyDome/SkyDome.h"
+#include "../Object/Player/PlayerShot.h"
+#include "../Object/Enemy/EnemyBase.h"
+#include "../Object/UI/EnemyHPUI.h"
 #include"SceneGame.h"
 #include "../Utility/Utility.h"
 
@@ -26,14 +29,18 @@ bool SceneGame::Init(void)
 {
 	SceneBase::Init();
 	//ÉvÉåÉCÉÑÅ[ê∂ê¨
-	for (int i = 0; i < MAX_PLAYER; i++)
-	{
-		players_[i] = std::make_unique<PlayerBase>(i);
-		players_[i]->Init();
-	}
+	player_ = std::make_unique<PlayerBase>(0);
+	player_->Init();
+	//ìGê∂ê¨
+	enemy_ = std::make_unique<EnemyBase>(player_->GetTransform());
+	enemy_->Init();
+	//ìGHPUIê∂ê¨
+	enemyHPUI_ = std::make_unique<EnemyHPUI>(enemy_->GetMaxHP(), *enemy_);
+	enemyHPUI_->Init();
+	//ÉJÉÅÉâê›íË
 	auto& cam = SceneManager::GetInstance().GetCamera();
-	cam.ChangeMode(Camera::MODE::TWO_TARGET_FOLLOW);
-	cam.SetFollow(&players_[0]->GetTransform(), &players_[1]->GetTransform());
+	cam.ChangeMode(Camera::MODE::FOLLOW);
+	cam.SetFollow(&player_->GetTransform(), &enemy_->GetTransform());
 	skyDome_ = std::make_unique<SkyDome>();
 	skyDome_->Init();
 	return true;
@@ -45,11 +52,12 @@ void SceneGame::Update(void)
 	skyDome_->Update();
 	//InputManager& ins = InputManager::GetInstance();
 	KeyConfig& ins = KeyConfig::GetInstance();
-	for (int i = 0;i < MAX_PLAYER;i++)
-	{
-		players_[i]->Update();
-	}
-}
+	ChangeCameraMode();
+	//ÉvÉåÉCÉÑÅ[
+	player_->Update();
+	//ìG
+	enemy_->Update();
+};
 
 //ï`âÊèàóù
 void SceneGame::Draw(void)
@@ -57,16 +65,16 @@ void SceneGame::Draw(void)
 
 
 	skyDome_->Draw();
-	for (int i = 0;i < MAX_PLAYER;i++)
-	{
-		players_[i]->Draw();
-	}
-	DrawLine3D(players_[0]->GetTransform().pos, players_[1]->GetTransform().pos, GetColor(255, 0, 255));
+	player_->Draw();
+	enemy_->Draw();
+	DrawLine3D(player_->GetTransform().pos, enemy_->GetTransform().pos, GetColor(255, 0, 255));
 	DebugDraw();
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
 	DrawCube3D(PlayerBase::MOVE_LIMIT_MIN, PlayerBase::MOVE_LIMIT_MAX, GetColor(255, 255, 255), GetColor(0, 0, 255), true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	enemyHPUI_->Draw();
 }
 
 void SceneGame::DebugDraw(void)
@@ -95,6 +103,25 @@ void SceneGame::DebugDraw(void)
 	DrawLine3D(vertexes[1], vertexes[3], 0x0000ff);
 	DrawLine3D(vertexes[4], vertexes[6], 0x0000ff);
 	DrawLine3D(vertexes[5], vertexes[7], 0x0000ff);
+}
+
+void SceneGame::ChangeCameraMode(void)
+{
+	auto& cam = SceneManager::GetInstance().GetCamera();
+	auto& ins = KeyConfig::GetInstance();
+	if (ins.IsTrgDown(KeyConfig::CONTROL_TYPE::CHENGE_CAMERA_MODE, KeyConfig::JOYPAD_NO::PAD1))
+	{
+		cam.ChangeMode(Camera::MODE::TWO_TARGET_FOLLOW);
+	}
+	else if (ins.IsTrgUp(KeyConfig::CONTROL_TYPE::CHENGE_CAMERA_MODE, KeyConfig::JOYPAD_NO::PAD1))
+	{
+		cam.ChangeMode(Camera::MODE::FOLLOW);
+	}
+}
+
+void SceneGame::CheckCollision(void)
+{
+	
 }
 
 

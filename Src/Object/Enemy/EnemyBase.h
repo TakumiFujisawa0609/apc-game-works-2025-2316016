@@ -53,6 +53,9 @@ public:
 
 	void Damage(float damage); //ダメージ処理
 
+	float GetMaxHP(void) const { return maxHP_; }
+	float GetHP(void) const { return hp_; }
+
 protected:
 
 	//基本情報
@@ -65,7 +68,8 @@ protected:
 	//体力
 	float maxHP_; //最大体力
 	float hp_; //体力
-	float speed_; //移動速度
+	//移動
+	//float speed_; //移動速度
 
 
 private:

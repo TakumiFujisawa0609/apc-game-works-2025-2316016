@@ -62,7 +62,7 @@ public:
 	static constexpr float TWO_TARGET_Y = 0.2f;
 
 	// 2人同時追従の相対座標
-	static constexpr VECTOR TWO_TARGET_LOCAL_POS = { 100.0f, 200.0f, -300.0f };
+	static constexpr VECTOR TWO_TARGET_LOCAL_POS = { 0.0f, 200.0f, -300.0f };
 
 	// カメラモード
 	enum class MODE

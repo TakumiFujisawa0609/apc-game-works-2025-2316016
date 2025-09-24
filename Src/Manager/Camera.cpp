@@ -36,7 +36,7 @@ void Camera::Update(void)
 
 void Camera::SetBeforeDraw(void)
 {
-
+	VECTOR prePos = pos_;
 	// クリップ距離を設定する(SetDrawScreenでリセットされる)
 	SetCameraNearFar(CAMERA_NEAR, CAMERA_FAR);
 
@@ -74,6 +74,7 @@ void Camera::SetBeforeDraw(void)
 		break;
 	}
 
+	pos_ = VAdd(prePos, VScale(VSub(pos_, prePos), 0.2f));
 	//カメラの設定
 	CameraSetting();
 
@@ -141,7 +142,7 @@ void Camera::ChangeMode(MODE mode)
 {
 
 	// カメラの初期設定
-	SetDefault();
+	//SetDefault();
 
 	// カメラモードの変更
 	mode_ = mode;
@@ -484,4 +485,6 @@ void Camera::SetBeforeDrawTwoTargetFollow(void)
 	right = VNorm(right);
 	right = VScale(right, TWO_TARGET_LOCAL_POS.x);
 	pos_ = VAdd(followTransform1_->pos, VAdd(up, VAdd(back, right)));
+	rot_ = Quaternion::LookRotation(VNorm(VSub(targetPos_, pos_)), Utility::DIR_U);
+	angles_ = rot_.ToEuler();
 }

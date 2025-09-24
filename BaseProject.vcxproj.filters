@@ -23,6 +23,12 @@
     <ClCompile Include="Src\Object\Player\PlayerBase.cpp" />
     <ClCompile Include="Src\Object\Common\Gravity.cpp" />
     <ClCompile Include="Src\Object\Stage\Stage.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Attack\AttakBase.cpp" />
+    <ClCompile Include="Src\Object\Enemy\EnemyBase.cpp" />
+    <ClCompile Include="Src\Object\SkyDome\SkyDome.cpp" />
+    <ClCompile Include="Src\Object\Enemy\EnemyTutorial.cpp" />
+    <ClCompile Include="Src\Object\Player\PlayerShot.cpp" />
+    <ClCompile Include="Src\Object\UI\EnemyHPUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Common\IntVector3.h" />
@@ -47,5 +53,11 @@
     <ClInclude Include="Src\Object\Player\PlayerBase.h" />
     <ClInclude Include="Src\Object\Common\Gravity.h" />
     <ClInclude Include="Src\Object\Stage\Stage.h" />
+    <ClInclude Include="Src\Object\Enemy\Attack\AttakBase.h" />
+    <ClInclude Include="Src\Object\Enemy\EnemyBase.h" />
+    <ClInclude Include="Src\Object\SkyDome\SkyDome.h" />
+    <ClInclude Include="Src\Object\Enemy\EnemyTutorial.h" />
+    <ClInclude Include="Src\Object\Player\PlayerShot.h" />
+    <ClInclude Include="Src\Object\UI\EnemyHPUI.h" />
   </ItemGroup>
 </Project>

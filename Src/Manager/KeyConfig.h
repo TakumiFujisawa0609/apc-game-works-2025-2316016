@@ -82,6 +82,8 @@ public:
 	{
 		ENTER,					//決定
 
+		CHENGE_CAMERA_MODE,	//カメラモード変更
+
 		PHASE_CHENGE,			//フェーズ変更
 		PHASE_CHENGE_CHECK,		//フェーズ変更
 
@@ -92,18 +94,12 @@ public:
 		PLAY_CAMERA_ZOOM_IN,	//プレイのカメラズームイン
 		PLAY_CAMERA_ZOOM_OUT,	//プレイのカメラズームアウト
 
-		PLAYER1_MOVE_UP,		//プレイヤー1移動上
-		PLAYER1_MOVE_DOWN,		//プレイヤー1移動下
-		PLAYER1_MOVE_RIGHT,		//プレイヤー1移動右
-		PLAYER1_MOVE_LEFT,		//プレイヤー1移動左
-		PLAYER1_JUMP,			//プレイヤー1ジャンプ
-
-		PLAYER2_MOVE_UP,		//プレイヤー2移動上
-		PLAYER2_MOVE_DOWN,		//プレイヤー2移動下
-		PLAYER2_MOVE_RIGHT,		//プレイヤー2移動右
-		PLAYER2_MOVE_LEFT,		//プレイヤー2移動左
-		PLAYER2_JUMP,			//プレイヤー2ジャンプ
-
+		PLAYER_MOVE_UP,		//プレイヤー移動上
+		PLAYER_MOVE_DOWN,		//プレイヤー移動下
+		PLAYER_MOVE_RIGHT,		//プレイヤー移動右
+		PLAYER_MOVE_LEFT,		//プレイヤー移動左
+		PLAYER_AVOID,			//プレイヤー回避
+		PLAYER_ATTACK,			//プレイヤー攻撃
 
 		MAX,
 	};

@@ -4,11 +4,12 @@
 
 class PlayerBase;
 class SkyDome;
+class EnemyBase;
+class EnemyHPUI;
 
 class SceneGame :public SceneBase
 {
 public:
-	static constexpr int MAX_PLAYER = 2; //最大プレイヤー数
 
 	//メンバー関数
 	//-----------------------------------------------------------
@@ -29,7 +30,16 @@ public:
 protected:
 
 	//プレイヤー
-	std::unique_ptr<PlayerBase> players_[MAX_PLAYER];
+	std::unique_ptr<PlayerBase> player_;
+	//敵
+	std::unique_ptr<EnemyBase> enemy_;
+	//スカイドーム
 	std::unique_ptr<SkyDome> skyDome_;
+	//敵HPUI
+	std::unique_ptr<EnemyHPUI> enemyHPUI_;
 
+	//カメラの変更
+	void ChangeCameraMode(void);
+	//当たり判定
+	void CheckCollision(void);
 };
