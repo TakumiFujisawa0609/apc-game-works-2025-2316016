@@ -101,7 +101,8 @@ void EnemyBase::ChangeStateDead(void)
 void EnemyBase::UpdateIdle(void)
 {
 	float dis = Utility::MagnitudeF(VSub(transform_->pos, target_.pos));
-	AttackBase::RANGE priorityRange;	//優先範囲
+	//優先範囲を求める
+	AttackBase::RANGE priorityRange;	
 	if (dis < AttackBase::SHORT_RANGE)
 	{
 		priorityRange = AttackBase::RANGE::SHORT;
@@ -114,9 +115,11 @@ void EnemyBase::UpdateIdle(void)
 	{
 		priorityRange = AttackBase::RANGE::LONG;
 	}
+	//優先度が高いものを格納する
 	std::vector<std::unique_ptr<AttackBase>> priorityAttackList;
 	for (auto& attack : attackList_)
 	{
+		//優先距離内でクールタイムが明けているものを移動
 		if (attack == nullptr)continue;
 		auto range = attack->GetRange();
 		if ((range == priorityRange || range == AttackBase::RANGE::ALL) && attack->GetState() == AttackBase::STATE::NONE)
@@ -127,8 +130,16 @@ void EnemyBase::UpdateIdle(void)
 	int size = static_cast<int>(priorityAttackList.size());
 	if (size == 0)
 	{
-		return;
+		//優先距離外でクールタイムが開けているモノを移動
+		for (auto& attack : attackList_)
+		{
+			if (attack == nullptr)continue;
+			if (attack->GetState() != AttackBase::STATE::NONE)continue;
+			priorityAttackList.push_back(std::move(attack));
+		}
+		if(static_cast<int>(priorityAttackList.size()) == 0)return;
 	}
+	//優先度が同じものをランダムで選択
 	int i = GetRand(size - 1);
 	priorityAttackList[i]->ChangeState(AttackBase::STATE::READY);
 	for (auto& attack : priorityAttackList)
@@ -142,12 +153,14 @@ void EnemyBase::UpdateAttack(void)
 {
 	for (auto& attack : attackList_)
 	{
+		//稼働中のものがあるかを調べる
 		if (attack == nullptr)continue;
 		if (!(attack->GetState() == AttackBase::STATE::NONE || attack->GetState() == AttackBase::STATE::FINISH))
 		{
 			return;
 		}
 	}
+	//稼働中のものがなければIDLEに戻す
 	ChangeState(STATE::IDLE);
 }
 
