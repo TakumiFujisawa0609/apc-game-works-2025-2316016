@@ -1,6 +1,7 @@
 #pragma once
 #include <DxLib.h>
 #include <memory>
+#include <map>
 #include <functional>
 #include <vector>
 
@@ -17,6 +18,12 @@ public:
 		IDLE,	//待機
 		ATTACK, //攻撃
 		DEAD,   //死亡
+	};
+
+	enum class ATTACK_TYPE
+	{
+		JUMP,
+		MAX
 	};
 
 	/// <summary>
@@ -51,10 +58,14 @@ public:
 
 	Transform& GetTransform(void) { return *transform_; }
 
+	Gravity& GetGravity(void) { return *gravity_; }
+
 	void Damage(float damage); //ダメージ処理
 
 	float GetMaxHP(void) const { return maxHP_; }
 	float GetHP(void) const { return hp_; }
+
+	void ChangeState(STATE state);
 
 protected:
 
@@ -68,10 +79,23 @@ protected:
 	//体力
 	float maxHP_; //最大体力
 	float hp_; //体力
-	//移動
-	//float speed_; //移動速度
 
+	void MoveLimit(void); //移動制限
 
+	//状態変更用
+	std::map<STATE, std::function<void(void)>> changeState_; //状態変更時の関数格納用
+	virtual void ChangeStateIdle(void);	//待機
+	virtual void ChangeStateAttack(void); //攻撃
+	virtual void ChangeStateDead(void);   //死亡
+
+	std::function<void(void)> updateState_; //更新処理用関数
+	virtual void UpdateIdle(void); //待機
+	virtual void UpdateAttack(void); //攻撃
+	virtual void UpdateDead(void); //死亡
+
+	void AddAttack(ATTACK_TYPE type);	//攻撃を追加
+
+	virtual void AplayChangeStateFunc(void);
 private:
 
 
