@@ -28,6 +28,7 @@ public:
 	void SetInitPower(float power);
 	const float GetPower(void) const { return power_; }
 	void ChengeState(STATE state);
+	STATE GetState(void) { return state_; }
 protected:
 
 	//ó‘Ô‚²‚Æ‚Ìˆ—

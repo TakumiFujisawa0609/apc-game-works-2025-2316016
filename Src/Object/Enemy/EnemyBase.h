@@ -75,12 +75,13 @@ protected:
 	std::unique_ptr<Gravity> gravity_; //重力
 
 	Transform& target_; //ターゲット
-	std::vector<AttackBase*> attackList_; //攻撃リスト
+	std::vector<std::unique_ptr<AttackBase>> attackList_; //攻撃リスト
 	//体力
 	float maxHP_; //最大体力
 	float hp_; //体力
 
 	void MoveLimit(void); //移動制限
+	void AplayGravity(void);	//重力適用
 
 	//状態変更用
 	std::map<STATE, std::function<void(void)>> changeState_; //状態変更時の関数格納用
@@ -96,6 +97,7 @@ protected:
 	void AddAttack(ATTACK_TYPE type);	//攻撃を追加
 
 	virtual void AplayChangeStateFunc(void);
+
 private:
 
 

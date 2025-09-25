@@ -11,12 +11,12 @@ public:
 		MAX,
 	};
 
-	static constexpr float SLOW_SPEED = 500.0f;
-	static constexpr float MIDIUM_SPEED = 700.0f;
-	static constexpr float FAST_SPEED = 1000.0f;
+	static constexpr float SLOW_SPEED = 200.0f;
+	static constexpr float MIDIUM_SPEED = 300.0f;
+	static constexpr float FAST_SPEED = 400.0f;
 	static constexpr int VERTEX_NUM = 180;
 
-	static constexpr float MAX_RADIUS = 2500.0f;	//îgñ‰ÇÃç≈ëÂîºåa
+	static constexpr float MAX_RADIUS = 1500.0f;	//îgñ‰ÇÃç≈ëÂîºåa
 
 	Wave(VECTOR centerPos,SPEED_TYPE speedType , int color );
 	~Wave();

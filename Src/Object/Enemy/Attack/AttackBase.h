@@ -11,9 +11,9 @@ class AttackBase
 public:
 
 	//攻撃優先範囲
-	static constexpr float SHORT_RANGE = 100.0f;  //近距離100以内なら優先して発動される
-	static constexpr float MIDDLE_RANGE = 300.0f; //中距離300以内なら優先して発動される
-	static constexpr float LONG_RANGE = 600.0f;   //遠距離600以内なら優先して発動される
+	static constexpr float SHORT_RANGE = 300.0f;  //近距離300以内なら優先して発動される
+	static constexpr float MIDDLE_RANGE = 600.0f; //中距離600以内なら優先して発動される
+	static constexpr float LONG_RANGE = 1000.0f;   //遠距離1000以内なら優先して発動される
 
 	enum class RANGE	//優先度
 	{
@@ -58,6 +58,13 @@ protected:
 	virtual void ChangeStateStart(void);	//実行開始
 	virtual void ChangeStateUpdate(void);	//実行中
 	virtual void ChangeStateFinish(void);	//実行終了
+
+	std::function<void(void)> updateState_;
+	virtual void UpdateStateNone(void);		//実行されていない
+	virtual void UpdateStateReady(void);	//実行準備
+	virtual void UpdateStateStart(void);	//実行開始
+	virtual void UpdateStateUpdate(void);	//実行中
+	virtual void UpdateStateFinish(void);	//実行終了
 
 
 private:

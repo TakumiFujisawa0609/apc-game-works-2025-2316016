@@ -1,5 +1,6 @@
 #include <cmath>
 #include <memory>
+#include "../../Utility/Utility.h"
 #include "../Player/PlayerBase.h"
 #include "../Common/Transform.h"
 #include "../Common/Gravity.h"
@@ -12,9 +13,11 @@ EnemyBase::EnemyBase(Transform& target) : target_(target)
 	transform_ = std::make_unique<Transform>();
 	gravity_ = std::make_unique<Gravity>();
 	gravity_->Init();
+	gravity_->SetDir(Utility::DIR_D);
 	maxHP_ = 100.0f;
 	hp_ = maxHP_;
 	AplayChangeStateFunc();
+	AddAttack(ATTACK_TYPE::JUMP);
 	ChangeState(STATE::IDLE);
 }
 
@@ -32,8 +35,14 @@ void EnemyBase::Update(void)
 	{
 		hp_ -= 0.5f;
 	}
+	for (auto& attack : attackList_)
+	{
+		if (attack == nullptr)continue;
+		attack->Update();
+	}
+	updateState_();
 	gravity_->Update();
-	
+	AplayGravity();
 	MoveLimit();
 }
 
@@ -41,6 +50,11 @@ void EnemyBase::Draw(void)
 {
 	float size = 50.0f;
 	DrawSphere3D(transform_->pos, size, 16, 0,0, true);
+	for (auto& attack : attackList_)
+	{
+		if (attack == nullptr)continue;
+		attack->Draw();
+	}
 }
 
 void EnemyBase::Damage(float damage)
@@ -58,27 +72,83 @@ void EnemyBase::MoveLimit(void)
 	pos.x = std::max(std::min(PlayerBase::MOVE_LIMIT_MAX.x, pos.x), PlayerBase::MOVE_LIMIT_MIN.x);
 	pos.y = std::max(std::min(PlayerBase::MOVE_LIMIT_MAX.y, pos.y), PlayerBase::MOVE_LIMIT_MIN.y);
 	pos.z = std::max(std::min(PlayerBase::MOVE_LIMIT_MAX.z, pos.z), PlayerBase::MOVE_LIMIT_MIN.z);
+	if (prePos.y != pos.y)
+	{
+		gravity_->ChengeState(Gravity::STATE::NONE);
+	}
+}
 
+void EnemyBase::AplayGravity(void)
+{
+	transform_->pos = VAdd(transform_->pos, VScale(gravity_->GetDir(), gravity_->GetPower()));
 }
 
 void EnemyBase::ChangeStateIdle(void)
 {
+	updateState_ = std::bind(&EnemyBase::UpdateIdle, this);
 }
 
 void EnemyBase::ChangeStateAttack(void)
 {
+	updateState_ = std::bind(&EnemyBase::UpdateAttack, this);
 }
 
 void EnemyBase::ChangeStateDead(void)
 {
+	updateState_ = std::bind(&EnemyBase::UpdateDead, this);
 }
 
 void EnemyBase::UpdateIdle(void)
 {
+	float dis = Utility::MagnitudeF(VSub(transform_->pos, target_.pos));
+	AttackBase::RANGE priorityRange;	//óDêÊîÕàÕ
+	if (dis < AttackBase::SHORT_RANGE)
+	{
+		priorityRange = AttackBase::RANGE::SHORT;
+	}
+	else if (dis < AttackBase::MIDDLE_RANGE)
+	{
+		priorityRange = AttackBase::RANGE::MIDDLE;
+	}
+	else
+	{
+		priorityRange = AttackBase::RANGE::LONG;
+	}
+	std::vector<std::unique_ptr<AttackBase>> priorityAttackList;
+	for (auto& attack : attackList_)
+	{
+		if (attack == nullptr)continue;
+		auto range = attack->GetRange();
+		if ((range == priorityRange || range == AttackBase::RANGE::ALL) && attack->GetState() == AttackBase::STATE::NONE)
+		{
+			priorityAttackList.push_back(std::move(attack));
+		}
+	}
+	int size = static_cast<int>(priorityAttackList.size());
+	if (size == 0)
+	{
+		return;
+	}
+	int i = GetRand(size - 1);
+	priorityAttackList[i]->ChangeState(AttackBase::STATE::READY);
+	for (auto& attack : priorityAttackList)
+	{
+		attackList_.push_back(std::move(attack));
+	}
+	ChangeState(STATE::ATTACK);
 }
 
 void EnemyBase::UpdateAttack(void)
 {
+	for (auto& attack : attackList_)
+	{
+		if (attack == nullptr)continue;
+		if (!(attack->GetState() == AttackBase::STATE::NONE || attack->GetState() == AttackBase::STATE::FINISH))
+		{
+			return;
+		}
+	}
+	ChangeState(STATE::IDLE);
 }
 
 void EnemyBase::UpdateDead(void)
@@ -98,6 +168,7 @@ void EnemyBase::AddAttack(ATTACK_TYPE type)
 	default:
 		break;
 	}
+	attackList_.push_back(std::move(attack));
 }
 
 void EnemyBase::AplayChangeStateFunc(void)

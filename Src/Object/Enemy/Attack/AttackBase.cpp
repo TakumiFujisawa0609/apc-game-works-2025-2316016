@@ -4,12 +4,13 @@
 
 AttackBase::AttackBase(EnemyBase& enemy) : enemy_(enemy)
 {
-	state_ = STATE::NONE;
+	
 	changeState_[STATE::NONE] = std::bind(&AttackBase::ChangeStateNone, this);
 	changeState_[STATE::READY] = std::bind(&AttackBase::ChangeStateReady, this);
 	changeState_[STATE::START] = std::bind(&AttackBase::ChangeStateStart, this);
 	changeState_[STATE::UPDATE] = std::bind(&AttackBase::ChangeStateUpdate, this);
 	changeState_[STATE::FINISH] = std::bind(&AttackBase::ChangeStateFinish, this);
+	ChangeState(STATE::NONE);
 
 }
 
@@ -37,20 +38,45 @@ void AttackBase::ChangeState(STATE state)
 
 void AttackBase::ChangeStateNone(void)
 {
+	updateState_ = std::bind(&AttackBase::UpdateStateNone, this);
 }
 
 void AttackBase::ChangeStateReady(void)
 {
+	updateState_ = std::bind(&AttackBase::UpdateStateReady, this);
 }
 
 void AttackBase::ChangeStateStart(void)
 {
+	updateState_ = std::bind(&AttackBase::UpdateStateStart, this);
 }
 
 void AttackBase::ChangeStateUpdate(void)
 {
+	updateState_ = std::bind(&AttackBase::UpdateStateUpdate, this);
 }
 
 void AttackBase::ChangeStateFinish(void)
+{
+	updateState_ = std::bind(&AttackBase::UpdateStateFinish, this);
+}
+
+void AttackBase::UpdateStateNone(void)
+{
+}
+
+void AttackBase::UpdateStateReady(void)
+{
+}
+
+void AttackBase::UpdateStateStart(void)
+{
+}
+
+void AttackBase::UpdateStateUpdate(void)
+{
+}
+
+void AttackBase::UpdateStateFinish(void)
 {
 }
