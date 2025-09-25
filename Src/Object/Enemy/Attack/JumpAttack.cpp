@@ -104,7 +104,8 @@ void JumpAttack::UpdateStateUpdate(void)
 			return;
 		}
 	}
-	std::erase_if(wave_, [](auto& wave) {return wave->IsEnd();});
+	//std::erase_if(wave_, [](auto& wave) {return wave->IsEnd();});
+	Utility::EraseVectorAllay(wave_);
 	ChangeState(STATE::FINISH);
 
 }

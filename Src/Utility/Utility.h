@@ -9,6 +9,7 @@
 #include "../Common/IntVector3.h"
 #include "../Common/Quaternion.h"
 #include "../Object/Common/Transform.h"
+
 class Utility
 {
 
@@ -321,4 +322,20 @@ public:
 	/// <param name="_dir">増加方向（参照）1なら増加中、-1なら減少中</param>
 	/// <returns>処理後の値</returns>
 	static float PingPongUpdate(const float _value, const float _step, const float _max, const float _min, int& _dir);
+
+
+	/// <summary>
+	/// vector配列の中のnullptrを削除する
+	/// </summary>
+	/// <typeparam name="T">型名</typeparam>
+	/// <param name="allay">配列の参照型</param>
+	/// <returns>削除した要素数</returns>
+	template<typename T>
+	static int EraseVectorAllay(std::vector<T>& allay);
 };
+template<typename T>
+inline int Utility::EraseVectorAllay(std::vector<T>& allay)
+{
+	int ret = std::erase_if(allay, [](auto& a) {return a == nullptr;});
+	return ret;
+}

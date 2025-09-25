@@ -22,9 +22,9 @@ public:
 	static constexpr VECTOR MOVE_LIMIT_MAX = { 500.0f,500.0f,500.0f }; //移動制限最小座標
 
 	//回避関連
-	static constexpr float AVOID_DISTANCE = 250.0f; //回避距離
+	static constexpr float AVOID_DISTANCE = 300.0f; //回避距離
 	static constexpr float AVOID_TIME = 0.3f; //回避タイム
-	static constexpr float AVOID_COOL_TIME = 1.0f; //回避クールタイム
+	static constexpr float AVOID_COOL_TIME = 0.5f; //回避クールタイム
 
 	//ダメージ関連
 	static constexpr float DAMAGE_TIME = 1.0f; //ダメージ時間

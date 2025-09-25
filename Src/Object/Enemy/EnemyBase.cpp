@@ -136,7 +136,8 @@ void EnemyBase::UpdateIdle(void)
 		if(static_cast<int>(priorityAttackList.size()) == 0)return;
 	}
 	//nullptrの場所を開放する
-	std::erase_if(attackList_, [](auto& attack) {return attack == nullptr;});
+	//std::erase_if(attackList_, [](auto& attack) {return attack == nullptr;});
+	Utility::EraseVectorAllay(attackList_);
 	//優先度が同じものをランダムで選択
 	int i = GetRand(size - 1);
 	priorityAttackList[i]->ChangeState(AttackBase::STATE::READY);
