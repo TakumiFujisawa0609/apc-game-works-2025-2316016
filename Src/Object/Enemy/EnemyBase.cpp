@@ -37,7 +37,6 @@ void EnemyBase::Update(void)
 	}
 	for (auto& attack : attackList_)
 	{
-		if (attack == nullptr)continue;
 		attack->Update();
 	}
 	updateState_();
@@ -52,7 +51,6 @@ void EnemyBase::Draw(void)
 	DrawSphere3D(transform_->pos, size, 16, 0,0, true);
 	for (auto& attack : attackList_)
 	{
-		if (attack == nullptr)continue;
 		attack->Draw();
 	}
 }
@@ -120,7 +118,6 @@ void EnemyBase::UpdateIdle(void)
 	for (auto& attack : attackList_)
 	{
 		//優先距離内でクールタイムが明けているものを移動
-		if (attack == nullptr)continue;
 		auto range = attack->GetRange();
 		if ((range == priorityRange || range == AttackBase::RANGE::ALL) && attack->GetState() == AttackBase::STATE::NONE)
 		{
@@ -133,12 +130,13 @@ void EnemyBase::UpdateIdle(void)
 		//優先距離外でクールタイムが開けているモノを移動
 		for (auto& attack : attackList_)
 		{
-			if (attack == nullptr)continue;
 			if (attack->GetState() != AttackBase::STATE::NONE)continue;
 			priorityAttackList.push_back(std::move(attack));
 		}
 		if(static_cast<int>(priorityAttackList.size()) == 0)return;
 	}
+	//nullptrの場所を開放する
+	std::erase_if(attackList_, [](auto& attack) {return attack == nullptr;});
 	//優先度が同じものをランダムで選択
 	int i = GetRand(size - 1);
 	priorityAttackList[i]->ChangeState(AttackBase::STATE::READY);
@@ -154,7 +152,6 @@ void EnemyBase::UpdateAttack(void)
 	for (auto& attack : attackList_)
 	{
 		//稼働中のものがあるかを調べる
-		if (attack == nullptr)continue;
 		if (!(attack->GetState() == AttackBase::STATE::NONE || attack->GetState() == AttackBase::STATE::FINISH))
 		{
 			return;
