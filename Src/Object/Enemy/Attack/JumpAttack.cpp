@@ -43,6 +43,7 @@ void JumpAttack::ChangeStateNone(void)
 
 void JumpAttack::ChangeStateReady(void)
 {
+	//ジャンプさせる
 	AttackBase::ChangeStateReady();
 	enemy_.GetGravity().ChengeState(Gravity::STATE::JUMP);
 	enemy_.GetGravity().SetDir(Utility::DIR_D);
@@ -51,6 +52,7 @@ void JumpAttack::ChangeStateReady(void)
 
 void JumpAttack::ChangeStateStart(void)
 {
+	//ウェーブの作成
 	AttackBase::ChangeStateStart();
 	std::unique_ptr<Wave> slow = std::make_unique<Wave>(enemy_.GetTransform().pos, Wave::SPEED_TYPE::SLOW, GetColor(255, 0, 0));
 	std::unique_ptr<Wave> midium = std::make_unique<Wave>(enemy_.GetTransform().pos, Wave::SPEED_TYPE::MIDIUM, GetColor(255, 0, 0));
@@ -102,6 +104,7 @@ void JumpAttack::UpdateStateUpdate(void)
 			return;
 		}
 	}
+	std::erase_if(wave_, [](auto& wave) {return wave->IsEnd();});
 	ChangeState(STATE::FINISH);
 
 }

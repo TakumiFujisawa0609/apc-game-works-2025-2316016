@@ -4,7 +4,7 @@
 
 AttackBase::AttackBase(EnemyBase& enemy) : enemy_(enemy)
 {
-	
+	//チェンジステートをステートごとに格納
 	changeState_[STATE::NONE] = std::bind(&AttackBase::ChangeStateNone, this);
 	changeState_[STATE::READY] = std::bind(&AttackBase::ChangeStateReady, this);
 	changeState_[STATE::START] = std::bind(&AttackBase::ChangeStateStart, this);
