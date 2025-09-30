@@ -892,3 +892,20 @@ float Utility::PingPongUpdate(const float _value, const float _step, const float
 
     return value;
 }
+
+bool Utility::IsColSphere2Sphere(VECTOR pos1, float radius1, VECTOR pos2, float radius2)
+{
+    return Distance(pos1, pos2) <= radius1 + radius2;
+}
+
+bool Utility::IsColSphere2Model(VECTOR pos, float radius, int modelId)
+{
+    auto col = MV1CollCheck_Sphere(modelId, -1, pos, radius);
+    return col.HitNum > 0;
+}
+
+bool Utility::IsColCircumference2Circle(VECTOR pos1, float radius1, VECTOR pos2, float radius2)
+{
+    float dis = static_cast<float>(Distance(pos1, pos2));
+    return abs(dis - radius1) < radius2;
+}

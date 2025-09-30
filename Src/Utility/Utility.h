@@ -323,6 +323,34 @@ public:
 	/// <returns>処理後の値</returns>
 	static float PingPongUpdate(const float _value, const float _step, const float _max, const float _min, int& _dir);
 
+	/// <summary>
+	/// 球と球の当たり判定
+	/// </summary>
+	/// <param name="pos1">1つ目の球の中心座標</param>
+	/// <param name="radius1">１つ目の球の半径</param>
+	/// <param name="pos2">2つ目の球の中心座標</param>
+	/// <param name="radius2">２つ目の球の半径</param>
+	/// <returns>当たったらtrue</returns>
+	static bool IsColSphere2Sphere(VECTOR pos1, float radius1, VECTOR pos2, float radius2);
+
+	/// <summary>
+	/// 球とモデルの当たり判定
+	/// </summary>
+	/// <param name="pos">球の中心座標</param>
+	/// <param name="radius">球の半径</param>
+	/// <param name="modelId">モデルのハンドル</param>
+	/// <returns>当たったらtrue</returns>
+	static bool IsColSphere2Model(VECTOR pos, float radius, int modelId);
+
+	/// <summary>
+	/// 円周と円の当たり判定
+	/// </summary>
+	/// <param name="pos1">円周の中心座標</param>
+	/// <param name="radius1">円周の半径</param>
+	/// <param name="pos2">円の中心座標</param>
+	/// <param name="radius2">円の半径</param>
+	/// <returns>当たったらtrue</returns>
+	static bool IsColCircumference2Circle(VECTOR pos1, float radius1, VECTOR pos2, float radius2);
 
 	/// <summary>
 	/// vector配列の中のnullptrを削除する

@@ -12,6 +12,8 @@ public:
 	enum class SRC
 	{
 		SKY_DOME,
+		PLAYER,
+		ENEMY,
 	};
 
 	// 明示的にインステンスを生成する

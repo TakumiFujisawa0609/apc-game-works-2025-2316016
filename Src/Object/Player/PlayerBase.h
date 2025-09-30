@@ -81,7 +81,11 @@ public:
 	/// </summary>
 	/// <param name="state">Ÿ‚Ìó‘Ô</param>
 	/// <param name="isAbsolute">“¯‚¶‚â‚Â‚Å‚à‚à‚¤‚P“xŒÄ‚Ô‚È‚çtrue</param>
-	void ChengeState(STATE state,bool isAbsolute = false); //ó‘Ô•ÏX
+	/// <returns>¬Œ÷(true)‚©¸”s(false)‚©</returns>
+	bool ChangeState(STATE state,bool isAbsolute = false); //ó‘Ô•ÏX
+
+	void Damage(float damage);
+
 
 protected:
 

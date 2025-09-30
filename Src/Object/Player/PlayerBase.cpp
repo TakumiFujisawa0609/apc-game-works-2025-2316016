@@ -14,7 +14,7 @@ PlayerBase::PlayerBase(int playerNum) :keyIns_(KeyConfig::GetInstance())
 	transform_ = std::make_unique<Transform>();
 	transform_->pos = MOVE_LIMIT_MIN;
 	SetupStateChange();
-	ChengeState(STATE::IDLE,true);
+	ChangeState(STATE::IDLE,true);
 }
 
 PlayerBase::~PlayerBase(void)
@@ -39,7 +39,7 @@ void PlayerBase::Update(void)
 
 	if (keyIns_.IsTrgDown(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK, KeyConfig::JOYPAD_NO::PAD1) && attackDeley_ < 0.0f)
 	{
-		ChengeState(STATE::ATTACK);
+		ChangeState(STATE::ATTACK);
 	}
 	for (auto& shot : shots_)
 	{
@@ -57,12 +57,22 @@ void PlayerBase::Draw(void)
 	}
 }
 
-void PlayerBase::ChengeState(STATE state, bool isAbsolute )
+bool PlayerBase::ChangeState(STATE state, bool isAbsolute )
 {
 	if (state_ != state || isAbsolute == true)
 	{
 		state_ = state;
 		stateChanges_[state_]();
+		return true;
+	}
+	return false;
+}
+
+void PlayerBase::Damage(float damage)
+{
+	if (ChangeState(STATE::DAMAGE))
+	{
+		hp_ -= damage;
 	}
 }
 
@@ -230,11 +240,11 @@ void PlayerBase::StateUpdateIdle(void)
 {
 	if (IsPushMoveKey())
 	{
-		ChengeState(STATE::MOVE);
+		ChangeState(STATE::MOVE);
 	}
 	else if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_AVOID, KeyConfig::JOYPAD_NO::PAD1) && avoidCoolTime_ <0.0f)
 	{
-		ChengeState(STATE::AVOID);
+		ChangeState(STATE::AVOID);
 	}
 }
 
@@ -243,11 +253,11 @@ void PlayerBase::StateUpdateMove(void)
 	PlayerMove();
 	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_AVOID, KeyConfig::JOYPAD_NO::PAD1) && avoidCoolTime_ < 0.0f)
 	{
-		ChengeState(STATE::AVOID);
+		ChangeState(STATE::AVOID);
 	}
 	else if (!IsPushMoveKey())
 	{
-		ChengeState(STATE::IDLE);
+		ChangeState(STATE::IDLE);
 	}
 }
 
@@ -259,7 +269,7 @@ void PlayerBase::StateUpdateAvoid(void)
 	if (avoidTime_ <= 0.0f)
 	{
 		avoidCoolTime_ = AVOID_COOL_TIME;
-		ChengeState(STATE::IDLE);
+		ChangeState(STATE::IDLE);
 		return;
 	}
 }
@@ -269,14 +279,14 @@ void PlayerBase::StateUpdateCharge(void)
 	PlayerMove();
 	if (keyIns_.IsTrgDown(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK, KeyConfig::JOYPAD_NO::PAD1))
 	{
-		ChengeState(STATE::ATTACK);
+		ChangeState(STATE::ATTACK);
 	}
 }
 
 void PlayerBase::StateUpdateAttack(void)
 {
 	PlayerMove();
-	ChengeState(STATE::IDLE);
+	ChangeState(STATE::IDLE);
 }
 
 void PlayerBase::StateUpdateDamage(void)

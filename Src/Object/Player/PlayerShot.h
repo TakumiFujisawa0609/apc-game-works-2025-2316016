@@ -9,7 +9,8 @@ class PlayerShot
 {
 public:
 	static constexpr float SPEED = 20.0f; //弾の速度
-	static constexpr float POWER = 10.0f; //玉の初期パワー
+	static constexpr float POWER = 15.0f; //玉の初期パワー
+	static constexpr float RADIUS = 5.0f;	//球の大きさ
 	/// <summary>
 	/// クリエイト
 	/// </summary>
@@ -23,6 +24,7 @@ public:
 	void Draw(void);
 	bool IsDead(void) const { return isDead_; }
 	Transform& GetTransform(void) { return *transform_; }
+	float GetRadius(void) { return RADIUS; }
 private:
 	std::unique_ptr<Transform> transform_;
 	std::unique_ptr<Gravity> gravity_;

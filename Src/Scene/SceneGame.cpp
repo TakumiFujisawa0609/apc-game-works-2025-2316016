@@ -1,4 +1,5 @@
 #include<DxLib.h>
+#include "../Utility/Utility.h"
 #include"../Application.h"
 #include"../Manager/SceneManager.h"
 #include"../Manager/ResourceManager.h"
@@ -12,7 +13,6 @@
 #include "../Object/Enemy/EnemyBase.h"
 #include "../Object/UI/EnemyHPUI.h"
 #include"SceneGame.h"
-#include "../Utility/Utility.h"
 
 SceneGame::SceneGame(void)
 {

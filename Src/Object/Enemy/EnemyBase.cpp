@@ -1,6 +1,7 @@
 #include <cmath>
 #include <memory>
 #include "../../Utility/Utility.h"
+#include "../../Manager/ResourceManager.h"
 #include "../Player/PlayerBase.h"
 #include "../Common/Transform.h"
 #include "../Common/Gravity.h"
@@ -11,6 +12,9 @@
 EnemyBase::EnemyBase(Transform& target) : target_(target)
 {
 	transform_ = std::make_unique<Transform>();
+	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::ENEMY));
+	transform_->scl = { MODEL_SIZE,MODEL_SIZE,MODEL_SIZE };
+	transform_->Update();
 	gravity_ = std::make_unique<Gravity>();
 	gravity_->Init();
 	gravity_->SetDir(Utility::DIR_D);
@@ -43,12 +47,13 @@ void EnemyBase::Update(void)
 	gravity_->Update();
 	AplayGravity();
 	MoveLimit();
+	transform_->Update();
 }
 
 void EnemyBase::Draw(void)
 {
-	float size = 50.0f;
-	DrawSphere3D(transform_->pos, size, 16, 0,0, true);
+	//float size = 50.0f;
+	MV1DrawModel(transform_->modelId);
 	for (auto& attack : attackList_)
 	{
 		attack->Draw();
@@ -57,6 +62,7 @@ void EnemyBase::Draw(void)
 
 void EnemyBase::Damage(float damage)
 {
+	hp_ -= damage;
 }
 void EnemyBase::ChangeState(STATE state)
 {

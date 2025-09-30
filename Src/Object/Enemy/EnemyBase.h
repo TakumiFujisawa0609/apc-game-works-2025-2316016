@@ -13,6 +13,11 @@ class EnemyBase
 {
 public:
 
+	//ダメージ関連
+	static constexpr float DAMAGE_EFECT_TIME = 0.6f;	//ダメージのエフェクトの時間
+
+	static constexpr float MODEL_SIZE = 5.0f;
+
 	enum class STATE
 	{
 		IDLE,	//待機

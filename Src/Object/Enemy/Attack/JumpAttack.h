@@ -8,7 +8,7 @@ class Wave;
 class JumpAttack :public AttackBase
 {
 public:
-	static constexpr float COOL_DOWN = 8.0f;
+	static constexpr float COOL_DOWN = 8.0f;	//クールダウン
 	static constexpr float JUMP_POW = 30.0f; //ジャンプの高さ
 
 	JumpAttack(EnemyBase& enemy);

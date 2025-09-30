@@ -43,5 +43,5 @@ void PlayerShot::Draw(void)
 	{
 		return;
 	}
-	DrawSphere3D(transform_->pos, 5.0f, 16, GetColor(255, 255, 0), GetColor(255, 0, 0), true);
+	DrawSphere3D(transform_->pos, RADIUS, 16, GetColor(255, 255, 0), GetColor(255, 0, 0), true);
 }

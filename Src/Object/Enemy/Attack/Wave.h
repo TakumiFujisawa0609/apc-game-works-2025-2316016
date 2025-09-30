@@ -17,6 +17,7 @@ public:
 	static constexpr int VERTEX_NUM = 180;
 
 	static constexpr float MAX_RADIUS = 1500.0f;	//îgñ‰ÇÃç≈ëÂîºåa
+	static constexpr float DAMAGE = 10.0f;
 
 	Wave(VECTOR centerPos,SPEED_TYPE speedType , int color );
 	~Wave();
