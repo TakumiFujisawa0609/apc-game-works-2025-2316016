@@ -32,6 +32,13 @@ public:
 		FINISH, //実行終了
 	};
 
+	enum class GEOMETORY
+	{
+		SPHERE,	//球
+		CIRCLE,	//円
+		CIRCUMFERENCE,	//円周
+	};
+
 	AttackBase(EnemyBase& enemy);
 	virtual ~AttackBase(void);
 	virtual void Init(void);
@@ -45,12 +52,15 @@ public:
 	STATE GetState(void) const { return state_; }
 
 	void ChangeState(STATE state);
+
+	GEOMETORY GetGeometory(void) { return geo_; }
 protected:
 	EnemyBase& enemy_; //親のEnemyBase
 	RANGE range_; //攻撃範囲
 	STATE state_; //状態
 	Transform* target_; //相手のTransform
 	float deleyTime_; //攻撃のディレイ時間
+	GEOMETORY geo_;
 
 	std::map<STATE, std::function<void(void)>> changeState_; //状態変更時の関数格納用
 	virtual void ChangeStateNone(void);		//実行されていない

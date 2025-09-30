@@ -11,6 +11,9 @@
 #include "../Object/SkyDome/SkyDome.h"
 #include "../Object/Player/PlayerShot.h"
 #include "../Object/Enemy/EnemyBase.h"
+#include "../Object/Enemy/Attack/AttackBase.h"
+#include "../Object/Enemy/Attack/JumpAttack.h"
+#include "../Object/Enemy/Attack/Wave.h"
 #include "../Object/UI/EnemyHPUI.h"
 #include"SceneGame.h"
 
@@ -41,6 +44,7 @@ bool SceneGame::Init(void)
 	auto& cam = SceneManager::GetInstance().GetCamera();
 	cam.ChangeMode(Camera::MODE::FOLLOW);
 	cam.SetFollow(&player_->GetTransform(), &enemy_->GetTransform());
+	//ÉXÉJÉCÉhÅ[ÉÄ
 	skyDome_ = std::make_unique<SkyDome>();
 	skyDome_->Init();
 	return true;
@@ -57,6 +61,17 @@ void SceneGame::Update(void)
 	player_->Update();
 	//ìG
 	enemy_->Update();
+
+	CheckCollision();
+	if (enemy_->GetHP() <= 0.0f)
+	{
+		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::TITLE, true);
+	}
+	if (player_->GetHP() <= 0.0f)
+	{
+		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::TITLE, true);
+	}
+	
 };
 
 //ï`âÊèàóù
@@ -75,6 +90,7 @@ void SceneGame::Draw(void)
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	enemyHPUI_->Draw();
+	DrawFormatString(0, 0, 0, "%f", player_->GetHP());
 }
 
 void SceneGame::DebugDraw(void)
@@ -121,7 +137,75 @@ void SceneGame::ChangeCameraMode(void)
 
 void SceneGame::CheckCollision(void)
 {
-	
+	//ìGÇÃçUåÇÇÃêî
+	auto enemyAttackNum = enemy_->GetAttackNum();
+	//ìGÇÃçUåÇäiî[
+	std::vector<AttackBase*> enemyAttack;
+	for (int i = 0;i < enemyAttackNum;i++)
+	{
+		enemyAttack.push_back(&enemy_->GetAttack(i));
+	}
+	if (player_->IsDamageHit())
+	{
+		//ìGÇÃçUåÇÇ∆ÉvÉåÉCÉÑÅ[ÇÃìñÇΩÇËîªíË
+		for (auto& attack: enemyAttack)
+		{
+			if (attack->GetState() == AttackBase::STATE::NONE || attack->GetState() == AttackBase::STATE::FINISH)
+			{
+				continue;
+			}
+			auto geo = attack->GetGeometory();
+			switch (geo)
+			{
+			case AttackBase::GEOMETORY::SPHERE:
+				break;
+			case AttackBase::GEOMETORY::CIRCLE:
+				break;
+			case AttackBase::GEOMETORY::CIRCUMFERENCE:
+			{
+				auto cast = dynamic_cast<JumpAttack*>(attack);
+				if (cast != nullptr)
+				{
+					int waveNum = cast->GetWaveNum();
+					for (int i = 0; i < waveNum; i++)
+					{
+						float waveRadius;
+						VECTOR wavePos;
+						cast->GetWaveState(waveRadius, wavePos, i);
+						if (Utility::IsColCircumference2Circle(wavePos, waveRadius, player_->GetTransform().pos, PlayerBase::RADIUS))
+						{
+							VECTOR vec = VNorm(VSub(player_->GetTransform().pos, wavePos));
+							vec.y = 0.5f;
+							player_->Damage(Wave::DAMAGE,VNorm(vec));
+						}
+					}
+				}
+			}
+				break;
+			default:
+				break;
+			}
+		}
+		//ìGÇ∆ÉvÉåÉCÉÑÅ[ÇÃìñÇΩÇËîªíË
+		if (Utility::IsColSphere2Model(player_->GetTransform().pos, PlayerBase::RADIUS, enemy_->GetTransform().modelId))
+		{
+			VECTOR vec = VNorm(VSub(player_->GetTransform().pos, enemy_->GetTransform().pos));
+			vec.y = 0.5f;
+			player_->Damage(5.0f,VNorm(vec));
+		}
+		//ìGÇ∆ÉvÉåÉCÉÑÅ[ÇÃãÖÇÃìñÇΩÇËîªíË
+		int playerShotNum = player_->GetPlayerShotNum();
+		for (int i = 0;i < playerShotNum;i++)
+		{
+			auto& playerShot = player_->GetPlayerShot(i);
+			if (!playerShot.IsShot())continue;
+			if (Utility::IsColSphere2Model(playerShot.GetTransform().pos, playerShot.GetRadius(), enemy_->GetTransform().modelId))
+			{
+				enemy_->Damage(2.0f);
+				playerShot.Hit();
+			}
+		}
+	}
 }
 
 

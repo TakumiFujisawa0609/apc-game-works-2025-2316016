@@ -8,6 +8,14 @@ class Transform;
 class PlayerShot
 {
 public:
+
+	enum class STATE
+	{
+		SHOT,
+		BLAST,
+		DEAD,
+	};
+
 	static constexpr float SPEED = 20.0f; //’e‚Ì‘¬“x
 	static constexpr float POWER = 15.0f; //‹Ê‚Ì‰Šúƒpƒ[
 	static constexpr float RADIUS = 5.0f;	//‹…‚Ì‘å‚«‚³
@@ -25,9 +33,12 @@ public:
 	bool IsDead(void) const { return isDead_; }
 	Transform& GetTransform(void) { return *transform_; }
 	float GetRadius(void) { return RADIUS; }
+	void Hit(void);
+	bool IsShot() { return state_ == STATE::SHOT; }
 private:
 	std::unique_ptr<Transform> transform_;
 	std::unique_ptr<Gravity> gravity_;
+	STATE state_;
 	VECTOR targetPos_;
 	VECTOR startPos_;
 	bool isDead_;

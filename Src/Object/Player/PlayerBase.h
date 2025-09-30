@@ -8,6 +8,7 @@
 class Transform;
 class KeyConfig;
 class PlayerShot;
+class Gravity;
 
 class PlayerBase
 {
@@ -27,8 +28,12 @@ public:
 	static constexpr float AVOID_COOL_TIME = 0.5f; //回避クールタイム
 
 	//ダメージ関連
-	static constexpr float DAMAGE_TIME = 1.0f; //ダメージ時間
-	static constexpr float DAMAGE_INVINCIBLE_TIME = 3.0f; //ダメージ無敵時間
+	static constexpr float DAMAGE_TIME = 0.5f; //ダメージ時間
+	static constexpr float DAMAGE_INVINCIBLE_TIME = 1.5f; //ダメージ無敵時間
+	static constexpr float DAMAGE_SPEED = 15.0f;	//ダメージの吹っ飛びスピード
+
+	//当たり判定
+	static constexpr float RADIUS = 10.0f;
 
 	//攻撃関連
 	static constexpr float ATTACK_DELEY = 0.5f; //攻撃ディレイ
@@ -84,15 +89,26 @@ public:
 	/// <returns>成功(true)か失敗(false)か</returns>
 	bool ChangeState(STATE state,bool isAbsolute = false); //状態変更
 
-	void Damage(float damage);
+	void Damage(float damage,VECTOR dir);
+	/// <summary>
+	/// ダメージを食らう状態か
+	/// </summary>
+	/// <param name=""></param>
+	/// <returns>食らう状態ならtrue</returns>
+	bool IsDamageHit(void);
 
+	STATE GetState(void) const { return state_; }
+	float GetHP(void) const { return hp_; }
 
+	int GetPlayerShotNum(void) { return static_cast<int>(shots_.size()); }
+	PlayerShot& GetPlayerShot(int num) { return *shots_[num]; }
 protected:
 
 	int playerNum_; //プレイヤー番号
 	//基本情報
 	std::unique_ptr<Transform> transform_;
 	KeyConfig& keyIns_;
+	std::unique_ptr<Gravity> gravity_;
 	//弾
 	std::vector<std::unique_ptr<PlayerShot>> shots_;
 	//状態
@@ -105,6 +121,11 @@ protected:
 
 	//攻撃
 	float attackDeley_; //攻撃ディレイ
+
+	//ダメージ
+	float damageTime_;	//ダメージ硬直時間
+	float damageInvincibleTime_;	//ダメージ後の無敵時間
+	VECTOR damageDir_;	//ダメージ後の吹っ飛び方向
 
 	//体力
 	float hp_;
@@ -134,6 +155,7 @@ protected:
 	void PlayerMove(void); //移動処理
 
 	void MoveLimit(void); //移動制限
+	void AplayGravity(void);	//重力適用
 
 	void SetupStateChange(void); //状態変更関数の設定
 

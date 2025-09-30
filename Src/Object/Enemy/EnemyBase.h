@@ -72,6 +72,8 @@ public:
 
 	void ChangeState(STATE state);
 
+	int GetAttackNum(void) { return static_cast<int>(attackList_.size()); }
+	AttackBase& GetAttack(int num) { return *attackList_[num]; }
 protected:
 
 	//Šî–{î•ñ

@@ -13,6 +13,7 @@ PlayerShot::PlayerShot(VECTOR pPos, VECTOR tPos)
 	startPos_ = pPos;
 	targetPos_ = tPos;
 	isDead_ = false;
+	state_ = STATE::SHOT;
 }
 
 PlayerShot::~PlayerShot()
@@ -35,6 +36,10 @@ void PlayerShot::Update(void)
 	dir = VNorm(dir);
 	transform_->pos = VAdd(transform_->pos, VScale(dir, SPEED));
 	transform_->pos = VAdd(transform_->pos, VScale(gravity_->GetDir(), gravity_->GetPower()));
+	if (transform_->pos.y < 0.0f)
+	{
+		isDead_ = true;
+	}
 }
 
 void PlayerShot::Draw(void)
@@ -44,4 +49,10 @@ void PlayerShot::Draw(void)
 		return;
 	}
 	DrawSphere3D(transform_->pos, RADIUS, 16, GetColor(255, 255, 0), GetColor(255, 0, 0), true);
+}
+
+void PlayerShot::Hit(void)
+{
+	state_ = STATE::BLAST;
+	isDead_ = true;	//爆発アニメーションまでの代用
 }

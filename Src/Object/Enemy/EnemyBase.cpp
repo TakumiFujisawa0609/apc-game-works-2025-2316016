@@ -64,11 +64,13 @@ void EnemyBase::Damage(float damage)
 {
 	hp_ -= damage;
 }
+
 void EnemyBase::ChangeState(STATE state)
 {
 	state_ = state;
 	changeState_[state]();
 }
+
 void EnemyBase::MoveLimit(void)
 {
 	auto& pos = transform_->pos;

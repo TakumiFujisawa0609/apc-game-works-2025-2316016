@@ -22,6 +22,8 @@ SceneTitle::~SceneTitle(void)
 //‰Šú‰»ˆ—(‰‰ñ‚Ì1“x‚Ì‚İÀs‚³‚ê‚é)
 bool SceneTitle::Init(void)
 {
+	auto camera = SceneManager::GetInstance().GetCamera();
+	camera.ChangeMode(Camera::MODE::FIXED_POINT);
 	return true;
 }
 

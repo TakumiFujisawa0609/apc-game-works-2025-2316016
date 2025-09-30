@@ -16,6 +16,8 @@ public:
 	void Init(void) override;
 	void Update(void) override;
 	void Draw(void) override;
+	int GetWaveNum(void) { return static_cast<int>(wave_.size()); }
+	void GetWaveState(float& radius, VECTOR& centerPos,int waveNum);
 private:
 	void Jump(void);
 	std::vector<std::unique_ptr<Wave>> wave_;

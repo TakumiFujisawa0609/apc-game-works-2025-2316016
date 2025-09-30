@@ -27,7 +27,7 @@ public:
 	void Reset(void);
 
 	float GetRadius(void) const { return speed_ * time_; }
-
+	VECTOR GetPos(void) const { return centerPos_; }
 	bool IsEnd(void) const { return MAX_RADIUS <= speed_ * time_; }
 private:
 	int color_;

@@ -9,6 +9,7 @@
 JumpAttack::JumpAttack(EnemyBase& enemy) : AttackBase(enemy)
 {
 	range_ = RANGE::MIDDLE;
+	geo_ = GEOMETORY::CIRCUMFERENCE;
 }
 
 JumpAttack::~JumpAttack()
@@ -31,6 +32,12 @@ void JumpAttack::Draw(void)
 		if (wave->IsEnd())continue;
 		wave->Draw();
 	}
+}
+
+void JumpAttack::GetWaveState(float& radius, VECTOR& centerPos,int waveNum)
+{
+	radius = wave_[waveNum]->GetRadius();
+	centerPos = wave_[waveNum]->GetPos();
 }
 
 void JumpAttack::Jump(void)
