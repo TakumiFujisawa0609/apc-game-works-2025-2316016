@@ -8,7 +8,7 @@
 
 JumpAttack::JumpAttack(EnemyBase& enemy) : AttackBase(enemy)
 {
-	range_ = RANGE::MIDDLE;
+	range_ = RANGE::SHORT;
 	geo_ = GEOMETORY::CIRCUMFERENCE;
 }
 
@@ -46,6 +46,7 @@ void JumpAttack::Jump(void)
 
 void JumpAttack::ChangeStateNone(void)
 {
+	AttackBase::ChangeStateNone();
 }
 
 void JumpAttack::ChangeStateReady(void)
@@ -111,7 +112,7 @@ void JumpAttack::UpdateStateUpdate(void)
 			return;
 		}
 	}
-	//std::erase_if(wave_, [](auto& wave) {return wave->IsEnd();});
+	//std::erase_if(wave_, [](auto& wave) {return wave->IsShot();});
 	Utility::EraseVectorAllay(wave_);
 	ChangeState(STATE::FINISH);
 

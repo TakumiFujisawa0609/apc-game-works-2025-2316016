@@ -13,7 +13,9 @@
 #include "../Object/Enemy/EnemyBase.h"
 #include "../Object/Enemy/Attack/AttackBase.h"
 #include "../Object/Enemy/Attack/JumpAttack.h"
+#include "../Object/Enemy/Attack/FollowAttack.h"
 #include "../Object/Enemy/Attack/Wave.h"
+#include "../Object/Enemy/Attack/FollowShot.h"
 #include "../Object/UI/EnemyHPUI.h"
 #include"SceneGame.h"
 
@@ -158,6 +160,24 @@ void SceneGame::CheckCollision(void)
 			switch (geo)
 			{
 			case AttackBase::GEOMETORY::SPHERE:
+			{
+				auto cast = dynamic_cast<FollowAttack*>(attack);
+				if (cast != nullptr)
+				{
+					int shotNum = cast->GetShotNum();
+					for (int i = 0; i < shotNum; i++)
+					{
+						auto& transform = cast->GetShotTransform(i);
+						if (Utility::IsColSphere2Sphere(player_->GetTransform().pos, PlayerBase::RADIUS,transform.pos,FollowAttack::RADIUS))
+						{
+							VECTOR vec = VNorm(VSub(player_->GetTransform().pos, transform.pos));
+							vec.y = 0.5f;
+							player_->Damage(FollowShot::DAMAGE, VNorm(vec));
+							cast->HitShot(i);
+						}
+					}
+				}
+			}
 				break;
 			case AttackBase::GEOMETORY::CIRCLE:
 				break;
@@ -181,6 +201,9 @@ void SceneGame::CheckCollision(void)
 					}
 				}
 			}
+				break;
+			case AttackBase::GEOMETORY::MODEL:
+
 				break;
 			default:
 				break;

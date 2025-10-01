@@ -25,9 +25,10 @@ public:
 		DEAD,   //€–S
 	};
 
-	enum class ATTACK_TYPE
+	enum class ATTACK_TYPE	//UŒ‚‚Ìí—Ş
 	{
 		JUMP,
+		FOLLOW,
 		MAX
 	};
 

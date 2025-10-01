@@ -37,6 +37,7 @@ public:
 		SPHERE,	//‹…
 		CIRCLE,	//‰~
 		CIRCUMFERENCE,	//‰~Žü
+		MODEL,	//ƒ‚ƒfƒ‹
 	};
 
 	AttackBase(EnemyBase& enemy);

@@ -7,6 +7,7 @@
 #include "../Common/Gravity.h"
 #include "Attack/AttackBase.h"
 #include "Attack/JumpAttack.h"
+#include "Attack/FollowAttack.h"
 #include "EnemyBase.h"
 
 EnemyBase::EnemyBase(Transform& target) : target_(target)
@@ -22,6 +23,7 @@ EnemyBase::EnemyBase(Transform& target) : target_(target)
 	hp_ = maxHP_;
 	AplayChangeStateFunc();
 	AddAttack(ATTACK_TYPE::JUMP);
+	AddAttack(ATTACK_TYPE::FOLLOW);
 	ChangeState(STATE::IDLE);
 }
 
@@ -181,6 +183,10 @@ void EnemyBase::AddAttack(ATTACK_TYPE type)
 	{
 	case EnemyBase::ATTACK_TYPE::JUMP:
 		attack = std::make_unique<JumpAttack>(*this);
+		break;
+	case EnemyBase::ATTACK_TYPE::FOLLOW:
+		attack = std::make_unique<FollowAttack>(*this);
+		attack->SetTarget(&target_);
 		break;
 	case EnemyBase::ATTACK_TYPE::MAX:
 		break;
