@@ -353,6 +353,15 @@ public:
 	static bool IsColCircumference2Circle(VECTOR pos1, float radius1, VECTOR pos2, float radius2);
 
 	/// <summary>
+	/// XZ•½–Ê‚É‰~‚ğ•`‰æ‚·‚é
+	/// </summary>
+	/// <param name="center">‰~‚Ì’†SÀ•W</param>
+	/// <param name="radius">‰~‚Ì”¼Œa</param>
+	/// <param name="vertexNum">‰~‚Ì’¸“_”</param>
+	/// <param name="fillFlag">“h‚è‚Â‚Ô‚·‚©‚Ç‚¤‚©</param>
+	static void DrawCircle3DXZ(VECTOR center, float radius, int vertexNum,int color, bool fillFlag);
+
+	/// <summary>
 	/// vector”z—ñ‚Ì’†‚Ìnullptr‚ğíœ‚·‚é
 	/// </summary>
 	/// <typeparam name="T">Œ^–¼</typeparam>

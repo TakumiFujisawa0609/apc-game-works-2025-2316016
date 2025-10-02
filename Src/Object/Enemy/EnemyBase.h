@@ -27,8 +27,9 @@ public:
 
 	enum class ATTACK_TYPE	//UŒ‚‚ÌŽí—Þ
 	{
-		JUMP,
-		FOLLOW,
+		JUMP,		//jampUŒ‚(”g)
+		FOLLOW,		//’Ç”öUŒ‚(’Ç]’e)
+		FALL_DOWN,	//—Ž‰ºUŒ‚(—Ž‰º’e)
 		MAX
 	};
 

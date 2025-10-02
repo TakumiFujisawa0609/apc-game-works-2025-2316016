@@ -47,7 +47,7 @@ void PlayerBase::Update(void)
 	AplayGravity();
 	MoveLimit();
 
-	if (keyIns_.IsTrgDown(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK, KeyConfig::JOYPAD_NO::PAD1) && attackDeley_ < 0.0f)
+	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK, KeyConfig::JOYPAD_NO::PAD1) && attackDeley_ < 0.0f)
 	{
 		ChangeState(STATE::ATTACK);
 	}

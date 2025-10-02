@@ -909,3 +909,24 @@ bool Utility::IsColCircumference2Circle(VECTOR pos1, float radius1, VECTOR pos2,
     float dis = static_cast<float>(Distance(pos1, pos2));
     return abs(dis - radius1) < radius2;
 }
+
+void Utility::DrawCircle3DXZ(VECTOR center, float radius, int vertexNum,int color, bool fillFlag)
+{
+    float angleDeg = 360.0f / vertexNum;
+    float angleRad = Utility::Deg2RadF(angleDeg);
+    for (int i = 0; i < vertexNum; i++)
+    {
+        VECTOR vec1 = { cos(angleRad * (i - 1)),0.0f,sin(angleRad * (i - 1)) };
+        VECTOR vec2 = { cos(angleRad * i),0.0f,sin(angleRad * i) };
+        VECTOR pos1 = VAdd(center, VScale(vec1, radius));
+        VECTOR pos2 = VAdd(center, VScale(vec2, radius));
+        if (fillFlag)
+        {
+			DrawTriangle3D(center, pos2, pos1, color,true);
+        }
+        else
+        {
+            DrawLine3D(pos1, pos2, color);
+        }
+    }
+}

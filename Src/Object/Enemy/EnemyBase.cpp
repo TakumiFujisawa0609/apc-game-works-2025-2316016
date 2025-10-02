@@ -8,6 +8,7 @@
 #include "Attack/AttackBase.h"
 #include "Attack/JumpAttack.h"
 #include "Attack/FollowAttack.h"
+#include "Attack/FallDownAttack.h"
 #include "EnemyBase.h"
 
 EnemyBase::EnemyBase(Transform& target) : target_(target)
@@ -24,6 +25,7 @@ EnemyBase::EnemyBase(Transform& target) : target_(target)
 	AplayChangeStateFunc();
 	AddAttack(ATTACK_TYPE::JUMP);
 	AddAttack(ATTACK_TYPE::FOLLOW);
+	AddAttack(ATTACK_TYPE::FALL_DOWN);
 	ChangeState(STATE::IDLE);
 }
 
@@ -187,6 +189,9 @@ void EnemyBase::AddAttack(ATTACK_TYPE type)
 	case EnemyBase::ATTACK_TYPE::FOLLOW:
 		attack = std::make_unique<FollowAttack>(*this);
 		attack->SetTarget(&target_);
+		break;
+	case EnemyBase::ATTACK_TYPE::FALL_DOWN:
+		attack = std::make_unique<FallDownAttack>(*this);
 		break;
 	case EnemyBase::ATTACK_TYPE::MAX:
 		break;

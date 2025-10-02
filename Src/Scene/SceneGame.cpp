@@ -1,12 +1,12 @@
 #include<DxLib.h>
 #include "../Utility/Utility.h"
-#include"../Application.h"
-#include"../Manager/SceneManager.h"
-#include"../Manager/ResourceManager.h"
-#include"../Manager/SoundManager.h"
-#include"../Manager/InputManager.h"
-#include"../Manager/KeyConfig.h"
-#include"../Manager/Camera.h"
+#include "../Application.h"
+#include "../Manager/SceneManager.h"
+#include "../Manager/ResourceManager.h"
+#include "../Manager/SoundManager.h"
+#include "../Manager/InputManager.h"
+#include "../Manager/KeyConfig.h"
+#include "../Manager/Camera.h"
 #include "../Object/Player/PlayerBase.h"
 #include "../Object/SkyDome/SkyDome.h"
 #include "../Object/Player/PlayerShot.h"
@@ -14,8 +14,10 @@
 #include "../Object/Enemy/Attack/AttackBase.h"
 #include "../Object/Enemy/Attack/JumpAttack.h"
 #include "../Object/Enemy/Attack/FollowAttack.h"
+#include "../Object/Enemy/Attack/FallDownAttack.h"
 #include "../Object/Enemy/Attack/Wave.h"
 #include "../Object/Enemy/Attack/FollowShot.h"
+#include "../Object/Enemy/Attack/FallDownShot.h"
 #include "../Object/UI/EnemyHPUI.h"
 #include"SceneGame.h"
 
@@ -162,21 +164,44 @@ void SceneGame::CheckCollision(void)
 			{
 			case AttackBase::GEOMETORY::SPHERE:
 			{
-				auto cast = dynamic_cast<FollowAttack*>(attack);
-				if (cast != nullptr)
+				auto follow = dynamic_cast<FollowAttack*>(attack);
+				if (follow != nullptr)
 				{
-					int shotNum = cast->GetShotNum();
+					//’Ç]‚Æ‚Ì“–‚½‚è”»’è
+					int shotNum = follow->GetShotNum();
 					for (int i = 0; i < shotNum; i++)
 					{
-						auto& transform = cast->GetShotTransform(i);
+						auto& transform = follow->GetShotTransform(i);
 						if (Utility::IsColSphere2Sphere(player_->GetTransform().pos, PlayerBase::RADIUS,transform.pos,FollowAttack::RADIUS))
 						{
 							VECTOR vec = VNorm(VSub(player_->GetTransform().pos, transform.pos));
 							vec.y = 0.5f;
 							player_->Damage(FollowShot::DAMAGE, VNorm(vec));
-							cast->HitShot(i);
+							follow->HitShot(i);
 						}
 					}
+					continue;
+				}
+				auto fall = dynamic_cast<FallDownAttack*>(attack);
+				if (fall != nullptr)
+				{
+					//—Ž‰º‚Æ‚Ì“–‚½‚è”»’è
+					int shotNum = fall->GetFallDownShotNum();
+					for (int i = 0; i < shotNum; i++)
+					{
+						if (fall->GetShotState(i) != FallDownShot::STATE::BLAST)
+						{
+							continue;
+						}
+						auto& transform = fall->GetShotTransform(i);
+						if (Utility::IsColSphere2Sphere(player_->GetTransform().pos, PlayerBase::RADIUS, transform.pos, fall->GetShotRadius(i)))
+						{
+							VECTOR vec = VNorm(VSub(player_->GetTransform().pos, transform.pos));
+							vec.y = 0.5f;
+							player_->Damage(FallDownShot::DAMAGE, VNorm(vec));
+						}
+					}
+					continue;
 				}
 			}
 				break;
@@ -187,6 +212,7 @@ void SceneGame::CheckCollision(void)
 				auto cast = dynamic_cast<JumpAttack*>(attack);
 				if (cast != nullptr)
 				{
+					//Wave‚Æ‚Ì“–‚½‚è”»’è
 					if (player_->GetState() == PlayerBase::STATE::JUMP)
 					{
 						continue;
