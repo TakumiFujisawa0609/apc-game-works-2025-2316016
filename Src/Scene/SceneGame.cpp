@@ -15,9 +15,11 @@
 #include "../Object/Enemy/Attack/JumpAttack.h"
 #include "../Object/Enemy/Attack/FollowAttack.h"
 #include "../Object/Enemy/Attack/FallDownAttack.h"
+#include "../Object/Enemy/Attack/CrossAttack.h"
 #include "../Object/Enemy/Attack/Wave.h"
 #include "../Object/Enemy/Attack/FollowShot.h"
 #include "../Object/Enemy/Attack/FallDownShot.h"
+#include "../Object/Enemy/Attack/CrossLine.h"
 #include "../Object/UI/EnemyHPUI.h"
 #include"SceneGame.h"
 
@@ -202,7 +204,7 @@ void SceneGame::CheckCollision(void)
 			auto fall = dynamic_cast<FallDownAttack*>(attack);
 			if (fall != nullptr)
 			{
-				//—Ž‰º‚Æ‚Ì“–‚½‚è”»’è
+				//\Žš‚Æ‚Ì“–‚½‚è”»’è
 				int shotNum = fall->GetFallDownShotNum();
 				for (int i = 0; i < shotNum; i++)
 				{
@@ -216,6 +218,23 @@ void SceneGame::CheckCollision(void)
 						VECTOR vec = VNorm(VSub(player_->GetTransform().pos, transform.pos));
 						vec.y = 0.5f;
 						player_->Damage(FallDownShot::DAMAGE, VNorm(vec));
+					}
+				}
+				continue;
+			}
+			auto cross = dynamic_cast<CrossAttack*>(attack);
+			if (cross != nullptr)
+			{
+				//—Ž‰º‚Æ‚Ì“–‚½‚è”»’è
+				int crossPointNum = cross->GetCrossLineNum();
+				for (int i = 0; i < crossPointNum; i++)
+				{
+					auto& transform = cross->GetLineTransform(i);
+					if (Utility::IsColSphere2Sphere(player_->GetTransform().pos, PlayerBase::RADIUS, transform.pos, CrossLine::RADIUS))
+					{
+						VECTOR vec = VNorm(VSub(player_->GetTransform().pos, transform.pos));
+						vec.y = 0.5f;
+						player_->Damage(CrossLine::DAMAGE, VNorm(vec));
 					}
 				}
 				continue;
