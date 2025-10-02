@@ -12,7 +12,7 @@ JumpAttack::JumpAttack(EnemyBase& enemy) : AttackBase(enemy)
 	geo_ = GEOMETORY::CIRCUMFERENCE;
 }
 
-JumpAttack::~JumpAttack()
+JumpAttack::~JumpAttack(void)
 {
 }
 

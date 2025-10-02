@@ -11,7 +11,7 @@ FollowAttack::FollowAttack(EnemyBase& enemy) : AttackBase(enemy)
 	geo_ = GEOMETORY::SPHERE;
 }
 
-FollowAttack::~FollowAttack()
+FollowAttack::~FollowAttack(void)
 {
 }
 

@@ -12,7 +12,7 @@ public:
 	static constexpr float JUMP_POW = 30.0f; //ƒWƒƒƒ“ƒv‚Ì‚‚³
 
 	JumpAttack(EnemyBase& enemy);
-	~JumpAttack() override;
+	~JumpAttack(void) override;
 	void Init(void) override;
 	void Update(void) override;
 	void Draw(void) override;

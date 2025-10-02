@@ -11,7 +11,7 @@ Wave::Wave(VECTOR centerPos, SPEED_TYPE speedType, int color)
 	time_ = 0.0f;
 }
 
-Wave::~Wave()
+Wave::~Wave(void)
 {
 }
 

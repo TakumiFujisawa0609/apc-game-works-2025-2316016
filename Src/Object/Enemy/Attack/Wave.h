@@ -20,7 +20,7 @@ public:
 	static constexpr float DAMAGE = 10.0f;
 
 	Wave(VECTOR centerPos,SPEED_TYPE speedType , int color );
-	~Wave();
+	~Wave(void);
 	void Init(void);
 	void Update(void);
 	void Draw(void);

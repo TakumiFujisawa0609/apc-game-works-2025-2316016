@@ -1,27 +1,19 @@
 #pragma once
-#include <vector>
-#include <memory>
 #include "AttackBase.h"
-#include "FollowShot.h"
-
-class FollowAttack :    public AttackBase
+class FallDownAttack :    public AttackBase
 {
 public:
-	static constexpr float COOL_DOWN = 3.0f;
-	static constexpr float RADIUS = 20.0f;
-	static constexpr int RANDOM_SHOT_NUM = 5;
+	static constexpr float COOL_DOWN = 15.0f;
 
-	FollowAttack(EnemyBase& enemy);
-	~FollowAttack(void)override;
+	FallDownAttack(EnemyBase& enemy);
+	~FallDownAttack(void)override;
 	void Init(void)override;
 	void Update(void)override;
 	void Draw(void)override;
-	int GetShotNum(void) { return static_cast<int>(shots_.size()); }
-	Transform& GetShotTransform(int shotNum);
-	float GetRadius(void) { return RADIUS; }
-	void HitShot(int shotNum) { shots_[shotNum]->Hit(); }
+
 private:
-	std::vector<std::unique_ptr<FollowShot>> shots_;
+
+
 	void ChangeStateNone(void) override;	//実行されていない
 	void ChangeStateReady(void) override;	//実行準備
 	void ChangeStateStart(void) override;	//実行開始
