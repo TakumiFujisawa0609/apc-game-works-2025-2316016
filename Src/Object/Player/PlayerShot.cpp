@@ -30,12 +30,24 @@ void PlayerShot::Update(void)
 	{
 		return;
 	}
-	gravity_->Update();
-	VECTOR dir = VSub(targetPos_, startPos_);
-	dir.y = 0.0f;
-	dir = VNorm(dir);
-	transform_->pos = VAdd(transform_->pos, VScale(dir, SPEED));
-	transform_->pos = VAdd(transform_->pos, VScale(gravity_->GetDir(), gravity_->GetPower()));
+	switch (state_)
+	{
+	case PlayerShot::STATE::SHOT:
+		gravity_->Update();
+		VECTOR dir = VSub(targetPos_, startPos_);
+		dir.y = 0.0f;
+		dir = VNorm(dir);
+		transform_->pos = VAdd(transform_->pos, VScale(dir, SPEED));
+		transform_->pos = VAdd(transform_->pos, VScale(gravity_->GetDir(), gravity_->GetPower()));
+		break;
+	case PlayerShot::STATE::BLAST:
+		break;
+	case PlayerShot::STATE::DEAD:
+		break;
+	default:
+		break;
+	}
+
 	if (transform_->pos.y < 0.0f)
 	{
 		isDead_ = true;
@@ -48,7 +60,19 @@ void PlayerShot::Draw(void)
 	{
 		return;
 	}
-	DrawSphere3D(transform_->pos, RADIUS, 16, GetColor(255, 255, 0), GetColor(255, 0, 0), true);
+	switch (state_)
+	{
+	case PlayerShot::STATE::SHOT:
+		DrawSphere3D(transform_->pos, RADIUS, 16, GetColor(255, 255, 0), GetColor(255, 0, 0), true);
+		break;
+	case PlayerShot::STATE::BLAST:
+		break;
+	case PlayerShot::STATE::DEAD:
+		break;
+	default:
+		break;
+	}
+	
 }
 
 void PlayerShot::Hit(void)

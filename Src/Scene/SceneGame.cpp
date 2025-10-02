@@ -150,118 +150,121 @@ void SceneGame::CheckCollision(void)
 	{
 		enemyAttack.push_back(&enemy_->GetAttack(i));
 	}
-	if (player_->IsDamageHit())
+	//“G‚ÆƒvƒŒƒCƒ„[‚Ì‹…‚Ì“–‚½‚è”»’è
+	int playerShotNum = player_->GetPlayerShotNum();
+	for (int i = 0;i < playerShotNum;i++)
 	{
-		//“G‚ÌUŒ‚‚ÆƒvƒŒƒCƒ„[‚Ì“–‚½‚è”»’è
-		for (auto& attack: enemyAttack)
+		auto& playerShot = player_->GetPlayerShot(i);
+		if (!playerShot.IsShot())continue;
+		if (Utility::IsColSphere2Model(playerShot.GetTransform().pos, playerShot.GetRadius(), enemy_->GetTransform().modelId))
 		{
-			if (attack->GetState() == AttackBase::STATE::NONE || attack->GetState() == AttackBase::STATE::FINISH)
+			enemy_->Damage(2.0f);
+			playerShot.Hit();
+		}
+	}
+	if (!player_->IsDamageHit())
+	{
+		return;
+	}
+	//“G‚ÌUŒ‚‚ÆƒvƒŒƒCƒ„[‚Ì“–‚½‚è”»’è
+	for (auto& attack : enemyAttack)
+	{
+		//UŒ‚‚µ‚Ä‚¢‚é‚©
+		if (attack->GetState() == AttackBase::STATE::NONE || attack->GetState() == AttackBase::STATE::FINISH)
+		{
+			//‚µ‚Ä‚¢‚È‚¢‚©‚çŽŸ‚Ö
+			continue;
+		}
+		//UŒ‚‚ÌŒ`ó‚Åê‡•ª‚¯
+		auto geo = attack->GetGeometory();
+		switch (geo)
+		{
+		case AttackBase::GEOMETORY::SPHERE:
+		{
+			auto follow = dynamic_cast<FollowAttack*>(attack);
+			if (follow != nullptr)
 			{
+				//’Ç]‚Æ‚Ì“–‚½‚è”»’è
+				int shotNum = follow->GetShotNum();
+				for (int i = 0; i < shotNum; i++)
+				{
+					auto& transform = follow->GetShotTransform(i);
+					if (Utility::IsColSphere2Sphere(player_->GetTransform().pos, PlayerBase::RADIUS, transform.pos, FollowAttack::RADIUS))
+					{
+						VECTOR vec = VNorm(VSub(player_->GetTransform().pos, transform.pos));
+						vec.y = 0.5f;
+						player_->Damage(FollowShot::DAMAGE, VNorm(vec));
+						follow->HitShot(i);
+					}
+				}
 				continue;
 			}
-			auto geo = attack->GetGeometory();
-			switch (geo)
+			auto fall = dynamic_cast<FallDownAttack*>(attack);
+			if (fall != nullptr)
 			{
-			case AttackBase::GEOMETORY::SPHERE:
-			{
-				auto follow = dynamic_cast<FollowAttack*>(attack);
-				if (follow != nullptr)
+				//—Ž‰º‚Æ‚Ì“–‚½‚è”»’è
+				int shotNum = fall->GetFallDownShotNum();
+				for (int i = 0; i < shotNum; i++)
 				{
-					//’Ç]‚Æ‚Ì“–‚½‚è”»’è
-					int shotNum = follow->GetShotNum();
-					for (int i = 0; i < shotNum; i++)
-					{
-						auto& transform = follow->GetShotTransform(i);
-						if (Utility::IsColSphere2Sphere(player_->GetTransform().pos, PlayerBase::RADIUS,transform.pos,FollowAttack::RADIUS))
-						{
-							VECTOR vec = VNorm(VSub(player_->GetTransform().pos, transform.pos));
-							vec.y = 0.5f;
-							player_->Damage(FollowShot::DAMAGE, VNorm(vec));
-							follow->HitShot(i);
-						}
-					}
-					continue;
-				}
-				auto fall = dynamic_cast<FallDownAttack*>(attack);
-				if (fall != nullptr)
-				{
-					//—Ž‰º‚Æ‚Ì“–‚½‚è”»’è
-					int shotNum = fall->GetFallDownShotNum();
-					for (int i = 0; i < shotNum; i++)
-					{
-						if (fall->GetShotState(i) != FallDownShot::STATE::BLAST)
-						{
-							continue;
-						}
-						auto& transform = fall->GetShotTransform(i);
-						if (Utility::IsColSphere2Sphere(player_->GetTransform().pos, PlayerBase::RADIUS, transform.pos, fall->GetShotRadius(i)))
-						{
-							VECTOR vec = VNorm(VSub(player_->GetTransform().pos, transform.pos));
-							vec.y = 0.5f;
-							player_->Damage(FallDownShot::DAMAGE, VNorm(vec));
-						}
-					}
-					continue;
-				}
-			}
-				break;
-			case AttackBase::GEOMETORY::CIRCLE:
-				break;
-			case AttackBase::GEOMETORY::CIRCUMFERENCE:
-			{
-				auto cast = dynamic_cast<JumpAttack*>(attack);
-				if (cast != nullptr)
-				{
-					//Wave‚Æ‚Ì“–‚½‚è”»’è
-					if (player_->GetState() == PlayerBase::STATE::JUMP)
+					if (fall->GetShotState(i) != FallDownShot::STATE::BLAST)
 					{
 						continue;
 					}
-					int waveNum = cast->GetWaveNum();
-					for (int i = 0; i < waveNum; i++)
+					auto& transform = fall->GetShotTransform(i);
+					if (Utility::IsColSphere2Sphere(player_->GetTransform().pos, PlayerBase::RADIUS, transform.pos, fall->GetShotRadius(i)))
 					{
-						float waveRadius;
-						VECTOR wavePos;
-						cast->GetWaveState(waveRadius, wavePos, i);
-						VECTOR pPos = player_->GetTransform().pos;
-						pPos.y = wavePos.y;
-						if (Utility::IsColCircumference2Circle(wavePos, waveRadius, pPos, PlayerBase::RADIUS))
-						{
-							VECTOR vec = VNorm(VSub(player_->GetTransform().pos, wavePos));
-							vec.y = 0.5f;
-							player_->Damage(Wave::DAMAGE,VNorm(vec));
-						}
+						VECTOR vec = VNorm(VSub(player_->GetTransform().pos, transform.pos));
+						vec.y = 0.5f;
+						player_->Damage(FallDownShot::DAMAGE, VNorm(vec));
+					}
+				}
+				continue;
+			}
+		}
+		break;
+		case AttackBase::GEOMETORY::CIRCLE:
+			break;
+		case AttackBase::GEOMETORY::CIRCUMFERENCE:
+		{
+			auto cast = dynamic_cast<JumpAttack*>(attack);
+			if (cast != nullptr)
+			{
+				//Wave‚Æ‚Ì“–‚½‚è”»’è
+				if (player_->GetState() == PlayerBase::STATE::JUMP)
+				{
+					//ƒWƒƒƒ“ƒv’†‚Í“–‚½‚ç‚È‚¢
+					continue;
+				}
+				int waveNum = cast->GetWaveNum();
+				for (int i = 0; i < waveNum; i++)
+				{
+					float waveRadius;
+					VECTOR wavePos;
+					cast->GetWaveState(waveRadius, wavePos, i);
+					VECTOR pPos = player_->GetTransform().pos;
+					pPos.y = wavePos.y;
+					if (Utility::IsColCircumference2Circle(wavePos, waveRadius, pPos, PlayerBase::RADIUS))
+					{
+						VECTOR vec = VNorm(VSub(player_->GetTransform().pos, wavePos));
+						vec.y = 0.5f;
+						player_->Damage(Wave::DAMAGE, VNorm(vec));
 					}
 				}
 			}
-				break;
-			case AttackBase::GEOMETORY::MODEL:
+		}
+		break;
+		case AttackBase::GEOMETORY::MODEL:
 
-				break;
-			default:
-				break;
-			}
-		}
-		//“G‚ÆƒvƒŒƒCƒ„[‚Ì“–‚½‚è”»’è
-		if (Utility::IsColSphere2Model(player_->GetTransform().pos, PlayerBase::RADIUS, enemy_->GetTransform().modelId))
-		{
-			VECTOR vec = VNorm(VSub(player_->GetTransform().pos, enemy_->GetTransform().pos));
-			vec.y = 0.5f;
-			player_->Damage(5.0f,VNorm(vec));
-		}
-		//“G‚ÆƒvƒŒƒCƒ„[‚Ì‹…‚Ì“–‚½‚è”»’è
-		int playerShotNum = player_->GetPlayerShotNum();
-		for (int i = 0;i < playerShotNum;i++)
-		{
-			auto& playerShot = player_->GetPlayerShot(i);
-			if (!playerShot.IsShot())continue;
-			if (Utility::IsColSphere2Model(playerShot.GetTransform().pos, playerShot.GetRadius(), enemy_->GetTransform().modelId))
-			{
-				enemy_->Damage(2.0f);
-				playerShot.Hit();
-			}
+			break;
+		default:
+			break;
 		}
 	}
+	//“G‚ÆƒvƒŒƒCƒ„[‚Ì“–‚½‚è”»’è
+	if (Utility::IsColSphere2Model(player_->GetTransform().pos, PlayerBase::RADIUS, enemy_->GetTransform().modelId))
+	{
+		VECTOR vec = VNorm(VSub(player_->GetTransform().pos, enemy_->GetTransform().pos));
+		vec.y = 0.5f;
+		player_->Damage(5.0f, VNorm(vec));
+	}
 }
-
-
