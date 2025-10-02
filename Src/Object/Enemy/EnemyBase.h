@@ -30,6 +30,7 @@ public:
 		JUMP,		//jampUŒ‚(”g)
 		FOLLOW,		//’Ç”öUŒ‚(’Ç]’e)
 		FALL_DOWN,	//—Ž‰ºUŒ‚(—Ž‰º’e)
+		CROSS_LINE,	//\Žš	
 		MAX
 	};
 

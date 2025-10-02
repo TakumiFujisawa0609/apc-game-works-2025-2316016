@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Object\Enemy\Attack\CrossLine.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Attack\CrossAttack.cpp" />
     <ClCompile Include="Src\Object\Enemy\Attack\FallDownShot.cpp" />
     <ClCompile Include="Src\Object\Enemy\Attack\FallDownAttack.cpp" />
     <ClCompile Include="Src\Object\Enemy\Attack\FollowShot.cpp" />
@@ -55,6 +57,8 @@
     <ClCompile Include="Src\Object\Stage\Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Object\Enemy\Attack\CrossLine.h" />
+    <ClInclude Include="Src\Object\Enemy\Attack\CrossAttack.h" />
     <ClInclude Include="Src\Object\Enemy\Attack\FallDownShot.h" />
     <ClInclude Include="Src\Object\Enemy\Attack\FallDownAttack.h" />
     <ClInclude Include="Src\Object\Enemy\Attack\FollowShot.h" />
