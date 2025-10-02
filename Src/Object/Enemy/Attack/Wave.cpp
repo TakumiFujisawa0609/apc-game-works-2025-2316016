@@ -45,6 +45,8 @@ float Wave::InitSpeed(SPEED_TYPE speedType) const
 		return MIDIUM_SPEED;
 	case SPEED_TYPE::FAST:
 		return FAST_SPEED;
+	case SPEED_TYPE::RANDOM:
+		return GetRand(static_cast<int>(FAST_SPEED - SLOW_SPEED)) + SLOW_SPEED;
 	default:
 		return 0.0f;
 	}

@@ -62,12 +62,17 @@ void JumpAttack::ChangeStateStart(void)
 {
 	//ウェーブの作成
 	AttackBase::ChangeStateStart();
-	std::unique_ptr<Wave> slow = std::make_unique<Wave>(enemy_.GetTransform().pos, Wave::SPEED_TYPE::SLOW, GetColor(255, 0, 0));
-	std::unique_ptr<Wave> midium = std::make_unique<Wave>(enemy_.GetTransform().pos, Wave::SPEED_TYPE::MIDIUM, GetColor(255, 0, 0));
-	std::unique_ptr<Wave> fast = std::make_unique<Wave>(enemy_.GetTransform().pos, Wave::SPEED_TYPE::FAST, GetColor(255, 0, 0));
+	std::unique_ptr<Wave> slow = std::make_unique<Wave>(enemy_.GetTransform().pos, Wave::SPEED_TYPE::SLOW,Utility::RED);
+	std::unique_ptr<Wave> midium = std::make_unique<Wave>(enemy_.GetTransform().pos, Wave::SPEED_TYPE::MIDIUM, Utility::RED);
+	std::unique_ptr<Wave> fast = std::make_unique<Wave>(enemy_.GetTransform().pos, Wave::SPEED_TYPE::FAST, Utility::RED);
 	wave_.push_back(std::move(slow));
 	wave_.push_back(std::move(midium));
 	wave_.push_back(std::move(fast));
+	for (int i = 0; i < RANDOM_WAVE_NUM; i++)
+	{
+		std::unique_ptr<Wave> random = std::make_unique<Wave>(enemy_.GetTransform().pos, Wave::SPEED_TYPE::RANDOM, Utility::RED);
+		wave_.push_back(std::move(random));
+	}
 }
 
 void JumpAttack::ChangeStateUpdate(void)

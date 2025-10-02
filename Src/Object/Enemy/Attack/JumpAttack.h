@@ -10,7 +10,7 @@ class JumpAttack :public AttackBase
 public:
 	static constexpr float COOL_DOWN = 8.0f;	//クールダウン
 	static constexpr float JUMP_POW = 30.0f; //ジャンプの高さ
-
+	static constexpr int RANDOM_WAVE_NUM = 5; //ランダム波紋の出せる最大数
 	JumpAttack(EnemyBase& enemy);
 	~JumpAttack(void) override;
 	void Init(void) override;

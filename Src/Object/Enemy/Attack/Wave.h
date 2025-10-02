@@ -8,10 +8,11 @@ public:
 		SLOW,
 		MIDIUM,
 		FAST,
+		RANDOM,
 		MAX,
 	};
 
-	static constexpr float SLOW_SPEED = 200.0f;
+	static constexpr float SLOW_SPEED = 150.0f;
 	static constexpr float MIDIUM_SPEED = 300.0f;
 	static constexpr float FAST_SPEED = 400.0f;
 	static constexpr int VERTEX_NUM = 180;

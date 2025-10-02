@@ -53,7 +53,9 @@ void FallDownShot::Draw(void)
 	MV1DrawModel(transform_->modelId);
 	VECTOR pos = transform_->pos;
 	pos.y = 0.0f;
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, ALPHA);
 	Utility::DrawCircle3DXZ(pos,radius_, VERTEX_NUM, Utility::RED, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 void FallDownShot::Hit(void)

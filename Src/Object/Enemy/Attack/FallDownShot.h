@@ -21,6 +21,7 @@ public:
 	static constexpr float RADIUS_MIN = 200.0f;
 	static constexpr float RADIUS_MAX = 400.0f;
 	static constexpr int VERTEX_NUM = 64;
+	static constexpr int ALPHA = 128;
 	static constexpr float BLAST_TIME = 0.5f;
 
 	FallDownShot(void);
