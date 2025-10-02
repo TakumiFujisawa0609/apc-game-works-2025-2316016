@@ -130,6 +130,7 @@ void PlayerBase::SetupStateChange(void)
 {
 	stateChanges_[(STATE::IDLE)] = std::bind(&PlayerBase::StateChangeIdle, this);
 	stateChanges_[(STATE::MOVE)] = std::bind(&PlayerBase::StateChangeMove, this);
+	stateChanges_[(STATE::JUMP)] = std::bind(&PlayerBase::StateChangeJump, this);
 	stateChanges_[(STATE::AVOID)] = std::bind(&PlayerBase::StateChangeAvoid, this);
 	stateChanges_[(STATE::CHARGE)] = std::bind(&PlayerBase::StateChangeCharge, this);
 	stateChanges_[(STATE::ATTACK)] = std::bind(&PlayerBase::StateChangeAttack, this);
@@ -164,6 +165,13 @@ void PlayerBase::StateChangeMove(void)
 {
 	stateUpdate_ = std::bind(&PlayerBase::StateUpdateMove, this);
 }
+
+void PlayerBase::StateChangeJump(void)
+{
+	gravity_->ChengeState(Gravity::STATE::JUMP);
+	gravity_->SetInitPower(JUMP_POW);
+	stateUpdate_ = std::bind(&PlayerBase::StateUpdateJump, this);
+};
 
 void PlayerBase::StateChangeAvoid(void)
 {
@@ -232,9 +240,13 @@ void PlayerBase::StateUpdateIdle(void)
 	{
 		ChengeState(STATE::MOVE);
 	}
-	else if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_AVOID, KeyConfig::JOYPAD_NO::PAD1) && avoidCoolTime_ <0.0f)
+	else if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_AVOID, KeyConfig::JOYPAD_NO::PAD1) && avoidCoolTime_ < 0.0f)
 	{
 		ChengeState(STATE::AVOID);
+	}
+	else if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_JUMP, KeyConfig::JOYPAD_NO::PAD1))
+	{
+		ChangeState(STATE::JUMP);
 	}
 }
 
@@ -245,9 +257,22 @@ void PlayerBase::StateUpdateMove(void)
 	{
 		ChengeState(STATE::AVOID);
 	}
+	else if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_JUMP, KeyConfig::JOYPAD_NO::PAD1))
+	{
+		ChangeState(STATE::JUMP);
+	}
 	else if (!IsPushMoveKey())
 	{
 		ChengeState(STATE::IDLE);
+	}
+}
+
+void PlayerBase::StateUpdateJump(void)
+{
+	PlayerMove();
+	if (gravity_->GetState() == Gravity::STATE::NONE)
+	{
+		ChangeState(STATE::IDLE);
 	}
 }
 

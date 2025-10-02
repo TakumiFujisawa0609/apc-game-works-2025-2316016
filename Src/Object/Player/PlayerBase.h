@@ -18,8 +18,8 @@ public:
 
 	//移動関連
 	static constexpr float MOVE_SPEED = 5.0f; //移動速度
-	static constexpr VECTOR MOVE_LIMIT_MIN = { -500.0f,0.0f,-500.0f }; //移動制限最小座標
-	static constexpr VECTOR MOVE_LIMIT_MAX = { 500.0f,500.0f,500.0f }; //移動制限最小座標
+	static constexpr VECTOR MOVE_LIMIT_MIN = { -750.0f,0.0f,-750.0f }; //移動制限最小座標
+	static constexpr VECTOR MOVE_LIMIT_MAX = { 750.0f,500.0f,750.0f }; //移動制限最小座標
 
 	//回避関連
 	static constexpr float AVOID_DISTANCE = 250.0f; //回避距離
@@ -27,8 +27,14 @@ public:
 	static constexpr float AVOID_COOL_TIME = 1.0f; //回避クールタイム
 
 	//ダメージ関連
-	static constexpr float DAMAGE_TIME = 1.0f; //ダメージ時間
-	static constexpr float DAMAGE_INVINCIBLE_TIME = 3.0f; //ダメージ無敵時間
+	static constexpr float DAMAGE_TIME = 0.5f; //ダメージ時間
+	static constexpr float DAMAGE_INVINCIBLE_TIME = 1.5f; //ダメージ無敵時間
+	static constexpr float DAMAGE_SPEED = 15.0f;	//ダメージの吹っ飛びスピード
+
+	static constexpr float JUMP_POW = 10.0f; //ジャンプ力
+
+	//当たり判定
+	static constexpr float RADIUS = 10.0f;
 
 	//攻撃関連
 	static constexpr float ATTACK_DELEY = 0.5f; //攻撃ディレイ
@@ -37,6 +43,7 @@ public:
 	{
 		IDLE,	//待機
 		MOVE,	//移動
+		JUMP,	//ジャンプ
 		AVOID,  //回避
 		CHARGE, //チャージ
 		ATTACK, //攻撃
@@ -81,14 +88,29 @@ public:
 	/// </summary>
 	/// <param name="state">次の状態</param>
 	/// <param name="isAbsolute">同じやつでももう１度呼ぶならtrue</param>
-	void ChengeState(STATE state,bool isAbsolute = false); //状態変更
+	/// <returns>成功(true)か失敗(false)か</returns>
+	bool ChangeState(STATE state,bool isAbsolute = false); //状態変更
 
+	void Damage(float damage,VECTOR dir);
+	/// <summary>
+	/// ダメージを食らう状態か
+	/// </summary>
+	/// <param name=""></param>
+	/// <returns>食らう状態ならtrue</returns>
+	bool IsDamageHit(void);
+
+	STATE GetState(void) const { return state_; }
+	float GetHP(void) const { return hp_; }
+
+	int GetPlayerShotNum(void) { return static_cast<int>(shots_.size()); }
+	PlayerShot& GetPlayerShot(int num) { return *shots_[num]; }
 protected:
 
 	int playerNum_; //プレイヤー番号
 	//基本情報
 	std::unique_ptr<Transform> transform_;
 	KeyConfig& keyIns_;
+	std::unique_ptr<Gravity> gravity_;
 	//弾
 	std::vector<std::unique_ptr<PlayerShot>> shots_;
 	//状態
@@ -102,6 +124,11 @@ protected:
 	//攻撃
 	float attackDeley_; //攻撃ディレイ
 
+	//ダメージ
+	float damageTime_;	//ダメージ硬直時間
+	float damageInvincibleTime_;	//ダメージ後の無敵時間
+	VECTOR damageDir_;	//ダメージ後の吹っ飛び方向
+
 	//体力
 	float hp_;
 
@@ -109,6 +136,7 @@ protected:
 	std::map<STATE, std::function<void(void)>> stateChanges_;
 	void StateChangeIdle(void);   //待機
 	void StateChangeMove(void);   //移動
+	void StateChangeJump(void);   //ジャンプ
 	void StateChangeAvoid(void);  //回避
 	void StateChangeCharge(void); //チャージ
 	void StateChangeAttack(void); //攻撃
@@ -118,6 +146,7 @@ protected:
 	std::function<void(void)> stateUpdate_; //状態更新関数
 	void StateUpdateIdle(void);   //待機
 	void StateUpdateMove(void);   //移動
+	void StateUpdateJump(void);   //ジャンプ
 	void StateUpdateAvoid(void);  //回避
 	void StateUpdateCharge(void); //チャージ
 	void StateUpdateAttack(void); //攻撃
@@ -126,10 +155,10 @@ protected:
 
 
 
-
 	void PlayerMove(void); //移動処理
 
 	void MoveLimit(void); //移動制限
+	void AplayGravity(void);	//重力適用
 
 	void SetupStateChange(void); //状態変更関数の設定
 
