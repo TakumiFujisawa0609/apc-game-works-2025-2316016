@@ -46,6 +46,7 @@ bool SceneGame::Init(void)
 	auto& cam = SceneManager::GetInstance().GetCamera();
 	cam.ChangeMode(Camera::MODE::FOLLOW);
 	cam.SetFollow(&player_->GetTransform(), &enemy_->GetTransform());
+	cam.SetPos(player_->GetTransform().pos);
 	//スカイドーム
 	skyDome_ = std::make_unique<SkyDome>();
 	skyDome_->Init();
@@ -186,13 +187,19 @@ void SceneGame::CheckCollision(void)
 				auto cast = dynamic_cast<JumpAttack*>(attack);
 				if (cast != nullptr)
 				{
+					if (player_->GetState() == PlayerBase::STATE::JUMP)
+					{
+						continue;
+					}
 					int waveNum = cast->GetWaveNum();
 					for (int i = 0; i < waveNum; i++)
 					{
 						float waveRadius;
 						VECTOR wavePos;
 						cast->GetWaveState(waveRadius, wavePos, i);
-						if (Utility::IsColCircumference2Circle(wavePos, waveRadius, player_->GetTransform().pos, PlayerBase::RADIUS))
+						VECTOR pPos = player_->GetTransform().pos;
+						pPos.y = wavePos.y;
+						if (Utility::IsColCircumference2Circle(wavePos, waveRadius, pPos, PlayerBase::RADIUS))
 						{
 							VECTOR vec = VNorm(VSub(player_->GetTransform().pos, wavePos));
 							vec.y = 0.5f;

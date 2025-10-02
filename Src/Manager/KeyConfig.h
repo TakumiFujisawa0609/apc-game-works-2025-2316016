@@ -100,7 +100,7 @@ public:
 		PLAYER_MOVE_LEFT,		//プレイヤー移動左
 		PLAYER_AVOID,			//プレイヤー回避
 		PLAYER_ATTACK,			//プレイヤー攻撃
-
+		PLAYER_JUMP,			//プレイヤージャンプ
 		MAX,
 	};
 

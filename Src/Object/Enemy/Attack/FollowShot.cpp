@@ -24,7 +24,9 @@ void FollowShot::Init(void)
 void FollowShot::Update(void)
 {
 	time_ -= SceneManager::GetInstance().GetDeltaTime();
-	transform_->pos = VAdd(transform_->pos, VScale(VNorm(VSub(target_.pos, transform_->pos)), speed_));
+	auto dir = VSub(target_.pos, transform_->pos);
+	dir.y = 0.0f;
+	transform_->pos = VAdd(transform_->pos, VScale(VNorm(dir), speed_));
 	transform_->Update();
 	if (time_ < 0.0f)
 	{
@@ -53,7 +55,7 @@ float FollowShot::InitSpeed(SPEED_TYPE speedType) const
 	case SPEED_TYPE::FAST:
 		return FAST_SPEED;
 	case SPEED_TYPE::RANDOM:
-		return GetRand(static_cast<int>(FAST_SPEED - SLOW_SPEED)*10)/10 + SLOW_SPEED;
+		return GetRand(static_cast<int>((FAST_SPEED - SLOW_SPEED)*10))/10 + SLOW_SPEED;
 	default:
 		return 0.0f;
 	}

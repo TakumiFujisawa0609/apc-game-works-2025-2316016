@@ -19,8 +19,8 @@ public:
 
 	//移動関連
 	static constexpr float MOVE_SPEED = 5.0f; //移動速度
-	static constexpr VECTOR MOVE_LIMIT_MIN = { -500.0f,0.0f,-500.0f }; //移動制限最小座標
-	static constexpr VECTOR MOVE_LIMIT_MAX = { 500.0f,500.0f,500.0f }; //移動制限最小座標
+	static constexpr VECTOR MOVE_LIMIT_MIN = { -750.0f,0.0f,-750.0f }; //移動制限最小座標
+	static constexpr VECTOR MOVE_LIMIT_MAX = { 750.0f,500.0f,750.0f }; //移動制限最小座標
 
 	//回避関連
 	static constexpr float AVOID_DISTANCE = 300.0f; //回避距離
@@ -32,6 +32,8 @@ public:
 	static constexpr float DAMAGE_INVINCIBLE_TIME = 1.5f; //ダメージ無敵時間
 	static constexpr float DAMAGE_SPEED = 15.0f;	//ダメージの吹っ飛びスピード
 
+	static constexpr float JUMP_POW = 10.0f; //ジャンプ力
+
 	//当たり判定
 	static constexpr float RADIUS = 10.0f;
 
@@ -42,6 +44,7 @@ public:
 	{
 		IDLE,	//待機
 		MOVE,	//移動
+		JUMP,	//ジャンプ
 		AVOID,  //回避
 		CHARGE, //チャージ
 		ATTACK, //攻撃
@@ -134,6 +137,7 @@ protected:
 	std::map<STATE, std::function<void(void)>> stateChanges_;
 	void StateChangeIdle(void);   //待機
 	void StateChangeMove(void);   //移動
+	void StateChangeJump(void);   //ジャンプ
 	void StateChangeAvoid(void);  //回避
 	void StateChangeCharge(void); //チャージ
 	void StateChangeAttack(void); //攻撃
@@ -143,12 +147,12 @@ protected:
 	std::function<void(void)> stateUpdate_; //状態更新関数
 	void StateUpdateIdle(void);   //待機
 	void StateUpdateMove(void);   //移動
+	void StateUpdateJump(void);   //ジャンプ
 	void StateUpdateAvoid(void);  //回避
 	void StateUpdateCharge(void); //チャージ
 	void StateUpdateAttack(void); //攻撃
 	void StateUpdateDamage(void); //ダメージ
 	void StateUpdateDead(void);   //死亡
-
 
 
 

@@ -23,7 +23,7 @@ public:
 	};
 
 	static constexpr float SLOW_SPEED = 3.0f;
-	static constexpr float MIDIUM_SPEED = 5.0f;
+	static constexpr float MIDIUM_SPEED = 5.5f;
 	static constexpr float FAST_SPEED = 7.0f;
 
 	static constexpr float DAMAGE = 15.0f;
