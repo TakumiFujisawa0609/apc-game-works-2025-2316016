@@ -107,44 +107,22 @@ void PlayerBase::PlayerMove(void)
 	VECTOR left = front;
 	std::swap(left.x, left.z);
 	left.x = -left.x;
-	if (playerNum_ == 0)
+	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_UP, KeyConfig::JOYPAD_NO::PAD1))
 	{
-		if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_UP, KeyConfig::JOYPAD_NO::PAD1))
-		{
-			transform_->pos = VAdd(transform_->pos, VScale(front, MOVE_SPEED));
-		}
-		if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_DOWN, KeyConfig::JOYPAD_NO::PAD1))
-		{
-			transform_->pos = VAdd(transform_->pos, VScale(VScale(front,-1), MOVE_SPEED));
-		}
-		if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_RIGHT, KeyConfig::JOYPAD_NO::PAD1))
-		{
-			transform_->pos = VAdd(transform_->pos, VScale(VScale(left, -1), MOVE_SPEED));
-		}
-		if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_LEFT, KeyConfig::JOYPAD_NO::PAD1))
-		{
-			transform_->pos = VAdd(transform_->pos, VScale(left, MOVE_SPEED));
-		}
+		transform_->pos = VAdd(transform_->pos, VScale(front, MOVE_SPEED));
 	}
-	//else
-	//{
-	//	if (keyIns.IsNew(KeyConfig::CONTROL_TYPE::PLAYER2_MOVE_UP, KeyConfig::JOYPAD_NO::PAD1))
-	//	{
-	//		transform_->pos = VAdd(transform_->pos, VScale(front, MOVE_SPEED));
-	//	}
-	//	if (keyIns.IsNew(KeyConfig::CONTROL_TYPE::PLAYER2_MOVE_DOWN, KeyConfig::JOYPAD_NO::PAD1))
-	//	{
-	//		transform_->pos = VAdd(transform_->pos, VScale(VScale(front, -1), MOVE_SPEED));
-	//	}
-	//	if (keyIns.IsNew(KeyConfig::CONTROL_TYPE::PLAYER2_MOVE_RIGHT, KeyConfig::JOYPAD_NO::PAD1))
-	//	{
-	//		transform_->pos = VAdd(transform_->pos, VScale(VScale(left, -1), MOVE_SPEED));
-	//	}
-	//	if (keyIns.IsNew(KeyConfig::CONTROL_TYPE::PLAYER2_MOVE_LEFT, KeyConfig::JOYPAD_NO::PAD1))
-	//	{
-	//		transform_->pos = VAdd(transform_->pos, VScale(left, MOVE_SPEED));
-	//	}
-	//}
+	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_DOWN, KeyConfig::JOYPAD_NO::PAD1))
+	{
+		transform_->pos = VAdd(transform_->pos, VScale(VScale(front, -1), MOVE_SPEED));
+	}
+	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_RIGHT, KeyConfig::JOYPAD_NO::PAD1))
+	{
+		transform_->pos = VAdd(transform_->pos, VScale(VScale(left, -1), MOVE_SPEED));
+	}
+	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_LEFT, KeyConfig::JOYPAD_NO::PAD1))
+	{
+		transform_->pos = VAdd(transform_->pos, VScale(left, MOVE_SPEED));
+	}
 }
 
 void PlayerBase::MoveLimit(void)

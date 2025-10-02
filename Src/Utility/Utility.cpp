@@ -922,6 +922,8 @@ void Utility::DrawCircle3DXZ(VECTOR center, float radius, int vertexNum,int colo
         VECTOR pos2 = VAdd(center, VScale(vec2, radius));
         if (fillFlag)
         {
+            //— •\—¼•û•`‰æ
+			DrawTriangle3D(center, pos1, pos2, color,true);
 			DrawTriangle3D(center, pos2, pos1, color,true);
         }
         else
