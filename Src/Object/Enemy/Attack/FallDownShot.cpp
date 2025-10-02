@@ -15,6 +15,7 @@ FallDownShot::FallDownShot(void)
 	initY = transform_->pos.y;
 	state_ = STATE::FALL;
 	blastTime_ = 0.0f;
+	color_ = { 1.0f,0.0f,0.0f };
 }
 
 FallDownShot::~FallDownShot(void)
@@ -30,6 +31,7 @@ void FallDownShot::Update(void)
 	if (state_ == STATE::FALL)
 	{
 		transform_->pos.y -= speed_;
+		color_ = Utility::Lerp(GetColorF(1.0f, 1.0f, 0.0f,1.0f), GetColorF(1.0f, 0.0f, 0.0f,1.0f),1.0f - (transform_->pos.y - PlayerBase::MOVE_LIMIT_MIN.y)/(initY - PlayerBase::MOVE_LIMIT_MIN.y));
 		if (transform_->pos.y < PlayerBase::MOVE_LIMIT_MIN.y)
 		{
 			state_ = STATE::BLAST;
@@ -54,7 +56,7 @@ void FallDownShot::Draw(void)
 	VECTOR pos = transform_->pos;
 	pos.y = 0.0f;
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, ALPHA);
-	Utility::DrawCircle3DXZ(pos,radius_, VERTEX_NUM, Utility::RED, true);
+	Utility::DrawCircle3DXZ(pos,radius_, VERTEX_NUM, GetColor(color_.r * 255,color_.g * 255,color_.b*255), true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 

@@ -18,8 +18,8 @@ public:
 	static constexpr float FAST_SPEED = 10.0f;
 
 	static constexpr float DAMAGE = 30.0f;
-	static constexpr float RADIUS_MIN = 200.0f;
-	static constexpr float RADIUS_MAX = 400.0f;
+	static constexpr float RADIUS_MIN = 150.0f;
+	static constexpr float RADIUS_MAX = 300.0f;
 	static constexpr int VERTEX_NUM = 64;
 	static constexpr int ALPHA = 128;
 	static constexpr float BLAST_TIME = 0.5f;
@@ -36,7 +36,7 @@ public:
 private:
 	//é©ï™ÇÃ
 	std::unique_ptr<Transform> transform_;
-
+	COLOR_F color_;
 	float radius_;	//îºåa
 	float initY;	//èâä˙Yç¿ïW
 	float blastTime_;

@@ -96,6 +96,7 @@ void SceneGame::Draw(void)
 
 	enemyHPUI_->Draw();
 	DrawFormatString(0, 0, 0, "%f", player_->GetHP());
+	DrawFormatString(0, 20, 0, "%d", GetDrawCallCount());
 }
 
 void SceneGame::DebugDraw(void)
