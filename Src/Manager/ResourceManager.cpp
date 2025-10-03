@@ -23,6 +23,10 @@ void ResourceManager::Init(void)
 {
 
 	Resource res;
+	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "Title/TitleName.png");
+	resourcesMap_.emplace(SRC::TITLE_IMAGE_1, std::move(res));
+	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "Title/TitleName2.png");
+	resourcesMap_.emplace(SRC::TITLE_IMAGE_2, std::move(res));
 	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "SkyDome/SkyDome.mv1");
 	resourcesMap_.emplace(SRC::SKY_DOME, std::move(res));
 	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "Enemy/Chicken.mv1");

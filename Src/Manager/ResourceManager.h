@@ -11,6 +11,8 @@ public:
 	// ÉäÉ\Å[ÉXñº
 	enum class SRC
 	{
+		TITLE_IMAGE_1,
+		TITLE_IMAGE_2,
 		SKY_DOME,
 		PLAYER,
 		ENEMY,
