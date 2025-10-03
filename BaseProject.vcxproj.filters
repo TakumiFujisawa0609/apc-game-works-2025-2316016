@@ -33,6 +33,11 @@
     <ClCompile Include="Src\Object\Enemy\Attack\Wave.cpp" />
     <ClCompile Include="Src\Object\Enemy\Attack\FollowAttack.cpp" />
     <ClCompile Include="Src\Object\Enemy\Attack\FollowShot.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Attack\CrossLine.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Attack\CrossAttack.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Attack\FallDownShot.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Attack\FallDownAttack.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Attack\JumpAttackConstant.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Common\IntVector3.h" />
@@ -67,5 +72,10 @@
     <ClInclude Include="Src\Object\Enemy\Attack\Wave.h" />
     <ClInclude Include="Src\Object\Enemy\Attack\FollowAttack.h" />
     <ClInclude Include="Src\Object\Enemy\Attack\FollowShot.h" />
+    <ClInclude Include="Src\Object\Enemy\Attack\CrossLine.h" />
+    <ClInclude Include="Src\Object\Enemy\Attack\CrossAttack.h" />
+    <ClInclude Include="Src\Object\Enemy\Attack\FallDownShot.h" />
+    <ClInclude Include="Src\Object\Enemy\Attack\FallDownAttack.h" />
+    <ClInclude Include="Src\Object\Enemy\Attack\JumpAttackConstant.h" />
   </ItemGroup>
 </Project>

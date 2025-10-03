@@ -33,7 +33,7 @@ void CrossAttack::Draw(void)
 	for (auto& line : crossLines_)
 	{
 		line->Draw();
-	}
+	} 
 }
 
 Transform& CrossAttack::GetLineTransform(int lineNum)

@@ -5,20 +5,24 @@
 
 class Wave;
 
-class JumpAttack :public AttackBase
+class JumpAttackConstant :    public AttackBase
 {
 public:
-	static constexpr float COOL_DOWN = 8.0f;	//クールダウン
+	static constexpr float COOL_DOWN = 15.0f;	//クールダウン
 	static constexpr float JUMP_POW = 30.0f; //ジャンプの高さ
-	static constexpr int RANDOM_WAVE_NUM = 5; //ランダム波紋の出せる最大数
-	JumpAttack(EnemyBase& enemy);
-	~JumpAttack(void) override;
+	static constexpr float INTERVAL_TIME = 0.4f; //波紋を出す間隔時間
+	static constexpr float TIME = 10.0f; //ジャンプしてから波紋を出し終わるまでの時間
+
+	JumpAttackConstant(EnemyBase& enemy);
+	~JumpAttackConstant(void) override;
 	void Init(void) override;
 	void Update(void) override;
 	void Draw(void) override;
 	int GetWaveNum(void) { return static_cast<int>(wave_.size()); }
-	void GetWaveState(float& radius, VECTOR& centerPos,int waveNum);
+	void GetWaveState(float& radius, VECTOR& centerPos, int waveNum);
 private:
+	float time_;
+	float intervalTime_;
 	std::vector<std::unique_ptr<Wave>> wave_;
 	void ChangeStateNone(void) override;		//実行されていない
 	void ChangeStateReady(void) override;	//実行準備
@@ -31,6 +35,5 @@ private:
 	void UpdateStateStart(void)override;	//実行開始
 	void UpdateStateUpdate(void)override;	//実行中
 	void UpdateStateFinish(void)override;	//実行終了
-
 };
 

@@ -40,10 +40,6 @@ void JumpAttack::GetWaveState(float& radius, VECTOR& centerPos,int waveNum)
 	centerPos = wave_[waveNum]->GetPos();
 }
 
-void JumpAttack::Jump(void)
-{
-}
-
 void JumpAttack::ChangeStateNone(void)
 {
 	AttackBase::ChangeStateNone();

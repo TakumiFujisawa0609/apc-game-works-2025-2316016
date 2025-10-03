@@ -13,6 +13,7 @@
 #include "../Object/Enemy/EnemyBase.h"
 #include "../Object/Enemy/Attack/AttackBase.h"
 #include "../Object/Enemy/Attack/JumpAttack.h"
+#include "../Object/Enemy/Attack/JumpAttackConstant.h"
 #include "../Object/Enemy/Attack/FollowAttack.h"
 #include "../Object/Enemy/Attack/FallDownAttack.h"
 #include "../Object/Enemy/Attack/CrossAttack.h"
@@ -246,8 +247,8 @@ void SceneGame::CheckCollision(void)
 			break;
 		case AttackBase::GEOMETORY::CIRCUMFERENCE:
 		{
-			auto cast = dynamic_cast<JumpAttack*>(attack);
-			if (cast != nullptr)
+			auto jump = dynamic_cast<JumpAttack*>(attack);
+			if (jump != nullptr)
 			{
 				//Waveとの当たり判定
 				if (player_->GetState() == PlayerBase::STATE::JUMP)
@@ -255,12 +256,37 @@ void SceneGame::CheckCollision(void)
 					//ジャンプ中は当たらない
 					continue;
 				}
-				int waveNum = cast->GetWaveNum();
+				int waveNum = jump->GetWaveNum();
 				for (int i = 0; i < waveNum; i++)
 				{
 					float waveRadius;
 					VECTOR wavePos;
-					cast->GetWaveState(waveRadius, wavePos, i);
+					jump->GetWaveState(waveRadius, wavePos, i);
+					VECTOR pPos = player_->GetTransform().pos;
+					pPos.y = wavePos.y;
+					if (Utility::IsColCircumference2Circle(wavePos, waveRadius, pPos, PlayerBase::RADIUS))
+					{
+						VECTOR vec = VNorm(VSub(player_->GetTransform().pos, wavePos));
+						vec.y = 0.5f;
+						player_->Damage(Wave::DAMAGE, VNorm(vec));
+					}
+				}
+			}
+			auto jumpC = dynamic_cast<JumpAttackConstant*>(attack);
+			if (jumpC != nullptr)
+			{
+				//Waveとの当たり判定
+				if (player_->GetState() == PlayerBase::STATE::JUMP)
+				{
+					//ジャンプ中は当たらない
+					continue;
+				}
+				int waveNum = jumpC->GetWaveNum();
+				for (int i = 0; i < waveNum; i++)
+				{
+					float waveRadius;
+					VECTOR wavePos;
+					jumpC->GetWaveState(waveRadius, wavePos, i);
 					VECTOR pPos = player_->GetTransform().pos;
 					pPos.y = wavePos.y;
 					if (Utility::IsColCircumference2Circle(wavePos, waveRadius, pPos, PlayerBase::RADIUS))

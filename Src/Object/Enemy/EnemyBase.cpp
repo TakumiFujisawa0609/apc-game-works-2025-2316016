@@ -7,6 +7,7 @@
 #include "../Common/Gravity.h"
 #include "Attack/AttackBase.h"
 #include "Attack/JumpAttack.h"
+#include "Attack/JumpAttackConstant.h"
 #include "Attack/CrossAttack.h"
 #include "Attack/FollowAttack.h"
 #include "Attack/FallDownAttack.h"
@@ -26,6 +27,7 @@ EnemyBase::EnemyBase(Transform& target) : target_(target)
 	hp_ = maxHP_;
 	AplayChangeStateFunc();
 	AddAttack(ATTACK_TYPE::JUMP);
+	AddAttack(ATTACK_TYPE::JUMP_CONSTANT);
 	AddAttack(ATTACK_TYPE::FOLLOW);
 	AddAttack(ATTACK_TYPE::FALL_DOWN);
 	AddAttack(ATTACK_TYPE::CROSS_LINE);
@@ -188,6 +190,9 @@ void EnemyBase::AddAttack(ATTACK_TYPE type)
 	{
 	case EnemyBase::ATTACK_TYPE::JUMP:
 		attack = std::make_unique<JumpAttack>(*this);
+		break;
+	case EnemyBase::ATTACK_TYPE::JUMP_CONSTANT:
+		attack = std::make_unique<JumpAttackConstant>(*this);
 		break;
 	case EnemyBase::ATTACK_TYPE::FOLLOW:
 		attack = std::make_unique<FollowAttack>(*this);

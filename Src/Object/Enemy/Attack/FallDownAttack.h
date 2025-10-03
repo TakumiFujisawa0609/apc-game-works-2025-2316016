@@ -5,9 +5,9 @@
 class FallDownAttack :    public AttackBase
 {
 public:
-	static constexpr float COOL_DOWN = 30.0f;	//クールダウン
-	static constexpr int MAX_FALL_NUM = 20; //落下弾の同時に出せる最大数
-	static constexpr float TIME = 20.0f; //落下弾が落ち続ける時間
+	static constexpr float COOL_DOWN = 60.0f;	//クールダウン
+	static constexpr int MAX_FALL_NUM = 30; //落下弾の同時に出せる最大数
+	static constexpr float TIME = 30.0f; //落下弾が落ち続ける時間
 
 	FallDownAttack(EnemyBase& enemy);
 	~FallDownAttack(void)override;
