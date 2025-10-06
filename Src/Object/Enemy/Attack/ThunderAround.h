@@ -10,12 +10,12 @@ class ThunderAround
 {
 public:
 
-	static constexpr float DAMAGE = 12.5f;
+	static constexpr float DAMAGE = 7.5f;
 	static constexpr float RADIUS = 40.0f;
 	static constexpr int VERTEX_NUM = 32;
 	static constexpr float MOVE_ADD_DISTANCE = 150.0f; //ˆÚ“®‹——£‚Ì‰ÁZ’l
 	static constexpr float REDUCTION_TIME = 1.5f; //k¬ŠÔ
-	static constexpr float ROTATION_TIME = 2.0f; //‰ñ“]ŠÔ
+	static constexpr float ROTATION_TIME = 5.0f; //‰ñ“]ŠÔ
 	static constexpr float EXPANSION_TIME = 1.5f; //Šg‘åŠÔ
 	static constexpr float ROTATION_SPEED = 360.0f; //1•b‚Ì‰ñ“]‘¬“x
 

@@ -31,10 +31,6 @@ EnemyBase::EnemyBase(Transform& target) : target_(target)
 	AddAttack(ATTACK_TYPE::JUMP_CONSTANT);
 	AddAttack(ATTACK_TYPE::FOLLOW);
 	AddAttack(ATTACK_TYPE::FALL_DOWN);
-	AddAttack(ATTACK_TYPE::FALL_DOWN);
-	AddAttack(ATTACK_TYPE::FALL_DOWN);
-	AddAttack(ATTACK_TYPE::FALL_DOWN);
-	AddAttack(ATTACK_TYPE::FALL_DOWN);
 	AddAttack(ATTACK_TYPE::CROSS_LINE);
 	AddAttack(ATTACK_TYPE::THUNDER_AROUND);
 	ChangeState(STATE::IDLE);

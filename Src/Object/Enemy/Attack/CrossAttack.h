@@ -7,10 +7,11 @@ class CrossAttack :    public AttackBase
 {
 public:
 	static constexpr float COOL_DOWN = 30.0f;	//クールダウン
-	static constexpr float TIME = 15.0f; //発動時間
+	static constexpr float TIME = 30.0f; //発動時間
 	static constexpr float SECOND_TO_DEGREE = 60.0f; //1秒で回転する角度
 	static constexpr int LINE_NUM = 4; //クロスラインの数
-	static constexpr int LINE_POINT_NUM = 8; //クロスラインの点の数
+	static constexpr int LINE_POINT_NUM = 12; //クロスラインの点の数
+	static constexpr float LINE_DIR_REVERSE_TIME = 10.0f; //ラインの向きが逆になる時間
 
 	CrossAttack(EnemyBase& enemy);
 	~CrossAttack(void)override;
@@ -23,6 +24,8 @@ private:
 
 	std::vector<std::unique_ptr<CrossLine>> crossLines_; //クロスライン
 	float time_;
+	float reverseTime_; //ラインの向きが逆になるまでの時間
+	int sign_; //ラインの向き
 	float radian_; //現在の回転角度
 	void ChangeStateNone(void) override;	//実行されていない
 	void ChangeStateReady(void) override;	//実行準備

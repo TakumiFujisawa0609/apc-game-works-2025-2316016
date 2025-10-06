@@ -31,4 +31,5 @@ void CrossLine::Update(void)
 void CrossLine::Draw(void)
 {
 	MV1DrawModel(transform_->modelId);
+	DrawSphere3D(transform_->pos, RADIUS, 16, GetColor(255, 0, 0), GetColor(255, 0, 0), true);
 }

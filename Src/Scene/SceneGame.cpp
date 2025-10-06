@@ -208,7 +208,7 @@ void SceneGame::CheckCollision(void)
 			auto fall = dynamic_cast<FallDownAttack*>(attack);
 			if (fall != nullptr)
 			{
-				//\Žš‚Æ‚Ì“–‚½‚è”»’è
+				//—Ž‰º‚Æ‚Ì“–‚½‚è”»’è
 				int shotNum = fall->GetFallDownShotNum();
 				for (int i = 0; i < shotNum; i++)
 				{
@@ -229,7 +229,7 @@ void SceneGame::CheckCollision(void)
 			auto cross = dynamic_cast<CrossAttack*>(attack);
 			if (cross != nullptr)
 			{
-				//—Ž‰º‚Æ‚Ì“–‚½‚è”»’è
+				//\Žš‚Æ‚Ì“–‚½‚è”»’è
 				int crossPointNum = cross->GetCrossLineNum();
 				for (int i = 0; i < crossPointNum; i++)
 				{

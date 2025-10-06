@@ -7,7 +7,7 @@ class Transform;
 class CrossLine
 {
 public:
-	static constexpr float RADIUS = 100.0f; //‰ñ“]”¼Œa
+	static constexpr float RADIUS = 70.0f; //‰ñ“]”¼Œa
 	static constexpr float DAMAGE = 7.5f; //‰ñ“]”¼Œa
 
 	CrossLine(VECTOR centerPos,float& rad , float initRad,int num);

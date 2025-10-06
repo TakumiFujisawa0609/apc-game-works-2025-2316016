@@ -10,6 +10,8 @@ CrossAttack::CrossAttack(EnemyBase& enemy) : AttackBase(enemy)
 	geo_ = GEOMETORY::SPHERE;
 	time_ = 0.0f;
 	radian_ = 0.0f;
+	reverseTime_ = 0.0f;
+	sign_ = 1;
 }
 CrossAttack::~CrossAttack(void)
 {
@@ -83,8 +85,9 @@ void CrossAttack::UpdateStateStart(void)
 		for (int j = 0; j < LINE_POINT_NUM; j++)
 		{
 			std::unique_ptr<CrossLine> line;
-			line = std::make_unique<CrossLine>(enemy_.GetTransform().pos, radian_, Utility::Deg2RadF(i * 90.0f), j);
+			line = std::make_unique<CrossLine>(enemy_.GetTransform().pos, radian_, Utility::Deg2RadF(360.0f / LINE_NUM * i), j);
 			crossLines_.push_back(std::move(line));
+			reverseTime_ = LINE_DIR_REVERSE_TIME;
 		}
 	}
 	ChangeState(STATE::UPDATE);
@@ -92,8 +95,15 @@ void CrossAttack::UpdateStateStart(void)
 
 void CrossAttack::UpdateStateUpdate(void)
 {
-	time_ += SceneManager::GetInstance().GetDeltaTime();
-	radian_ = Utility::Deg2RadF(time_ * SECOND_TO_DEGREE);
+	auto deltaTime = SceneManager::GetInstance().GetDeltaTime();
+	time_ += deltaTime;
+	reverseTime_ -= deltaTime;
+	if (reverseTime_ < 0.0f)
+	{
+		sign_ *= -1;
+		reverseTime_ = LINE_DIR_REVERSE_TIME;
+	}
+	radian_ += Utility::Deg2RadF(deltaTime * SECOND_TO_DEGREE * sign_);
 	if (time_ > TIME)
 	{
 		crossLines_.clear();
