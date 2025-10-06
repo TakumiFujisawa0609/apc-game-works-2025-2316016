@@ -56,6 +56,8 @@
     <ClCompile Include="Src\Scene\SceneTitle.cpp" />
     <ClCompile Include="Src\Utility\Utility.cpp" />
     <ClCompile Include="Src\Object\Stage\Stage.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Attack\ThunderAroundAttack.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Attack\ThunderAround.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Object\Enemy\Attack\JumpAttackConstant.h" />
@@ -95,6 +97,8 @@
     <ClInclude Include="Src\Scene\SceneTitle.h" />
     <ClInclude Include="Src\Utility\Utility.h" />
     <ClInclude Include="Src\Object\Stage\Stage.h" />
+    <ClInclude Include="Src\Object\Enemy\Attack\ThunderAroundAttack.h" />
+    <ClInclude Include="Src\Object\Enemy\Attack\ThunderAround.h" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

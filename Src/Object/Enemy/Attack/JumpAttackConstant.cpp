@@ -10,6 +10,7 @@ JumpAttackConstant::JumpAttackConstant(EnemyBase& enemy) : AttackBase(enemy)
 	range_ = RANGE::MIDDLE;
 	geo_ = GEOMETORY::CIRCUMFERENCE;
 	time_ = 0.0f;
+	intervalTime_ = 0.0f;
 }
 
 JumpAttackConstant::~JumpAttackConstant(void)

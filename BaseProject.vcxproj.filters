@@ -38,6 +38,8 @@
     <ClCompile Include="Src\Object\Enemy\Attack\FallDownShot.cpp" />
     <ClCompile Include="Src\Object\Enemy\Attack\FallDownAttack.cpp" />
     <ClCompile Include="Src\Object\Enemy\Attack\JumpAttackConstant.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Attack\ThunderAroundAttack.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Attack\ThunderAround.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Common\IntVector3.h" />
@@ -77,5 +79,7 @@
     <ClInclude Include="Src\Object\Enemy\Attack\FallDownShot.h" />
     <ClInclude Include="Src\Object\Enemy\Attack\FallDownAttack.h" />
     <ClInclude Include="Src\Object\Enemy\Attack\JumpAttackConstant.h" />
+    <ClInclude Include="Src\Object\Enemy\Attack\ThunderAroundAttack.h" />
+    <ClInclude Include="Src\Object\Enemy\Attack\ThunderAround.h" />
   </ItemGroup>
 </Project>

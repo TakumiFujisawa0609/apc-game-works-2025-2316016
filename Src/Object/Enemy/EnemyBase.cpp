@@ -8,6 +8,7 @@
 #include "Attack/AttackBase.h"
 #include "Attack/JumpAttack.h"
 #include "Attack/JumpAttackConstant.h"
+#include "Attack/ThunderAroundAttack.h"
 #include "Attack/CrossAttack.h"
 #include "Attack/FollowAttack.h"
 #include "Attack/FallDownAttack.h"
@@ -30,7 +31,12 @@ EnemyBase::EnemyBase(Transform& target) : target_(target)
 	AddAttack(ATTACK_TYPE::JUMP_CONSTANT);
 	AddAttack(ATTACK_TYPE::FOLLOW);
 	AddAttack(ATTACK_TYPE::FALL_DOWN);
+	AddAttack(ATTACK_TYPE::FALL_DOWN);
+	AddAttack(ATTACK_TYPE::FALL_DOWN);
+	AddAttack(ATTACK_TYPE::FALL_DOWN);
+	AddAttack(ATTACK_TYPE::FALL_DOWN);
 	AddAttack(ATTACK_TYPE::CROSS_LINE);
+	AddAttack(ATTACK_TYPE::THUNDER_AROUND);
 	ChangeState(STATE::IDLE);
 }
 
@@ -203,6 +209,10 @@ void EnemyBase::AddAttack(ATTACK_TYPE type)
 		break;
 	case EnemyBase::ATTACK_TYPE::CROSS_LINE:
 		attack = std::make_unique<CrossAttack>(*this);
+		break;
+	case EnemyBase::ATTACK_TYPE::THUNDER_AROUND:
+		attack = std::make_unique<ThunderAroundAttack>(*this);
+		attack->SetTarget(&target_);
 		break;
 	case EnemyBase::ATTACK_TYPE::MAX:
 		break;

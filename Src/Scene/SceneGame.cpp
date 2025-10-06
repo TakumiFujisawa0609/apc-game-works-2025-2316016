@@ -17,10 +17,12 @@
 #include "../Object/Enemy/Attack/FollowAttack.h"
 #include "../Object/Enemy/Attack/FallDownAttack.h"
 #include "../Object/Enemy/Attack/CrossAttack.h"
+#include "../Object/Enemy/Attack/ThunderAroundAttack.h"
 #include "../Object/Enemy/Attack/Wave.h"
 #include "../Object/Enemy/Attack/FollowShot.h"
 #include "../Object/Enemy/Attack/FallDownShot.h"
 #include "../Object/Enemy/Attack/CrossLine.h"
+#include "../Object/Enemy/Attack/ThunderAround.h"
 #include "../Object/UI/EnemyHPUI.h"
 #include"SceneGame.h"
 
@@ -244,6 +246,24 @@ void SceneGame::CheckCollision(void)
 		}
 		break;
 		case AttackBase::GEOMETORY::CIRCLE:
+		{
+			auto thunder = dynamic_cast<ThunderAroundAttack*>(attack);
+			if (thunder != nullptr)
+			{
+				//ƒTƒ“ƒ_[‚Æ‚Ì“–‚½‚è”»’è
+				int thunderNum = thunder->GetThunderNum();
+				for (int i = 0; i < thunderNum; i++)
+				{
+					auto& transform = thunder->GetThunderTransform(i);
+					if (Utility::IsColSphere2Sphere(player_->GetTransform().pos, PlayerBase::RADIUS, transform.pos, ThunderAround::RADIUS))
+					{
+						VECTOR vec = VNorm(VSub(player_->GetTransform().pos, transform.pos));
+						vec.y = 0.5f;
+						player_->Damage(ThunderAround::DAMAGE, VNorm(vec));
+					}
+				}
+			}
+		}
 			break;
 		case AttackBase::GEOMETORY::CIRCUMFERENCE:
 		{

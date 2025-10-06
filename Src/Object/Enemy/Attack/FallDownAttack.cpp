@@ -5,7 +5,7 @@
 
 FallDownAttack::FallDownAttack(EnemyBase& enemy) : AttackBase(enemy)
 {
-	range_ = RANGE::ALL;
+	range_ = RANGE::MIDDLE;
 	geo_ = GEOMETORY::SPHERE;
 	time_ = 0.0f;
 }

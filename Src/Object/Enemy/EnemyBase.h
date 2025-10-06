@@ -32,6 +32,7 @@ public:
 		FOLLOW,		//’Ç”öUŒ‚(’Ç]’e)
 		FALL_DOWN,	//—Ž‰ºUŒ‚(—Ž‰º’e)
 		CROSS_LINE,	//\Žš	
+		THUNDER_AROUND, //ŽüˆÍ—‹
 		MAX
 	};
 
