@@ -118,11 +118,11 @@ public:
 	bool IsTrgDown(CONTROL_TYPE cType, KeyConfig::JOYPAD_NO no,TYPE type = TYPE::ALL);
 	bool IsTrgUp(CONTROL_TYPE cType, KeyConfig::JOYPAD_NO no, TYPE type = TYPE::ALL);
 
-	//操作の種類別にキーを追加	
-	void Add(CONTROL_TYPE type, int key);
-	void Add(CONTROL_TYPE type, JOYPAD_BTN key);
-	void Add(CONTROL_TYPE type, JOYPAD_STICK key);
-	void Add(CONTROL_TYPE type, MOUSE key);
+	//操作の種類別にキーを追加	(初期追加の固定)
+	void AddFixed(CONTROL_TYPE type, int key);
+	void AddFixed(CONTROL_TYPE type, JOYPAD_BTN key);
+	void AddFixed(CONTROL_TYPE type, JOYPAD_STICK key);
+	void AddFixed(CONTROL_TYPE type, MOUSE key);
 
 	// マウス座標の取得
 	Vector2 GetMousePos(void) const;
