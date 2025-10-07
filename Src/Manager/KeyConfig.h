@@ -118,11 +118,16 @@ public:
 	bool IsTrgDown(CONTROL_TYPE cType, KeyConfig::JOYPAD_NO no,TYPE type = TYPE::ALL);
 	bool IsTrgUp(CONTROL_TYPE cType, KeyConfig::JOYPAD_NO no, TYPE type = TYPE::ALL);
 
-	//操作の種類別にキーを追加	(初期追加の固定)
-	void AddFixed(CONTROL_TYPE type, int key);
-	void AddFixed(CONTROL_TYPE type, JOYPAD_BTN key);
-	void AddFixed(CONTROL_TYPE type, JOYPAD_STICK key);
-	void AddFixed(CONTROL_TYPE type, MOUSE key);
+
+	//操作の種類別にキーを追加	(初期以外の追加)
+	void Add(CONTROL_TYPE type, int key);
+	void Add(CONTROL_TYPE type, JOYPAD_BTN key);
+	void Add(CONTROL_TYPE type, JOYPAD_STICK key);
+	void Add(CONTROL_TYPE type, MOUSE key);
+
+	//初期以外のキーを削除
+	void AllClear(void);
+	void Clear(CONTROL_TYPE type);
 
 	// マウス座標の取得
 	Vector2 GetMousePos(void) const;
@@ -158,10 +163,21 @@ public:
 private:
 	std::unique_ptr<InputManager> inputManager_;	//入力管理クラスのインスタンス
 
+	std::map<CONTROL_TYPE, std::vector<int>>fixedKeyInput_;								//操作の種類とキーの種類でキーボードの状態を格納(固定)
+	std::map<CONTROL_TYPE, std::vector<JOYPAD_BTN>>fixedConInput_;			//操作の種類とボタンの種類でコントローラーの状態を格納(固定)
+	std::map<CONTROL_TYPE, std::vector<JOYPAD_STICK>>fixedStickInput_;		//操作の種類とスティックの種類でコントローラーの状態を格納(固定)
+	std::map < CONTROL_TYPE, std::vector<MOUSE>>fixedMouseInput_;			//操作の種類とマウスの種類でマウスの状態を格納(固定)
+
 	std::map<CONTROL_TYPE, std::vector<int>>keyInput_;								//操作の種類とキーの種類でキーボードの状態を格納
 	std::map<CONTROL_TYPE, std::vector<JOYPAD_BTN>>conInput_;			//操作の種類とボタンの種類でコントローラーの状態を格納
 	std::map<CONTROL_TYPE, std::vector<JOYPAD_STICK>>stickInput_;		//操作の種類とスティックの種類でコントローラーの状態を格納
 	std::map < CONTROL_TYPE, std::vector<MOUSE>>mouseInput_;			//操作の種類とマウスの種類でマウスの状態を格納
+
+	//操作の種類別にキーを追加	(初期追加の固定)
+	void AddFixed(CONTROL_TYPE type, int key);
+	void AddFixed(CONTROL_TYPE type, JOYPAD_BTN key);
+	void AddFixed(CONTROL_TYPE type, JOYPAD_STICK key);
+	void AddFixed(CONTROL_TYPE type, MOUSE key);
 
 	// シングルトン用インスタンス
 	static KeyConfig* instance_;

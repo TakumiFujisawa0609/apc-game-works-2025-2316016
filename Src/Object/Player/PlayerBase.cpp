@@ -123,6 +123,14 @@ void PlayerBase::PlayerMove(void)
 	{
 		transform_->pos = VAdd(transform_->pos, VScale(left, MOVE_SPEED));
 	}
+	auto stick2D = (keyIns_.GetKnockLStickSize(KeyConfig::JOYPAD_NO::PAD1));
+	if (stick2D.x == 0.0f && stick2D.y == 0.0f)
+	{
+		return;
+	}
+	auto stick3D = Utility::Normalize(stick2D);
+	transform_->pos = VAdd(transform_->pos, VScale(front, stick3D.y * MOVE_SPEED * -1));
+	transform_->pos = VAdd(transform_->pos, VScale(left, stick3D.x * MOVE_SPEED * -1));
 }
 
 void PlayerBase::MoveLimit(void)
@@ -161,6 +169,11 @@ bool PlayerBase::IsPushMoveKey(void)
 		|| keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_UP, KeyConfig::JOYPAD_NO::PAD1)
 		|| keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_LEFT, KeyConfig::JOYPAD_NO::PAD1)
 		|| keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_RIGHT, KeyConfig::JOYPAD_NO::PAD1))
+	{
+		return true;
+	}
+	auto stick = keyIns_.GetKnockLStickSize(KeyConfig::JOYPAD_NO::PAD1);
+	if (stick.x != 0.0f || stick.y != 0.0f)
 	{
 		return true;
 	}
