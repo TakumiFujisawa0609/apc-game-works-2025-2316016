@@ -233,6 +233,12 @@ void PlayerBase::StateChangeAvoid(void)
 		{
 			avoidDir_ = left;
 		}
+		auto stick2D = (keyIns_.GetKnockLStickSize(KeyConfig::JOYPAD_NO::PAD1));
+		if (stick2D.x != 0.0f || stick2D.y != 0.0f)
+		{
+			auto stick3D = Utility::Normalize(stick2D);
+			avoidDir_ = VAdd(VScale(front, stick3D.y * -1), VScale(left, stick3D.x * -1));
+		}
 	}
 	else
 	{

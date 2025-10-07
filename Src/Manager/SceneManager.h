@@ -15,7 +15,7 @@ public:
 	{
 		NONE
 		,TITLE
-		,RULE
+		,SELECT
 		,GAME
 	};
 	//ƒƒ“ƒo[ŠÖ”

@@ -80,12 +80,17 @@ public:
 
 	enum class CONTROL_TYPE //操作の種類	
 	{
+		ENTER_TEMP,				//仮決定
 		ENTER,					//決定
+		CANCEL_TEMP,			//仮キャンセル
+		CANCEL,					//キャンセル
 
 		CHENGE_CAMERA_MODE,	//カメラモード変更
 
-		PHASE_CHENGE,			//フェーズ変更
-		PHASE_CHENGE_CHECK,		//フェーズ変更
+		SELECT_UP,			//選択上
+		SELECT_DOWN,		//選択下
+		SELECT_RIGHT,		//選択右
+		SELECT_LEFT,		//選択左
 
 		PLAY_CAMERA_MOVE_UP,	//プレイのカメラ移動上
 		PLAY_CAMERA_MOVE_DOWN,	//プレイのカメラ移動下
@@ -160,6 +165,15 @@ public:
 	/// </summary>
 	/// <param name="_no"></param>
 	void StopPadVibration(KeyConfig::JOYPAD_NO _no);
+
+	/// <summary>
+	/// 押された全てのキーを取得
+	/// </summary>
+	/// <param name="no">PAD番号</param>
+	/// <returns>押されているボタン</returns>
+	std::vector<JOYPAD_BTN> GetPushBtns(KeyConfig::JOYPAD_NO no) const;
+
+	JOYPAD_BTN GetControlBTN(CONTROL_TYPE cType) const;
 private:
 	std::unique_ptr<InputManager> inputManager_;	//入力管理クラスのインスタンス
 
