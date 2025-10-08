@@ -1,5 +1,6 @@
 ﻿#include "../Application.h"
 #include "../../Manager/SceneManager.h"
+#include "../../Manager/ResourceManager.h"
 #include "SceneSelect.h"
 
 SceneSelect::SceneSelect(void)
@@ -18,6 +19,8 @@ SceneSelect::SceneSelect(void)
 	enterKey_ = ENTER_KEY::PAD_BTN_RIGHT;
 	lastChangeNum_ = LAST_CHANGE_NUM::NONE;
 	lastChangeType_ = CONTROL_TYPE::MAX;
+	notButton.push_back(KeyConfig::JOYPAD_BTN::LEFT_STICK);
+	notButton.push_back(KeyConfig::JOYPAD_BTN::RIGHT_STICK);
 	KeyConfig::GetInstance().AllClear();
 }
 
@@ -340,6 +343,13 @@ void SceneSelect::UpdateControlTypeAvoid(void)
 		auto pushBTN = KeyConfig::GetInstance().GetPushBtns(KeyConfig::JOYPAD_NO::PAD1);
 		if (!pushBTN.empty())
 		{
+			for (auto btn : notButton)
+			{
+				if (btn == pushBTN[0])
+				{
+					return;
+				}
+			}
 			if (lastPushBtn_ == pushBTN[0] && pushBTN[0] != KeyConfig::JOYPAD_BTN::MAX)
 			{
 				//同じボタンが押されたらそれでいいか確認を出す
@@ -379,6 +389,13 @@ void SceneSelect::UpdateControlTypeJump(void)
 		auto pushBTN = KeyConfig::GetInstance().GetPushBtns(KeyConfig::JOYPAD_NO::PAD1);
 		if (!pushBTN.empty())
 		{
+			for (auto btn : notButton)
+			{
+				if (btn == pushBTN[0])
+				{
+					return;
+				}
+			}
 			if (lastPushBtn_ == pushBTN[0] && pushBTN[0] != KeyConfig::JOYPAD_BTN::MAX)
 			{
 				//同じボタンが押されたらそれでいいか確認を出す
@@ -418,6 +435,13 @@ void SceneSelect::UpdateControlTypeAttack(void)
 		auto pushBTN = KeyConfig::GetInstance().GetPushBtns(KeyConfig::JOYPAD_NO::PAD1);
 		if (!pushBTN.empty())
 		{
+			for (auto btn : notButton)
+			{
+				if (btn == pushBTN[0])
+				{
+					return;
+				}
+			}
 			if (lastPushBtn_ == pushBTN[0] && pushBTN[0] != KeyConfig::JOYPAD_BTN::MAX)
 			{
 				//同じボタンが押されたらそれでいいか確認を出す
@@ -457,6 +481,13 @@ void SceneSelect::UpdateControlTypeRockOn(void)
 		auto pushBTN = KeyConfig::GetInstance().GetPushBtns(KeyConfig::JOYPAD_NO::PAD1);
 		if (!pushBTN.empty())
 		{
+			for (auto btn : notButton)
+			{
+				if (btn == pushBTN[0])
+				{
+					return;
+				}
+			}
 			if (lastPushBtn_ == pushBTN[0] && pushBTN[0] != KeyConfig::JOYPAD_BTN::MAX)
 			{
 				//同じボタンが押されたらそれでいいか確認を出す
@@ -568,6 +599,13 @@ void SceneSelect::LastChangeControlType(CONTROL_TYPE type)
 	auto pushBTN = KeyConfig::GetInstance().GetPushBtns(KeyConfig::JOYPAD_NO::PAD1);
 	if (!pushBTN.empty())
 	{
+		for (auto btn : notButton)
+		{
+			if (btn == pushBTN[0])
+			{
+				return;
+			}
+		}
 		if (lastPushBtn_ == pushBTN[0] && pushBTN[0] != KeyConfig::JOYPAD_BTN::MAX)
 		{
 			//同じボタンが押されたらそれでいいか確認を出す
@@ -671,4 +709,64 @@ std::string SceneSelect::GetBtnName(KeyConfig::JOYPAD_BTN btn)
 		break;
 	}
 	return name;
+}
+
+int SceneSelect::GetBtnImage(KeyConfig::JOYPAD_BTN btn)
+{
+	int img = -1;
+	auto& res = ResourceManager::GetInstance();
+	switch (btn)
+	{
+	case KeyConfig::JOYPAD_BTN::RIGHTBUTTON_LEFT:
+		img = res.Load(ResourceManager::SRC::BUTTON_X).handleId_;
+		break;
+	case KeyConfig::JOYPAD_BTN::RIGHTBUTTON_RIGHT:
+		img = res.Load(ResourceManager::SRC::BUTTON_B).handleId_;
+		break;
+	case KeyConfig::JOYPAD_BTN::RIGHTBUTTON_TOP:
+		img = res.Load(ResourceManager::SRC::BUTTON_Y).handleId_;
+		break;
+	case KeyConfig::JOYPAD_BTN::RIGHTBUTTON_DOWN:
+		img = res.Load(ResourceManager::SRC::BUTTON_A).handleId_;
+		break;
+	case KeyConfig::JOYPAD_BTN::R_TRIGGER:
+		img = res.Load(ResourceManager::SRC::BUTTON_RT).handleId_;
+		break;
+	case KeyConfig::JOYPAD_BTN::L_TRIGGER:
+		img = res.Load(ResourceManager::SRC::BUTTON_LT).handleId_;
+		break;
+	case KeyConfig::JOYPAD_BTN::R_BUTTON:
+		img = res.Load(ResourceManager::SRC::BUTTON_RB).handleId_;
+		break;
+	case KeyConfig::JOYPAD_BTN::L_BUTTON:
+		img = res.Load(ResourceManager::SRC::BUTTON_LB).handleId_;
+		break;
+	case KeyConfig::JOYPAD_BTN::START_BUTTON:
+		img = res.Load(ResourceManager::SRC::BUTTON_START).handleId_;
+		break;
+	case KeyConfig::JOYPAD_BTN::SELECT_BUTTON:
+		img = res.Load(ResourceManager::SRC::BUTTON_SELECT).handleId_;
+		break;
+	case KeyConfig::JOYPAD_BTN::LEFTBUTTON_TOP:
+		img = res.Load(ResourceManager::SRC::BUTTON_UP).handleId_;
+		break;
+	case KeyConfig::JOYPAD_BTN::LEFTBUTTON_DOWN:
+		img = res.Load(ResourceManager::SRC::BUTTON_DOWN).handleId_;
+		break;
+	case KeyConfig::JOYPAD_BTN::LEFTBUTTON_LEFT:
+		img = res.Load(ResourceManager::SRC::BUTTON_LEFT).handleId_;
+		break;
+	case KeyConfig::JOYPAD_BTN::LEFTBUTTON_RIGHT:
+		img = res.Load(ResourceManager::SRC::BUTTON_RIGHT).handleId_;
+		break;
+	case KeyConfig::JOYPAD_BTN::LEFT_STICK:
+		break;
+	case KeyConfig::JOYPAD_BTN::RIGHT_STICK:
+		break;
+	case KeyConfig::JOYPAD_BTN::MAX:
+		break;
+	default:
+		break;
+	}
+	return img;
 }

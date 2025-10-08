@@ -11,6 +11,22 @@ public:
 	// リソース名
 	enum class SRC
 	{
+		//ボタン
+		BUTTON_A,	// Aボタン
+		BUTTON_B,	// Bボタン
+		BUTTON_X,	// Xボタン
+		BUTTON_Y,	// Yボタン
+		BUTTON_LB,	// LBボタン
+		BUTTON_RB,	// RBボタン
+		BUTTON_LT,	// LTボタン
+		BUTTON_RT,	// RTボタン
+		BUTTON_SELECT,	// SELECTボタン
+		BUTTON_START,	// STARTボタン
+		BUTTON_UP,	// 十字キー上
+		BUTTON_DOWN,	// 十字キー下
+		BUTTON_LEFT,	// 十字キー左
+		BUTTON_RIGHT,	// 十字キー右
+
 		TITLE_IMAGE_1,
 		TITLE_IMAGE_2,
 		SKY_DOME,

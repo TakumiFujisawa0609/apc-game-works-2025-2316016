@@ -23,6 +23,38 @@ void ResourceManager::Init(void)
 {
 
 	Resource res;
+	// ボタン
+	std::string buttonPath = Application::PATH_IMAGE + "Button/";
+	res = Resource(Resource::TYPE::IMG, buttonPath + "A.png");
+	resourcesMap_.emplace(SRC::BUTTON_A, std::move(res));
+	res = Resource(Resource::TYPE::IMG, buttonPath + "B.png");
+	resourcesMap_.emplace(SRC::BUTTON_B, std::move(res));
+	res = Resource(Resource::TYPE::IMG, buttonPath + "X.png");
+	resourcesMap_.emplace(SRC::BUTTON_X, std::move(res));
+	res = Resource(Resource::TYPE::IMG, buttonPath + "Y.png");
+	resourcesMap_.emplace(SRC::BUTTON_Y, std::move(res));
+	res = Resource(Resource::TYPE::IMG, buttonPath + "LB.png");
+	resourcesMap_.emplace(SRC::BUTTON_LB, std::move(res));
+	res = Resource(Resource::TYPE::IMG, buttonPath + "RB.png");
+	resourcesMap_.emplace(SRC::BUTTON_RB, std::move(res));
+	res = Resource(Resource::TYPE::IMG, buttonPath + "LT.png");
+	resourcesMap_.emplace(SRC::BUTTON_LT, std::move(res));
+	res = Resource(Resource::TYPE::IMG, buttonPath + "RT.png");
+	resourcesMap_.emplace(SRC::BUTTON_RT, std::move(res));
+	res = Resource(Resource::TYPE::IMG, buttonPath + "Menu.png");
+	resourcesMap_.emplace(SRC::BUTTON_SELECT, std::move(res));
+	res = Resource(Resource::TYPE::IMG, buttonPath + "Start.png");
+	resourcesMap_.emplace(SRC::BUTTON_START, std::move(res));
+	res = Resource(Resource::TYPE::IMG, buttonPath + "UP.png");
+	resourcesMap_.emplace(SRC::BUTTON_UP, std::move(res));
+	res = Resource(Resource::TYPE::IMG, buttonPath + "DOWN.png");
+	resourcesMap_.emplace(SRC::BUTTON_DOWN, std::move(res));
+	res = Resource(Resource::TYPE::IMG, buttonPath + "LEFT.png");
+	resourcesMap_.emplace(SRC::BUTTON_LEFT, std::move(res));
+	res = Resource(Resource::TYPE::IMG, buttonPath + "RIGHT.png");
+	resourcesMap_.emplace(SRC::BUTTON_RIGHT, std::move(res));
+
+	//タイトル
 	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "Title/TitleName.png");
 	resourcesMap_.emplace(SRC::TITLE_IMAGE_1, std::move(res));
 	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "Title/TitleName2.png");

@@ -61,6 +61,7 @@ public:
 
 private:
 
+	std::vector<KeyConfig::JOYPAD_BTN> notButton; //反応させないボタン
 	ENTER_KEY enterKey_; //決定キー
 	KeyConfig::JOYPAD_BTN lastPushBtn_; //最後に押されたボタン
 	CONTROL_TYPE controlType_; //操作方法
@@ -101,4 +102,5 @@ private:
 	void SetControlType(CONTROL_TYPE type, KeyConfig::JOYPAD_BTN lastPushBtn);
 	void SetControlType(KeyConfig::CONTROL_TYPE type, KeyConfig::JOYPAD_BTN lastPushBtn);
 	std::string GetBtnName(KeyConfig::JOYPAD_BTN btn);
+	int GetBtnImage(KeyConfig::JOYPAD_BTN btn);
 };
