@@ -38,6 +38,13 @@ public:
 		PAD_BTN_RIGHT, //Bボタン
 		PAT_BTN_DOWN,  //Aボタン
 	};
+
+	enum class LAST_CHANGE_NUM
+	{
+		NONE,
+		ALL,	//すべて変更
+		ONE,	//1つだけ変更
+	};
 	//メンバー関数
 	SceneSelect(void);
 
@@ -57,6 +64,8 @@ private:
 	ENTER_KEY enterKey_; //決定キー
 	KeyConfig::JOYPAD_BTN lastPushBtn_; //最後に押されたボタン
 	CONTROL_TYPE controlType_; //操作方法
+	CONTROL_TYPE lastChangeType_; //最後に変更した操作方法
+	LAST_CHANGE_NUM lastChangeNum_; //最後に変更する数
 	STATE state_; //状態
 
 	SELECT select_; //選択している項目
@@ -86,6 +95,8 @@ private:
 	void UpdateControlTypeAttack(void);
 	void UpdateControlTypeRockOn(void);
 	void UpdateControlTypeMax(void);
+
+	void LastChangeControlType(CONTROL_TYPE type);
 
 	void SetControlType(CONTROL_TYPE type, KeyConfig::JOYPAD_BTN lastPushBtn);
 	void SetControlType(KeyConfig::CONTROL_TYPE type, KeyConfig::JOYPAD_BTN lastPushBtn);

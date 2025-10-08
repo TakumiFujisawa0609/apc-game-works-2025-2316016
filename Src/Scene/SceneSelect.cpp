@@ -1,4 +1,4 @@
-#include "../Application.h"
+ï»¿#include "../Application.h"
 #include "../../Manager/SceneManager.h"
 #include "SceneSelect.h"
 
@@ -16,6 +16,8 @@ SceneSelect::SceneSelect(void)
 	changeControlType_[CONTROL_TYPE::MAX] = std::bind(&SceneSelect::ChangeControlTypeMax,this);
 	ChangeControlType(CONTROL_TYPE::ENTER);
 	enterKey_ = ENTER_KEY::PAD_BTN_RIGHT;
+	lastChangeNum_ = LAST_CHANGE_NUM::NONE;
+	lastChangeType_ = CONTROL_TYPE::MAX;
 	KeyConfig::GetInstance().AllClear();
 }
 
@@ -59,10 +61,6 @@ void SceneSelect::ChangeSelectStageSelect(void)
 void SceneSelect::UpdateSelectControlType(void)
 {
 	updateControlType_();
-	if (controlType_ == CONTROL_TYPE::MAX)
-	{
-		ChangeSelect(SELECT::STAGE_SELECT);
-	}
 }
 
 void SceneSelect::UpdateSelectStageSelect(void)
@@ -81,9 +79,9 @@ void SceneSelect::DrawSelectControlType(void)
 		switch (state_)
 		{
 		case SceneSelect::STATE::CHOOSE:
-			//Œˆ’è‚Ì‚İ2‘ğ‚¾‚©‚ç
-			Utility::DrawStringPlace("Œˆ’è : B \n ƒLƒƒƒ“ƒZƒ‹ : A", Application::SCREEN_HALF_X / 2, Application::SCREEN_HALF_Y, 0xffffff, Utility::STRING_PLACE::CENTER);
-			Utility::DrawStringPlace("Œˆ’è : A \n ƒLƒƒƒ“ƒZƒ‹ : B", Application::SCREEN_HALF_X / 2 + Application::SCREEN_HALF_X, Application::SCREEN_HALF_Y, 0xffffff, Utility::STRING_PLACE::CENTER);
+			//æ±ºå®šæ™‚ã®ã¿2æŠã ã‹ã‚‰
+			Utility::DrawStringPlace("æ±ºå®š : B \n ã‚­ãƒ£ãƒ³ã‚»ãƒ« : A", Application::SCREEN_HALF_X / 2, Application::SCREEN_HALF_Y, 0xffffff, Utility::STRING_PLACE::CENTER);
+			Utility::DrawStringPlace("æ±ºå®š : A \n ã‚­ãƒ£ãƒ³ã‚»ãƒ« : B", Application::SCREEN_HALF_X / 2 + Application::SCREEN_HALF_X, Application::SCREEN_HALF_Y, 0xffffff, Utility::STRING_PLACE::CENTER);
 			switch (enterKey_)
 			{
 			case SceneSelect::ENTER_KEY::PAD_BTN_RIGHT:
@@ -98,11 +96,11 @@ void SceneSelect::DrawSelectControlType(void)
 			break;
 		case SceneSelect::STATE::CHECK:
 		{
-			std::string msg = "Œˆ’è : ";
-			msg += enterKey_ == ENTER_KEY::PAD_BTN_RIGHT ? "Bƒ{ƒ^ƒ“" : "Aƒ{ƒ^ƒ“";
-			msg += " ƒLƒƒƒ“ƒZƒ‹ : ";
-			msg += enterKey_ == ENTER_KEY::PAD_BTN_RIGHT ? "Aƒ{ƒ^ƒ“" : "Bƒ{ƒ^ƒ“";
-			msg += "‚Å‚æ‚ë‚µ‚¢‚Å‚·‚©H";
+			std::string msg = "æ±ºå®š : ";
+			msg += enterKey_ == ENTER_KEY::PAD_BTN_RIGHT ? "Bãƒœã‚¿ãƒ³" : "Aãƒœã‚¿ãƒ³";
+			msg += " ã‚­ãƒ£ãƒ³ã‚»ãƒ« : ";
+			msg += enterKey_ == ENTER_KEY::PAD_BTN_RIGHT ? "Aãƒœã‚¿ãƒ³" : "Bãƒœã‚¿ãƒ³";
+			msg += "ã§ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ";
 			Utility::DrawStringPlace(msg, Application::SCREEN_HALF_X, Application::SCREEN_HALF_Y, 0xffffff, Utility::STRING_PLACE::CENTER);
 		}
 			break;
@@ -111,7 +109,94 @@ void SceneSelect::DrawSelectControlType(void)
 		default:
 			break;
 		}
-		Utility::DrawStringPlace("A.B :Œˆ’è@, X.Y :ƒLƒƒƒ“ƒZƒ‹", Application::SCREEN_SIZE_X - 10, Application::SCREEN_SIZE_Y - 20, 0xffffff, Utility::STRING_PLACE::RIGHT);
+		Utility::DrawStringPlace("A.B :æ±ºå®šã€€, X.Y :ã‚­ãƒ£ãƒ³ã‚»ãƒ«", Application::SCREEN_SIZE_X - 10, Application::SCREEN_SIZE_Y - 20, 0xffffff, Utility::STRING_PLACE::RIGHT);
+	}
+	else if (controlType_ == CONTROL_TYPE::MAX)
+	{
+		auto& ins = KeyConfig::GetInstance();
+		//æœ€å¾Œã®ç¢ºèª
+		switch (state_)
+		{
+		case SceneSelect::STATE::CHOOSE:
+		{
+			if (lastChangeNum_ == LAST_CHANGE_NUM::NONE)
+			{
+				Utility::DrawStringPlace("ã©ã®æ“ä½œã‚’å¤‰æ›´ã—ã¾ã™ã‹ï¼Ÿ", Application::SCREEN_HALF_X, Application::SCREEN_HALF_Y - 30 * 3, 0xffffff, Utility::STRING_PLACE::CENTER);
+				std::string str = "";
+				str += lastChangeType_ == CONTROL_TYPE::ENTER ? "->" : "";
+				str += "æ±ºå®š : " + GetBtnName(ins.GetControlBTN(KeyConfig::CONTROL_TYPE::ENTER)) + "\n";
+				str += lastChangeType_ == CONTROL_TYPE::ENTER ? "->" : "";
+				str += "ã‚­ãƒ£ãƒ³ã‚»ãƒ« : " + GetBtnName(ins.GetControlBTN(KeyConfig::CONTROL_TYPE::CANCEL)) + "\n";
+				str += lastChangeType_ == CONTROL_TYPE::AVOID ? "->" : "";
+				str += "å›é¿ : " + GetBtnName(ins.GetControlBTN(KeyConfig::CONTROL_TYPE::PLAYER_AVOID)) + "\n";
+				str += lastChangeType_ == CONTROL_TYPE::JUMP ? "->" : "";
+				str += "ã‚¸ãƒ£ãƒ³ãƒ— : " + GetBtnName(ins.GetControlBTN(KeyConfig::CONTROL_TYPE::PLAYER_JUMP)) + "\n";
+				str += lastChangeType_ == CONTROL_TYPE::ATTACK ? "->" : "";
+				str += "æ”»æ’ƒ : " + GetBtnName(ins.GetControlBTN(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK)) + "\n";
+				str += lastChangeType_ == CONTROL_TYPE::ROCK_ON ? "->" : "";
+				str += "ãƒ­ãƒƒã‚¯ã‚ªãƒ³ : " + GetBtnName(ins.GetControlBTN(KeyConfig::CONTROL_TYPE::CHENGE_CAMERA_MODE)) + "\n";
+				str += lastChangeType_ == CONTROL_TYPE::MAX ? "->" : "";
+				str += "ã™ã¹ã¦å¤‰æ›´";
+				Utility::DrawStringPlace(str, Application::SCREEN_HALF_X, Application::SCREEN_HALF_Y - 30 * 2, 0xffffff, Utility::STRING_PLACE::CENTER);
+			}
+			else
+			{
+				std::string msg = "";
+				switch (lastChangeType_)
+				{
+				case SceneSelect::CONTROL_TYPE::ENTER:
+					msg += "æ±ºå®š : ";
+					break;
+				case SceneSelect::CONTROL_TYPE::AVOID:
+					msg += "å›é¿ : ";
+					break;
+				case SceneSelect::CONTROL_TYPE::JUMP:
+					msg += "ã‚¸ãƒ£ãƒ³ãƒ— : ";
+					break;
+				case SceneSelect::CONTROL_TYPE::ATTACK:
+					msg += "æ”»æ’ƒ : ";
+					break;
+				case SceneSelect::CONTROL_TYPE::ROCK_ON:
+					msg += "ãƒ­ãƒƒã‚¯ã‚ªãƒ³ : ";
+					break;
+				case SceneSelect::CONTROL_TYPE::MAX:
+					break;
+				default:
+					break;
+				}
+				msg += GetBtnName(lastPushBtn_);
+				Utility::DrawStringPlace(msg, Application::SCREEN_HALF_X, Application::SCREEN_HALF_Y, 0xffffff, Utility::STRING_PLACE::CENTER);
+				if (lastPushBtn_ != KeyConfig::JOYPAD_BTN::MAX)
+				{
+					std::string subMsg = "æ±ºå®šã®å ´åˆã‚‚ã†ä¸€åº¦" + GetBtnName(lastPushBtn_) + "ã‚’æŠ¼ã—ã¦ãã ã•ã„";
+					Utility::DrawStringPlace(subMsg, Application::SCREEN_HALF_X, Application::SCREEN_HALF_Y + 30, 0xffffff, Utility::STRING_PLACE::CENTER);
+				}
+			}
+		}
+			break;
+		case SceneSelect::STATE::CHECK:
+		{
+			std::string str = "";
+			str += "æ±ºå®š : " + GetBtnName(ins.GetControlBTN(KeyConfig::CONTROL_TYPE::ENTER)) + "\n";
+			str += "ã‚­ãƒ£ãƒ³ã‚»ãƒ« : " + GetBtnName(ins.GetControlBTN(KeyConfig::CONTROL_TYPE::CANCEL)) + "\n";
+			str += "å›é¿ : " + GetBtnName(ins.GetControlBTN(KeyConfig::CONTROL_TYPE::PLAYER_AVOID)) + "\n";
+			str += "ã‚¸ãƒ£ãƒ³ãƒ— : " + GetBtnName(ins.GetControlBTN(KeyConfig::CONTROL_TYPE::PLAYER_JUMP)) + "\n";
+			str += "æ”»æ’ƒ : " + GetBtnName(ins.GetControlBTN(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK)) + "\n";
+			str += "ãƒ­ãƒƒã‚¯ã‚ªãƒ³ : " + GetBtnName(ins.GetControlBTN(KeyConfig::CONTROL_TYPE::CHENGE_CAMERA_MODE)) + "\n";
+			str += "ã§ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ";
+			Utility::DrawStringPlace(str, Application::SCREEN_HALF_X, Application::SCREEN_HALF_Y - 30 * 3, 0xffffff, Utility::STRING_PLACE::CENTER);
+			str = "";
+			str += GetBtnName(ins.GetControlBTN(KeyConfig::CONTROL_TYPE::ENTER)) + " :æ±ºå®šã€€,";
+			str += GetBtnName(ins.GetControlBTN(KeyConfig::CONTROL_TYPE::CANCEL)) + " :ã‚­ãƒ£ãƒ³ã‚»ãƒ«";
+			Utility::DrawStringPlace(str, Application::SCREEN_SIZE_X - 10, Application::SCREEN_SIZE_Y - 20, 0xffffff, Utility::STRING_PLACE::RIGHT);
+		}
+			break;
+		case SceneSelect::STATE::DECIDE:
+			break;
+		default:
+			break;
+		}
+
 	}
 	else
 	{
@@ -119,19 +204,19 @@ void SceneSelect::DrawSelectControlType(void)
 		switch (controlType_)
 		{
 		case SceneSelect::CONTROL_TYPE::ENTER:
-			msg += "Œˆ’è : ";
+			msg += "æ±ºå®š : ";
 			break;
 		case SceneSelect::CONTROL_TYPE::AVOID:
-			msg += "‰ñ”ğ : ";
+			msg += "å›é¿ : ";
 			break;
 		case SceneSelect::CONTROL_TYPE::JUMP:
-			msg += "ƒWƒƒƒ“ƒv : ";
+			msg += "ã‚¸ãƒ£ãƒ³ãƒ— : ";
 			break;
 		case SceneSelect::CONTROL_TYPE::ATTACK:
-			msg += "UŒ‚ : ";
+			msg += "æ”»æ’ƒ : ";
 			break;
 		case SceneSelect::CONTROL_TYPE::ROCK_ON:
-			msg += "ƒƒbƒNƒIƒ“ : ";
+			msg += "ãƒ­ãƒƒã‚¯ã‚ªãƒ³ : ";
 			break;
 		case SceneSelect::CONTROL_TYPE::MAX:
 			break;
@@ -143,9 +228,14 @@ void SceneSelect::DrawSelectControlType(void)
 		{
 		case SceneSelect::STATE::CHOOSE:
 			Utility::DrawStringPlace(msg, Application::SCREEN_HALF_X, Application::SCREEN_HALF_Y, 0xffffff, Utility::STRING_PLACE::CENTER);
+			if (lastPushBtn_ != KeyConfig::JOYPAD_BTN::MAX)
+			{
+				std::string subMsg = "æ±ºå®šã®å ´åˆã‚‚ã†ä¸€åº¦" + GetBtnName(lastPushBtn_) + "ã‚’æŠ¼ã—ã¦ãã ã•ã„";
+				Utility::DrawStringPlace(subMsg, Application::SCREEN_HALF_X, Application::SCREEN_HALF_Y + 30, 0xffffff, Utility::STRING_PLACE::CENTER);
+			}
 			break;
 		case SceneSelect::STATE::CHECK:
-			msg += "‚Å‚æ‚ë‚µ‚¢‚Å‚·‚©H";
+			msg += "ã§ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ";
 			Utility::DrawStringPlace(msg, Application::SCREEN_HALF_X, Application::SCREEN_HALF_Y, 0xffffff, Utility::STRING_PLACE::CENTER);
 			break;
 		case SceneSelect::STATE::DECIDE:
@@ -155,21 +245,22 @@ void SceneSelect::DrawSelectControlType(void)
 		}
 		std::string str = "";
 		auto& ins = KeyConfig::GetInstance();
-		str += GetBtnName(ins.GetControlBTN(KeyConfig::CONTROL_TYPE::ENTER)) + " :Œˆ’è@,";
-		str += GetBtnName(ins.GetControlBTN(KeyConfig::CONTROL_TYPE::CANCEL)) + " :ƒLƒƒƒ“ƒZƒ‹";
+		str += GetBtnName(ins.GetControlBTN(KeyConfig::CONTROL_TYPE::ENTER)) + " :æ±ºå®šã€€,";
+		str += GetBtnName(ins.GetControlBTN(KeyConfig::CONTROL_TYPE::CANCEL)) + " :ã‚­ãƒ£ãƒ³ã‚»ãƒ«";
 		Utility::DrawStringPlace(str, Application::SCREEN_SIZE_X - 10, Application::SCREEN_SIZE_Y - 20, 0xffffff, Utility::STRING_PLACE::RIGHT);
 	}
 }
 
 void SceneSelect::DrawSelectStageSelect(void)
 {
+	DrawString(100, 100, "ã‚¹ãƒ†ãƒ¼ã‚¸ã‚»ãƒ¬ã‚¯ãƒˆ", GetColor(255, 255, 255));
 }
 
 void SceneSelect::ChangeControlType(CONTROL_TYPE type)
 {
 	controlType_ = type;
-	changeControlType_[type]();
 	state_ = STATE::CHOOSE;
+	changeControlType_[type]();
 	lastPushBtn_ = KeyConfig::JOYPAD_BTN::MAX;
 }
 
@@ -201,6 +292,7 @@ void SceneSelect::ChangeControlTypeRockOn(void)
 void SceneSelect::ChangeControlTypeMax(void)
 {
 	updateControlType_ = std::bind(&SceneSelect::UpdateControlTypeMax, this);
+	state_ = STATE::CHECK;
 }
 
 void SceneSelect::UpdateControlTypeEnter(void)
@@ -250,7 +342,7 @@ void SceneSelect::UpdateControlTypeAvoid(void)
 		{
 			if (lastPushBtn_ == pushBTN[0] && pushBTN[0] != KeyConfig::JOYPAD_BTN::MAX)
 			{
-				//“¯‚¶ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚ç‚»‚ê‚Å‚¢‚¢‚©Šm”F‚ğo‚·
+				//åŒã˜ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸã‚‰ãã‚Œã§ã„ã„ã‹ç¢ºèªã‚’å‡ºã™
 				state_ = STATE::CHECK;
 				return;
 			}
@@ -289,7 +381,7 @@ void SceneSelect::UpdateControlTypeJump(void)
 		{
 			if (lastPushBtn_ == pushBTN[0] && pushBTN[0] != KeyConfig::JOYPAD_BTN::MAX)
 			{
-				//“¯‚¶ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚ç‚»‚ê‚Å‚¢‚¢‚©Šm”F‚ğo‚·
+				//åŒã˜ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸã‚‰ãã‚Œã§ã„ã„ã‹ç¢ºèªã‚’å‡ºã™
 				state_ = STATE::CHECK;
 				return;
 			}
@@ -328,7 +420,7 @@ void SceneSelect::UpdateControlTypeAttack(void)
 		{
 			if (lastPushBtn_ == pushBTN[0] && pushBTN[0] != KeyConfig::JOYPAD_BTN::MAX)
 			{
-				//“¯‚¶ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚ç‚»‚ê‚Å‚¢‚¢‚©Šm”F‚ğo‚·
+				//åŒã˜ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸã‚‰ãã‚Œã§ã„ã„ã‹ç¢ºèªã‚’å‡ºã™
 				state_ = STATE::CHECK;
 				return;
 			}
@@ -367,7 +459,7 @@ void SceneSelect::UpdateControlTypeRockOn(void)
 		{
 			if (lastPushBtn_ == pushBTN[0] && pushBTN[0] != KeyConfig::JOYPAD_BTN::MAX)
 			{
-				//“¯‚¶ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚ç‚»‚ê‚Å‚¢‚¢‚©Šm”F‚ğo‚·
+				//åŒã˜ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸã‚‰ãã‚Œã§ã„ã„ã‹ç¢ºèªã‚’å‡ºã™
 				state_ = STATE::CHECK;
 				return;
 			}
@@ -396,7 +488,95 @@ void SceneSelect::UpdateControlTypeRockOn(void)
 
 void SceneSelect::UpdateControlTypeMax(void)
 {
-	ChangeSelect(SELECT::STAGE_SELECT);
+	auto& ins = KeyConfig::GetInstance();
+	switch (state_)
+	{
+	case SceneSelect::STATE::CHOOSE:
+		if (lastChangeNum_ == LAST_CHANGE_NUM::NONE)
+		{
+			if (ins.IsTrgDown(KeyConfig::CONTROL_TYPE::SELECT_DOWN, KeyConfig::JOYPAD_NO::PAD1))
+			{
+				lastChangeType_ = static_cast<CONTROL_TYPE>((static_cast<int>(lastChangeType_) + 1) % (static_cast<int>(CONTROL_TYPE::MAX) + 1));
+			}
+			else if (ins.IsTrgDown(KeyConfig::CONTROL_TYPE::SELECT_UP, KeyConfig::JOYPAD_NO::PAD1))
+			{
+				lastChangeType_ = static_cast<CONTROL_TYPE>((static_cast<int>(lastChangeType_) - 1) % (static_cast<int>(CONTROL_TYPE::MAX) + 1));
+			}
+
+			if (ins.IsTrgDown(KeyConfig::CONTROL_TYPE::ENTER, KeyConfig::JOYPAD_NO::PAD1))
+			{
+				switch (lastChangeType_)
+				{
+				case SceneSelect::CONTROL_TYPE::ENTER:
+					ins.Clear(KeyConfig::CONTROL_TYPE::ENTER);
+					lastChangeNum_ = LAST_CHANGE_NUM::ONE;
+					break;
+				case SceneSelect::CONTROL_TYPE::AVOID:
+					ins.Clear(KeyConfig::CONTROL_TYPE::PLAYER_AVOID);
+					lastChangeNum_ = LAST_CHANGE_NUM::ONE;
+					break;
+				case SceneSelect::CONTROL_TYPE::JUMP:
+					ins.Clear(KeyConfig::CONTROL_TYPE::PLAYER_JUMP);
+					lastChangeNum_ = LAST_CHANGE_NUM::ONE;
+					break;
+				case SceneSelect::CONTROL_TYPE::ATTACK:
+					ins.Clear(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK);
+					lastChangeNum_ = LAST_CHANGE_NUM::ONE;
+					break;
+				case SceneSelect::CONTROL_TYPE::ROCK_ON:
+					ins.Clear(KeyConfig::CONTROL_TYPE::CHENGE_CAMERA_MODE);
+					lastChangeNum_ = LAST_CHANGE_NUM::ONE;
+					break;
+				case SceneSelect::CONTROL_TYPE::MAX:
+					ins.AllClear();
+					ChangeControlType(CONTROL_TYPE::ENTER);
+					lastChangeNum_ = LAST_CHANGE_NUM::ALL;
+					break;
+				default:
+					break;
+				}
+			}
+		}
+		else
+		{
+			LastChangeControlType(lastChangeType_);
+		}
+		break;
+	case SceneSelect::STATE::CHECK:
+		if (ins.IsTrgDown(KeyConfig::CONTROL_TYPE::ENTER, KeyConfig::JOYPAD_NO::PAD1))
+		{
+			//æ±ºå®šã§ã‚¹ãƒ†ãƒ¼ã‚¸ã‚»ãƒ¬ã‚¯ãƒˆã¸
+			ChangeSelect(SELECT::STAGE_SELECT);
+		}
+		if (ins.IsTrgDown(KeyConfig::CONTROL_TYPE::CANCEL, KeyConfig::JOYPAD_NO::PAD1))
+		{
+			//ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã§ã©ã“ã‚’å¤‰ãˆã‚‹ã‹é¸ã¶
+			state_ = STATE::CHOOSE;
+			lastChangeNum_ = LAST_CHANGE_NUM::NONE;
+			lastChangeType_ = CONTROL_TYPE::MAX;
+		}
+		break;
+	case SceneSelect::STATE::DECIDE:
+		break;
+	default:
+		break;
+	}
+}
+
+void SceneSelect::LastChangeControlType(CONTROL_TYPE type)
+{
+	auto pushBTN = KeyConfig::GetInstance().GetPushBtns(KeyConfig::JOYPAD_NO::PAD1);
+	if (!pushBTN.empty())
+	{
+		if (lastPushBtn_ == pushBTN[0] && pushBTN[0] != KeyConfig::JOYPAD_BTN::MAX)
+		{
+			//åŒã˜ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸã‚‰ãã‚Œã§ã„ã„ã‹ç¢ºèªã‚’å‡ºã™
+			state_ = STATE::CHECK;
+			SetControlType(type, lastPushBtn_);
+			return;
+		}
+		lastPushBtn_ = pushBTN[0];
+	}
 }
 
 void SceneSelect::SetControlType(CONTROL_TYPE type, KeyConfig::JOYPAD_BTN lastPushBtn)
@@ -439,55 +619,55 @@ std::string SceneSelect::GetBtnName(KeyConfig::JOYPAD_BTN btn)
 	switch (btn)
 	{
 	case KeyConfig::JOYPAD_BTN::RIGHTBUTTON_RIGHT:
-		name = "Bƒ{ƒ^ƒ“";
+		name = "Bãƒœã‚¿ãƒ³";
 		break;
 	case KeyConfig::JOYPAD_BTN::RIGHTBUTTON_DOWN:
-		name = "Aƒ{ƒ^ƒ“";
+		name = "Aãƒœã‚¿ãƒ³";
 		break;
 	case KeyConfig::JOYPAD_BTN::RIGHTBUTTON_LEFT:
-		name = "Xƒ{ƒ^ƒ“";
+		name = "Xãƒœã‚¿ãƒ³";
 		break;
 	case KeyConfig::JOYPAD_BTN::RIGHTBUTTON_TOP:
-		name = "Yƒ{ƒ^ƒ“";
+		name = "Yãƒœã‚¿ãƒ³";
 		break;
 	case KeyConfig::JOYPAD_BTN::R_TRIGGER:
-		name = "RƒgƒŠƒK[";
+		name = "Rãƒˆãƒªã‚¬ãƒ¼";
 		break;
 	case KeyConfig::JOYPAD_BTN::L_TRIGGER:
-		name = "LƒgƒŠƒK[";
+		name = "Lãƒˆãƒªã‚¬ãƒ¼";
 		break;
 	case KeyConfig::JOYPAD_BTN::R_BUTTON:
-		name = "Rƒ{ƒ^ƒ“";
+		name = "Rãƒœã‚¿ãƒ³";
 		break;
 	case KeyConfig::JOYPAD_BTN::L_BUTTON:
-		name = "Lƒ{ƒ^ƒ“";
+		name = "Lãƒœã‚¿ãƒ³";
 		break;
 	case KeyConfig::JOYPAD_BTN::START_BUTTON:
-		name = "ƒXƒ^[ƒgƒ{ƒ^ƒ“";
+		name = "ã‚¹ã‚¿ãƒ¼ãƒˆãƒœã‚¿ãƒ³";
 		break;
 	case KeyConfig::JOYPAD_BTN::SELECT_BUTTON:
-		name = "ƒZƒŒƒNƒgƒ{ƒ^ƒ“";
+		name = "ã‚»ãƒ¬ã‚¯ãƒˆãƒœã‚¿ãƒ³";
 		break;
 	case KeyConfig::JOYPAD_BTN::LEFTBUTTON_TOP:
-		name = "\šƒL[ã";
+		name = "åå­—ã‚­ãƒ¼ä¸Š";
 		break;
 	case KeyConfig::JOYPAD_BTN::LEFTBUTTON_DOWN:
-		name = "\šƒL[‰º";
+		name = "åå­—ã‚­ãƒ¼ä¸‹";
 		break;
 	case KeyConfig::JOYPAD_BTN::LEFTBUTTON_LEFT:
-		name = "\šƒL[¶";
+		name = "åå­—ã‚­ãƒ¼å·¦";
 		break;
 	case KeyConfig::JOYPAD_BTN::LEFTBUTTON_RIGHT:
-		name = "\šƒL[‰E";
+		name = "åå­—ã‚­ãƒ¼å³";
 		break;
 	case KeyConfig::JOYPAD_BTN::LEFT_STICK:
-		name = "¶ƒXƒeƒBƒbƒN‰Ÿ‚µ‚İ";
+		name = "å·¦ã‚¹ãƒ†ã‚£ãƒƒã‚¯æŠ¼ã—è¾¼ã¿";
 		break;
 	case KeyConfig::JOYPAD_BTN::RIGHT_STICK:
-		name = "‰EƒXƒeƒBƒbƒN‰Ÿ‚µ‚İ";
+		name = "å³ã‚¹ãƒ†ã‚£ãƒƒã‚¯æŠ¼ã—è¾¼ã¿";
 		break;
 	case KeyConfig::JOYPAD_BTN::MAX:
-		name = "Š„‚è“–‚Ä‚½‚¢ƒ{ƒ^ƒ“‚ğ2‰ñ‰Ÿ‚µ‚Ä‚­‚¾‚³‚¢";
+		name = "å‰²ã‚Šå½“ã¦ãŸã„ãƒœã‚¿ãƒ³ã‚’2å›æŠ¼ã—ã¦ãã ã•ã„";
 		break;
 	}
 	return name;
