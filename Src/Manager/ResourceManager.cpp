@@ -54,6 +54,23 @@ void ResourceManager::Init(void)
 	res = Resource(Resource::TYPE::IMG, buttonPath + "RIGHT.png");
 	resourcesMap_.emplace(SRC::BUTTON_RIGHT, std::move(res));
 
+	//ëÄçÏÇÃï∂éö
+	std::string strPath = Application::PATH_IMAGE + "ControlType/";
+	res = Resource(Resource::TYPE::IMG, strPath + "Enter.png");
+	resourcesMap_.emplace(SRC::ENTER_STR, std::move(res));
+	res = Resource(Resource::TYPE::IMG, strPath + "Cancel.png");
+	resourcesMap_.emplace(SRC::CANCEL_STR, std::move(res));
+	res = Resource(Resource::TYPE::IMG, strPath + "Avoid.png");
+	resourcesMap_.emplace(SRC::AVOID_STR, std::move(res));
+	res = Resource(Resource::TYPE::IMG, strPath + "Attack.png");
+	resourcesMap_.emplace(SRC::ATTACK_STR, std::move(res));
+	res = Resource(Resource::TYPE::IMG, strPath + "Jump.png");
+	resourcesMap_.emplace(SRC::JUMP_STR, std::move(res));
+	res = Resource(Resource::TYPE::IMG, strPath + "LockOn.png");
+	resourcesMap_.emplace(SRC::LOCKON_STR, std::move(res));
+
+
+
 	//É^ÉCÉgÉã
 	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "Title/TitleName.png");
 	resourcesMap_.emplace(SRC::TITLE_IMAGE_1, std::move(res));

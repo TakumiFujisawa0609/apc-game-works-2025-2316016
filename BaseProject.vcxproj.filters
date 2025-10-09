@@ -41,6 +41,7 @@
     <ClCompile Include="Src\Object\Enemy\Attack\ThunderAroundAttack.cpp" />
     <ClCompile Include="Src\Object\Enemy\Attack\ThunderAround.cpp" />
     <ClCompile Include="Src\Scene\SceneSelect.cpp" />
+    <ClCompile Include="Src\Scene\Select\Control.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Common\IntVector3.h" />
@@ -83,5 +84,6 @@
     <ClInclude Include="Src\Object\Enemy\Attack\ThunderAroundAttack.h" />
     <ClInclude Include="Src\Object\Enemy\Attack\ThunderAround.h" />
     <ClInclude Include="Src\Scene\SceneSelect.h" />
+    <ClInclude Include="Src\Scene\Select\Control.h" />
   </ItemGroup>
 </Project>

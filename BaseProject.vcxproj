@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Scene\Select\Control.cpp" />
     <ClCompile Include="Src\Scene\SceneSelect.cpp" />
     <ClCompile Include="Src\Object\Enemy\Attack\JumpAttackConstant.cpp" />
     <ClCompile Include="Src\Object\Enemy\Attack\CrossLine.cpp" />
@@ -61,6 +62,7 @@
     <ClCompile Include="Src\Object\Enemy\Attack\ThunderAround.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Scene\Select\Control.h" />
     <ClInclude Include="Src\Scene\SceneSelect.h" />
     <ClInclude Include="Src\Object\Enemy\Attack\JumpAttackConstant.h" />
     <ClInclude Include="Src\Object\Enemy\Attack\CrossLine.h" />

@@ -27,6 +27,15 @@ public:
 		BUTTON_LEFT,	// 十字キー左
 		BUTTON_RIGHT,	// 十字キー右
 
+		//操作の文字
+		ENTER_STR,	// 決定
+		CANCEL_STR,	// キャンセル
+		AVOID_STR,	// 回避
+		ATTACK_STR,	// 攻撃
+		JUMP_STR,	// ジャンプ
+		LOCKON_STR,	// ロックオン
+
+		//タイトル
 		TITLE_IMAGE_1,
 		TITLE_IMAGE_2,
 		SKY_DOME,
