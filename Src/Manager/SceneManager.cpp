@@ -21,13 +21,37 @@ SceneManager::SceneManager(void)
 	oldPushSpace = 0;
 	isSceneChanging_ = false;
 	fader_ = nullptr;
-	scene_ = nullptr;
 	deltaTime_ = 0.0f;
 }
 
 SceneManager::~SceneManager(void)
 {
 
+}
+
+std::unique_ptr<SceneBase> SceneManager::MakeScene(SCENE_ID id)
+{
+	std::unique_ptr<SceneBase> scene;
+	switch (id)
+	{
+	case SCENE_ID::TITLE:
+		scene = std::make_unique<SceneTitle>();
+		break;
+	case SCENE_ID::GAME:
+		scene = std::make_unique<SceneGame>();
+		break;
+	case SCENE_ID::SELECT:
+		scene = std::make_unique<SceneSelect>();
+		break;
+	case SCENE_ID::GAMEOVER:
+		scene = std::make_unique<SceneGameOver>();
+		break;
+	case SCENE_ID::GAMECLEAR:
+		scene = std::make_unique<SceneGameClear>();
+		break;
+	}
+	scene->Init();
+	return std::move(scene);
 }
 
 bool SceneManager::Init(void)
@@ -42,7 +66,7 @@ bool SceneManager::Init(void)
 	fader_->SetFade(Fader::STATE::FADE_IN);
 	isSceneChanging_ = true;
 	//インスタンス生成
-	DoChangeScene();
+	ChangeScene(SCENE_ID::TITLE,true);
 	// デルタタイム
 	deltaTime_ = 1.0f / 60.0f;
 	Init3D();
@@ -83,10 +107,7 @@ void SceneManager::Update(void)
 	//フェード終了
 	else
 	{
-		scene_->Update();
-		if (sceneID_ == SCENE_ID::TITLE)
-		{
-		}
+		scenes_.back()->Update();
 	}
 
 }
@@ -96,7 +117,9 @@ void SceneManager::Draw(void)
 {
 	ClearDrawScreen(); // 画面クリア
 	camera_->SetBeforeDraw();
-	scene_->Draw();
+	for (auto& scene : scenes_) {
+		scene->Draw();
+	}
 	fader_->Draw();
 
 }
@@ -104,7 +127,6 @@ void SceneManager::Draw(void)
 //解放処理(終了時の１度のみ実行)
 void SceneManager::Destroy(void)
 {
-	ReleaseScene();
 	fader_ = nullptr;
 
 	delete instance_;               //インスタンスを削除
@@ -129,40 +151,26 @@ void SceneManager::ChangeScene(SCENE_ID nextID, bool isToFade)
 	}
 	else
 	{
-		DoChangeScene();
+		std::unique_ptr<SceneBase>scene = std::move(MakeScene(nextID));
+		if (scenes_.empty()) {
+			scenes_.push_back(std::move(scene));
+		}
+		else {
+			scenes_.back() = std::move(scene);
+		}
 	}
+}
+
+void SceneManager::PushScene(SCENE_ID pushId)
+{
+}
+
+void SceneManager::PopScene()
+{
 }
 
 
 //シーンを切り替える
-void SceneManager::DoChangeScene(void)
-{
-	//現在のシーンの解放
-	ReleaseScene();
-
-	sceneID_ = nextSceneID_;
-
-	switch (sceneID_)
-	{
-	case SCENE_ID::TITLE:
-		scene_ = std::make_unique<SceneTitle>();
-		break;
-	case SCENE_ID::GAME:
-		scene_ = std::make_unique<SceneGame>();
-		break;
-	case SCENE_ID::SELECT:
-		scene_ = std::make_unique<SceneSelect>();
-		break;
-	case SCENE_ID::GAMEOVER:
-		scene_ = std::make_unique<SceneGameOver>();
-		break;
-	case SCENE_ID::GAMECLEAR:
-		scene_ = std::make_unique<SceneGameClear>();
-		break;
-	}
-	nextSceneID_ = SCENE_ID::NONE;
-	scene_->Init();
-}
 
 void SceneManager::Fade(void)
 {
@@ -175,7 +183,13 @@ void SceneManager::Fade(void)
 		if (fader_->IsEnd() == true)
 		{
 			//シーン切り替え
-			DoChangeScene();
+			std::unique_ptr<SceneBase>scene = std::move(MakeScene(nextSceneID_));
+			if (scenes_.empty()) {
+				scenes_.push_back(std::move(scene));
+			}
+			else {
+				scenes_.back() = std::move(scene);
+			}
 
 			//フェードで明るくしていく
 			fader_->SetFade(Fader::STATE::FADE_IN);
@@ -197,13 +211,12 @@ void SceneManager::Fade(void)
 		break;
 	}
 }
-//指定したシーンの解放
-void SceneManager::ReleaseScene(void)
+
+void SceneManager::JumpScene(SCENE_ID id)
 {
-	if (scene_ != nullptr)
-	{
-		scene_ = nullptr;
-	}
+	std::unique_ptr<SceneBase>scene = std::move(MakeScene(id));
+	scenes_.clear();
+	scenes_.push_back(std::move(scene));
 }
 
 void SceneManager::CreateInstance(void)
