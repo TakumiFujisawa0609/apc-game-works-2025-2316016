@@ -76,7 +76,7 @@ void SceneGame::Update(void)
 	CheckCollision();
 	if (enemy_->GetHP() <= 0.0f)
 	{
-		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::TITLE, true);
+		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::GAMECLEAR, true);
 	}
 	if (player_->GetHP() <= 0.0f)
 	{

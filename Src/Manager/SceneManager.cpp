@@ -6,6 +6,7 @@
 #include"../Scene/SceneTitle.h"
 #include"../Scene/SceneGame.h"
 #include"../Scene/SceneGameOver.h"
+#include"../Scene/SceneGameClear.h"
 #include"../Scene/SceneSelect.h"
 
 SceneManager* SceneManager::instance_ = nullptr;
@@ -154,6 +155,9 @@ void SceneManager::DoChangeScene(void)
 		break;
 	case SCENE_ID::GAMEOVER:
 		scene_ = std::make_unique<SceneGameOver>();
+		break;
+	case SCENE_ID::GAMECLEAR:
+		scene_ = std::make_unique<SceneGameClear>();
 		break;
 	}
 	nextSceneID_ = SCENE_ID::NONE;

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Scene\SceneGameClear.cpp" />
     <ClCompile Include="Src\Scene\SceneGameOver.cpp" />
     <ClCompile Include="Src\Manager\KeyMap.cpp" />
     <ClCompile Include="Src\Manager\DataBank.cpp" />
@@ -65,6 +66,7 @@
     <ClCompile Include="Src\Object\Enemy\Attack\ThunderAround.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Scene\SceneGameClear.h" />
     <ClInclude Include="Src\Scene\SceneGameOver.h" />
     <ClInclude Include="Src\Manager\KeyMap.h" />
     <ClInclude Include="Src\Manager\DataBank.h" />
