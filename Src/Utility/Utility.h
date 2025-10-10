@@ -8,6 +8,7 @@
 #include "../Common/Vector2.h"
 #include "../Common/IntVector3.h"
 #include "../Common/Quaternion.h"
+#include "../Manager/KeyConfig.h"
 #include "../Object/Common/Transform.h"
 
 class Utility
@@ -360,6 +361,20 @@ public:
 	/// <param name="vertexNum">円の頂点数</param>
 	/// <param name="fillFlag">塗りつぶすかどうか</param>
 	static void DrawCircle3DXZ(VECTOR center, float radius, int vertexNum,int color, bool fillFlag);
+
+	/// <summary>
+	/// ボタンの名前の文字列を取得
+	/// </summary>
+	/// <param name="btn">ボタンの種類</param>
+	/// <returns>ボタンの文字列</returns>
+	static std::string GetBtnName(KeyConfig::JOYPAD_BTN btn);
+
+	/// <summary>
+	/// ボタンの画像を取得
+	/// </summary>
+	/// <param name="btn">ボタンの種類</param>
+	/// <returns>画像のハンドルID</returns>
+	static int GetBtnImage(KeyConfig::JOYPAD_BTN btn);
 
 	/// <summary>
 	/// vector配列の中のnullptrを削除する

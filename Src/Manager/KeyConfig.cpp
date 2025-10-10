@@ -754,9 +754,60 @@ std::vector<KeyConfig::JOYPAD_BTN> KeyConfig::GetPushBtns(KeyConfig::JOYPAD_NO n
 	return pushBtns;
 }
 
-KeyConfig::JOYPAD_BTN KeyConfig::GetControlBTN(CONTROL_TYPE cType) const
+std::vector<KeyConfig::JOYPAD_BTN> KeyConfig::GetControlBTN(CONTROL_TYPE cType) const
 {
-	return conInput_.find(cType) != conInput_.end() ? conInput_.at(cType).at(0) : JOYPAD_BTN::MAX;
+	std::vector<JOYPAD_BTN> btns;
+	for (auto& btnPair : conInput_)
+	{
+		if (btnPair.first != cType)
+		{
+			continue;
+		}
+		for(auto btn : btnPair.second)
+		{
+			btns.push_back(btn);
+		}
+	}
+	for (auto& btnPair : fixedConInput_)
+	{
+		if (btnPair.first != cType)
+		{
+			continue;
+		}
+		for(auto btn : btnPair.second)
+		{
+			btns.push_back(btn);
+		}
+	}
+	return btns;
+}
+
+std::vector<int> KeyConfig::GetControlKey(CONTROL_TYPE cType)
+{
+	std::vector<int> keys;
+	for (auto& keyPair : keyInput_)
+	{
+		if (keyPair.first != cType)
+		{
+			continue;
+		}
+		for (auto key : keyPair.second)
+		{
+			keys.push_back(key);
+		}
+	}
+	for (auto& keyPair : fixedKeyInput_)
+	{
+		if (keyPair.first != cType)
+		{
+			continue;
+		}
+		for (auto key : keyPair.second)
+		{
+			keys.push_back(key);
+		}
+	}
+	return keys;
 }
 
 KeyConfig::KeyConfig(void)

@@ -4,9 +4,9 @@
 #include <map>
 #include <functional>
 #include <vector>
+#include "../../Manager/KeyConfig.h"
 
 class Transform;
-class KeyConfig;
 class PlayerShot;
 class Gravity;
 
@@ -107,6 +107,7 @@ public:
 	PlayerShot& GetPlayerShot(int num) { return *shots_[num]; }
 protected:
 
+	KeyConfig::TYPE controlType_;
 	int playerNum_; //プレイヤー番号
 	//基本情報
 	std::unique_ptr<Transform> transform_;

@@ -1,4 +1,4 @@
-#include "../../Manager/KeyConfig.h"
+#include "../../Manager/DataBank.h"
 #include "../../Manager/SceneManager.h"
 #include "../../Manager/Camera.h"
 #include "../Common/Gravity.h"
@@ -19,6 +19,7 @@ PlayerBase::PlayerBase(int playerNum) :keyIns_(KeyConfig::GetInstance())
 	gravity_->ChengeState(Gravity::STATE::NONE);
 	gravity_->SetDir(Utility::DIR_D);
 	gravity_->ChengeState(Gravity::STATE::JUMP);
+	controlType_ = DataBank::GetInstance().GetControlType();
 	SetupStateChange();
 	ChangeState(STATE::IDLE,true);
 }
@@ -47,7 +48,7 @@ void PlayerBase::Update(void)
 	AplayGravity();
 	MoveLimit();
 
-	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK, KeyConfig::JOYPAD_NO::PAD1) && attackDeley_ < 0.0f)
+	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK, KeyConfig::JOYPAD_NO::PAD1, controlType_) && attackDeley_ < 0.0f)
 	{
 		ChangeState(STATE::ATTACK);
 	}
@@ -107,21 +108,25 @@ void PlayerBase::PlayerMove(void)
 	VECTOR left = front;
 	std::swap(left.x, left.z);
 	left.x = -left.x;
-	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_UP, KeyConfig::JOYPAD_NO::PAD1))
+	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_UP, KeyConfig::JOYPAD_NO::PAD1, controlType_))
 	{
 		transform_->pos = VAdd(transform_->pos, VScale(front, MOVE_SPEED));
 	}
-	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_DOWN, KeyConfig::JOYPAD_NO::PAD1))
+	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_DOWN, KeyConfig::JOYPAD_NO::PAD1, controlType_))
 	{
 		transform_->pos = VAdd(transform_->pos, VScale(VScale(front, -1), MOVE_SPEED));
 	}
-	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_RIGHT, KeyConfig::JOYPAD_NO::PAD1))
+	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_RIGHT, KeyConfig::JOYPAD_NO::PAD1, controlType_))
 	{
 		transform_->pos = VAdd(transform_->pos, VScale(VScale(left, -1), MOVE_SPEED));
 	}
-	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_LEFT, KeyConfig::JOYPAD_NO::PAD1))
+	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_LEFT, KeyConfig::JOYPAD_NO::PAD1, controlType_))
 	{
 		transform_->pos = VAdd(transform_->pos, VScale(left, MOVE_SPEED));
+	}
+	if (controlType_ == KeyConfig::TYPE::KEYBORD_MOUSE)
+	{
+		return;
 	}
 	auto stick2D = (keyIns_.GetKnockLStickSize(KeyConfig::JOYPAD_NO::PAD1));
 	if (stick2D.x == 0.0f && stick2D.y == 0.0f)
@@ -165,12 +170,16 @@ void PlayerBase::SetupStateChange(void)
 
 bool PlayerBase::IsPushMoveKey(void)
 {
-	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_DOWN, KeyConfig::JOYPAD_NO::PAD1)
-		|| keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_UP, KeyConfig::JOYPAD_NO::PAD1)
-		|| keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_LEFT, KeyConfig::JOYPAD_NO::PAD1)
-		|| keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_RIGHT, KeyConfig::JOYPAD_NO::PAD1))
+	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_DOWN, KeyConfig::JOYPAD_NO::PAD1, controlType_)
+		|| keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_UP, KeyConfig::JOYPAD_NO::PAD1, controlType_)
+		|| keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_LEFT, KeyConfig::JOYPAD_NO::PAD1, controlType_)
+		|| keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_RIGHT, KeyConfig::JOYPAD_NO::PAD1, controlType_))
 	{
 		return true;
+	}
+	if (controlType_ == KeyConfig::TYPE::KEYBORD_MOUSE)
+	{
+		return false;
 	}
 	auto stick = keyIns_.GetKnockLStickSize(KeyConfig::JOYPAD_NO::PAD1);
 	if (stick.x != 0.0f || stick.y != 0.0f)
@@ -217,21 +226,26 @@ void PlayerBase::StateChangeAvoid(void)
 		VECTOR left = front;
 		std::swap(left.x, left.z);
 		left.x = -left.x;
-		if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_UP, KeyConfig::JOYPAD_NO::PAD1))
+		if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_UP, KeyConfig::JOYPAD_NO::PAD1, controlType_))
 		{
 			avoidDir_ = front;
 		}
-		if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_DOWN, KeyConfig::JOYPAD_NO::PAD1))
+		if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_DOWN, KeyConfig::JOYPAD_NO::PAD1, controlType_))
 		{
 			avoidDir_ = VScale(front, -1);
 		}
-		if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_RIGHT, KeyConfig::JOYPAD_NO::PAD1))
+		if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_RIGHT, KeyConfig::JOYPAD_NO::PAD1, controlType_))
 		{
 			avoidDir_ =  VScale(left, -1);
 		}
-		if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_LEFT, KeyConfig::JOYPAD_NO::PAD1))
+		if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_LEFT, KeyConfig::JOYPAD_NO::PAD1, controlType_))
 		{
 			avoidDir_ = left;
+		}
+
+		if (controlType_ == KeyConfig::TYPE::KEYBORD_MOUSE)
+		{
+			return;
 		}
 		auto stick2D = (keyIns_.GetKnockLStickSize(KeyConfig::JOYPAD_NO::PAD1));
 		if (stick2D.x != 0.0f || stick2D.y != 0.0f)
@@ -278,11 +292,11 @@ void PlayerBase::StateUpdateIdle(void)
 	{
 		ChangeState(STATE::MOVE);
 	}
-	else if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_AVOID, KeyConfig::JOYPAD_NO::PAD1) && avoidCoolTime_ < 0.0f)
+	else if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_AVOID, KeyConfig::JOYPAD_NO::PAD1, controlType_) && avoidCoolTime_ < 0.0f)
 	{
 		ChangeState(STATE::AVOID);
 	}
-	else if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_JUMP, KeyConfig::JOYPAD_NO::PAD1))
+	else if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_JUMP, KeyConfig::JOYPAD_NO::PAD1, controlType_))
 	{
 		ChangeState(STATE::JUMP);
 	}
@@ -291,11 +305,11 @@ void PlayerBase::StateUpdateIdle(void)
 void PlayerBase::StateUpdateMove(void)
 {
 	PlayerMove();
-	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_AVOID, KeyConfig::JOYPAD_NO::PAD1) && avoidCoolTime_ < 0.0f)
+	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_AVOID, KeyConfig::JOYPAD_NO::PAD1, controlType_) && avoidCoolTime_ < 0.0f)
 	{
 		ChangeState(STATE::AVOID);
 	}
-	else if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_JUMP, KeyConfig::JOYPAD_NO::PAD1))
+	else if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_JUMP, KeyConfig::JOYPAD_NO::PAD1, controlType_))
 	{
 		ChangeState(STATE::JUMP);
 	}
@@ -330,7 +344,7 @@ void PlayerBase::StateUpdateAvoid(void)
 void PlayerBase::StateUpdateCharge(void)
 {
 	PlayerMove();
-	if (keyIns_.IsTrgDown(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK, KeyConfig::JOYPAD_NO::PAD1))
+	if (keyIns_.IsTrgDown(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK, KeyConfig::JOYPAD_NO::PAD1, controlType_))
 	{
 		ChangeState(STATE::ATTACK);
 	}

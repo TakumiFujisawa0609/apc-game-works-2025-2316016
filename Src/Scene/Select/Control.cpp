@@ -12,8 +12,8 @@ Control::Control() :ins_(KeyConfig::GetInstance())
 	changeControlType_[CONTROL_TYPE::AVOID] = std::bind(&Control::ChangeControlTypeAvoid, this);
 	changeControlType_[CONTROL_TYPE::JUMP] = std::bind(&Control::ChangeControlTypeJump, this);
 	changeControlType_[CONTROL_TYPE::ATTACK] = std::bind(&Control::ChangeControlTypeAttack, this);
-	changeControlType_[CONTROL_TYPE::ROCK_ON_TYPE] = std::bind(&Control::ChangeControlTypeRockOnType, this);
-	changeControlType_[CONTROL_TYPE::ROCK_ON] = std::bind(&Control::ChangeControlTypeRockOn, this);
+	//changeControlType_[CONTROL_TYPE::LOCK_ON_TYPE] = std::bind(&Control::ChangeControlTypeLockOnType, this);
+	changeControlType_[CONTROL_TYPE::LOCK_ON] = std::bind(&Control::ChangeControlTypeLockOn, this);
 	changeControlType_[CONTROL_TYPE::MAX] = std::bind(&Control::ChangeControlTypeMax, this);
 	ChangeControlType(CONTROL_TYPE::ENTER);
 
@@ -92,18 +92,42 @@ void Control::Draw(void)
 			{
 				Utility::DrawStringPlace("どの操作を変更しますか？", Application::SCREEN_HALF_X, Application::SCREEN_HALF_Y - 30 * 3, 0xffffff, Utility::STRING_PLACE::CENTER);
 				std::string str = "";
-				str += lastChangeType_ == CONTROL_TYPE::ENTER ? "->" : "";
-				str += "決定 : " + GetBtnName(ins_.GetControlBTN(KeyConfig::CONTROL_TYPE::ENTER)) + "\n";
-				str += lastChangeType_ == CONTROL_TYPE::ENTER ? "->" : "";
-				str += "キャンセル : " + GetBtnName(ins_.GetControlBTN(KeyConfig::CONTROL_TYPE::CANCEL)) + "\n";
+				//str += lastChangeType_ == CONTROL_TYPE::ENTER ? "->" : "";
+				//str += "決定 : " + GetBtnName(ins_.GetControlBTN(KeyConfig::CONTROL_TYPE::ENTER)) + "\n";
+				//str += lastChangeType_ == CONTROL_TYPE::ENTER ? "->" : "";
+				//str += "キャンセル : " + GetBtnName(ins_.GetControlBTN(KeyConfig::CONTROL_TYPE::CANCEL)) + "\n";
 				str += lastChangeType_ == CONTROL_TYPE::AVOID ? "->" : "";
-				str += "回避 : " + GetBtnName(ins_.GetControlBTN(KeyConfig::CONTROL_TYPE::PLAYER_AVOID)) + "\n";
+				str += "回避 : ";
+				for (auto btn : ins_.GetControlBTN(KeyConfig::CONTROL_TYPE::PLAYER_AVOID))
+				{
+
+					str += Utility::GetBtnName(btn) + " , ";
+				}
+				str += "\n";
 				str += lastChangeType_ == CONTROL_TYPE::JUMP ? "->" : "";
-				str += "ジャンプ : " + GetBtnName(ins_.GetControlBTN(KeyConfig::CONTROL_TYPE::PLAYER_JUMP)) + "\n";
+				str += "ジャンプ : ";	
+				for (auto btn : ins_.GetControlBTN(KeyConfig::CONTROL_TYPE::PLAYER_JUMP))
+				{
+
+					str += Utility::GetBtnName(btn) + " , ";
+				}
+				str += "\n";
 				str += lastChangeType_ == CONTROL_TYPE::ATTACK ? "->" : "";
-				str += "攻撃 : " + GetBtnName(ins_.GetControlBTN(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK)) + "\n";
-				str += lastChangeType_ == CONTROL_TYPE::ROCK_ON ? "->" : "";
-				str += "ロックオン : " + GetBtnName(ins_.GetControlBTN(KeyConfig::CONTROL_TYPE::CHENGE_CAMERA_MODE)) + "\n";
+				str += "攻撃 : ";
+				for (auto btn : ins_.GetControlBTN(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK))
+				{
+
+					str += Utility::GetBtnName(btn) + " , ";
+				}
+				str += "\n";
+				str += lastChangeType_ == CONTROL_TYPE::LOCK_ON ? "->" : "";
+				str += "ロックオン : ";
+				for (auto btn : ins_.GetControlBTN(KeyConfig::CONTROL_TYPE::CHENGE_CAMERA_MODE))
+				{
+
+					str += Utility::GetBtnName(btn) + " , ";
+				}
+				str += "\n";
 				str += lastChangeType_ == CONTROL_TYPE::MAX ? "->" : "";
 				str += "すべて変更";
 				Utility::DrawStringPlace(str, Application::SCREEN_HALF_X, Application::SCREEN_HALF_Y - 30 * 2, 0xffffff, Utility::STRING_PLACE::CENTER);
@@ -125,7 +149,7 @@ void Control::Draw(void)
 				case Control::CONTROL_TYPE::ATTACK:
 					msg += "攻撃 : ";
 					break;
-				case Control::CONTROL_TYPE::ROCK_ON:
+				case Control::CONTROL_TYPE::LOCK_ON:
 					msg += "ロックオン : ";
 					break;
 				case Control::CONTROL_TYPE::MAX:
@@ -133,11 +157,12 @@ void Control::Draw(void)
 				default:
 					break;
 				}
-				msg += GetBtnName(lastPushBtn_);
+
+				msg += Utility ::GetBtnName(lastPushBtn_);
 				Utility::DrawStringPlace(msg, Application::SCREEN_HALF_X, Application::SCREEN_HALF_Y, 0xffffff, Utility::STRING_PLACE::CENTER);
 				if (lastPushBtn_ != KeyConfig::JOYPAD_BTN::MAX)
 				{
-					std::string subMsg = "決定の場合もう一度" + GetBtnName(lastPushBtn_) + "を押してください";
+					std::string subMsg = "決定の場合もう一度" + Utility::GetBtnName(lastPushBtn_) + "を押してください";
 					Utility::DrawStringPlace(subMsg, Application::SCREEN_HALF_X, Application::SCREEN_HALF_Y + 30, 0xffffff, Utility::STRING_PLACE::CENTER);
 				}
 			}
@@ -146,18 +171,45 @@ void Control::Draw(void)
 		case Control::STATE::CHECK:
 		{
 			std::string str = "";
-			str += "決定 : " + GetBtnName(ins_.GetControlBTN(KeyConfig::CONTROL_TYPE::ENTER)) + "\n";
-			str += "キャンセル : " + GetBtnName(ins_.GetControlBTN(KeyConfig::CONTROL_TYPE::CANCEL)) + "\n";
-			str += "回避 : " + GetBtnName(ins_.GetControlBTN(KeyConfig::CONTROL_TYPE::PLAYER_AVOID)) + "\n";
-			str += "ジャンプ : " + GetBtnName(ins_.GetControlBTN(KeyConfig::CONTROL_TYPE::PLAYER_JUMP)) + "\n";
-			str += "攻撃 : " + GetBtnName(ins_.GetControlBTN(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK)) + "\n";
-			str += "ロックオン : " + GetBtnName(ins_.GetControlBTN(KeyConfig::CONTROL_TYPE::CHENGE_CAMERA_MODE)) + "\n";
+			str += "決定 : ";
+			for (auto btn : ins_.GetControlBTN(KeyConfig::CONTROL_TYPE::ENTER))
+			{
+				str += Utility::GetBtnName(btn) + " , ";
+			}
+			str += "\n";
+			str += "キャンセル : ";
+			for (auto btn : ins_.GetControlBTN(KeyConfig::CONTROL_TYPE::CANCEL))
+			{
+				str +=Utility::GetBtnName(btn) + " , ";
+			}
+			str += "\n";
+			str += "回避 : ";
+			for (auto btn : ins_.GetControlBTN(KeyConfig::CONTROL_TYPE::PLAYER_AVOID))
+			{
+				str += Utility::GetBtnName(btn) + " , ";
+			}
+			str += "\n";
+			str += "ジャンプ : ";
+			for (auto btn : ins_.GetControlBTN(KeyConfig::CONTROL_TYPE::PLAYER_JUMP))
+			{
+				str+=Utility::GetBtnName(btn) + " , ";
+			}
+			str += "\n";
+			str += "攻撃 : ";
+			for (auto btn : ins_.GetControlBTN(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK))
+			{
+				str+=Utility::GetBtnName(btn) + " , ";
+			}
+			str += "\n";
+			str += "ロックオン : ";
+			for (auto btn : ins_.GetControlBTN(KeyConfig::CONTROL_TYPE::CHENGE_CAMERA_MODE))
+			{
+				str+=Utility::GetBtnName(btn) + " , ";
+			}
+			str += "\n";
 			str += "でよろしいですか？";
 			Utility::DrawStringPlace(str, Application::SCREEN_HALF_X, Application::SCREEN_HALF_Y - 30 * 3, 0xffffff, Utility::STRING_PLACE::CENTER);
-			str = "";
-			str += GetBtnName(ins_.GetControlBTN(KeyConfig::CONTROL_TYPE::ENTER)) + " :決定　,";
-			str += GetBtnName(ins_.GetControlBTN(KeyConfig::CONTROL_TYPE::CANCEL)) + " :キャンセル";
-			Utility::DrawStringPlace(str, Application::SCREEN_SIZE_X - 10, Application::SCREEN_SIZE_Y - 20, 0xffffff, Utility::STRING_PLACE::RIGHT);
+
 		}
 		break;
 		case Control::STATE::DECIDE:
@@ -184,7 +236,7 @@ void Control::Draw(void)
 		case Control::CONTROL_TYPE::ATTACK:
 			msg += "攻撃 : ";
 			break;
-		case Control::CONTROL_TYPE::ROCK_ON:
+		case Control::CONTROL_TYPE::LOCK_ON:
 			msg += "ロックオン : ";
 			break;
 		case Control::CONTROL_TYPE::MAX:
@@ -192,14 +244,14 @@ void Control::Draw(void)
 		default:
 			break;
 		}
-		msg += GetBtnName(lastPushBtn_);
+		msg += Utility::GetBtnName(lastPushBtn_);
 		switch (state_)
 		{
 		case Control::STATE::CHOOSE:
 			Utility::DrawStringPlace(msg, Application::SCREEN_HALF_X, Application::SCREEN_HALF_Y, 0xffffff, Utility::STRING_PLACE::CENTER);
 			if (lastPushBtn_ != KeyConfig::JOYPAD_BTN::MAX)
 			{
-				std::string subMsg = "決定の場合もう一度" + GetBtnName(lastPushBtn_) + "を押してください";
+				std::string subMsg = "決定の場合もう一度" + Utility::GetBtnName(lastPushBtn_) + "を押してください";
 				Utility::DrawStringPlace(subMsg, Application::SCREEN_HALF_X, Application::SCREEN_HALF_Y + 30, 0xffffff, Utility::STRING_PLACE::CENTER);
 			}
 			break;
@@ -212,11 +264,7 @@ void Control::Draw(void)
 		default:
 			break;
 		}
-		std::string str = "";
-		auto& ins = KeyConfig::GetInstance();
-		str += GetBtnName(ins.GetControlBTN(KeyConfig::CONTROL_TYPE::ENTER)) + " :決定　,";
-		str += GetBtnName(ins.GetControlBTN(KeyConfig::CONTROL_TYPE::CANCEL)) + " :キャンセル";
-		Utility::DrawStringPlace(str, Application::SCREEN_SIZE_X - 10, Application::SCREEN_SIZE_Y - 20, 0xffffff, Utility::STRING_PLACE::RIGHT);
+
 	}
 }
 
@@ -248,14 +296,14 @@ void Control::ChangeControlTypeAttack(void)
 	updateControlType_ = std::bind(&Control::UpdateControlTypeAttack, this);
 }
 
-void Control::ChangeControlTypeRockOnType(void)
+void Control::ChangeControlTypeLockOnType(void)
 {
-	updateControlType_ = std::bind(&Control::UpdateControlTypeRockOnType, this);
+	updateControlType_ = std::bind(&Control::UpdateControlTypeLockOnType, this);
 }
 
-void Control::ChangeControlTypeRockOn(void)
+void Control::ChangeControlTypeLockOn(void)
 {
-	updateControlType_ = std::bind(&Control::UpdateControlTypeRockOn, this);
+	updateControlType_ = std::bind(&Control::UpdateControlTypeLockOn, this);
 }
 
 void Control::ChangeControlTypeMax(void)
@@ -345,18 +393,18 @@ void Control::UpdateControlTypeAttack(void)
 		CheckUpdate();
 		break;
 	case Control::STATE::DECIDE:
-		ChangeControlType(CONTROL_TYPE::ROCK_ON);
+		ChangeControlType(CONTROL_TYPE::LOCK_ON);
 		break;
 	default:
 		break;
 	}
 }
 
-void Control::UpdateControlTypeRockOnType(void)
+void Control::UpdateControlTypeLockOnType(void)
 {
 }
 
-void Control::UpdateControlTypeRockOn(void)
+void Control::UpdateControlTypeLockOn(void)
 {
 	switch (state_)
 	{
@@ -383,11 +431,13 @@ void Control::UpdateControlTypeMax(void)
 		{
 			if (ins_.IsTrgDown(KeyConfig::CONTROL_TYPE::SELECT_DOWN, KeyConfig::JOYPAD_NO::PAD1))
 			{
-				lastChangeType_ = static_cast<CONTROL_TYPE>((static_cast<int>(lastChangeType_) + 1) % (static_cast<int>(CONTROL_TYPE::MAX) + 1));
+				lastChangeType_ = static_cast<CONTROL_TYPE>((static_cast<int>(lastChangeType_) + 1) % (static_cast<int>(CONTROL_TYPE::MAX)));
+				lastChangeType_ = lastChangeType_ == CONTROL_TYPE::ENTER ? CONTROL_TYPE::MAX : lastChangeType_;
 			}
 			else if (ins_.IsTrgDown(KeyConfig::CONTROL_TYPE::SELECT_UP, KeyConfig::JOYPAD_NO::PAD1))
 			{
-				lastChangeType_ = static_cast<CONTROL_TYPE>((static_cast<int>(lastChangeType_) - 1) % (static_cast<int>(CONTROL_TYPE::MAX) + 1));
+				lastChangeType_ = static_cast<CONTROL_TYPE>((static_cast<int>(lastChangeType_) - 1) % (static_cast<int>(CONTROL_TYPE::MAX)));
+				lastChangeType_ = lastChangeType_ == CONTROL_TYPE::ENTER ? CONTROL_TYPE::MAX : lastChangeType_;
 			}
 
 			if (ins_.IsTrgDown(KeyConfig::CONTROL_TYPE::ENTER, KeyConfig::JOYPAD_NO::PAD1))
@@ -410,7 +460,7 @@ void Control::UpdateControlTypeMax(void)
 					ins_.Clear(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK);
 					lastChangeNum_ = LAST_CHANGE_NUM::ONE;
 					break;
-				case Control::CONTROL_TYPE::ROCK_ON:
+				case Control::CONTROL_TYPE::LOCK_ON:
 					ins_.Clear(KeyConfig::CONTROL_TYPE::CHENGE_CAMERA_MODE);
 					lastChangeNum_ = LAST_CHANGE_NUM::ONE;
 					break;
@@ -490,10 +540,10 @@ void Control::SetControlType(CONTROL_TYPE type, KeyConfig::JOYPAD_BTN lastPushBt
 	case Control::CONTROL_TYPE::ATTACK:
 		controlType = KeyConfig::CONTROL_TYPE::PLAYER_ATTACK;
 		break;
-	case Control::CONTROL_TYPE::ROCK_ON_TYPE:
-		//controlType = KeyConfig::CONTROL_TYPE::CHENGE_CAMERA_MODE;
-		break;
-	case Control::CONTROL_TYPE::ROCK_ON:
+	//case Control::CONTROL_TYPE::LOCK_ON_TYPE:
+	//	//controlType = KeyConfig::CONTROL_TYPE::CHENGE_CAMERA_MODE;
+	//	break;
+	case Control::CONTROL_TYPE::LOCK_ON:
 		controlType = KeyConfig::CONTROL_TYPE::CHENGE_CAMERA_MODE;
 		break;
 	case Control::CONTROL_TYPE::MAX:
@@ -507,126 +557,6 @@ void Control::SetControlType(KeyConfig::CONTROL_TYPE type, KeyConfig::JOYPAD_BTN
 {
 	auto& ins = KeyConfig::GetInstance();
 	ins.Add(type, lastPushBtn);
-}
-
-std::string Control::GetBtnName(KeyConfig::JOYPAD_BTN btn)
-{
-	std::string name = "";
-	switch (btn)
-	{
-	case KeyConfig::JOYPAD_BTN::RIGHTBUTTON_RIGHT:
-		name = "Bボタン";
-		break;
-	case KeyConfig::JOYPAD_BTN::RIGHTBUTTON_DOWN:
-		name = "Aボタン";
-		break;
-	case KeyConfig::JOYPAD_BTN::RIGHTBUTTON_LEFT:
-		name = "Xボタン";
-		break;
-	case KeyConfig::JOYPAD_BTN::RIGHTBUTTON_TOP:
-		name = "Yボタン";
-		break;
-	case KeyConfig::JOYPAD_BTN::R_TRIGGER:
-		name = "Rトリガー";
-		break;
-	case KeyConfig::JOYPAD_BTN::L_TRIGGER:
-		name = "Lトリガー";
-		break;
-	case KeyConfig::JOYPAD_BTN::R_BUTTON:
-		name = "Rボタン";
-		break;
-	case KeyConfig::JOYPAD_BTN::L_BUTTON:
-		name = "Lボタン";
-		break;
-	case KeyConfig::JOYPAD_BTN::START_BUTTON:
-		name = "スタートボタン";
-		break;
-	case KeyConfig::JOYPAD_BTN::SELECT_BUTTON:
-		name = "セレクトボタン";
-		break;
-	case KeyConfig::JOYPAD_BTN::LEFTBUTTON_TOP:
-		name = "十字キー上";
-		break;
-	case KeyConfig::JOYPAD_BTN::LEFTBUTTON_DOWN:
-		name = "十字キー下";
-		break;
-	case KeyConfig::JOYPAD_BTN::LEFTBUTTON_LEFT:
-		name = "十字キー左";
-		break;
-	case KeyConfig::JOYPAD_BTN::LEFTBUTTON_RIGHT:
-		name = "十字キー右";
-		break;
-	case KeyConfig::JOYPAD_BTN::LEFT_STICK:
-		name = "左スティック押し込み";
-		break;
-	case KeyConfig::JOYPAD_BTN::RIGHT_STICK:
-		name = "右スティック押し込み";
-		break;
-	case KeyConfig::JOYPAD_BTN::MAX:
-		name = "割り当てたいボタンを2回押してください";
-		break;
-	}
-	return name;
-}
-
-int Control::GetBtnImage(KeyConfig::JOYPAD_BTN btn)
-{
-	int img = -1;
-	auto& res = ResourceManager::GetInstance();
-	switch (btn)
-	{
-	case KeyConfig::JOYPAD_BTN::RIGHTBUTTON_LEFT:
-		img = res.Load(ResourceManager::SRC::BUTTON_X).handleId_;
-		break;
-	case KeyConfig::JOYPAD_BTN::RIGHTBUTTON_RIGHT:
-		img = res.Load(ResourceManager::SRC::BUTTON_B).handleId_;
-		break;
-	case KeyConfig::JOYPAD_BTN::RIGHTBUTTON_TOP:
-		img = res.Load(ResourceManager::SRC::BUTTON_Y).handleId_;
-		break;
-	case KeyConfig::JOYPAD_BTN::RIGHTBUTTON_DOWN:
-		img = res.Load(ResourceManager::SRC::BUTTON_A).handleId_;
-		break;
-	case KeyConfig::JOYPAD_BTN::R_TRIGGER:
-		img = res.Load(ResourceManager::SRC::BUTTON_RT).handleId_;
-		break;
-	case KeyConfig::JOYPAD_BTN::L_TRIGGER:
-		img = res.Load(ResourceManager::SRC::BUTTON_LT).handleId_;
-		break;
-	case KeyConfig::JOYPAD_BTN::R_BUTTON:
-		img = res.Load(ResourceManager::SRC::BUTTON_RB).handleId_;
-		break;
-	case KeyConfig::JOYPAD_BTN::L_BUTTON:
-		img = res.Load(ResourceManager::SRC::BUTTON_LB).handleId_;
-		break;
-	case KeyConfig::JOYPAD_BTN::START_BUTTON:
-		img = res.Load(ResourceManager::SRC::BUTTON_START).handleId_;
-		break;
-	case KeyConfig::JOYPAD_BTN::SELECT_BUTTON:
-		img = res.Load(ResourceManager::SRC::BUTTON_SELECT).handleId_;
-		break;
-	case KeyConfig::JOYPAD_BTN::LEFTBUTTON_TOP:
-		img = res.Load(ResourceManager::SRC::BUTTON_UP).handleId_;
-		break;
-	case KeyConfig::JOYPAD_BTN::LEFTBUTTON_DOWN:
-		img = res.Load(ResourceManager::SRC::BUTTON_DOWN).handleId_;
-		break;
-	case KeyConfig::JOYPAD_BTN::LEFTBUTTON_LEFT:
-		img = res.Load(ResourceManager::SRC::BUTTON_LEFT).handleId_;
-		break;
-	case KeyConfig::JOYPAD_BTN::LEFTBUTTON_RIGHT:
-		img = res.Load(ResourceManager::SRC::BUTTON_RIGHT).handleId_;
-		break;
-	case KeyConfig::JOYPAD_BTN::LEFT_STICK:
-		break;
-	case KeyConfig::JOYPAD_BTN::RIGHT_STICK:
-		break;
-	case KeyConfig::JOYPAD_BTN::MAX:
-		break;
-	default:
-		break;
-	}
-	return img;
 }
 
 void Control::ChooseUpdate(void)

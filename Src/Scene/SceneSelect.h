@@ -18,8 +18,6 @@ public:
 		STAGE_SELECT,	//ステージ選択
 	};
 
-
-
 	//メンバー関数
 	SceneSelect(void);
 
@@ -37,7 +35,6 @@ public:
 private:
 
 	std::unique_ptr<Control> control_; //操作方法選択用
-
 	SELECT select_; //選択している項目
 	std::map<SELECT, std::function<void(void)>> changeSelect_; //選択項目変更時の関数格納用
 	void ChangeSelect(SELECT select);
@@ -50,4 +47,6 @@ private:
 	void DrawSelectControlType(void);
 	void DrawSelectStageSelect(void);
 
+	void DrawEnterCancelKey(void);
+	void DrawEnterCancelKeyTemp(void);
 };

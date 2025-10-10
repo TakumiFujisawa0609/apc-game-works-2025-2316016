@@ -13,8 +13,8 @@ public:
 		AVOID,	//回避
 		JUMP,	//ジャンプ
 		ATTACK,	//攻撃
-		ROCK_ON_TYPE, //ロックオンの種類
-		ROCK_ON,	//ロックオン
+		//LOCK_ON_TYPE, //ロックオンの種類
+		LOCK_ON,	//ロックオン
 		MAX,
 	};
 
@@ -38,12 +38,7 @@ public:
 		ONE,	//1つだけ変更
 	};
 
-	enum class ROCK_ON_TYPE
-	{
-		FIXED,	//固定(ずっとロックオン状態)
-		PRESS,	//押している間だけロックオン
-		SWITCH, //押すたびにロックオンのON/OFF切り替え
-	};
+
 
 	Control();
 	~Control();
@@ -64,7 +59,6 @@ private:
 	CONTROL_TYPE controlType_; //操作方法
 	CONTROL_TYPE lastChangeType_; //最後に変更した操作方法
 	LAST_CHANGE_NUM lastChangeNum_; //最後に変更する数
-	ROCK_ON_TYPE rockOnType_; //ロックオンの種類
 	STATE state_; //状態
 
 	void ChangeControlType(CONTROL_TYPE type);
@@ -73,24 +67,22 @@ private:
 	void ChangeControlTypeAvoid(void);
 	void ChangeControlTypeJump(void);
 	void ChangeControlTypeAttack(void);
-	void ChangeControlTypeRockOnType(void);
-	void ChangeControlTypeRockOn(void);
+	void ChangeControlTypeLockOnType(void);
+	void ChangeControlTypeLockOn(void);
 	void ChangeControlTypeMax(void);
 	std::function<void(void)> updateControlType_; //操作方法更新時の関数格納用
 	void UpdateControlTypeEnter(void);
 	void UpdateControlTypeAvoid(void);
 	void UpdateControlTypeJump(void);
 	void UpdateControlTypeAttack(void);
-	void UpdateControlTypeRockOnType(void);
-	void UpdateControlTypeRockOn(void);
+	void UpdateControlTypeLockOnType(void);
+	void UpdateControlTypeLockOn(void);
 	void UpdateControlTypeMax(void);
 
 	void LastChangeControlType(CONTROL_TYPE type);
 	void SetControlType(CONTROL_TYPE type, KeyConfig::JOYPAD_BTN lastPushBtn);
 
 	void SetControlType(KeyConfig::CONTROL_TYPE type, KeyConfig::JOYPAD_BTN lastPushBtn);
-	std::string GetBtnName(KeyConfig::JOYPAD_BTN btn);
-	int GetBtnImage(KeyConfig::JOYPAD_BTN btn);
 
 	void ChooseUpdate(void);
 	void CheckUpdate(void);

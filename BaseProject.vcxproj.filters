@@ -42,6 +42,9 @@
     <ClCompile Include="Src\Object\Enemy\Attack\ThunderAround.cpp" />
     <ClCompile Include="Src\Scene\SceneSelect.cpp" />
     <ClCompile Include="Src\Scene\Select\Control.cpp" />
+    <ClCompile Include="Src\Manager\DataBank.cpp" />
+    <ClCompile Include="Src\Manager\KeyMap.cpp" />
+    <ClCompile Include="Src\Scene\SceneGameOver.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Common\IntVector3.h" />
@@ -85,5 +88,8 @@
     <ClInclude Include="Src\Object\Enemy\Attack\ThunderAround.h" />
     <ClInclude Include="Src\Scene\SceneSelect.h" />
     <ClInclude Include="Src\Scene\Select\Control.h" />
+    <ClInclude Include="Src\Manager\DataBank.h" />
+    <ClInclude Include="Src\Manager\KeyMap.h" />
+    <ClInclude Include="Src\Scene\SceneGameOver.h" />
   </ItemGroup>
 </Project>

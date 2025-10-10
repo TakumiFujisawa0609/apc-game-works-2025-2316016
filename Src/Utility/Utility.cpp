@@ -1,4 +1,5 @@
 #include "../Manager/SceneManager.h"
+#include "../Manager/ResourceManager.h"
 #include "Utility.h"
 
 int Utility::Round(float v)
@@ -931,4 +932,124 @@ void Utility::DrawCircle3DXZ(VECTOR center, float radius, int vertexNum,int colo
             DrawLine3D(pos1, pos2, color);
         }
     }
+}
+
+std::string Utility::GetBtnName(KeyConfig::JOYPAD_BTN btn)
+{
+    std::string name = "";
+    switch (btn)
+    {
+    case KeyConfig::JOYPAD_BTN::RIGHTBUTTON_RIGHT:
+        name = "Bボタン";
+        break;
+    case KeyConfig::JOYPAD_BTN::RIGHTBUTTON_DOWN:
+        name = "Aボタン";
+        break;
+    case KeyConfig::JOYPAD_BTN::RIGHTBUTTON_LEFT:
+        name = "Xボタン";
+        break;
+    case KeyConfig::JOYPAD_BTN::RIGHTBUTTON_TOP:
+        name = "Yボタン";
+        break;
+    case KeyConfig::JOYPAD_BTN::R_TRIGGER:
+        name = "Rトリガー";
+        break;
+    case KeyConfig::JOYPAD_BTN::L_TRIGGER:
+        name = "Lトリガー";
+        break;
+    case KeyConfig::JOYPAD_BTN::R_BUTTON:
+        name = "Rボタン";
+        break;
+    case KeyConfig::JOYPAD_BTN::L_BUTTON:
+        name = "Lボタン";
+        break;
+    case KeyConfig::JOYPAD_BTN::START_BUTTON:
+        name = "スタートボタン";
+        break;
+    case KeyConfig::JOYPAD_BTN::SELECT_BUTTON:
+        name = "セレクトボタン";
+        break;
+    case KeyConfig::JOYPAD_BTN::LEFTBUTTON_TOP:
+        name = "十字キー上";
+        break;
+    case KeyConfig::JOYPAD_BTN::LEFTBUTTON_DOWN:
+        name = "十字キー下";
+        break;
+    case KeyConfig::JOYPAD_BTN::LEFTBUTTON_LEFT:
+        name = "十字キー左";
+        break;
+    case KeyConfig::JOYPAD_BTN::LEFTBUTTON_RIGHT:
+        name = "十字キー右";
+        break;
+    case KeyConfig::JOYPAD_BTN::LEFT_STICK:
+        name = "左スティック押し込み";
+        break;
+    case KeyConfig::JOYPAD_BTN::RIGHT_STICK:
+        name = "右スティック押し込み";
+        break;
+    case KeyConfig::JOYPAD_BTN::MAX:
+        name = "割り当てたいボタンを2回押してください";
+        break;
+    }
+    return name;
+}
+
+int Utility::GetBtnImage(KeyConfig::JOYPAD_BTN btn)
+{
+    int img = -1;
+    auto& res = ResourceManager::GetInstance();
+    switch (btn)
+    {
+    case KeyConfig::JOYPAD_BTN::RIGHTBUTTON_LEFT:
+        img = res.Load(ResourceManager::SRC::BUTTON_X).handleId_;
+        break;
+    case KeyConfig::JOYPAD_BTN::RIGHTBUTTON_RIGHT:
+        img = res.Load(ResourceManager::SRC::BUTTON_B).handleId_;
+        break;
+    case KeyConfig::JOYPAD_BTN::RIGHTBUTTON_TOP:
+        img = res.Load(ResourceManager::SRC::BUTTON_Y).handleId_;
+        break;
+    case KeyConfig::JOYPAD_BTN::RIGHTBUTTON_DOWN:
+        img = res.Load(ResourceManager::SRC::BUTTON_A).handleId_;
+        break;
+    case KeyConfig::JOYPAD_BTN::R_TRIGGER:
+        img = res.Load(ResourceManager::SRC::BUTTON_RT).handleId_;
+        break;
+    case KeyConfig::JOYPAD_BTN::L_TRIGGER:
+        img = res.Load(ResourceManager::SRC::BUTTON_LT).handleId_;
+        break;
+    case KeyConfig::JOYPAD_BTN::R_BUTTON:
+        img = res.Load(ResourceManager::SRC::BUTTON_RB).handleId_;
+        break;
+    case KeyConfig::JOYPAD_BTN::L_BUTTON:
+        img = res.Load(ResourceManager::SRC::BUTTON_LB).handleId_;
+        break;
+    case KeyConfig::JOYPAD_BTN::START_BUTTON:
+        img = res.Load(ResourceManager::SRC::BUTTON_START).handleId_;
+        break;
+    case KeyConfig::JOYPAD_BTN::SELECT_BUTTON:
+        img = res.Load(ResourceManager::SRC::BUTTON_SELECT).handleId_;
+        break;
+    case KeyConfig::JOYPAD_BTN::LEFTBUTTON_TOP:
+        img = res.Load(ResourceManager::SRC::BUTTON_UP).handleId_;
+        break;
+    case KeyConfig::JOYPAD_BTN::LEFTBUTTON_DOWN:
+        img = res.Load(ResourceManager::SRC::BUTTON_DOWN).handleId_;
+        break;
+    case KeyConfig::JOYPAD_BTN::LEFTBUTTON_LEFT:
+        img = res.Load(ResourceManager::SRC::BUTTON_LEFT).handleId_;
+        break;
+    case KeyConfig::JOYPAD_BTN::LEFTBUTTON_RIGHT:
+        img = res.Load(ResourceManager::SRC::BUTTON_RIGHT).handleId_;
+        break;
+    case KeyConfig::JOYPAD_BTN::LEFT_STICK:
+        break;
+    case KeyConfig::JOYPAD_BTN::RIGHT_STICK:
+        break;
+    case KeyConfig::JOYPAD_BTN::MAX:
+        break;
+    default:
+        break;
+    }
+    return img;
 }

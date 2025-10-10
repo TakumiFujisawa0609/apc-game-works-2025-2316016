@@ -5,6 +5,7 @@
 #include"../Common/Fader.h"
 #include"../Scene/SceneTitle.h"
 #include"../Scene/SceneGame.h"
+#include"../Scene/SceneGameOver.h"
 #include"../Scene/SceneSelect.h"
 
 SceneManager* SceneManager::instance_ = nullptr;
@@ -150,6 +151,9 @@ void SceneManager::DoChangeScene(void)
 		break;
 	case SCENE_ID::SELECT:
 		scene_ = std::make_unique<SceneSelect>();
+		break;
+	case SCENE_ID::GAMEOVER:
+		scene_ = std::make_unique<SceneGameOver>();
 		break;
 	}
 	nextSceneID_ = SCENE_ID::NONE;

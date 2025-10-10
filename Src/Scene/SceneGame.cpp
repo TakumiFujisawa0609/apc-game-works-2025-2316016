@@ -7,6 +7,7 @@
 #include "../Manager/InputManager.h"
 #include "../Manager/KeyConfig.h"
 #include "../Manager/Camera.h"
+#include "../Manager/DataBank.h"
 #include "../Object/Player/PlayerBase.h"
 #include "../Object/SkyDome/SkyDome.h"
 #include "../Object/Player/PlayerShot.h"
@@ -51,8 +52,8 @@ bool SceneGame::Init(void)
 	enemyHPUI_->Init();
 	//カメラ設定
 	auto& cam = SceneManager::GetInstance().GetCamera();
-	cam.ChangeMode(Camera::MODE::FOLLOW);
 	cam.SetFollow(&player_->GetTransform(), &enemy_->GetTransform());
+	cam.ChangeMode(Camera::MODE::FOLLOW);
 	cam.SetPos(player_->GetTransform().pos);
 	//スカイドーム
 	skyDome_ = std::make_unique<SkyDome>();
@@ -79,7 +80,7 @@ void SceneGame::Update(void)
 	}
 	if (player_->GetHP() <= 0.0f)
 	{
-		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::TITLE, true);
+		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::GAMEOVER, true);
 	}
 	
 };
@@ -136,14 +137,32 @@ void SceneGame::ChangeCameraMode(void)
 {
 	auto& cam = SceneManager::GetInstance().GetCamera();
 	auto& ins = KeyConfig::GetInstance();
-	if (ins.IsTrgDown(KeyConfig::CONTROL_TYPE::CHENGE_CAMERA_MODE, KeyConfig::JOYPAD_NO::PAD1))
+	auto lockOnType = DataBank::GetInstance().GetLockOnType();
+	auto controlType = DataBank::GetInstance().GetControlType();
+	switch (lockOnType)
 	{
-		cam.ChangeMode(Camera::MODE::TWO_TARGET_FOLLOW);
+	case DataBank::LOCK_ON_TYPE::FIXED:
+		break;
+	case DataBank::LOCK_ON_TYPE::PRESS:
+		if (ins.IsNew(KeyConfig::CONTROL_TYPE::CHENGE_CAMERA_MODE, KeyConfig::JOYPAD_NO::PAD1, controlType))
+		{
+			cam.ChangeMode(Camera::MODE::TWO_TARGET_FOLLOW);
+		}
+		else if (ins.IsTrgUp(KeyConfig::CONTROL_TYPE::CHENGE_CAMERA_MODE, KeyConfig::JOYPAD_NO::PAD1, controlType))
+		{
+			cam.ChangeMode(Camera::MODE::FOLLOW);
+		}
+		break;
+	case DataBank::LOCK_ON_TYPE::SWITCH:
+		if (ins.IsTrgDown(KeyConfig::CONTROL_TYPE::CHENGE_CAMERA_MODE, KeyConfig::JOYPAD_NO::PAD1, controlType))
+		{
+			cam.ChangeMode(cam.GetMode() == Camera::MODE::FOLLOW ? Camera::MODE::TWO_TARGET_FOLLOW : Camera::MODE::FOLLOW);
+		}
+		break;
+	default:
+		break;
 	}
-	else if (ins.IsTrgUp(KeyConfig::CONTROL_TYPE::CHENGE_CAMERA_MODE, KeyConfig::JOYPAD_NO::PAD1))
-	{
-		cam.ChangeMode(Camera::MODE::FOLLOW);
-	}
+
 }
 
 void SceneGame::CheckCollision(void)

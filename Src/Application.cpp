@@ -4,6 +4,8 @@
 #include "Manager/ResourceManager.h"
 #include "Manager/SceneManager.h"
 #include "Manager/SoundManager.h"
+#include "Manager/DataBank.h"
+#include "Manager/KeyMap.h"
 #include "Application.h"
 
 Application* Application::instance_ = nullptr;
@@ -66,6 +68,10 @@ void Application::Init(void)
 
 	// ƒV[ƒ“ŠÇ—‰Šú‰»
 	SceneManager::CreateInstance();
+
+	DataBank::CreateInstance();
+
+	KeyMap::GetInstance();
 }
 
 void Application::Run(void)
@@ -95,6 +101,8 @@ void Application::Destroy(void)
 	SoundManager::GetInstance().Destroy();	
 	KeyConfig::GetInstance().Destroy();
 	ResourceManager::GetInstance().Destroy();
+	DataBank::GetInstance().Destroy();
+	KeyMap::GetInstance().Destroy();
 
 	// DxLibI—¹
 	if (DxLib_End() == -1)

@@ -173,7 +173,19 @@ public:
 	/// <returns>押されているボタン</returns>
 	std::vector<JOYPAD_BTN> GetPushBtns(KeyConfig::JOYPAD_NO no) const;
 
-	JOYPAD_BTN GetControlBTN(CONTROL_TYPE cType) const;
+	/// <summary>
+	/// 操作の種類に対応したボタンを取得
+	/// </summary>
+	/// <param name="cType">操作の種類</param>
+	/// <returns>対応したボタンの種類</returns>
+	std::vector<JOYPAD_BTN> GetControlBTN(CONTROL_TYPE cType) const;
+
+	/// <summary>
+	/// 操作の種類に対応したキーを取得
+	/// </summary>
+	/// <param name="cType">操作の種類</param>
+	/// <returns>対応したキーの種類</returns>
+	std::vector<int>GetControlKey(CONTROL_TYPE cType);
 private:
 	std::unique_ptr<InputManager> inputManager_;	//入力管理クラスのインスタンス
 
