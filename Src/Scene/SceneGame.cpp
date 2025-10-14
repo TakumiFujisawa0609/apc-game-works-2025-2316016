@@ -188,6 +188,7 @@ void SceneGame::CheckCollision(void)
 		{
 			enemy_->Damage(2.0f);
 			playerShot.Hit();
+			SoundManager::GetInstance().Play(SoundManager::SRC::PSHOT_HIT, Sound::TIMES::ONCE);
 		}
 	}
 	if (!player_->IsDamageHit())

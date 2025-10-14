@@ -14,6 +14,9 @@ public:
 
 		ENTER_SOUND,	//決定音
 
+		PSHOT_HIT,	//プレイヤーの球の衝突音
+		PSHOT_THROW,	//プレイヤーの球を投げる音
+
 		MAX
 
 	};

@@ -1,5 +1,6 @@
 #include "../../Manager/DataBank.h"
 #include "../../Manager/SceneManager.h"
+#include "../../Manager/SoundManager.h"
 #include "../../Manager/Camera.h"
 #include "../Common/Gravity.h"
 #include "PlayerShot.h"
@@ -193,6 +194,7 @@ void PlayerBase::CreateShot(void)
 {
 	std::unique_ptr<PlayerShot> shot = std::make_unique<PlayerShot>(transform_->pos,SceneManager::GetInstance().GetCamera().GetTargetPos());
 	shots_.push_back(std::move(shot));
+	SoundManager::GetInstance().Play(SoundManager::SRC::PSHOT_THROW, Sound::TIMES::ONCE);
 }
 
 void PlayerBase::StateChangeIdle(void)

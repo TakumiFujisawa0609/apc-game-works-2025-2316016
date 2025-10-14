@@ -23,6 +23,8 @@ void SoundManager::Init(void)
 	//BGMÇ©SEÇ…ï™ÇØÇÈ
 	soundType_[SOUND_TYPE::BGM].push_back(SRC::TITLE_BGM);
 	soundType_[SOUND_TYPE::SE].push_back(SRC::ENTER_SOUND);
+	soundType_[SOUND_TYPE::SE].push_back(SRC::PSHOT_HIT);
+	soundType_[SOUND_TYPE::SE].push_back(SRC::PSHOT_THROW);
 	//ç≈ëÂçƒê∂êîÇèâä˙âªÇ∑ÇÈ
 	for (int i = 0; i < static_cast<int>(SRC::MAX);i++)
 	{
@@ -37,6 +39,12 @@ void SoundManager::Init(void)
 	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_BGM + "TitleBGM.mp3");
 	res->ChengeMaxVolume(1.0f);
 	loadMap_.emplace(SRC::TITLE_BGM, std::move(res));
+	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_SE + "PShotHit.mp3");
+	res->ChengeMaxVolume(1.0f);
+	loadMap_.emplace(SRC::PSHOT_HIT, std::move(res));
+	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_SE + "PShotThrow.mp3");
+	res->ChengeMaxVolume(1.0f);
+	loadMap_.emplace(SRC::PSHOT_THROW, std::move(res));
 }
 
 void SoundManager::Release(void)
