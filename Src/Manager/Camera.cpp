@@ -153,6 +153,7 @@ void Camera::ChangeMode(MODE mode)
 	case Camera::MODE::FIXED_POINT:
 		break;
 	case Camera::MODE::FOLLOW:
+	case Camera::MODE::TWO_TARGET_FOLLOW:
 		localPos_ = LOCAL_F2C_POS;
 		break;
 	}
@@ -487,4 +488,6 @@ void Camera::SetBeforeDrawTwoTargetFollow(void)
 	pos_ = VAdd(followTransform1_->pos, VAdd(up, VAdd(back, right)));
 	rot_ = Quaternion::LookRotation(VNorm(VSub(targetPos_, pos_)), Utility::DIR_U);
 	angles_ = rot_.ToEuler();
+	// ƒJƒƒ‰‚Ìã•ûŒü
+	cameraUp_ =Utility::DIR_U;
 }

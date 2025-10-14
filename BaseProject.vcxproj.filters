@@ -40,11 +40,13 @@
     <ClCompile Include="Src\Object\Enemy\Attack\JumpAttackConstant.cpp" />
     <ClCompile Include="Src\Object\Enemy\Attack\ThunderAroundAttack.cpp" />
     <ClCompile Include="Src\Object\Enemy\Attack\ThunderAround.cpp" />
-    <ClCompile Include="Src\Scene\SceneSelect.cpp" />
+    <ClCompile Include="Src\Scene\SceneStageSelect.cpp" />
     <ClCompile Include="Src\Scene\Select\Control.cpp" />
     <ClCompile Include="Src\Manager\DataBank.cpp" />
     <ClCompile Include="Src\Manager\KeyMap.cpp" />
     <ClCompile Include="Src\Scene\SceneGameOver.cpp" />
+    <ClCompile Include="Src\Scene\SceneGameClear.cpp" />
+    <ClCompile Include="Src\Scene\SceneMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Common\IntVector3.h" />
@@ -86,10 +88,12 @@
     <ClInclude Include="Src\Object\Enemy\Attack\JumpAttackConstant.h" />
     <ClInclude Include="Src\Object\Enemy\Attack\ThunderAroundAttack.h" />
     <ClInclude Include="Src\Object\Enemy\Attack\ThunderAround.h" />
-    <ClInclude Include="Src\Scene\SceneSelect.h" />
+    <ClInclude Include="Src\Scene\SceneStageSelect.h" />
     <ClInclude Include="Src\Scene\Select\Control.h" />
     <ClInclude Include="Src\Manager\DataBank.h" />
     <ClInclude Include="Src\Manager\KeyMap.h" />
     <ClInclude Include="Src\Scene\SceneGameOver.h" />
+    <ClInclude Include="Src\Scene\SceneGameClear.h" />
+    <ClInclude Include="Src\Scene\SceneMenu.h" />
   </ItemGroup>
 </Project>

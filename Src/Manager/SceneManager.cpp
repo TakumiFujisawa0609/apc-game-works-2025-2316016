@@ -7,7 +7,8 @@
 #include"../Scene/SceneGame.h"
 #include"../Scene/SceneGameOver.h"
 #include"../Scene/SceneGameClear.h"
-#include"../Scene/SceneSelect.h"
+#include"../Scene/SceneMenu.h"
+#include"../Scene/SceneStageSelect.h"
 
 SceneManager* SceneManager::instance_ = nullptr;
 
@@ -41,13 +42,16 @@ std::unique_ptr<SceneBase> SceneManager::MakeScene(SCENE_ID id)
 		scene = std::make_unique<SceneGame>();
 		break;
 	case SCENE_ID::SELECT:
-		scene = std::make_unique<SceneSelect>();
+		scene = std::make_unique<SceneStageSelect>();
 		break;
 	case SCENE_ID::GAMEOVER:
 		scene = std::make_unique<SceneGameOver>();
 		break;
 	case SCENE_ID::GAMECLEAR:
 		scene = std::make_unique<SceneGameClear>();
+		break;
+	case SCENE_ID::MENU:
+		scene = std::make_unique<SceneMenu>();
 		break;
 	}
 	scene->Init();
@@ -163,10 +167,12 @@ void SceneManager::ChangeScene(SCENE_ID nextID, bool isToFade)
 
 void SceneManager::PushScene(SCENE_ID pushId)
 {
+	scenes_.push_back(std::move(MakeScene(pushId)));
 }
 
 void SceneManager::PopScene()
 {
+	scenes_.pop_back();
 }
 
 

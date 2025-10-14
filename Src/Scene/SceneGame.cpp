@@ -53,7 +53,7 @@ bool SceneGame::Init(void)
 	//カメラ設定
 	auto& cam = SceneManager::GetInstance().GetCamera();
 	cam.SetFollow(&player_->GetTransform(), &enemy_->GetTransform());
-	cam.ChangeMode(Camera::MODE::FOLLOW);
+	cam.ChangeMode(Camera::MODE::TWO_TARGET_FOLLOW);
 	cam.SetPos(player_->GetTransform().pos);
 	//スカイドーム
 	skyDome_ = std::make_unique<SkyDome>();
@@ -82,7 +82,10 @@ void SceneGame::Update(void)
 	{
 		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::GAMEOVER, true);
 	}
-	
+	if (ins.IsTrgDown(KeyConfig::CONTROL_TYPE::OPEN_MENU, KeyConfig::JOYPAD_NO::PAD1))
+	{
+		SceneManager::GetInstance().PushScene(SceneManager::SCENE_ID::MENU);
+	}
 };
 
 //描画処理

@@ -31,10 +31,10 @@ bool SceneTitle::Init(void)
 void SceneTitle::Update(void)
 {
 	//ÉQÅ[ÉÄÉVÅ[ÉìÇ÷
-	if (KeyConfig::GetInstance().IsNew(KeyConfig::CONTROL_TYPE::ENTER_TEMP,KeyConfig::JOYPAD_NO::PAD1))
+	if (KeyConfig::GetInstance().IsTrgDown(KeyConfig::CONTROL_TYPE::ENTER_TEMP,KeyConfig::JOYPAD_NO::PAD1))
 	{
 		SoundManager::GetInstance().Play(SoundManager::SRC::ENTER_SOUND, Sound::TIMES::ONCE);
-		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::SELECT, true);
+		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::GAME, true);
 	}
 	
 }
@@ -45,5 +45,5 @@ void SceneTitle::Draw(void)
 	SetDrawBright(255, 0, 0);
 	DrawExtendGraph(0, 0, Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y, ResourceManager::GetInstance().Load(ResourceManager::SRC::TITLE_IMAGE_2).handleId_, true);
 	SetDrawBright(255, 255, 255);
-	DrawExtendGraph(0, 0, Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y, ResourceManager::GetInstance().Load(ResourceManager::SRC::TITLE_IMAGE_1).handleId_, true);
+	//DrawExtendGraph(0, 0, Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y, ResourceManager::GetInstance().Load(ResourceManager::SRC::TITLE_IMAGE_1).handleId_, true);
 }

@@ -85,6 +85,8 @@ public:
 		CANCEL_TEMP,			//仮キャンセル
 		CANCEL,					//キャンセル
 
+		OPEN_MENU,				//メニューを開く
+
 		CHENGE_CAMERA_MODE,	//カメラモード変更
 
 		SELECT_UP,			//選択上
