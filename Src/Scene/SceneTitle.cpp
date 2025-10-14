@@ -31,7 +31,7 @@ bool SceneTitle::Init(void)
 void SceneTitle::Update(void)
 {
 	//ÉQÅ[ÉÄÉVÅ[ÉìÇ÷
-	if (KeyConfig::GetInstance().IsTrgDown(KeyConfig::CONTROL_TYPE::ENTER_TEMP,KeyConfig::JOYPAD_NO::PAD1))
+	if (KeyConfig::GetInstance().IsTrgDown(KeyConfig::CONTROL_TYPE::ENTER,KeyConfig::JOYPAD_NO::PAD1))
 	{
 		SoundManager::GetInstance().Play(SoundManager::SRC::ENTER_SOUND, Sound::TIMES::ONCE);
 		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::GAME, true);

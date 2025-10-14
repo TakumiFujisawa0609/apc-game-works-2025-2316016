@@ -321,19 +321,19 @@ void Control::UpdateControlTypeEnter(void)
 		{
 			enterKey_ = static_cast<ENTER_KEY>((static_cast<int>(enterKey_) + 1) % 2);
 		}
-		if (ins_.IsTrgDown(KeyConfig::CONTROL_TYPE::ENTER_TEMP, KeyConfig::JOYPAD_NO::PAD1))
+		if (ins_.IsTrgDown(KeyConfig::CONTROL_TYPE::ENTER, KeyConfig::JOYPAD_NO::PAD1))
 		{
 			state_ = STATE::CHECK;
 		}
 		break;
 	case Control::STATE::CHECK:
-		if (ins_.IsTrgDown(KeyConfig::CONTROL_TYPE::ENTER_TEMP, KeyConfig::JOYPAD_NO::PAD1))
+		if (ins_.IsTrgDown(KeyConfig::CONTROL_TYPE::ENTER, KeyConfig::JOYPAD_NO::PAD1))
 		{
 			SetControlType(controlType_, enterKey_ == ENTER_KEY::PAD_BTN_RIGHT ? KeyConfig::JOYPAD_BTN::RIGHTBUTTON_RIGHT : KeyConfig::JOYPAD_BTN::RIGHTBUTTON_DOWN);
 			SetControlType(KeyConfig::CONTROL_TYPE::CANCEL, enterKey_ == ENTER_KEY::PAD_BTN_RIGHT ? KeyConfig::JOYPAD_BTN::RIGHTBUTTON_DOWN : KeyConfig::JOYPAD_BTN::RIGHTBUTTON_RIGHT);
 			state_ = STATE::DECIDE;
 		}
-		else if (ins_.IsTrgDown(KeyConfig::CONTROL_TYPE::CANCEL_TEMP, KeyConfig::JOYPAD_NO::PAD1))
+		else if (ins_.IsTrgDown(KeyConfig::CONTROL_TYPE::CANCEL, KeyConfig::JOYPAD_NO::PAD1))
 		{
 			state_ = STATE::CHOOSE;
 		}

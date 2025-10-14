@@ -80,9 +80,7 @@ public:
 
 	enum class CONTROL_TYPE //操作の種類	
 	{
-		ENTER_TEMP,				//仮決定
 		ENTER,					//決定
-		CANCEL_TEMP,			//仮キャンセル
 		CANCEL,					//キャンセル
 
 		OPEN_MENU,				//メニューを開く

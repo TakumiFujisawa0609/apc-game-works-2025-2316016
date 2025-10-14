@@ -51,12 +51,12 @@ void SceneStageSelect::DrawEnterCancelKeyTemp(void)
 	KeyConfig& ins = KeyConfig::GetInstance();
 	std::string str;
 	str = "";
-	for (auto btn : ins.GetControlBTN(KeyConfig::CONTROL_TYPE::ENTER_TEMP))
+	for (auto btn : ins.GetControlBTN(KeyConfig::CONTROL_TYPE::ENTER))
 	{
 		str += Utility::GetBtnName(btn) + " , ";
 	}
 	str += " :決定 ,";
-	for (auto btn : ins.GetControlBTN(KeyConfig::CONTROL_TYPE::CANCEL_TEMP))
+	for (auto btn : ins.GetControlBTN(KeyConfig::CONTROL_TYPE::CANCEL))
 	{
 		str += Utility::GetBtnName(btn) + " , ";
 	}
