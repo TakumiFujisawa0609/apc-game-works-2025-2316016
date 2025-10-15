@@ -1,5 +1,6 @@
 #include<DxLib.h>
 #include"SceneManager.h"
+#include"../Application.h"
 #include "Camera.h"
 #include"../Scene/SceneBase.h"
 #include"../Common/Fader.h"
@@ -73,6 +74,9 @@ bool SceneManager::Init(void)
 	ChangeScene(SCENE_ID::TITLE,true);
 	// デルタタイム
 	deltaTime_ = 1.0f / 60.0f;
+	// メインスクリーン
+	mainScreen_ = MakeScreen(
+		Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y, true);
 	Init3D();
 	return true;
 }
@@ -119,13 +123,15 @@ void SceneManager::Update(void)
 //描画処理
 void SceneManager::Draw(void)
 {
+	SetDrawScreen(mainScreen_);
 	ClearDrawScreen(); // 画面クリア
 	camera_->SetBeforeDraw();
 	for (auto& scene : scenes_) {
 		scene->Draw();
 	}
 	fader_->Draw();
-
+	SetDrawScreen(DX_SCREEN_BACK);
+	DrawGraph(0, 0, mainScreen_, true);
 }
 
 //解放処理(終了時の１度のみ実行)

@@ -6,6 +6,8 @@ class PlayerBase;
 class SkyDome;
 class EnemyBase;
 class EnemyHPUI;
+class PixelMaterial;
+class PixelRenderer;
 
 class SceneGame :public SceneBase
 {
@@ -37,6 +39,14 @@ protected:
 	std::unique_ptr<SkyDome> skyDome_;
 	//敵HPUI
 	std::unique_ptr<EnemyHPUI> enemyHPUI_;
+
+	// ポストエフェクト用スクリーン
+	int postEffectScreen_;
+
+	// ポストエフェクト用(ビネット)
+	std::unique_ptr<PixelMaterial> vineMaterial_;
+	std::unique_ptr<PixelRenderer> vineRenderer_;
+
 
 	//カメラの変更
 	void ChangeCameraMode(void);

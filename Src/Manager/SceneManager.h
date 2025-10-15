@@ -68,6 +68,7 @@ public:
 
 	Camera& GetCamera(void) { return *camera_; }
 
+	int GetMainScreen(void) { return mainScreen_; }
 private:
 	//メンバー変数
 	int nowPushSpace;           //今スペースを押しているか
@@ -77,6 +78,8 @@ private:
 	SCENE_ID nextSceneID_;              //次のシーンID
 
 	bool isSceneChanging_;             //シーン遷移中かの判断用フラグ(true:遷移中)
+
+	int mainScreen_;
 
 	//フェード
 	std::unique_ptr<Fader> fader_;                   //フェードのインスタンス

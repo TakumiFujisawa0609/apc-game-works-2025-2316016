@@ -25,6 +25,8 @@
 #include "../Object/Enemy/Attack/CrossLine.h"
 #include "../Object/Enemy/Attack/ThunderAround.h"
 #include "../Object/UI/EnemyHPUI.h"
+#include "../Renderer/PixelMaterial.h"
+#include "../Renderer/PixelRenderer.h"
 #include"SceneGame.h"
 
 SceneGame::SceneGame(void)
@@ -33,7 +35,7 @@ SceneGame::SceneGame(void)
 
 SceneGame::~SceneGame(void)
 {
-
+	DeleteGraph(postEffectScreen_);
 }
 
 
@@ -58,6 +60,19 @@ bool SceneGame::Init(void)
 	//スカイドーム
 	skyDome_ = std::make_unique<SkyDome>();
 	skyDome_->Init();
+
+	// ポストエフェクト用スクリーン
+	postEffectScreen_ = MakeScreen(
+		Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y, true);
+	// ポストエフェクト用(ビネット)
+	vineMaterial_ = std::make_unique<PixelMaterial>("Vignette.cso", 1);
+	vineMaterial_->AddConstBuf({ 3.5f, 0.0f, 0.0f, 0.0f });
+	vineMaterial_->AddTextureBuf(SceneManager::GetInstance().GetMainScreen());
+	vineRenderer_ = std::make_unique<PixelRenderer>(*vineMaterial_);
+	vineRenderer_->MakeSquereVertex(
+		Vector2(0, 0),
+		Vector2(Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y)
+	);
 	return true;
 }
 
@@ -91,7 +106,7 @@ void SceneGame::Update(void)
 //描画処理
 void SceneGame::Draw(void)
 {
-
+	int mainScreen = SceneManager::GetInstance().GetMainScreen();
 
 	skyDome_->Draw();
 	player_->Draw();
@@ -102,6 +117,17 @@ void SceneGame::Draw(void)
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
 	DrawCube3D(PlayerBase::MOVE_LIMIT_MIN, PlayerBase::MOVE_LIMIT_MAX, GetColor(255, 255, 255), GetColor(0, 0, 255), true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	SetDrawScreen(postEffectScreen_);
+
+	// 画面を初期化
+	ClearDrawScreen();
+
+	vineRenderer_->Draw();
+
+	// メインに戻す
+	SetDrawScreen(mainScreen);
+	DrawGraph(0, 0, postEffectScreen_, false);
 
 	enemyHPUI_->Draw();
 	DrawFormatString(0, 0, 0, "%f", player_->GetHP());
