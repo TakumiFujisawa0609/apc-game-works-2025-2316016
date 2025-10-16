@@ -58,7 +58,10 @@ void PlayerBase::Update(void)
 	//攻撃のクールタイム中ではなく攻撃ボタンを押したら攻撃する
 	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK, KeyConfig::JOYPAD_NO::PAD1, controlType_) && attackDeley_ < 0.0f)
 	{
-		ChangeState(STATE::ATTACK);
+		if (state_ != STATE::DAMAGE && state_ !=STATE::DEAD)
+		{
+			ChangeState(STATE::ATTACK);
+		}
 	}
 	//球の更新
 	for (auto& shot : shots_)
