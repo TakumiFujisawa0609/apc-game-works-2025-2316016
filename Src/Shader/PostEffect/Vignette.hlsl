@@ -6,7 +6,7 @@ cbuffer cbParam : register(b4)
 	float g_max_vine_pow;// ビネットの強度
     float g_player_hp;	//プレイヤーの体力
     float g_max_player_hp;	//プレイヤーの最大体力
-    float dummy;
+    float g_time;   //時間
 }
 
 float4 main(PS_INPUT PSInput) : SV_TARGET
@@ -21,19 +21,35 @@ float4 main(PS_INPUT PSInput) : SV_TARGET
     float dis = (x * x + y * y);
     //hpが高ければ０に近い
     float hpPer = (((g_max_player_hp - (g_player_hp < 0.0f?0.0f:g_player_hp)) / g_max_player_hp));
+    
+    float retValue = 0.25;
     //中心から近いところはそのまま
-    if (dis < 0.25f)
+    if (dis < retValue)
     {
         return ret;
     }
     //0.2～0.5 ->　0.0～0.5
-    dis -= 0.25f;
-    dis /= (0.25f / 0.5f);
+    dis -= retValue;
+    dis /= (retValue / 0.5f);
+    //時間をsinで波上にする
+    float speed;
+    if (g_player_hp < 0.0f)
+    {
+        speed = 2.0f;
+    }
+    else
+    {
+        speed = 1.0f;
+    }
+    float time = abs(sin(g_time * speed)); //0-1
+    time /= 2.0f;   //0 - 0.5
+    time += 0.5f;   //0.5 - 1.0f
+    
 		// ビネットの強度を計算
-    float vignette = 1.0f - saturate(dis * g_max_vine_pow * hpPer);
+    float vignette = 1.0f - saturate(dis * g_max_vine_pow * hpPer * time);
 	if(g_player_hp < 0.0f)
     {
-        vignette = 1.0f - saturate(dis * g_max_vine_pow);
+        vignette = 1.0f - saturate(dis * g_max_vine_pow * time);
     }
     //if (vignette > 0.7f)
     //{

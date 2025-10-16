@@ -66,13 +66,14 @@ bool SceneGame::Init(void)
 		Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y, true);
 	// ポストエフェクト用(ビネット)
 	vineMaterial_ = std::make_unique<PixelMaterial>("Vignette.cso", 1);
-	vineMaterial_->AddConstBuf({ VIGNETTE_MAX_POW, player_->GetHP(), PlayerBase::MAX_HP, 0.0f});
+	vineMaterial_->AddConstBuf({ VIGNETTE_MAX_POW, player_->GetHP(), PlayerBase::MAX_HP, vignetteTime_});
 	vineMaterial_->AddTextureBuf(SceneManager::GetInstance().GetMainScreen());
 	vineRenderer_ = std::make_unique<PixelRenderer>(*vineMaterial_);
 	vineRenderer_->MakeSquereVertex(
 		Vector2(0, 0),
 		Vector2(Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y)
 	);
+	vignetteTime_ = 0.0f;
 	return true;
 }
 
@@ -91,6 +92,8 @@ void SceneGame::Update(void)
 	//全ての更新が終わったら当たり判定をする
 	CheckCollision();
 
+	vignetteTime_ += SceneManager::GetInstance().GetDeltaTime();
+
 	//敵のHPが0を切ったらゲームクリアに移動
 	if (enemy_->GetHP() <= 0.0f)
 	{
@@ -107,7 +110,7 @@ void SceneGame::Update(void)
 		SceneManager::GetInstance().PushScene(SceneManager::SCENE_ID::MENU);
 	}
 	//ヴィネットの定数バッファを更新する
-	vineMaterial_->SetConstBuf(0,{ VIGNETTE_MAX_POW, player_->GetHP(), PlayerBase::MAX_HP, 0.0f });
+	vineMaterial_->SetConstBuf(0,{ VIGNETTE_MAX_POW, player_->GetHP(), PlayerBase::MAX_HP, vignetteTime_ });
 };
 
 //描画処理

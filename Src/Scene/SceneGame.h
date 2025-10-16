@@ -34,6 +34,9 @@ protected:
 	//ヴィネットの最大の強さ
 	static constexpr float VIGNETTE_MAX_POW = 5.0f;
 
+	//ヴィネットの点滅用じかん
+	float vignetteTime_;
+
 	//プレイヤー
 	std::unique_ptr<PlayerBase> player_;
 	//敵
