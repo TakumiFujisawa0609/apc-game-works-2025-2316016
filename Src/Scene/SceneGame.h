@@ -31,6 +31,8 @@ public:
 	void DebugDraw(void);
 protected:
 
+	static constexpr float VIGNETTE_MAX_POW = 3.5f;
+
 	//ƒvƒŒƒCƒ„[
 	std::unique_ptr<PlayerBase> player_;
 	//“G

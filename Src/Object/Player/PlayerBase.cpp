@@ -21,6 +21,7 @@ PlayerBase::PlayerBase(int playerNum) :keyIns_(KeyConfig::GetInstance())
 	gravity_->SetDir(Utility::DIR_D);
 	gravity_->ChengeState(Gravity::STATE::JUMP);
 	controlType_ = DataBank::GetInstance().GetControlType();
+	isDesth_ = false;
 	SetupStateChange();
 	ChangeState(STATE::IDLE,true);
 }
@@ -87,6 +88,10 @@ void PlayerBase::Damage(float damage,VECTOR dir)
 {
 	if (ChangeState(STATE::DAMAGE))
 	{
+		if (hp_ < 0.0f)
+		{
+			isDesth_ = true;
+		}
 		hp_ -= damage;
 		damageDir_ = dir;
 		gravity_->ChengeState(Gravity::STATE::JUMP);
@@ -362,7 +367,7 @@ void PlayerBase::StateUpdateDamage(void)
 {
 	if (damageTime_ < 0.0f)
 	{
-		if (hp_ < 0.0f)
+		if (isDesth_)
 		{
 			ChangeState(STATE::DEAD);
 		}

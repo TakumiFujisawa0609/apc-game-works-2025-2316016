@@ -66,7 +66,7 @@ bool SceneGame::Init(void)
 		Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y, true);
 	// ポストエフェクト用(ビネット)
 	vineMaterial_ = std::make_unique<PixelMaterial>("Vignette.cso", 1);
-	vineMaterial_->AddConstBuf({ 3.5f, 0.0f, 0.0f, 0.0f });
+	vineMaterial_->AddConstBuf({ VIGNETTE_MAX_POW, player_->GetHP(), PlayerBase::MAX_HP, 0.0f});
 	vineMaterial_->AddTextureBuf(SceneManager::GetInstance().GetMainScreen());
 	vineRenderer_ = std::make_unique<PixelRenderer>(*vineMaterial_);
 	vineRenderer_->MakeSquereVertex(
@@ -93,7 +93,7 @@ void SceneGame::Update(void)
 	{
 		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::GAMECLEAR, true);
 	}
-	if (player_->GetHP() <= 0.0f)
+	if (player_->GetState() == PlayerBase::STATE::DEAD)
 	{
 		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::GAMEOVER, true);
 	}
@@ -101,6 +101,7 @@ void SceneGame::Update(void)
 	{
 		SceneManager::GetInstance().PushScene(SceneManager::SCENE_ID::MENU);
 	}
+	vineMaterial_->SetConstBuf(0,{ VIGNETTE_MAX_POW, player_->GetHP(), PlayerBase::MAX_HP, 0.0f });
 };
 
 //描画処理

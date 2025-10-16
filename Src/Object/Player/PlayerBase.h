@@ -107,6 +107,7 @@ public:
 	PlayerShot& GetPlayerShot(int num) { return *shots_[num]; }
 protected:
 
+	bool isDesth_;
 	KeyConfig::TYPE controlType_;
 	int playerNum_; //プレイヤー番号
 	//基本情報
