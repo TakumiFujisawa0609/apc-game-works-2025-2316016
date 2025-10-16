@@ -45,6 +45,8 @@ void SoundManager::Init(void)
 	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_SE + "PShotThrow.mp3");
 	res->ChengeMaxVolume(1.0f);
 	loadMap_.emplace(SRC::PSHOT_THROW, std::move(res));
+	ChangeVolume(SOUND_TYPE::BGM, 0.8f);
+	ChangeVolume(SOUND_TYPE::SE, 0.8f);
 }
 
 void SoundManager::Release(void)
@@ -176,7 +178,7 @@ bool SoundManager::CheckMove(SRC src)
 
 }
 
-void SoundManager::ChengeVolume(SRC src, float per)
+void SoundManager::ChangeVolume(SRC src, float per)
 {
 	const auto& lPair = playMap_.find(src);
 	if (lPair != playMap_.end())
@@ -184,6 +186,22 @@ void SoundManager::ChengeVolume(SRC src, float per)
 		for (auto& sound : lPair->second)
 		{
 			sound->ChengeVolume(per);
+		}
+	}
+}
+
+void SoundManager::ChangeVolume(SOUND_TYPE type, float per)
+{
+	volume_[type] = per;
+	for (auto& srcPair : soundType_)
+	{
+		if (srcPair.first != type)
+		{
+			continue;
+		}
+		for (auto src : srcPair.second)
+		{
+			ChangeVolume(src, per);
 		}
 	}
 }

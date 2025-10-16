@@ -76,7 +76,14 @@ public:
 	/// </summary>
 	/// <param name="src">音の種類</param>
 	/// <param name="per">0.0～1.0でパーセントを設定</param>
-	void ChengeVolume(SRC src, float per);
+	void ChangeVolume(SRC src, float per);
+
+	/// <summary>
+	/// BGMかSE全ての音量を変える
+	/// </summary>
+	/// <param name="">BGM か SE</param>
+	/// <param name="per">0.0～1.0でパーセントを設定</param>
+	void ChangeVolume(SOUND_TYPE type, float per);
 
 	/// <summary>
 	/// 3D音源の耳の位置と前方ベクトルを設定する
@@ -85,6 +92,12 @@ public:
 	/// <param name="frontPos">前方方向(カメラ注視点)</param>
 	void Set3DListenPosAndFrontPos(VECTOR pos, VECTOR frontPos);
 
+	/// <summary>
+	/// BGMかSEの音量パーセンテージを返す
+	/// </summary>
+	/// <param name="type">BGMかSE</param>
+	/// <returns>0.0～1.0でパーセンテージを返す</returns>
+	float GetVolume(SOUND_TYPE type) { return volume_[type]; }
 private:
 	// 静的インスタンス
 	static SoundManager* instance_;
@@ -96,6 +109,9 @@ private:
 	std::map<SRC, std::shared_ptr<Sound>> loadMap_;
 	//プレイ用
 	std::map<SRC, std::vector<std::shared_ptr<Sound>>> playMap_;
+
+	//音量パーセント
+	std::map<SOUND_TYPE, float> volume_;
 
 	// デフォルトコンストラクタをprivateにして、
 	// 外部から生成できない様にする

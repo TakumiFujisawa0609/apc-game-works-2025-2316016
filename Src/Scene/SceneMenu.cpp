@@ -37,6 +37,7 @@ void SceneMenu::Update(void)
 		case SceneMenu::TYPE::KEY_CONFIG:
 			break;
 		case SceneMenu::TYPE::OPTION:
+			SceneManager::GetInstance().PushScene(SceneManager::SCENE_ID::SETTING);
 			break;
 		case SceneMenu::TYPE::BACK_GAME:
 			//ƒQ[ƒ€ƒV[ƒ“‚É–ß‚é

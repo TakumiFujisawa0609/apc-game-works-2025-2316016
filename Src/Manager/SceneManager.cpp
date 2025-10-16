@@ -9,6 +9,7 @@
 #include"../Scene/SceneGameOver.h"
 #include"../Scene/SceneGameClear.h"
 #include"../Scene/SceneMenu.h"
+#include"../Scene/SceneSetting.h"
 #include"../Scene/SceneStageSelect.h"
 
 SceneManager* SceneManager::instance_ = nullptr;
@@ -53,6 +54,9 @@ std::unique_ptr<SceneBase> SceneManager::MakeScene(SCENE_ID id)
 		break;
 	case SCENE_ID::MENU:
 		scene = std::make_unique<SceneMenu>();
+		break;
+	case SCENE_ID::SETTING:
+		scene = std::make_unique<SceneSetting>();
 		break;
 	}
 	scene->Init();
