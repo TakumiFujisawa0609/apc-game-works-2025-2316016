@@ -40,20 +40,27 @@ void PlayerBase::Update(void)
 	{
 		return;
 	}
+	//デルタタイムを取得し各種時間関係を更新する
 	float deltaTime = SceneManager::GetInstance().GetDeltaTime();
 	avoidCoolTime_ -= deltaTime;
 	attackDeley_ -= deltaTime;
 	damageTime_ -= deltaTime;
 	damageInvincibleTime_ -= deltaTime;
+	//状態ごとの更新
 	stateUpdate_();
+	//重力の更新
 	gravity_->Update();
+	//重力の適用
 	AplayGravity();
+	//移動制限
 	MoveLimit();
 
+	//攻撃のクールタイム中ではなく攻撃ボタンを押したら攻撃する
 	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK, KeyConfig::JOYPAD_NO::PAD1, controlType_) && attackDeley_ < 0.0f)
 	{
 		ChangeState(STATE::ATTACK);
 	}
+	//球の更新
 	for (auto& shot : shots_)
 	{
 		shot->Update();
@@ -108,12 +115,15 @@ void PlayerBase::PlayerMove(void)
 {
 	SceneManager& sceneIns = SceneManager::GetInstance();
 	Camera& cam = sceneIns.GetCamera();
+	//カメラの前方向を取得
 	VECTOR front = VSub(cam.GetTargetPos(), cam.GetPos());
 	front.y = 0.0f;
 	front = VNorm(front);
+	//カメラの左方向を取得
 	VECTOR left = front;
 	std::swap(left.x, left.z);
 	left.x = -left.x;
+	//キーボードでの移動処理
 	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_UP, KeyConfig::JOYPAD_NO::PAD1, controlType_))
 	{
 		transform_->pos = VAdd(transform_->pos, VScale(front, MOVE_SPEED));
@@ -134,12 +144,15 @@ void PlayerBase::PlayerMove(void)
 	{
 		return;
 	}
+	//PADのスティック情報を取得
 	auto stick2D = (keyIns_.GetKnockLStickSize(KeyConfig::JOYPAD_NO::PAD1));
 	if (stick2D.x == 0.0f && stick2D.y == 0.0f)
 	{
 		return;
 	}
+	//スティック情報を3D情報に変更
 	auto stick3D = Utility::Normalize(stick2D);
+	//座標を更新する
 	transform_->pos = VAdd(transform_->pos, VScale(front, stick3D.y * MOVE_SPEED * -1));
 	transform_->pos = VAdd(transform_->pos, VScale(left, stick3D.x * MOVE_SPEED * -1));
 }

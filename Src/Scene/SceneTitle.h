@@ -8,7 +8,6 @@ class SceneTitle: public SceneBase
 public:
 
 	//ƒƒ“ƒo[ŠÖ”
-	//-----------------------------------------------------------
 	SceneTitle(void);
 
 	~SceneTitle(void) override;

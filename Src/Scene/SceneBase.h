@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
-#include"../Common/Vector2.h"
-#include"../Utility/Utility.h"
+#include "../Common/Vector2.h"
+#include "../Utility/Utility.h"
 
 class SceneBase
 {

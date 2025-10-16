@@ -6,6 +6,7 @@ class SceneMenu :    public SceneBase
 {
 public:
 
+	//余白
 	static constexpr int MARGIN = 30;
 
 	enum class TYPE
@@ -24,7 +25,10 @@ public:
 	void Update(void)override;
 	void Draw(void)override;
 private:
+
+	//選択中のもの
 	TYPE type_;
+	//キーコンフィグのインスタンス
 	KeyConfig& ins_;
 };
 

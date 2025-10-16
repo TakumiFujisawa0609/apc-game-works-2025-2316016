@@ -33,10 +33,14 @@ void PlayerShot::Update(void)
 	switch (state_)
 	{
 	case PlayerShot::STATE::SHOT:
+		//撃っている状態の更新
+		//重力更新
 		gravity_->Update();
+		//方向を取得
 		VECTOR dir = VSub(targetPos_, startPos_);
 		dir.y = 0.0f;
 		dir = VNorm(dir);
+		//座標の更新
 		transform_->pos = VAdd(transform_->pos, VScale(dir, SPEED));
 		transform_->pos = VAdd(transform_->pos, VScale(gravity_->GetDir(), gravity_->GetPower()));
 		break;

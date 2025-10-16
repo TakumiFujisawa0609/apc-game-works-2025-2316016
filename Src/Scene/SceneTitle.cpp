@@ -1,13 +1,12 @@
-#include<DxLib.h>
-#include<cmath>
-#include"../Application.h"
-#include"../Manager/Scenemanager.h"
-#include"../Manager/SoundManager.h"
-#include "../Manager/InputManager.h"
+#include <DxLib.h>
+#include <cmath>
+#include "../Application.h"
+#include "../Manager/SceneManager.h"
+#include "../Manager/SoundManager.h"
 #include "../Manager/KeyConfig.h"
 #include "../Manager/Camera.h"
 #include "../Manager/ResourceManager.h"
-#include"SceneTitle.h"
+#include "SceneTitle.h"
 
 
 SceneTitle::SceneTitle(void)

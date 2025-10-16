@@ -34,13 +34,19 @@ public:
 	Transform& GetTransform(void) { return *transform_; }
 	float GetRadius(void) { return RADIUS; }
 	void Hit(void);
-	bool IsShot() { return state_ == STATE::SHOT; }
+	bool IsShot() const { return state_ == STATE::SHOT; }
 private:
+	//情報
 	std::unique_ptr<Transform> transform_;
+	//重力
 	std::unique_ptr<Gravity> gravity_;
+	//状態
 	STATE state_;
+	//ターゲット座標
 	VECTOR targetPos_;
+	//始点
 	VECTOR startPos_;
+	//死んだか
 	bool isDead_;
 
 };

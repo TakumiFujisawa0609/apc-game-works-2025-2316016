@@ -1,4 +1,4 @@
-#include<DxLib.h>
+#include <DxLib.h>
 #include "../Utility/Utility.h"
 #include "../Application.h"
 #include "../Manager/SceneManager.h"
@@ -8,6 +8,8 @@
 #include "../Manager/KeyConfig.h"
 #include "../Manager/Camera.h"
 #include "../Manager/DataBank.h"
+#include "../Renderer/PixelMaterial.h"
+#include "../Renderer/PixelRenderer.h"
 #include "../Object/Player/PlayerBase.h"
 #include "../Object/SkyDome/SkyDome.h"
 #include "../Object/Player/PlayerShot.h"
@@ -25,9 +27,7 @@
 #include "../Object/Enemy/Attack/CrossLine.h"
 #include "../Object/Enemy/Attack/ThunderAround.h"
 #include "../Object/UI/EnemyHPUI.h"
-#include "../Renderer/PixelMaterial.h"
-#include "../Renderer/PixelRenderer.h"
-#include"SceneGame.h"
+#include "SceneGame.h"
 
 SceneGame::SceneGame(void)
 {
@@ -79,28 +79,34 @@ bool SceneGame::Init(void)
 //更新処理
 void SceneGame::Update(void)
 {
+	//スカイドーム
 	skyDome_->Update();
-	//InputManager& ins = InputManager::GetInstance();
-	KeyConfig& ins = KeyConfig::GetInstance();
 	ChangeCameraMode();
 	//プレイヤー
 	player_->Update();
 	//敵
 	enemy_->Update();
 
+	KeyConfig& ins = KeyConfig::GetInstance();
+	//全ての更新が終わったら当たり判定をする
 	CheckCollision();
+
+	//敵のHPが0を切ったらゲームクリアに移動
 	if (enemy_->GetHP() <= 0.0f)
 	{
 		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::GAMECLEAR, true);
 	}
+	//プレイヤーが死んだらゲームオーバーに移動
 	if (player_->GetState() == PlayerBase::STATE::DEAD)
 	{
 		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::GAMEOVER, true);
 	}
+	//メニューを開くキーが押されたらメニューを開く
 	if (ins.IsTrgDown(KeyConfig::CONTROL_TYPE::OPEN_MENU, KeyConfig::JOYPAD_NO::PAD1))
 	{
 		SceneManager::GetInstance().PushScene(SceneManager::SCENE_ID::MENU);
 	}
+	//ヴィネットの定数バッファを更新する
 	vineMaterial_->SetConstBuf(0,{ VIGNETTE_MAX_POW, player_->GetHP(), PlayerBase::MAX_HP, 0.0f });
 };
 
@@ -109,16 +115,13 @@ void SceneGame::Draw(void)
 {
 	int mainScreen = SceneManager::GetInstance().GetMainScreen();
 
+	//各オブジェクトの描画
 	skyDome_->Draw();
 	player_->Draw();
 	enemy_->Draw();
-	DrawLine3D(player_->GetTransform().pos, enemy_->GetTransform().pos, GetColor(255, 0, 255));
 	DebugDraw();
 
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
-	DrawCube3D(PlayerBase::MOVE_LIMIT_MIN, PlayerBase::MOVE_LIMIT_MAX, GetColor(255, 255, 255), GetColor(0, 0, 255), true);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-
+	//ポストエフェクト用のスクリーンに変える
 	SetDrawScreen(postEffectScreen_);
 
 	// 画面を初期化
@@ -130,6 +133,7 @@ void SceneGame::Draw(void)
 	SetDrawScreen(mainScreen);
 	DrawGraph(0, 0, postEffectScreen_, false);
 
+	//シェーダーの効果を受けないUI等を描画
 	enemyHPUI_->Draw();
 	DrawFormatString(0, 0, 0, "%f", player_->GetHP());
 	DrawFormatString(0, 20, 0, "%d", GetDrawCallCount());
@@ -137,6 +141,7 @@ void SceneGame::Draw(void)
 
 void SceneGame::DebugDraw(void)
 {
+	//科リステージの描画
 	VECTOR min = PlayerBase::MOVE_LIMIT_MIN;
 	VECTOR max = PlayerBase::MOVE_LIMIT_MAX;
 	std::vector<VECTOR> vertexes;
@@ -161,6 +166,9 @@ void SceneGame::DebugDraw(void)
 	DrawLine3D(vertexes[1], vertexes[3], 0x0000ff);
 	DrawLine3D(vertexes[4], vertexes[6], 0x0000ff);
 	DrawLine3D(vertexes[5], vertexes[7], 0x0000ff);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
+	DrawCube3D(PlayerBase::MOVE_LIMIT_MIN, PlayerBase::MOVE_LIMIT_MAX, GetColor(255, 255, 255), GetColor(0, 0, 255), true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 void SceneGame::ChangeCameraMode(void)

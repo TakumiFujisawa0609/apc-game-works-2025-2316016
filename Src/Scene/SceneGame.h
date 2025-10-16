@@ -31,6 +31,7 @@ public:
 	void DebugDraw(void);
 protected:
 
+	//ヴィネットの最大の強さ
 	static constexpr float VIGNETTE_MAX_POW = 3.5f;
 
 	//プレイヤー

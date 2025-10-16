@@ -1,8 +1,8 @@
-#include<DxLib.h>
-#include"../Application.h"
-#include"../Utility/Utility.h"
-#include"../Manager/KeyConfig.h"
-#include"../Manager/SceneManager.h"
+#include <DxLib.h>
+#include "../Application.h"
+#include "../Utility/Utility.h"
+#include "../Manager/KeyConfig.h"
+#include "../Manager/SceneManager.h"
 #include "SceneBase.h"
 
 SceneBase::SceneBase(void)

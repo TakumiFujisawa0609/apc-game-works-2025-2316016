@@ -23,8 +23,10 @@ void EnemyHPUI::Update(void)
 
 void EnemyHPUI::Draw(void)
 {
+	//‘Ì—Í‚ÌŠ„‡‚ğæ“¾
 	float rate = enemy_.GetHP() / maxHP_;
 	rate = (rate < 0.0f) ? 0.0f : rate;
+	//•`‰æ
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
 	DrawBox(pos_.x, pos_.y, pos_.x + size_.x, pos_.y + size_.y, GetColor(0, 0, 0), true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);

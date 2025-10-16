@@ -17,6 +17,7 @@ bool SceneGameClear::Init(void)
 
 void SceneGameClear::Update(void)
 {
+    //決定キーを押したらタイトルに戻る
     if (KeyConfig::GetInstance().IsTrgDown(KeyConfig::CONTROL_TYPE::ENTER, KeyConfig::JOYPAD_NO::PAD1))
     {
         SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::TITLE, true);

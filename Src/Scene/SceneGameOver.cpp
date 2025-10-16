@@ -17,6 +17,7 @@ bool SceneGameOver::Init(void)
 
 void SceneGameOver::Update(void)
 {
+    //決定キーを押されたらタイトルに戻る
     if (KeyConfig::GetInstance().IsTrgDown(KeyConfig::CONTROL_TYPE::ENTER, KeyConfig::JOYPAD_NO::PAD1))
     {
         SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::TITLE, true);
