@@ -11,28 +11,39 @@ cbuffer cbParam : register(b4)
 
 float4 main(PS_INPUT PSInput) : SV_TARGET
 {
-
+    // UV座標とテクスチャを参照して、最適な色を取得する
+    float4 ret = tex.Sample(texSampler, PSInput.uv);
 	float2 uv = PSInput.uv;
+    //中心に近ければ0に近い
 	float x = abs(uv.x - 0.5f);	// 0.0～1.0f → -0.5～0.5 → 0.0～0.5
 	float y = abs(uv.y - 0.5f);	// 0.0～1.0f → -0.5～0.5 → 0.0～0.5
-	float dis = (x * x + y * y);
-    float hpPer = ( ((g_max_player_hp - g_player_hp) / g_max_player_hp));
+    //中心からの距離
+    float dis = (x * x + y * y);
+    //hpが高ければ０に近い
+    float hpPer = (((g_max_player_hp - (g_player_hp < 0.0f?0.0f:g_player_hp)) / g_max_player_hp));
+    //中心から近いところはそのまま
+    if (dis < 0.25f)
+    {
+        return ret;
+    }
+    //0.2～0.5 ->　0.0～0.5
+    dis -= 0.25f;
+    dis /= (0.25f / 0.5f);
 		// ビネットの強度を計算
     float vignette = 1.0f - saturate(dis * g_max_vine_pow * hpPer);
 	if(g_player_hp < 0.0f)
     {
         vignette = 1.0f - saturate(dis * g_max_vine_pow);
     }
-
+    //if (vignette > 0.7f)
+    //{
+    //    return ret;
+    //}
     //ヴィネットの強さを0.2～1.0に補正する
     vignette = vignette * 0.8f + 0.2f;
-    
-	// UV座標とテクスチャを参照して、最適な色を取得する
-	float4 ret = tex.Sample(texSampler, PSInput.uv);
-    if(dis < 0.35f)
-    {
-        return ret;
-    }
+
+
+
     if (g_player_hp < 0.0f)
     {
         ret.gb *= vignette;

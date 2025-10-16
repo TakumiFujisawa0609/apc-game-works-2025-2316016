@@ -32,7 +32,7 @@ public:
 protected:
 
 	//ヴィネットの最大の強さ
-	static constexpr float VIGNETTE_MAX_POW = 3.5f;
+	static constexpr float VIGNETTE_MAX_POW = 5.0f;
 
 	//プレイヤー
 	std::unique_ptr<PlayerBase> player_;
