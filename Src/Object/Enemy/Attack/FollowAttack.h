@@ -7,9 +7,9 @@
 class FollowAttack :    public AttackBase
 {
 public:
-	static constexpr float COOL_DOWN = 3.0f;
-	static constexpr float RADIUS = 20.0f;
-	static constexpr int RANDOM_SHOT_NUM = 5;
+	static constexpr float COOL_DOWN = 3.0f;	//クールダウン
+	static constexpr float RADIUS = 20.0f;		//半径
+	static constexpr int RANDOM_SHOT_NUM = 5;	//ランダムスピードの数
 
 	FollowAttack(EnemyBase& enemy);
 	~FollowAttack(void)override;

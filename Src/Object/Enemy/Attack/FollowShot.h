@@ -6,28 +6,28 @@ class Transform;
 class FollowShot
 {
 public:
-	enum class SPEED_TYPE
+	enum class SPEED_TYPE	//速さ種類
 	{
-		SLOW,
-		MIDIUM,
-		FAST,
-		RANDOM,
+		SLOW,	//遅い
+		MIDIUM,	//普通
+		FAST,	//早い
+		RANDOM,	//ランダム
 		MAX,
 	};
 
-	enum class STATE
+	enum class STATE	//状態
 	{
-		SHOT,
-		BLAST,
-		DEAD,
+		SHOT,	//追従中
+		BLAST,	//爆発
+		DEAD,	//破壊
 	};
 
-	static constexpr float SLOW_SPEED = 3.0f;
-	static constexpr float MIDIUM_SPEED = 5.5f;
-	static constexpr float FAST_SPEED = 10.0f;
+	static constexpr float SLOW_SPEED = 3.0f;	//遅いスピード
+	static constexpr float MIDIUM_SPEED = 5.5f;	//普通のスピード
+	static constexpr float FAST_SPEED = 10.0f;	//速いスピード
 
-	static constexpr float DAMAGE = 15.0f;
-	static constexpr float ATTACK_TIME = 10.0f;
+	static constexpr float DAMAGE = 15.0f;	//ダメージ
+	static constexpr float ATTACK_TIME = 10.0f;	//攻撃時間
 
 	FollowShot(Transform& target, SPEED_TYPE speed,VECTOR startPos);
 	~FollowShot(void);

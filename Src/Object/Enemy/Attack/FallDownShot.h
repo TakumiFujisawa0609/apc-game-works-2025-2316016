@@ -14,15 +14,15 @@ public:
 		DEAD,
 	};
 
-	static constexpr float SLOW_SPEED = 3.0f;
-	static constexpr float FAST_SPEED = 10.0f;
+	static constexpr float SLOW_SPEED = 3.0f;	//ç≈íxë¨ìx
+	static constexpr float FAST_SPEED = 10.0f;	//ç≈ë¨ë¨ìx
 
-	static constexpr float DAMAGE = 30.0f;
-	static constexpr float RADIUS_MIN = 150.0f;
-	static constexpr float RADIUS_MAX = 300.0f;
-	static constexpr int VERTEX_NUM = 64;
-	static constexpr int ALPHA = 128;
-	static constexpr float BLAST_TIME = 0.5f;
+	static constexpr float DAMAGE = 30.0f;		//É_ÉÅÅ[ÉW
+	static constexpr float RADIUS_MIN = 150.0f;	//â~ÇÃç≈è¨îºåa
+	static constexpr float RADIUS_MAX = 300.0f;	//â~ÇÃç≈ëÂîºåa
+	static constexpr int VERTEX_NUM = 64;		//â~ÇÃí∏ì_êî
+	static constexpr int ALPHA = 128;			//â~ÇÃìßñæìx
+	static constexpr float BLAST_TIME = 0.5f;	//ìñÇΩÇËîªíËÇÃçdíºéûä‘
 
 	FallDownShot(void);
 	~FallDownShot(void);
@@ -36,12 +36,12 @@ public:
 private:
 	//é©ï™ÇÃ
 	std::unique_ptr<Transform> transform_;
-	COLOR_F color_;
+	COLOR_F color_;	//êF
 	float radius_;	//îºåa
 	float initY;	//èâä˙Yç¿ïW
-	float blastTime_;
-	STATE state_;
-	float speed_;
+	float blastTime_;	//çdíºéûä‘
+	STATE state_;		//èÛë‘
+	float speed_;		//óéâ∫ë¨ìx
 	float InitSpeed(void);
 	VECTOR InitPos(void);
 };
