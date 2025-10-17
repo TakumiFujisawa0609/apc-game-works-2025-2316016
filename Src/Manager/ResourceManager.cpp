@@ -76,10 +76,14 @@ void ResourceManager::Init(void)
 	resourcesMap_.emplace(SRC::TITLE_IMAGE_1, std::move(res));
 	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "Title/TitleName2.png");
 	resourcesMap_.emplace(SRC::TITLE_IMAGE_2, std::move(res));
+
+	//オブジェクト
 	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "SkyDome/SkyDome.mv1");
 	resourcesMap_.emplace(SRC::SKY_DOME, std::move(res));
 	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "Enemy/Chicken.mv1");
 	resourcesMap_.emplace(SRC::ENEMY, std::move(res));
+	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "Stage/ShockWave.mv1");
+	resourcesMap_.emplace(SRC::SHOCK_WAVE, std::move(res));
 }
 
 void ResourceManager::Release(void)

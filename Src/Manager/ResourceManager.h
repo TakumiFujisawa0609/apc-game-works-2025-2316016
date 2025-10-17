@@ -38,9 +38,12 @@ public:
 		//タイトル
 		TITLE_IMAGE_1,
 		TITLE_IMAGE_2,
-		SKY_DOME,
-		PLAYER,
-		ENEMY,
+
+		//オブジェクト
+		SKY_DOME,	//スカイドーム
+		PLAYER,		//プレイヤー
+		ENEMY,		//エネミー
+		SHOCK_WAVE,	//ショックウェーブ
 	};
 
 	// 明示的にインステンスを生成する

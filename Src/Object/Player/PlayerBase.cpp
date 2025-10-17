@@ -40,6 +40,7 @@ void PlayerBase::Update(void)
 	{
 		return;
 	}
+	prePos_ = transform_->pos;
 	//デルタタイムを取得し各種時間関係を更新する
 	float deltaTime = SceneManager::GetInstance().GetDeltaTime();
 	avoidCoolTime_ -= deltaTime;
@@ -81,6 +82,11 @@ void PlayerBase::Draw(void)
 	{
 		shot->Draw();
 	}
+}
+
+void PlayerBase::SetPos(VECTOR pos)
+{
+	transform_->pos = pos;
 }
 
 bool PlayerBase::ChangeState(STATE state, bool isAbsolute )
@@ -164,9 +170,7 @@ void PlayerBase::MoveLimit(void)
 {
 	auto& pos = transform_->pos;
 	VECTOR prePos = pos;
-	pos.x = std::max(std::min(MOVE_LIMIT_MAX.x, pos.x), MOVE_LIMIT_MIN.x);
 	pos.y = std::max(std::min(MOVE_LIMIT_MAX.y, pos.y), MOVE_LIMIT_MIN.y);
-	pos.z = std::max(std::min(MOVE_LIMIT_MAX.z, pos.z), MOVE_LIMIT_MIN.z);
 	if (prePos.y < pos.y && state_ != STATE::DAMAGE)
 	{
 		gravity_->ChengeState(Gravity::STATE::NONE);

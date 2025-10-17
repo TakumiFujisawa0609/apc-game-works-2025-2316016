@@ -12,6 +12,7 @@
 #include "../Renderer/PixelRenderer.h"
 #include "../Object/Player/PlayerBase.h"
 #include "../Object/SkyDome/SkyDome.h"
+#include "../Object/Stage/Stage.h"
 #include "../Object/Player/PlayerShot.h"
 #include "../Object/Enemy/EnemyBase.h"
 #include "../Object/Enemy/Attack/AttackBase.h"
@@ -61,6 +62,9 @@ bool SceneGame::Init(void)
 	skyDome_ = std::make_unique<SkyDome>();
 	skyDome_->Init();
 
+	stage_ = std::make_unique<Stage>();
+	stage_->Init();
+
 	// ポストエフェクト用スクリーン
 	postEffectScreen_ = MakeScreen(
 		Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y, true);
@@ -82,6 +86,7 @@ void SceneGame::Update(void)
 {
 	//スカイドーム
 	skyDome_->Update();
+	stage_->Update();
 	ChangeCameraMode();
 	//プレイヤー
 	player_->Update();
@@ -122,7 +127,8 @@ void SceneGame::Draw(void)
 	skyDome_->Draw();
 	player_->Draw();
 	enemy_->Draw();
-	DebugDraw();
+	stage_->Draw();
+	//DebugDraw();
 
 	//ポストエフェクト用のスクリーンに変える
 	SetDrawScreen(postEffectScreen_);
@@ -229,6 +235,14 @@ void SceneGame::CheckCollision(void)
 			SoundManager::GetInstance().Play(SoundManager::SRC::PSHOT_HIT, Sound::TIMES::ONCE);
 		}
 	}
+	//プレイヤーの移動制限
+	int waveId = stage_->GetModelId();
+	auto result = MV1CollCheck_Line(waveId, -1, player_->GetPrePos(), player_->GetTransform().pos);
+	if (result.HitFlag > 0)
+	{
+		player_->SetPos(VAdd(result.HitPosition,VNorm(VSub(Utility::VECTOR_ZERO,result.HitPosition))));
+	}
+
 	if (!player_->IsDamageHit())
 	{
 		return;

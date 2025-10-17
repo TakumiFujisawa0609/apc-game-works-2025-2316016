@@ -83,7 +83,8 @@ public:
 	virtual void Draw(void);
 
 	Transform& GetTransform(void) { return *transform_; }
-
+	VECTOR GetPrePos(void) { return prePos_; }
+	void SetPos(VECTOR pos);
 	/// <summary>
 	/// 状態変更
 	/// </summary>
@@ -107,6 +108,7 @@ public:
 	PlayerShot& GetPlayerShot(int num) { return *shots_[num]; }
 protected:
 
+	VECTOR prePos_;
 	bool isDesth_;
 	KeyConfig::TYPE controlType_;
 	int playerNum_; //プレイヤー番号

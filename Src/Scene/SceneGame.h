@@ -4,6 +4,7 @@
 
 class PlayerBase;
 class SkyDome;
+class Stage;
 class EnemyBase;
 class EnemyHPUI;
 class PixelMaterial;
@@ -45,7 +46,8 @@ protected:
 	std::unique_ptr<SkyDome> skyDome_;
 	//敵HPUI
 	std::unique_ptr<EnemyHPUI> enemyHPUI_;
-
+	//ステージ
+	std::unique_ptr<Stage> stage_;
 	// ポストエフェクト用スクリーン
 	int postEffectScreen_;
 
