@@ -11,6 +11,7 @@ CrossAttack::CrossAttack(EnemyBase& enemy) : AttackBase(enemy)
 	time_ = 0.0f;
 	radian_ = 0.0f;
 	reverseTime_ = 0.0f;
+	myType_ = EnemyBase::ATTACK_TYPE::CROSS_LINE;
 	sign_ = 1;
 }
 CrossAttack::~CrossAttack(void)

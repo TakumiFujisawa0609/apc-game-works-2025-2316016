@@ -1,6 +1,6 @@
 #pragma once
-#include "SceneBase.h"
-#include "../Common/Vector2.h"
+#include "../SceneBase.h"
+#include "../../Common/Vector2.h"
 
 class PlayerBase;
 class SkyDome;
@@ -16,7 +16,6 @@ class SceneGame :public SceneBase
 public:
 
 	//メンバー関数
-	//-----------------------------------------------------------
 	//初期化処理(初回の1度のみ実行される)
 	SceneGame(void) ;
 
@@ -62,4 +61,6 @@ protected:
 	void ChangeCameraMode(void);
 	//当たり判定
 	void CheckCollision(void);
+	//シーン変更
+	virtual void ChangeScene(void);
 };

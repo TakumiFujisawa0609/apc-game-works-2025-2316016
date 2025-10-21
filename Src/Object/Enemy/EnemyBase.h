@@ -79,6 +79,11 @@ public:
 
 	int GetAttackNum(void) { return static_cast<int>(attackList_.size()); }
 	AttackBase& GetAttack(int num) { return *attackList_[num]; }
+
+
+	void AddAttack(ATTACK_TYPE type);	//UŒ‚‚ğ’Ç‰Á
+	void DeleteAttack(ATTACK_TYPE type); //UŒ‚‚ğíœ
+	void AllDeleteAttack(void); //‘S‚Ä‚ÌUŒ‚‚ğíœ
 protected:
 
 	//Šî–{î•ñ
@@ -106,7 +111,6 @@ protected:
 	virtual void UpdateAttack(void); //UŒ‚
 	virtual void UpdateDead(void); //€–S
 
-	void AddAttack(ATTACK_TYPE type);	//UŒ‚‚ğ’Ç‰Á
 
 	virtual void AplayChangeStateFunc(void);
 

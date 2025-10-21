@@ -8,6 +8,7 @@ FallDownAttack::FallDownAttack(EnemyBase& enemy) : AttackBase(enemy)
 	range_ = RANGE::MIDDLE;
 	geo_ = GEOMETORY::SPHERE;
 	time_ = 0.0f;
+	myType_ = EnemyBase::ATTACK_TYPE::FALL_DOWN;
 }
 
 FallDownAttack::~FallDownAttack(void)

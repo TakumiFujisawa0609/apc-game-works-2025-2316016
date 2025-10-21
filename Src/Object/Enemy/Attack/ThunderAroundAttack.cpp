@@ -11,6 +11,7 @@ ThunderAroundAttack::ThunderAroundAttack(EnemyBase& enemy) : AttackBase(enemy)
 	geo_ = GEOMETORY::CIRCLE;
 	time_ = 0.0f;
 	intervalTime_ = 0.0f;
+	myType_ = EnemyBase::ATTACK_TYPE::THUNDER_AROUND;
 }
 
 ThunderAroundAttack::~ThunderAroundAttack(void)

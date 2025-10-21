@@ -1,34 +1,34 @@
 #include <DxLib.h>
-#include "../Utility/Utility.h"
-#include "../Application.h"
-#include "../Manager/SceneManager.h"
-#include "../Manager/ResourceManager.h"
-#include "../Manager/SoundManager.h"
-#include "../Manager/InputManager.h"
-#include "../Manager/KeyConfig.h"
-#include "../Manager/Camera.h"
-#include "../Manager/DataBank.h"
-#include "../Renderer/PixelMaterial.h"
-#include "../Renderer/PixelRenderer.h"
-#include "../Object/Player/PlayerBase.h"
-#include "../Object/SkyDome/SkyDome.h"
-#include "../Object/Stage/ShockWave.h"
-#include "../Object/Stage/Floor.h"
-#include "../Object/Player/PlayerShot.h"
-#include "../Object/Enemy/EnemyBase.h"
-#include "../Object/Enemy/Attack/AttackBase.h"
-#include "../Object/Enemy/Attack/JumpAttack.h"
-#include "../Object/Enemy/Attack/JumpAttackConstant.h"
-#include "../Object/Enemy/Attack/FollowAttack.h"
-#include "../Object/Enemy/Attack/FallDownAttack.h"
-#include "../Object/Enemy/Attack/CrossAttack.h"
-#include "../Object/Enemy/Attack/ThunderAroundAttack.h"
-#include "../Object/Enemy/Attack/Wave.h"
-#include "../Object/Enemy/Attack/FollowShot.h"
-#include "../Object/Enemy/Attack/FallDownShot.h"
-#include "../Object/Enemy/Attack/CrossLine.h"
-#include "../Object/Enemy/Attack/ThunderAround.h"
-#include "../Object/UI/EnemyHPUI.h"
+#include "../../Utility/Utility.h"
+#include "../../Application.h"
+#include "../../Manager/SceneManager.h"
+#include "../../Manager/ResourceManager.h"
+#include "../../Manager/SoundManager.h"
+#include "../../Manager/InputManager.h"
+#include "../../Manager/KeyConfig.h"
+#include "../../Manager/Camera.h"
+#include "../../Manager/DataBank.h"
+#include "../../Renderer/PixelMaterial.h"
+#include "../../Renderer/PixelRenderer.h"
+#include "../../Object/Player/PlayerBase.h"
+#include "../../Object/SkyDome/SkyDome.h"
+#include "../../Object/Stage/ShockWave.h"
+#include "../../Object/Stage/Floor.h"
+#include "../../Object/Player/PlayerShot.h"
+#include "../../Object/Enemy/EnemyBase.h"
+#include "../../Object/Enemy/Attack/AttackBase.h"
+#include "../../Object/Enemy/Attack/JumpAttack.h"
+#include "../../Object/Enemy/Attack/JumpAttackConstant.h"
+#include "../../Object/Enemy/Attack/FollowAttack.h"
+#include "../../Object/Enemy/Attack/FallDownAttack.h"
+#include "../../Object/Enemy/Attack/CrossAttack.h"
+#include "../../Object/Enemy/Attack/ThunderAroundAttack.h"
+#include "../../Object/Enemy/Attack/Wave.h"
+#include "../../Object/Enemy/Attack/FollowShot.h"
+#include "../../Object/Enemy/Attack/FallDownShot.h"
+#include "../../Object/Enemy/Attack/CrossLine.h"
+#include "../../Object/Enemy/Attack/ThunderAround.h"
+#include "../../Object/UI/EnemyHPUI.h"
 #include "SceneGame.h"
 
 SceneGame::SceneGame(void)
@@ -105,16 +105,8 @@ void SceneGame::Update(void)
 
 	vignetteTime_ += SceneManager::GetInstance().GetDeltaTime();
 
-	//敵のHPが0を切ったらゲームクリアに移動
-	if (enemy_->GetHP() <= 0.0f)
-	{
-		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::GAMECLEAR, true);
-	}
-	//プレイヤーが死んだらゲームオーバーに移動
-	if (player_->GetState() == PlayerBase::STATE::DEAD)
-	{
-		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::GAMEOVER, true);
-	}
+	ChangeScene();
+
 	//メニューを開くキーが押されたらメニューを開く
 	if (ins.IsTrgDown(KeyConfig::CONTROL_TYPE::OPEN_MENU, KeyConfig::JOYPAD_NO::PAD1))
 	{
@@ -122,7 +114,9 @@ void SceneGame::Update(void)
 	}
 	//ヴィネットの定数バッファを更新する
 	vineMaterial_->SetConstBuf(0,{ VIGNETTE_MAX_POW, player_->GetHP(), PlayerBase::MAX_HP, vignetteTime_ });
-};
+}
+
+
 
 //描画処理
 void SceneGame::Draw(void)
@@ -415,4 +409,19 @@ void SceneGame::CheckCollision(void)
 		vec.y = 0.5f;
 		player_->Damage(5.0f, VNorm(vec));
 	}
+}
+
+void SceneGame::ChangeScene(void)
+{
+	//敵のHPが0を切ったらゲームクリアに移動
+	if (enemy_->GetHP() <= 0.0f)
+	{
+		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::GAMECLEAR, true);
+	}
+	//プレイヤーが死んだらゲームオーバーに移動
+	if (player_->GetState() == PlayerBase::STATE::DEAD)
+	{
+		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::GAMEOVER, true);
+	}
+
 }

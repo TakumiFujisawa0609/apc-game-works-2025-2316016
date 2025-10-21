@@ -10,6 +10,7 @@ JumpAttack::JumpAttack(EnemyBase& enemy) : AttackBase(enemy)
 {
 	range_ = RANGE::SHORT;
 	geo_ = GEOMETORY::CIRCUMFERENCE;
+	myType_ = EnemyBase::ATTACK_TYPE::JUMP;
 }
 
 JumpAttack::~JumpAttack(void)

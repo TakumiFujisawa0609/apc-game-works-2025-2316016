@@ -2,9 +2,9 @@
 #include <DxLib.h>
 #include <map>
 #include <functional>
+#include "../EnemyBase.h"
 
 class Transform;
-class EnemyBase;
 
 class AttackBase
 {
@@ -54,9 +54,12 @@ public:
 
 	void ChangeState(STATE state);
 
-	GEOMETORY GetGeometory(void) { return geo_; }
+	GEOMETORY GetGeometory(void) const { return geo_; }
+
+	EnemyBase::ATTACK_TYPE GetMyType(void)const { return myType_; }
 protected:
 	EnemyBase& enemy_; //e‚ÌEnemyBase
+	EnemyBase::ATTACK_TYPE myType_;
 	RANGE range_; //UŒ‚”ÍˆÍ
 	STATE state_; //ó‘Ô
 	Transform* target_; //‘Šè‚ÌTransform

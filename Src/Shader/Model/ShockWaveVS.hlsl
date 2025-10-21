@@ -28,7 +28,7 @@ VS_OUTPUT ret;
 // ローカル座標をワールド座標に変換(剛体)
     lWorldPosition.w = 1.0f;
     lWorldPosition.xyz = mul(lLocalPosition, g_base.localWorldMatrix);
-    //lWorldPosition.y += sin(lWorldPosition.x + time) * waveScale;
+    //lWorldPosition.y += sin(atan2(lWorldPosition.x,lWorldPosition.z) + time) * waveScale;
     ret.worldPos = lWorldPosition.xyz; // ワールド座標をピクセルシェーダへ引き継ぐ
 // ワールド座標をビュー座標に変換
     lViewPosition.w = 1.0f;
@@ -44,7 +44,7 @@ VS_OUTPUT ret;
     ret.uv.y = VSInput.uv0.y;
     //ret.uv.x = VSInput.uv0.x * g_uv_scale.x;
     //ret.uv.y = VSInput.uv0.y * g_uv_scale.y;
-    //ret.uv.y += sin(ret.uv.x + time) * waveScale;
+    //ret.uv.y = saturate(ret.uv.y * abs(sin(time * 3.0f + atan2(ret.worldPos.x, ret.worldPos.z))));
 // 法線
     ret.normal = VSInput.norm; // 法線をローカル空間からワールド空間へ変換
     ret.normal = normalize(mul(VSInput.norm, (float3x3) g_base.localWorldMatrix));

@@ -218,6 +218,25 @@ void EnemyBase::AddAttack(ATTACK_TYPE type)
 	attackList_.push_back(std::move(attack));
 }
 
+void EnemyBase::DeleteAttack(ATTACK_TYPE type)
+{
+	for (auto& attack : attackList_)
+	{
+		auto type =attack->GetMyType();
+		if (type == type)
+		{
+			attack = nullptr;
+		}
+	}
+	//nullptr‚ÌêŠ‚ğŠJ•ú‚·‚é
+	Utility::EraseVectorAllay(attackList_);
+}
+
+void EnemyBase::AllDeleteAttack(void)
+{
+	attackList_.clear();
+}
+
 void EnemyBase::AplayChangeStateFunc(void)
 {
 	changeState_[(STATE::IDLE)] = std::bind(&EnemyBase::ChangeStateIdle, this);

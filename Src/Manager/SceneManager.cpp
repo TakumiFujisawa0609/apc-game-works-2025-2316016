@@ -5,7 +5,7 @@
 #include"../Scene/SceneBase.h"
 #include"../Common/Fader.h"
 #include"../Scene/SceneTitle.h"
-#include"../Scene/SceneGame.h"
+#include"../Scene/Game/SceneGame.h"
 #include"../Scene/SceneGameOver.h"
 #include"../Scene/SceneGameClear.h"
 #include"../Scene/SceneMenu.h"
