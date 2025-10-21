@@ -3,6 +3,7 @@
 #include "../../Manager/SceneManager.h"
 #include "../../Common/Transform.h"
 #include "../../Player/PlayerBase.h"
+#include "../../Stage/ShockWave.h"
 #include "FallDownShot.h"
 
 FallDownShot::FallDownShot(void)
@@ -73,8 +74,15 @@ float FallDownShot::InitSpeed(void)
 VECTOR FallDownShot::InitPos(void)
 {
 	VECTOR pos = {};
-	pos.x = PlayerBase::MOVE_LIMIT_MIN.x + GetRand(static_cast<int>(PlayerBase::MOVE_LIMIT_MAX.x - PlayerBase::MOVE_LIMIT_MIN.x));
+	//pos.x = PlayerBase::MOVE_LIMIT_MIN.x + GetRand(static_cast<int>(PlayerBase::MOVE_LIMIT_MAX.x - PlayerBase::MOVE_LIMIT_MIN.x));
+	//pos.y = PlayerBase::MOVE_LIMIT_MAX.y;
+	//pos.z = PlayerBase::MOVE_LIMIT_MIN.z + GetRand(static_cast<int>(PlayerBase::MOVE_LIMIT_MAX.z - PlayerBase::MOVE_LIMIT_MIN.z));
+	int deg = GetRand(360);
+	float rad = Utility::Deg2RadF(static_cast<float>(deg));
+	int range = GetRand(static_cast<int>(ShockWave::RADIUS));
+	pos.x = std::sinf(rad) * range;
 	pos.y = PlayerBase::MOVE_LIMIT_MAX.y;
-	pos.z = PlayerBase::MOVE_LIMIT_MIN.z + GetRand(static_cast<int>(PlayerBase::MOVE_LIMIT_MAX.z - PlayerBase::MOVE_LIMIT_MIN.z));
+	range = GetRand(static_cast<int>(ShockWave::RADIUS));
+	pos.z = std::cosf(rad) * range;
 	return pos;
 }

@@ -9,6 +9,7 @@ class ShockWave
 public:
 
 	static constexpr float SIZE = 1.5f;
+	static constexpr float RADIUS = 1500;
 	ShockWave(void);
 	~ShockWave(void);
 	void Init(void);
