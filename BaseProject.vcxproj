@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Object\Stage\Floor.cpp" />
     <ClCompile Include="Src\Scene\SceneSetting.cpp" />
     <ClCompile Include="Src\Renderer\ModelMaterial.cpp" />
     <ClCompile Include="Src\Renderer\ModelRenderer.cpp" />
@@ -69,11 +70,12 @@
     <ClCompile Include="Src\Scene\SceneGame.cpp" />
     <ClCompile Include="Src\Scene\SceneTitle.cpp" />
     <ClCompile Include="Src\Utility\Utility.cpp" />
-    <ClCompile Include="Src\Object\Stage\Stage.cpp" />
+    <ClCompile Include="Src\Object\Stage\ShockWave.cpp" />
     <ClCompile Include="Src\Object\Enemy\Attack\ThunderAroundAttack.cpp" />
     <ClCompile Include="Src\Object\Enemy\Attack\ThunderAround.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Object\Stage\Floor.h" />
     <ClInclude Include="Src\Scene\SceneSetting.h" />
     <ClInclude Include="Src\Renderer\ModelMaterial.h" />
     <ClInclude Include="Src\Renderer\ModelRenderer.h" />
@@ -124,7 +126,7 @@
     <ClInclude Include="Src\Scene\SceneGame.h" />
     <ClInclude Include="Src\Scene\SceneTitle.h" />
     <ClInclude Include="Src\Utility\Utility.h" />
-    <ClInclude Include="Src\Object\Stage\Stage.h" />
+    <ClInclude Include="Src\Object\Stage\ShockWave.h" />
     <ClInclude Include="Src\Object\Enemy\Attack\ThunderAroundAttack.h" />
     <ClInclude Include="Src\Object\Enemy\Attack\ThunderAround.h" />
   </ItemGroup>
@@ -138,6 +140,18 @@
     <None Include="Src\Shader\Common\Vertex\VertexShader3DHeader.hlsli" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Src\Shader\Model\FloorPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Src\Shader\Model\FloorVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
     <FxCompile Include="Src\Shader\Model\ShockWavePS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>

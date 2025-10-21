@@ -2,7 +2,7 @@
 class SkyDome
 {
 public:
-	static constexpr float SCALE = 15.0f; //スケール
+	static constexpr float SCALE = 30.0f; //スケール
 
 	SkyDome(void);
 	~SkyDome(void);

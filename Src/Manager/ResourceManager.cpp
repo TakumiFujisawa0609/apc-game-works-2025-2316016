@@ -82,8 +82,12 @@ void ResourceManager::Init(void)
 	resourcesMap_.emplace(SRC::SKY_DOME, std::move(res));
 	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "Enemy/Chicken.mv1");
 	resourcesMap_.emplace(SRC::ENEMY, std::move(res));
-	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "Stage/ShockWave.mv1");
+	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "Stage/Floor/Floor.mv1");
+	resourcesMap_.emplace(SRC::FLOOR, std::move(res));
+	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "Stage/ShockWave/ShockWave.mv1");
 	resourcesMap_.emplace(SRC::SHOCK_WAVE, std::move(res));
+	res = Resource(Resource::TYPE::IMG, Application::PATH_MODEL + "Stage/ShockWave/Noise2.png");
+	resourcesMap_.emplace(SRC::NOISE, std::move(res));
 }
 
 void ResourceManager::Release(void)

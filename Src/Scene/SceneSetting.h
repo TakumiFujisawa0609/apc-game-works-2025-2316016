@@ -6,8 +6,11 @@ class SceneSetting :  public SceneBase
 {
 public:
 
-	static constexpr float MOVE_SPEED = 0.01f;	//ゲージの動くスピード
+	static constexpr float MOVE_SPEED = 0.001f;	//ゲージの動くスピード
 	static constexpr int MARGIN = 50;	//余白
+	static constexpr int GAGE_WIDTH = 300;	//ゲージの幅
+	static constexpr int GAGE_HEIGHT = 20;	//ゲージの高さ
+
 	enum class TYPE
 	{
 		BGM_VOLUME,		//BGMの音量調整
@@ -34,6 +37,7 @@ private:
 	STATE state_;
 	float seVolume_;
 	float bgmVolume_;
+	int frameCount_;
 	void ChangeState(STATE state);
 	std::map < STATE, std::function<void(void)>>stateChange_;
 	void ChooseChange(void);

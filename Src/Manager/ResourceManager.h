@@ -43,7 +43,9 @@ public:
 		SKY_DOME,	//スカイドーム
 		PLAYER,		//プレイヤー
 		ENEMY,		//エネミー
+		FLOOR,		//ステージ
 		SHOCK_WAVE,	//ショックウェーブ
+		NOISE,		//ノイズ
 	};
 
 	// 明示的にインステンスを生成する

@@ -12,7 +12,8 @@
 #include "../Renderer/PixelRenderer.h"
 #include "../Object/Player/PlayerBase.h"
 #include "../Object/SkyDome/SkyDome.h"
-#include "../Object/Stage/Stage.h"
+#include "../Object/Stage/ShockWave.h"
+#include "../Object/Stage/Floor.h"
 #include "../Object/Player/PlayerShot.h"
 #include "../Object/Enemy/EnemyBase.h"
 #include "../Object/Enemy/Attack/AttackBase.h"
@@ -62,8 +63,11 @@ bool SceneGame::Init(void)
 	skyDome_ = std::make_unique<SkyDome>();
 	skyDome_->Init();
 
-	stage_ = std::make_unique<Stage>();
-	stage_->Init();
+	//ステージ
+	floor_ = std::make_unique<Floor>();
+	floor_->Init();
+	shockWave_ = std::make_unique<ShockWave>();
+	shockWave_->Init();
 
 	// ポストエフェクト用スクリーン
 	postEffectScreen_ = MakeScreen(
@@ -86,7 +90,9 @@ void SceneGame::Update(void)
 {
 	//スカイドーム
 	skyDome_->Update();
-	stage_->Update();
+	//ステージ
+	floor_->Update();
+	shockWave_->Update();
 	ChangeCameraMode();
 	//プレイヤー
 	player_->Update();
@@ -125,9 +131,10 @@ void SceneGame::Draw(void)
 
 	//各オブジェクトの描画
 	skyDome_->Draw();
+	floor_->Draw();
 	player_->Draw();
 	enemy_->Draw();
-	stage_->Draw();
+	shockWave_->Draw();
 	//DebugDraw();
 
 	//ポストエフェクト用のスクリーンに変える
@@ -236,7 +243,7 @@ void SceneGame::CheckCollision(void)
 		}
 	}
 	//プレイヤーの移動制限
-	int waveId = stage_->GetModelId();
+	int waveId = shockWave_->GetModelId();
 	auto result = MV1CollCheck_Line(waveId, -1, player_->GetPrePos(), player_->GetTransform().pos);
 	if (result.HitFlag > 0)
 	{

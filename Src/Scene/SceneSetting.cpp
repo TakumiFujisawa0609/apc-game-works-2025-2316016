@@ -8,6 +8,7 @@
 
 SceneSetting::SceneSetting(void)
 {
+	frameCount_ = 0;
     type_ = TYPE::MAX;
     stateChange_[STATE::CHOOSE] = std::bind(&SceneSetting::ChooseChange, this);
     stateChange_[STATE::OTHER] = std::bind(&SceneSetting::OtherChange, this);
@@ -27,6 +28,7 @@ bool SceneSetting::Init(void)
 
 void SceneSetting::Update(void)
 {
+	frameCount_++;
     stateUpdate_();
 }
 
@@ -51,6 +53,24 @@ void SceneSetting::Draw(void)
     str = (type_ == TYPE::END ? "->" : "");
     str += "ÉÅÉjÉÖÅ[Ç…ñﬂÇÈ";
     Utility::DrawStringPlace(str,MARGIN + 30, MARGIN + 120, 0xffffff, Utility::STRING_PLACE::LEFT);
+	
+    //âπó Çï`âÊ
+	Utility::DrawStringPlace("BGM âπó : " + std::to_string(static_cast<int>(bgmVolume_ * 100.0f)), Application::SCREEN_SIZE_X - MARGIN, MARGIN + 30, 0xffffff, Utility::STRING_PLACE::RIGHT);
+	DrawBox(Application::SCREEN_HALF_X, MARGIN + 25, Application::SCREEN_HALF_X + GAGE_WIDTH, MARGIN + 25 + GAGE_HEIGHT, 0x000000, true);
+	DrawBox(Application::SCREEN_HALF_X, MARGIN + 25, Application::SCREEN_HALF_X + static_cast<int>(GAGE_WIDTH * bgmVolume_), MARGIN + 25 + GAGE_HEIGHT, 0x00ff00, true);
+    if (type_ == TYPE::BGM_VOLUME && state_ == STATE::OTHER)
+    {
+        int x = Application::SCREEN_HALF_X + static_cast<int>(GAGE_WIDTH * bgmVolume_);
+        DrawLine(x, MARGIN + 25, x, MARGIN + 25 + GAGE_HEIGHT, 0xffff00, 5);
+    }
+	Utility::DrawStringPlace("SE âπó : " + std::to_string(static_cast<int>(seVolume_ * 100.0f)), Application::SCREEN_SIZE_X - MARGIN, MARGIN + 60, 0xffffff, Utility::STRING_PLACE::RIGHT);
+	DrawBox(Application::SCREEN_HALF_X, MARGIN + 55, Application::SCREEN_HALF_X + GAGE_WIDTH, MARGIN + 55 + GAGE_HEIGHT, 0x000000, true);
+	DrawBox(Application::SCREEN_HALF_X, MARGIN + 55, Application::SCREEN_HALF_X + static_cast<int>(GAGE_WIDTH * seVolume_), MARGIN + 55 + GAGE_HEIGHT, 0x00ff00, true);
+    if (type_ == TYPE::SE_VOLUME && state_ == STATE::OTHER)
+    {
+        int x = Application::SCREEN_HALF_X + static_cast<int>(GAGE_WIDTH * seVolume_);
+        DrawLine(x, MARGIN + 55, x, MARGIN + 55 + GAGE_HEIGHT, 0xffff00, 5);
+    }
 }
 
 void SceneSetting::ChangeState(STATE state)
@@ -103,6 +123,7 @@ void SceneSetting::OtherUpdate(void)
         {
             bgmVolume_ -= MOVE_SPEED;
         }
+		bgmVolume_ = std::max(0.0f, std::min(1.0f, bgmVolume_));
         break;
     case SceneSetting::TYPE::SE_VOLUME:
         if (ins.IsNew(KeyConfig::CONTROL_TYPE::SELECT_RIGHT, KeyConfig::JOYPAD_NO::PAD1))
@@ -113,10 +134,13 @@ void SceneSetting::OtherUpdate(void)
         {
             seVolume_ -= MOVE_SPEED;
         }
+		seVolume_ = std::max(0.0f, std::min(1.0f, seVolume_));
         break;
     case SceneSetting::TYPE::FULL_SCREEN:
         break;
     case SceneSetting::TYPE::END:
+		SoundManager::GetInstance().ChangeVolume(SoundManager::SOUND_TYPE::SE, seVolume_);
+		SoundManager::GetInstance().ChangeVolume(SoundManager::SOUND_TYPE::BGM, bgmVolume_);
         SceneManager::GetInstance().PopScene();
         break;
     case SceneSetting::TYPE::MAX:

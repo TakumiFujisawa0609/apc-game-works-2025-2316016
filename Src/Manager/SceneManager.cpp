@@ -135,6 +135,7 @@ void SceneManager::Draw(void)
 	}
 	fader_->Draw();
 	SetDrawScreen(DX_SCREEN_BACK);
+	ClearDrawScreen(); // ‰æ–ÊƒNƒŠƒA
 	DrawGraph(0, 0, mainScreen_, true);
 }
 
@@ -231,7 +232,7 @@ void SceneManager::Fade(void)
 void SceneManager::JumpScene(SCENE_ID id)
 {
 	std::unique_ptr<SceneBase>scene = std::move(MakeScene(id));
-	scenes_.clear();
+  	scenes_.clear();
 	scenes_.push_back(std::move(scene));
 }
 
