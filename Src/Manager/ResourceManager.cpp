@@ -69,6 +69,18 @@ void ResourceManager::Init(void)
 	res = Resource(Resource::TYPE::IMG, strPath + "LockOn.png");
 	resourcesMap_.emplace(SRC::LOCKON_STR, std::move(res));
 
+	//メニュー用
+	std::string menuPath = Application::PATH_IMAGE + "Menu/";
+	res = Resource(Resource::TYPE::IMG, menuPath + "BGM.png");
+	resourcesMap_.emplace(SRC::BGM_STR, std::move(res));
+	res = Resource(Resource::TYPE::IMG, menuPath + "SE.png");
+	resourcesMap_.emplace(SRC::SE_STR, std::move(res));
+	res = Resource(Resource::TYPE::IMG, menuPath + "ScreenMode.png");
+	resourcesMap_.emplace(SRC::SCREEN_MODE_STR, std::move(res));
+	res = Resource(Resource::TYPE::IMG, menuPath + "FullScreen.png");
+	resourcesMap_.emplace(SRC::FULL_SCREEN_STR, std::move(res));
+	res = Resource(Resource::TYPE::IMG, menuPath + "WindowScreen.png");
+	resourcesMap_.emplace(SRC::WINDOW_SCREEN_STR, std::move(res));
 
 
 	//タイトル

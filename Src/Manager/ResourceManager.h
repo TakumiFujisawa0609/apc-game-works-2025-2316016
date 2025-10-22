@@ -35,6 +35,13 @@ public:
 		JUMP_STR,	// ジャンプ
 		LOCKON_STR,	// ロックオン
 
+		//メニュー用
+		BGM_STR,			// BGM
+		SE_STR,				// SE
+		SCREEN_MODE_STR,	// 画面モード
+		FULL_SCREEN_STR,	// フルスクリーン
+		WINDOW_SCREEN_STR,	// ウィンドウスクリーン
+
 		//タイトル
 		TITLE_IMAGE_1,
 		TITLE_IMAGE_2,
