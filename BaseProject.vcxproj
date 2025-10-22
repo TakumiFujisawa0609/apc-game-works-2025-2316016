@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Object\Common\AnimationController.cpp" />
     <ClCompile Include="Src\Scene\Game\SceneTutorial.cpp" />
     <ClCompile Include="Src\Object\Stage\Floor.cpp" />
     <ClCompile Include="Src\Scene\SceneSetting.cpp" />
@@ -76,6 +77,7 @@
     <ClCompile Include="Src\Object\Enemy\Attack\ThunderAround.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Object\Common\AnimationController.h" />
     <ClInclude Include="Src\Scene\Game\SceneTutorial.h" />
     <ClInclude Include="Src\Object\Stage\Floor.h" />
     <ClInclude Include="Src\Scene\SceneSetting.h" />

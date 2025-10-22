@@ -9,6 +9,7 @@
 class Transform;
 class PlayerShot;
 class Gravity;
+class AnimationController;
 
 class PlayerBase
 {
@@ -33,6 +34,8 @@ public:
 	static constexpr float DAMAGE_SPEED = 15.0f;	//ダメージの吹っ飛びスピード
 
 	static constexpr float JUMP_POW = 10.0f; //ジャンプ力
+	
+	static constexpr float SIZE = 0.3f; //プレイヤーの大きさ
 
 	//当たり判定
 	static constexpr float RADIUS = 10.0f;
@@ -46,11 +49,12 @@ public:
 		MOVE,	//移動
 		JUMP,	//ジャンプ
 		AVOID,  //回避
-		CHARGE, //チャージ
+		//CHARGE, //チャージ
 		ATTACK, //攻撃
 		DAMAGE, //ダメージ
 		DEAD,   //死亡
 	};
+
 
 	/// <summary>
 	/// コンストラクタ
@@ -116,6 +120,7 @@ protected:
 	std::unique_ptr<Transform> transform_;
 	KeyConfig& keyIns_;
 	std::unique_ptr<Gravity> gravity_;
+	std::unique_ptr<AnimationController> animCtrl_;
 	//弾
 	std::vector<std::unique_ptr<PlayerShot>> shots_;
 	//状態
@@ -143,7 +148,7 @@ protected:
 	void StateChangeMove(void);   //移動
 	void StateChangeJump(void);   //ジャンプ
 	void StateChangeAvoid(void);  //回避
-	void StateChangeCharge(void); //チャージ
+	//void StateChangeCharge(void); //チャージ
 	void StateChangeAttack(void); //攻撃
 	void StateChangeDamage(void); //ダメージ
 	void StateChangeDead(void);   //死亡
@@ -153,7 +158,7 @@ protected:
 	void StateUpdateMove(void);   //移動
 	void StateUpdateJump(void);   //ジャンプ
 	void StateUpdateAvoid(void);  //回避
-	void StateUpdateCharge(void); //チャージ
+	//void StateUpdateCharge(void); //チャージ
 	void StateUpdateAttack(void); //攻撃
 	void StateUpdateDamage(void); //ダメージ
 	void StateUpdateDead(void);   //死亡
@@ -170,6 +175,8 @@ protected:
 	bool IsPushMoveKey(void); //移動キーが押されているか
 
 	void CreateShot(void); //弾の生成
+
+	void InitAnimationController(void); //アニメーションコントローラーの初期化
 private:
 
 };

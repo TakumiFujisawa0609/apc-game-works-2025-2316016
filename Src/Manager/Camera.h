@@ -29,7 +29,7 @@ public:
 	static constexpr VECTOR DEFAULT_CAMERA_POS = { 0.0f, 100.0f, -500.0f };
 
 	// 追従位置からカメラ位置までの相対座標
-	static constexpr VECTOR LOCAL_F2C_POS = { 0.0f, 0.0f, -400.0f };
+	static constexpr VECTOR LOCAL_F2C_POS = { 0.0f, 0.0f, -300.0f };
 	//static constexpr VECTOR LOCAL_F2C_POS = { 0.0f, -1000.0f, -200.0f };
 
 	//FPSの時の相対座標
@@ -62,7 +62,7 @@ public:
 	static constexpr float TWO_TARGET_Y = 0.2f;
 
 	// 2人同時追従の相対座標
-	static constexpr VECTOR TWO_TARGET_LOCAL_POS = { 0.0f, 200.0f, -300.0f };
+	static constexpr VECTOR TWO_TARGET_LOCAL_POS = { 50.0f, 100.0f, -200.0f };
 
 	// カメラモード
 	enum class MODE

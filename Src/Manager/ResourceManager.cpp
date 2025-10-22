@@ -92,6 +92,8 @@ void ResourceManager::Init(void)
 	//オブジェクト
 	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "SkyDome/SkyDome.mv1");
 	resourcesMap_.emplace(SRC::SKY_DOME, std::move(res));
+	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "Player/Player.mv1");
+	resourcesMap_.emplace(SRC::PLAYER, std::move(res));
 	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "Enemy/Chicken.mv1");
 	resourcesMap_.emplace(SRC::ENEMY, std::move(res));
 	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "Stage/Floor/Floor.mv1");

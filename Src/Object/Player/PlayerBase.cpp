@@ -1,8 +1,12 @@
+#include "../../Application.h"
 #include "../../Manager/DataBank.h"
 #include "../../Manager/SceneManager.h"
 #include "../../Manager/SoundManager.h"
+#include "../../Manager/ResourceManager.h"
 #include "../../Manager/Camera.h"
 #include "../Common/Gravity.h"
+#include "../Common/Transform.h"
+#include "../Common/AnimationController.h"
 #include "PlayerShot.h"
 #include "PlayerBase.h"
 
@@ -16,12 +20,16 @@ PlayerBase::PlayerBase(int playerNum) :keyIns_(KeyConfig::GetInstance())
 	damageTime_ = 0.0f;
 	transform_ = std::make_unique<Transform>();
 	transform_->pos = MOVE_LIMIT_MIN;
+	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::PLAYER));
+	transform_->scl = VGet(SIZE, SIZE, SIZE);
+	transform_->Update();
 	gravity_ = std::make_unique<Gravity>();
 	gravity_->ChengeState(Gravity::STATE::NONE);
 	gravity_->SetDir(Utility::DIR_D);
 	gravity_->ChengeState(Gravity::STATE::JUMP);
 	controlType_ = DataBank::GetInstance().GetControlType();
 	isDesth_ = false;
+	InitAnimationController();
 	SetupStateChange();
 	ChangeState(STATE::IDLE,true);
 }
@@ -55,7 +63,7 @@ void PlayerBase::Update(void)
 	AplayGravity();
 	//移動制限
 	MoveLimit();
-
+	transform_->Update();
 	//攻撃のクールタイム中ではなく攻撃ボタンを押したら攻撃する
 	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK, KeyConfig::JOYPAD_NO::PAD1, controlType_) && attackDeley_ < 0.0f)
 	{
@@ -71,13 +79,15 @@ void PlayerBase::Update(void)
 		if (shot->IsDead())shot = nullptr;
 	}
 	Utility::EraseVectorAllay(shots_);
-	
+	animCtrl_->Update();
+	auto i = animCtrl_->GetPlayType();
 }
 
 void PlayerBase::Draw(void)
 {
 	int color = (state_ == STATE::DAMAGE) ? GetColor(255, 0, 0) : GetColor(0, 255, 0);
 	DrawSphere3D(transform_->pos, RADIUS, 16, color,GetColor(255,0,0),true);
+	MV1DrawModel(transform_->modelId);
 	for (auto& shot : shots_)
 	{
 		shot->Draw();
@@ -188,7 +198,7 @@ void PlayerBase::SetupStateChange(void)
 	stateChanges_[(STATE::MOVE)] = std::bind(&PlayerBase::StateChangeMove, this);
 	stateChanges_[(STATE::JUMP)] = std::bind(&PlayerBase::StateChangeJump, this);
 	stateChanges_[(STATE::AVOID)] = std::bind(&PlayerBase::StateChangeAvoid, this);
-	stateChanges_[(STATE::CHARGE)] = std::bind(&PlayerBase::StateChangeCharge, this);
+	//stateChanges_[(STATE::CHARGE)] = std::bind(&PlayerBase::StateChangeCharge, this);
 	stateChanges_[(STATE::ATTACK)] = std::bind(&PlayerBase::StateChangeAttack, this);
 	stateChanges_[(STATE::DAMAGE)] = std::bind(&PlayerBase::StateChangeDamage, this);
 	stateChanges_[(STATE::DEAD)] = std::bind(&PlayerBase::StateChangeDead, this);
@@ -222,14 +232,31 @@ void PlayerBase::CreateShot(void)
 	SoundManager::GetInstance().Play(SoundManager::SRC::PSHOT_THROW, Sound::TIMES::ONCE);
 }
 
+void PlayerBase::InitAnimationController(void)
+{
+	std::string path = Application::PATH_MODEL + "Player/";
+	animCtrl_ = std::make_unique<AnimationController>(transform_->modelId);
+	animCtrl_->Add((int)STATE::IDLE, path + "Idle.mv1", 60.0f);
+	animCtrl_->Add((int)STATE::MOVE, path + "Jogging.mv1", 60.0f);
+	//animCtrl_->Add((int)STATE::JUMP, path + "FastRun.mv1", 20.0f);
+	//animCtrl_->Add((int)STATE::AVOID, path + "Jump.mv1", 60.0f);
+	//animCtrl_->Add((int)STATE::ATTACK, path + "WarpPose.mv1", 60.0f);
+	//animCtrl_->Add((int)STATE::DAMAGE, path + "Flying.mv1", 60.0f);
+	//animCtrl_->Add((int)STATE::DEAD, path + "Falling.mv1", 80.0f);
+
+	animCtrl_->Play((int)STATE::IDLE);
+}
+
 void PlayerBase::StateChangeIdle(void)
 {
 	stateUpdate_ = std::bind(&PlayerBase::StateUpdateIdle, this);
+	animCtrl_->Play((int)STATE::IDLE);
 }
 
 void PlayerBase::StateChangeMove(void)
 {
 	stateUpdate_ = std::bind(&PlayerBase::StateUpdateMove, this);
+	animCtrl_->Play((int)STATE::MOVE);
 }
 
 void PlayerBase::StateChangeJump(void)
@@ -237,6 +264,7 @@ void PlayerBase::StateChangeJump(void)
 	gravity_->ChengeState(Gravity::STATE::JUMP);
 	gravity_->SetInitPower(JUMP_POW);
 	stateUpdate_ = std::bind(&PlayerBase::StateUpdateJump, this);
+	animCtrl_->Play((int)STATE::JUMP);
 };
 
 void PlayerBase::StateChangeAvoid(void)
@@ -253,6 +281,7 @@ void PlayerBase::StateChangeAvoid(void)
 		VECTOR left = front;
 		std::swap(left.x, left.z);
 		left.x = -left.x;
+		animCtrl_->Play((int)STATE::AVOID);
 		if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_UP, KeyConfig::JOYPAD_NO::PAD1, controlType_))
 		{
 			avoidDir_ = front;
@@ -289,10 +318,10 @@ void PlayerBase::StateChangeAvoid(void)
 	}
 }
 
-void PlayerBase::StateChangeCharge(void)
-{
-	stateUpdate_ = std::bind(&PlayerBase::StateUpdateCharge, this);
-}
+//void PlayerBase::StateChangeCharge(void)
+//{
+//	stateUpdate_ = std::bind(&PlayerBase::StateUpdateCharge, this);
+//}
 
 void PlayerBase::StateChangeAttack(void)
 {
@@ -368,14 +397,14 @@ void PlayerBase::StateUpdateAvoid(void)
 	}
 }
 
-void PlayerBase::StateUpdateCharge(void)
-{
-	PlayerMove();
-	if (keyIns_.IsTrgDown(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK, KeyConfig::JOYPAD_NO::PAD1, controlType_))
-	{
-		ChangeState(STATE::ATTACK);
-	}
-}
+//void PlayerBase::StateUpdateCharge(void)
+//{
+//	PlayerMove();
+//	if (keyIns_.IsTrgDown(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK, KeyConfig::JOYPAD_NO::PAD1, controlType_))
+//	{
+//		ChangeState(STATE::ATTACK);
+//	}
+//}
 
 void PlayerBase::StateUpdateAttack(void)
 {
