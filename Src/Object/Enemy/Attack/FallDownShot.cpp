@@ -59,6 +59,10 @@ void FallDownShot::Draw(void)
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, ALPHA);
 	Utility::DrawCircle3DXZ(pos,radius_, VERTEX_NUM, GetColor(color_.r * 255,color_.g * 255,color_.b*255), true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	if (state_ == STATE::BLAST)
+	{
+		DrawSphere3D(pos, radius_, 16, GetColor(255, 0, 0), GetColor(255, 0, 0), true);
+	}
 }
 
 void FallDownShot::Hit(void)

@@ -10,6 +10,7 @@
 #include "../../Manager/DataBank.h"
 #include "../../Renderer/PixelMaterial.h"
 #include "../../Renderer/PixelRenderer.h"
+#include "../../Object/Common/Gravity.h"
 #include "../../Object/Player/PlayerBase.h"
 #include "../../Object/SkyDome/SkyDome.h"
 #include "../../Object/Stage/ShockWave.h"
@@ -238,10 +239,16 @@ void SceneGame::CheckCollision(void)
 	}
 	//プレイヤーの移動制限
 	int waveId = shockWave_->GetModelId();
-	auto result = MV1CollCheck_Line(waveId, -1, player_->GetPrePos(), player_->GetTransform().pos);
+	VECTOR pPrePos = player_->GetPrePos();
+	pPrePos.y = 0.0f;
+	VECTOR pPos = player_->GetTransform().pos;
+	pPos.y = 0.0f;
+	auto result = MV1CollCheck_Line(waveId, -1, pPrePos, pPos);
 	if (result.HitFlag > 0)
 	{
-		player_->SetPos(VAdd(result.HitPosition,VNorm(VSub(Utility::VECTOR_ZERO,result.HitPosition))));
+		VECTOR hitPos = result.HitPosition;
+		hitPos.y = player_->GetTransform().pos.y;
+		player_->SetPos(VAdd(hitPos,VNorm(VSub(Utility::VECTOR_ZERO,hitPos))));
 	}
 
 	if (!player_->IsDamageHit())
@@ -274,7 +281,6 @@ void SceneGame::CheckCollision(void)
 					if (Utility::IsColSphere2Sphere(player_->GetTransform().pos, PlayerBase::RADIUS, transform.pos, FollowAttack::RADIUS))
 					{
 						VECTOR vec = VNorm(VSub(player_->GetTransform().pos, transform.pos));
-						vec.y = 0.5f;
 						player_->Damage(FollowShot::DAMAGE, VNorm(vec));
 						follow->HitShot(i);
 					}
@@ -296,7 +302,6 @@ void SceneGame::CheckCollision(void)
 					if (Utility::IsColSphere2Sphere(player_->GetTransform().pos, PlayerBase::RADIUS, transform.pos, fall->GetShotRadius(i)))
 					{
 						VECTOR vec = VNorm(VSub(player_->GetTransform().pos, transform.pos));
-						vec.y = 0.5f;
 						player_->Damage(FallDownShot::DAMAGE, VNorm(vec));
 					}
 				}
@@ -313,7 +318,6 @@ void SceneGame::CheckCollision(void)
 					if (Utility::IsColSphere2Sphere(player_->GetTransform().pos, PlayerBase::RADIUS, transform.pos, CrossLine::RADIUS))
 					{
 						VECTOR vec = VNorm(VSub(player_->GetTransform().pos, transform.pos));
-						vec.y = 0.5f;
 						player_->Damage(CrossLine::DAMAGE, VNorm(vec));
 					}
 				}
@@ -326,15 +330,16 @@ void SceneGame::CheckCollision(void)
 			auto thunder = dynamic_cast<ThunderAroundAttack*>(attack);
 			if (thunder != nullptr)
 			{
+				VECTOR pPos = player_->GetTransform().pos;
+				pPos.y = 0.0f;
 				//サンダーとの当たり判定
 				int thunderNum = thunder->GetThunderNum();
 				for (int i = 0; i < thunderNum; i++)
 				{
 					auto& transform = thunder->GetThunderTransform(i);
-					if (Utility::IsColSphere2Sphere(player_->GetTransform().pos, PlayerBase::RADIUS, transform.pos, ThunderAround::RADIUS))
+					if (Utility::IsColSphere2Sphere(pPos, PlayerBase::RADIUS, transform.pos, ThunderAround::RADIUS))
 					{
 						VECTOR vec = VNorm(VSub(player_->GetTransform().pos, transform.pos));
-						vec.y = 0.5f;
 						player_->Damage(ThunderAround::DAMAGE, VNorm(vec));
 					}
 				}
@@ -347,7 +352,7 @@ void SceneGame::CheckCollision(void)
 			if (jump != nullptr)
 			{
 				//Waveとの当たり判定
-				if (player_->GetState() == PlayerBase::STATE::JUMP)
+				if (player_->GetGravity().GetState() == Gravity::STATE::JUMP)
 				{
 					//ジャンプ中は当たらない
 					continue;
@@ -363,7 +368,6 @@ void SceneGame::CheckCollision(void)
 					if (Utility::IsColCircumference2Circle(wavePos, waveRadius, pPos, PlayerBase::RADIUS))
 					{
 						VECTOR vec = VNorm(VSub(player_->GetTransform().pos, wavePos));
-						vec.y = 0.5f;
 						player_->Damage(Wave::DAMAGE, VNorm(vec));
 					}
 				}
@@ -372,7 +376,7 @@ void SceneGame::CheckCollision(void)
 			if (jumpC != nullptr)
 			{
 				//Waveとの当たり判定
-				if (player_->GetState() == PlayerBase::STATE::JUMP)
+				if (player_->GetGravity().GetState() == Gravity::STATE::JUMP)
 				{
 					//ジャンプ中は当たらない
 					continue;
@@ -388,7 +392,6 @@ void SceneGame::CheckCollision(void)
 					if (Utility::IsColCircumference2Circle(wavePos, waveRadius, pPos, PlayerBase::RADIUS))
 					{
 						VECTOR vec = VNorm(VSub(player_->GetTransform().pos, wavePos));
-						vec.y = 0.5f;
 						player_->Damage(Wave::DAMAGE, VNorm(vec));
 					}
 				}
@@ -406,7 +409,6 @@ void SceneGame::CheckCollision(void)
 	if (Utility::IsColSphere2Model(player_->GetTransform().pos, PlayerBase::RADIUS, enemy_->GetTransform().modelId))
 	{
 		VECTOR vec = VNorm(VSub(player_->GetTransform().pos, enemy_->GetTransform().pos));
-		vec.y = 0.5f;
 		player_->Damage(5.0f, VNorm(vec));
 	}
 }

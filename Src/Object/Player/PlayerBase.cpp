@@ -63,9 +63,10 @@ void PlayerBase::Update(void)
 	AplayGravity();
 	//移動制限
 	MoveLimit();
+	Rotation();
 	transform_->Update();
 	//攻撃のクールタイム中ではなく攻撃ボタンを押したら攻撃する
-	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK, KeyConfig::JOYPAD_NO::PAD1, controlType_) && attackDeley_ < 0.0f)
+	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK, KeyConfig::JOYPAD_NO::PAD1, controlType_) && attackDeley_ < 0.0f && state_ != STATE::DAMAGE && state_ != STATE::DEAD)
 	{
 		if (state_ != STATE::DAMAGE && state_ !=STATE::DEAD)
 		{
@@ -110,7 +111,7 @@ bool PlayerBase::ChangeState(STATE state, bool isAbsolute )
 	return false;
 }
 
-void PlayerBase::Damage(float damage,VECTOR dir)
+void PlayerBase::Damage(float damage, VECTOR dir)
 {
 	if (ChangeState(STATE::DAMAGE))
 	{
@@ -120,7 +121,13 @@ void PlayerBase::Damage(float damage,VECTOR dir)
 		}
 		hp_ -= damage;
 		damageDir_ = dir;
-		gravity_->ChengeState(Gravity::STATE::JUMP);
+		damageDir_.y = 0.0f;
+		damageDir_ = VNorm(damageDir_);
+		if (gravity_->GetState() == Gravity::STATE::NONE)
+		{
+			gravity_->SetInitPower(DAMAGE_POW);
+			gravity_->ChengeState(Gravity::STATE::JUMP);
+		}
 	}
 }
 
@@ -232,16 +239,47 @@ void PlayerBase::CreateShot(void)
 	SoundManager::GetInstance().Play(SoundManager::SRC::PSHOT_THROW, Sound::TIMES::ONCE);
 }
 
+void PlayerBase::Rotation(void)
+{
+	VECTOR dir;
+	switch (state_)
+	{
+	case PlayerBase::STATE::IDLE:
+	case PlayerBase::STATE::DAMAGE:
+	case PlayerBase::STATE::DEAD:
+		return;
+		break;
+	case PlayerBase::STATE::MOVE:
+	case PlayerBase::STATE::JUMP:
+	case PlayerBase::STATE::AVOID:
+		dir = VSub(transform_->pos, prePos_);
+		break;
+	case PlayerBase::STATE::ATTACK:
+		dir = VSub(SceneManager::GetInstance().GetCamera().GetTargetPos(), transform_->pos);
+		break;
+	default:
+		break;
+	}
+	if (dir.x == 0.0f && dir.z == 0.0f)
+	{
+		return;
+	}
+	dir = VNorm(dir);
+	float angleY = atan2f(-dir.x, -dir.z);
+	transform_->rot.y = angleY;
+	transform_->quaRot = Quaternion(VGet(0.0f, angleY, 0.0f));
+}
+
 void PlayerBase::InitAnimationController(void)
 {
 	std::string path = Application::PATH_MODEL + "Player/";
 	animCtrl_ = std::make_unique<AnimationController>(transform_->modelId);
 	animCtrl_->Add((int)STATE::IDLE, path + "Idle.mv1", 60.0f);
-	animCtrl_->Add((int)STATE::MOVE, path + "Jogging.mv1", 60.0f);
-	//animCtrl_->Add((int)STATE::JUMP, path + "FastRun.mv1", 20.0f);
-	//animCtrl_->Add((int)STATE::AVOID, path + "Jump.mv1", 60.0f);
-	//animCtrl_->Add((int)STATE::ATTACK, path + "WarpPose.mv1", 60.0f);
-	//animCtrl_->Add((int)STATE::DAMAGE, path + "Flying.mv1", 60.0f);
+	animCtrl_->Add((int)STATE::MOVE, path + "Move.mv1", 120.0f);
+	animCtrl_->Add((int)STATE::JUMP, path + "Jump.mv1", 80.0f);
+	animCtrl_->Add((int)STATE::AVOID, path + "Avoid2.mv1", 100.0f);
+	animCtrl_->Add((int)STATE::ATTACK, path + "Throw.mv1", 120.0f);
+	animCtrl_->Add((int)STATE::DAMAGE, path + "Damage.mv1", 120.0f);
 	//animCtrl_->Add((int)STATE::DEAD, path + "Falling.mv1", 80.0f);
 
 	animCtrl_->Play((int)STATE::IDLE);
@@ -316,6 +354,7 @@ void PlayerBase::StateChangeAvoid(void)
 		avoidDir_.y = 0.0f;
 		avoidDir_ = VNorm(avoidDir_);
 	}
+	animCtrl_->Play((int)STATE::AVOID);
 }
 
 //void PlayerBase::StateChangeCharge(void)
@@ -327,6 +366,7 @@ void PlayerBase::StateChangeAttack(void)
 {
 	CreateShot();
 	attackDeley_ = ATTACK_DELEY;
+	animCtrl_->Play((int)STATE::ATTACK);
 	stateUpdate_ = std::bind(&PlayerBase::StateUpdateAttack, this);
 }
 
@@ -334,6 +374,7 @@ void PlayerBase::StateChangeDamage(void)
 {
 	damageTime_ = DAMAGE_TIME;
 	damageInvincibleTime_ = DAMAGE_INVINCIBLE_TIME;
+	animCtrl_->Play((int)STATE::DAMAGE);
 	stateUpdate_ = std::bind(&PlayerBase::StateUpdateDamage, this);
 }
 
@@ -409,7 +450,10 @@ void PlayerBase::StateUpdateAvoid(void)
 void PlayerBase::StateUpdateAttack(void)
 {
 	PlayerMove();
-	ChangeState(STATE::IDLE);
+	if (attackDeley_ < 0.0f)
+	{
+		ChangeState(STATE::IDLE);
+	}
 }
 
 void PlayerBase::StateUpdateDamage(void)

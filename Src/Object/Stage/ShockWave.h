@@ -8,8 +8,8 @@ class ShockWave
 {
 public:
 
-	static constexpr float SIZE = 1.5f;
-	static constexpr float RADIUS = 1500;
+	static constexpr VECTOR SIZE = {1.5f,3.0f,1.5f};
+	static constexpr float RADIUS = 1500.0f;
 	ShockWave(void);
 	~ShockWave(void);
 	void Init(void);

@@ -27,12 +27,12 @@ EnemyBase::EnemyBase(Transform& target) : target_(target)
 	maxHP_ = 100.0f;
 	hp_ = maxHP_;
 	AplayChangeStateFunc();
-	//AddAttack(ATTACK_TYPE::JUMP);
-	//AddAttack(ATTACK_TYPE::JUMP_CONSTANT);
-	//AddAttack(ATTACK_TYPE::FOLLOW);
+	AddAttack(ATTACK_TYPE::JUMP);
+	AddAttack(ATTACK_TYPE::JUMP_CONSTANT);
+	AddAttack(ATTACK_TYPE::FOLLOW);
 	AddAttack(ATTACK_TYPE::FALL_DOWN);
-	//AddAttack(ATTACK_TYPE::CROSS_LINE);
-	//AddAttack(ATTACK_TYPE::THUNDER_AROUND);
+	AddAttack(ATTACK_TYPE::CROSS_LINE);
+	AddAttack(ATTACK_TYPE::THUNDER_AROUND);
 	ChangeState(STATE::IDLE);
 }
 

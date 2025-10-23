@@ -24,16 +24,17 @@ public:
 	static constexpr VECTOR MOVE_LIMIT_MAX = { 750.0f,500.0f,750.0f }; //移動制限最小座標
 
 	//回避関連
-	static constexpr float AVOID_DISTANCE = 300.0f; //回避距離
-	static constexpr float AVOID_TIME = 0.3f; //回避タイム
+	static constexpr float AVOID_DISTANCE = 400.0f; //回避距離
+	static constexpr float AVOID_TIME = 0.6f; //回避タイム
 	static constexpr float AVOID_COOL_TIME = 0.5f; //回避クールタイム
 
 	//ダメージ関連
 	static constexpr float DAMAGE_TIME = 0.5f; //ダメージ時間
 	static constexpr float DAMAGE_INVINCIBLE_TIME = 1.5f; //ダメージ無敵時間
-	static constexpr float DAMAGE_SPEED = 15.0f;	//ダメージの吹っ飛びスピード
+	static constexpr float DAMAGE_SPEED = 30.0f;	//ダメージの吹っ飛びスピード
+	static constexpr float DAMAGE_POW = 10.0f;	//ダメージの吹っ飛びスピード
 
-	static constexpr float JUMP_POW = 10.0f; //ジャンプ力
+	static constexpr float JUMP_POW = 30.0f; //ジャンプ力
 	
 	static constexpr float SIZE = 0.3f; //プレイヤーの大きさ
 
@@ -110,6 +111,7 @@ public:
 
 	int GetPlayerShotNum(void) { return static_cast<int>(shots_.size()); }
 	PlayerShot& GetPlayerShot(int num) { return *shots_[num]; }
+	Gravity& GetGravity(void) { return *gravity_; }
 protected:
 
 	VECTOR prePos_;
@@ -175,6 +177,8 @@ protected:
 	bool IsPushMoveKey(void); //移動キーが押されているか
 
 	void CreateShot(void); //弾の生成
+
+	void Rotation(void); //プレイヤーの向き調整
 
 	void InitAnimationController(void); //アニメーションコントローラーの初期化
 private:

@@ -46,6 +46,8 @@ private:
 	VECTOR targetPos_;
 	//Žn“_
 	VECTOR startPos_;
+	//•ûŒü
+	VECTOR dir_;
 	//Ž€‚ñ‚¾‚©
 	bool isDead_;
 

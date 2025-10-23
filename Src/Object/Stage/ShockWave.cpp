@@ -12,7 +12,7 @@ ShockWave::ShockWave(void)
 	transform_ = std::make_unique<Transform>();
 	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::SHOCK_WAVE));
 	transform_->pos = { 0.0f,-10.0f,0.0f };
-	transform_->scl = { SIZE,SIZE,SIZE };
+	transform_->scl = SIZE;
 	transform_->Update();
 
 	material_ = std::make_unique<ModelMaterial>(

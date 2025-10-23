@@ -5,13 +5,16 @@
 PlayerShot::PlayerShot(VECTOR pPos, VECTOR tPos)
 {
 	transform_ = std::make_unique<Transform>();
-	gravity_ = std::make_unique<Gravity>();
-	gravity_->Init();
-	gravity_->SetDir(VGet(0.0f, -1.0f, 0.0f));
-	gravity_->SetInitPower(POWER);
 	transform_->pos = pPos;
 	startPos_ = pPos;
 	targetPos_ = tPos;
+	dir_ = VSub(targetPos_, startPos_);
+	gravity_ = std::make_unique<Gravity>();
+	gravity_->Init();
+	gravity_->SetDir(VGet(0.0f, -1.0f, 0.0f));
+	gravity_->SetInitPower(POWER + (dir_.y < 0.0f?0.0f:dir_.y));
+	dir_.y = 0.0f;
+	dir_ = VNorm(dir_);
 	isDead_ = false;
 	state_ = STATE::SHOT;
 }
@@ -37,11 +40,8 @@ void PlayerShot::Update(void)
 		//重力更新
 		gravity_->Update();
 		//方向を取得
-		VECTOR dir = VSub(targetPos_, startPos_);
-		dir.y = 0.0f;
-		dir = VNorm(dir);
 		//座標の更新
-		transform_->pos = VAdd(transform_->pos, VScale(dir, SPEED));
+		transform_->pos = VAdd(transform_->pos, VScale(dir_, SPEED));
 		transform_->pos = VAdd(transform_->pos, VScale(gravity_->GetDir(), gravity_->GetPower()));
 		break;
 	case PlayerShot::STATE::BLAST:
