@@ -42,7 +42,3 @@ void Floor::Draw(void)
 	renderer_->Draw();
 }
 
-const int Floor::GetModelId(void)
-{
-	return transform_->modelId;
-}

@@ -1,22 +1,24 @@
 #pragma once
 #include <DxLib.h>
-#include <memory>
 #include <map>
 #include <functional>
 #include <vector>
 #include "../../Manager/KeyConfig.h"
+#include "../ObjectBase.h"
 
-class Transform;
 class PlayerShot;
 class Gravity;
 class AnimationController;
 
-class PlayerBase
+class PlayerBase : public ObjectBase
 {
 public:
 
 	//最大体力
 	static constexpr float MAX_HP = 100.0f; 
+
+	//デフォルトの色
+	static constexpr COLOR_F DEFAULT_COLOR = { 1.0f,1.0f,1.0f,1.0f };
 
 	//移動関連
 	static constexpr float MOVE_SPEED = 5.0f; //移動速度
@@ -33,6 +35,8 @@ public:
 	static constexpr float DAMAGE_INVINCIBLE_TIME = 1.5f; //ダメージ無敵時間
 	static constexpr float DAMAGE_SPEED = 30.0f;	//ダメージの吹っ飛びスピード
 	static constexpr float DAMAGE_POW = 10.0f;	//ダメージの吹っ飛びスピード
+	static constexpr COLOR_F DAMAGE_COLOR = { 1.0f,0.0f,0.0f,1.0f }; //ダメージ時の色
+
 
 	static constexpr float JUMP_POW = 30.0f; //ジャンプ力
 	
@@ -67,29 +71,28 @@ public:
 	/// デストラクタ
 	/// </summary>
 	/// <param name=""></param>
-	~PlayerBase(void);
+	~PlayerBase(void)override;
 
 	/// <summary>
 	/// 初期化処理
 	/// </summary>
 	/// <param name=""></param>
-	virtual void Init(void);
+	virtual void Init(void)override;
 
 	/// <summary>
 	/// 更新処理
 	/// </summary>
 	/// <param name=""></param>
-	virtual void Update(void);
+	virtual void Update(void)override;
 
 	/// <summary>
 	/// 描画処理
 	/// </summary>
 	/// <param name=""></param>
-	virtual void Draw(void);
+	virtual void Draw(void)override;
 
-	Transform& GetTransform(void) { return *transform_; }
-	VECTOR GetPrePos(void) { return prePos_; }
-	void SetPos(VECTOR pos);
+	const VECTOR& GetPrePos(void)const { return prePos_; }
+	void SetPos(const VECTOR& pos);
 	/// <summary>
 	/// 状態変更
 	/// </summary>
@@ -119,7 +122,6 @@ protected:
 	KeyConfig::TYPE controlType_;
 	int playerNum_; //プレイヤー番号
 	//基本情報
-	std::unique_ptr<Transform> transform_;
 	KeyConfig& keyIns_;
 	std::unique_ptr<Gravity> gravity_;
 	std::unique_ptr<AnimationController> animCtrl_;

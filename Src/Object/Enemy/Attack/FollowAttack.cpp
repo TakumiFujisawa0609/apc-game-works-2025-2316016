@@ -7,7 +7,7 @@
 
 FollowAttack::FollowAttack(EnemyBase& enemy) : AttackBase(enemy)
 {
-	range_ = RANGE::MIDDLE;
+	range_ = RANGE::LONG;
 	geo_ = GEOMETORY::SPHERE;
 	myType_ = EnemyBase::ATTACK_TYPE::FOLLOW;
 }

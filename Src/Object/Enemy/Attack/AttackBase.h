@@ -11,9 +11,9 @@ class AttackBase
 public:
 
 	//UŒ‚—Dæ”ÍˆÍ
-	static constexpr float SHORT_RANGE = 300.0f;  //‹ß‹——£300ˆÈ“à‚È‚ç—Dæ‚µ‚Ä”­“®‚³‚ê‚é
-	static constexpr float MIDDLE_RANGE = 600.0f; //’†‹——£600ˆÈ“à‚È‚ç—Dæ‚µ‚Ä”­“®‚³‚ê‚é
-	static constexpr float LONG_RANGE = 1000.0f;   //‰“‹——£1000ˆÈ“à‚È‚ç—Dæ‚µ‚Ä”­“®‚³‚ê‚é
+	static constexpr float SHORT_RANGE = 500.0f;  //‹ß‹——£300ˆÈ“à‚È‚ç—Dæ‚µ‚Ä”­“®‚³‚ê‚é
+	static constexpr float MIDDLE_RANGE = 800.0f; //’†‹——£600ˆÈ“à‚È‚ç—Dæ‚µ‚Ä”­“®‚³‚ê‚é
+	static constexpr float LONG_RANGE = 1100.0f;   //‰“‹——£1000ˆÈ“à‚È‚ç—Dæ‚µ‚Ä”­“®‚³‚ê‚é
 
 	enum class RANGE	//—Dæ“x
 	{

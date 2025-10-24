@@ -1,3 +1,5 @@
+#include "../../Renderer/ModelMaterial.h"
+#include "../../Renderer/ModelRenderer.h"
 #include "../Common/Gravity.h"
 #include "../Common/Transform.h"
 #include "PlayerShot.h"

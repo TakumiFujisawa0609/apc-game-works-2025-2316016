@@ -238,7 +238,7 @@ void SceneGame::CheckCollision(void)
 		}
 	}
 	//ƒvƒŒƒCƒ„[‚ÌˆÚ“®§ŒÀ
-	int waveId = shockWave_->GetModelId();
+	int waveId = shockWave_->GetTransform().modelId;
 	VECTOR pPrePos = player_->GetPrePos();
 	pPrePos.y = 0.0f;
 	VECTOR pPos = player_->GetTransform().pos;

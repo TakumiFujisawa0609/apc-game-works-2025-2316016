@@ -1,11 +1,10 @@
 #pragma once
 #include <DxLib.h>
-#include <memory>
+#include "../ObjectBase.h"
 
 class Gravity;
-class Transform;
 
-class PlayerShot
+class PlayerShot : public ObjectBase
 {
 public:
 
@@ -31,10 +30,9 @@ public:
 	void Update(void);
 	void Draw(void);
 	bool IsDead(void) const { return isDead_; }
-	Transform& GetTransform(void) { return *transform_; }
-	float GetRadius(void) { return RADIUS; }
+	float GetRadius(void)const { return RADIUS; }
 	void Hit(void);
-	bool IsShot() const { return state_ == STATE::SHOT; }
+	bool IsShot(void) const { return state_ == STATE::SHOT; }
 private:
 	//èÓïÒ
 	std::unique_ptr<Transform> transform_;

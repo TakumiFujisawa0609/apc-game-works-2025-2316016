@@ -6,7 +6,7 @@
 
 CrossAttack::CrossAttack(EnemyBase& enemy) : AttackBase(enemy)
 {
-	range_ = RANGE::ALL;
+	range_ = RANGE::SHORT;
 	geo_ = GEOMETORY::SPHERE;
 	time_ = 0.0f;
 	radian_ = 0.0f;

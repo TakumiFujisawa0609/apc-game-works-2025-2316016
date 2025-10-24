@@ -4,6 +4,8 @@
 #include "../../Manager/SoundManager.h"
 #include "../../Manager/ResourceManager.h"
 #include "../../Manager/Camera.h"
+#include "../../Renderer/ModelMaterial.h"
+#include "../../Renderer/ModelRenderer.h"
 #include "../Common/Gravity.h"
 #include "../Common/Transform.h"
 #include "../Common/AnimationController.h"
@@ -86,8 +88,8 @@ void PlayerBase::Update(void)
 
 void PlayerBase::Draw(void)
 {
-	int color = (state_ == STATE::DAMAGE) ? GetColor(255, 0, 0) : GetColor(0, 255, 0);
-	DrawSphere3D(transform_->pos, RADIUS, 16, color,GetColor(255,0,0),true);
+	//int color = (state_ == STATE::DAMAGE) ? GetColor(255, 0, 0) : GetColor(0, 255, 0);
+	//DrawSphere3D(transform_->pos, RADIUS, 16, color,GetColor(255,0,0),true);
 	MV1DrawModel(transform_->modelId);
 	for (auto& shot : shots_)
 	{
@@ -95,7 +97,7 @@ void PlayerBase::Draw(void)
 	}
 }
 
-void PlayerBase::SetPos(VECTOR pos)
+void PlayerBase::SetPos(const VECTOR& pos)
 {
 	transform_->pos = pos;
 }
@@ -119,6 +121,7 @@ void PlayerBase::Damage(float damage, VECTOR dir)
 		{
 			isDesth_ = true;
 		}
+		MV1SetDifColorScale(transform_->modelId, DAMAGE_COLOR);
 		hp_ -= damage;
 		damageDir_ = dir;
 		damageDir_.y = 0.0f;
@@ -466,6 +469,7 @@ void PlayerBase::StateUpdateDamage(void)
 		}
 		else
 		{
+			MV1SetDifColorScale(transform_->modelId, DEFAULT_COLOR);
 			ChangeState(STATE::IDLE);
 		}
 	}

@@ -1,25 +1,21 @@
 #pragma once
-#include <memory>
+#include "../ObjectBase.h"
 class Transform;
 class ModelMaterial;
 class ModelRenderer;
 
-class Floor
+class Floor : public ObjectBase
 {
 public:
 
 	static constexpr float SIZE = 3.0f;
 	static constexpr float TEXTURE_SCALE = 30.0f;
 	Floor(void);
-	~Floor(void);
-	void Init(void);
-	void Update(void);
-	void Draw(void);
-	const int GetModelId(void);
+	~Floor(void)override;
+	void Init(void)override;
+	void Update(void)override;
+	void Draw(void)override;
 private:
 
-	std::unique_ptr<Transform> transform_;
-	std::unique_ptr<ModelMaterial> material_;
-	std::unique_ptr<ModelRenderer> renderer_;
 };
 

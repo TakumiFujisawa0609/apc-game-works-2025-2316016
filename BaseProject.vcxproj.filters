@@ -57,6 +57,7 @@
     <ClCompile Include="Src\Scene\Game\SceneTutorial.cpp" />
     <ClCompile Include="Src\Scene\Game\SceneGame.cpp" />
     <ClCompile Include="Src\Object\Common\AnimationController.cpp" />
+    <ClCompile Include="Src\Object\ObjectBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Common\IntVector3.h" />
@@ -115,6 +116,7 @@
     <ClInclude Include="Src\Scene\Game\SceneTutorial.h" />
     <ClInclude Include="Src\Scene\Game\SceneGame.h" />
     <ClInclude Include="Src\Object\Common\AnimationController.h" />
+    <ClInclude Include="Src\Object\ObjectBase.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shader\Common\VertexToPixelHeader.hlsli" />

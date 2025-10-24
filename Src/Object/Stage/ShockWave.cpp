@@ -49,8 +49,3 @@ void ShockWave::Draw(void)
 	//MV1DrawModel(transform_->modelId);
 	renderer_->Draw();
 }
-
-const int ShockWave::GetModelId(void)
-{
-	return transform_->modelId;
-}
