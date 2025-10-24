@@ -1,15 +1,14 @@
 #pragma once
 #include <DxLib.h>
-#include <memory>
 #include <map>
 #include <functional>
 #include <vector>
+#include "../ObjectBase.h"
 
-class Transform;
 class Gravity;
 class AttackBase;
 
-class EnemyBase
+class EnemyBase : public ObjectBase
 {
 public:
 
@@ -46,25 +45,25 @@ public:
 	/// デストラクタ
 	/// </summary>
 	/// <param name=""></param>
-	virtual ~EnemyBase(void);
+	virtual ~EnemyBase(void)override;
 
 	/// <summary>
 	/// 初期化処理
 	/// </summary>
 	/// <param name=""></param>
-	virtual void Init(void);
+	virtual void Init(void)override;
 
 	/// <summary>
 	/// 更新処理
 	/// </summary>
 	/// <param name=""></param>
-	virtual void Update(void);
+	virtual void Update(void)override;
 
 	/// <summary>
 	/// 描画処理
 	/// </summary>
 	/// <param name=""></param>
-	virtual void Draw(void);
+	virtual void Draw(void)override;
 
 	Transform& GetTransform(void) { return *transform_; }
 
@@ -86,8 +85,6 @@ public:
 	void AllDeleteAttack(void); //全ての攻撃を削除
 protected:
 
-	//基本情報
-	std::unique_ptr<Transform> transform_;
 	STATE state_; //状態
 	std::unique_ptr<Gravity> gravity_; //重力
 

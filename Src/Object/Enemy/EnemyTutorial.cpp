@@ -1,3 +1,5 @@
+#include "../../Renderer/ModelMaterial.h"
+#include "../../Renderer/ModelRenderer.h"
 #include "EnemyTutorial.h"
 
 EnemyTutorial::EnemyTutorial(Transform& target) : EnemyBase(target)

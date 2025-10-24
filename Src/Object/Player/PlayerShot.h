@@ -25,17 +25,15 @@ public:
 	/// <param name="tPos">ターゲット座標</param>
 	PlayerShot(VECTOR pPos,VECTOR tPos);
 
-	~PlayerShot();
-	void Init(void);
-	void Update(void);
-	void Draw(void);
+	~PlayerShot()override;
+	void Init(void)override;
+	void Update(void)override;
+	void Draw(void)override;
 	bool IsDead(void) const { return isDead_; }
 	float GetRadius(void)const { return RADIUS; }
 	void Hit(void);
 	bool IsShot(void) const { return state_ == STATE::SHOT; }
 private:
-	//情報
-	std::unique_ptr<Transform> transform_;
 	//重力
 	std::unique_ptr<Gravity> gravity_;
 	//状態

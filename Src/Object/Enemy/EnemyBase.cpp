@@ -2,6 +2,8 @@
 #include <memory>
 #include "../../Utility/Utility.h"
 #include "../../Manager/ResourceManager.h"
+#include "../../Renderer/ModelMaterial.h"
+#include "../../Renderer/ModelRenderer.h"
 #include "../Player/PlayerBase.h"
 #include "../Common/Transform.h"
 #include "../Common/Gravity.h"

@@ -230,7 +230,8 @@ void SceneGame::CheckCollision(void)
 	{
 		auto& playerShot = player_->GetPlayerShot(i);
 		if (!playerShot.IsShot())continue;
-		if (Utility::IsColSphere2Model(playerShot.GetTransform().pos, playerShot.GetRadius(), enemy_->GetTransform().modelId))
+		auto& pShotTransform = playerShot.GetTransform();
+		if (Utility::IsColSphere2Model(pShotTransform.pos, playerShot.GetRadius(), enemy_->GetTransform().modelId))
 		{
 			enemy_->Damage(2.0f);
 			playerShot.Hit();
