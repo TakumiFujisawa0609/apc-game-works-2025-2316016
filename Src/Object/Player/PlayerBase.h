@@ -21,14 +21,14 @@ public:
 	static constexpr COLOR_F DEFAULT_COLOR = { 1.0f,1.0f,1.0f,1.0f };
 
 	//移動関連
-	static constexpr float MOVE_SPEED = 5.0f; //移動速度
+	static constexpr float MOVE_SPEED = 8.0f; //移動速度
 	static constexpr VECTOR MOVE_LIMIT_MIN = { -750.0f,0.0f,-750.0f }; //移動制限最小座標
 	static constexpr VECTOR MOVE_LIMIT_MAX = { 750.0f,500.0f,750.0f }; //移動制限最小座標
 
 	//回避関連
 	static constexpr float AVOID_DISTANCE = 400.0f; //回避距離
 	static constexpr float AVOID_TIME = 0.6f; //回避タイム
-	static constexpr float AVOID_COOL_TIME = 0.5f; //回避クールタイム
+	static constexpr float AVOID_COOL_TIME = 0.3f; //回避クールタイム
 
 	//ダメージ関連
 	static constexpr float DAMAGE_TIME = 0.5f; //ダメージ時間

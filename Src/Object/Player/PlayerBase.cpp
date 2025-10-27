@@ -152,23 +152,31 @@ void PlayerBase::PlayerMove(void)
 	VECTOR left = front;
 	std::swap(left.x, left.z);
 	left.x = -left.x;
+
+	VECTOR dir = Utility::VECTOR_ZERO;
 	//キーボードでの移動処理
 	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_UP, KeyConfig::JOYPAD_NO::PAD1, controlType_))
 	{
-		transform_->pos = VAdd(transform_->pos, VScale(front, MOVE_SPEED));
+		dir = VAdd(dir, front);
 	}
 	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_DOWN, KeyConfig::JOYPAD_NO::PAD1, controlType_))
 	{
-		transform_->pos = VAdd(transform_->pos, VScale(VScale(front, -1), MOVE_SPEED));
+		dir = VAdd(dir, VScale(front, -1));
 	}
 	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_RIGHT, KeyConfig::JOYPAD_NO::PAD1, controlType_))
 	{
-		transform_->pos = VAdd(transform_->pos, VScale(VScale(left, -1), MOVE_SPEED));
+		dir = VAdd(dir, VScale(left, -1));
 	}
 	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_LEFT, KeyConfig::JOYPAD_NO::PAD1, controlType_))
 	{
-		transform_->pos = VAdd(transform_->pos, VScale(left, MOVE_SPEED));
+		dir = VAdd(dir, left);
 	}
+	if (dir.x != 0.0f && dir.z != 0.0f)
+	{
+		dir = VNorm(dir);
+		transform_->pos = VAdd(transform_->pos, VScale(dir, MOVE_SPEED));
+	}
+
 	if (controlType_ == KeyConfig::TYPE::KEYBORD_MOUSE)
 	{
 		return;

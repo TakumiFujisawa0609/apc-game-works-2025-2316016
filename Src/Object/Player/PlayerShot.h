@@ -3,6 +3,7 @@
 #include "../ObjectBase.h"
 
 class Gravity;
+class EffectController;
 
 class PlayerShot : public ObjectBase
 {
@@ -31,11 +32,17 @@ public:
 	void Draw(void)override;
 	bool IsDead(void) const { return isDead_; }
 	float GetRadius(void)const { return RADIUS; }
-	void Hit(void);
+	void Hit(VECTOR hitPos,VECTOR rot );
 	bool IsShot(void) const { return state_ == STATE::SHOT; }
+	VECTOR GetPrePos(void)const { return prePos_; }
 private:
 	//重力
 	std::unique_ptr<Gravity> gravity_;
+	//エフェクト
+	std::unique_ptr<EffectController>effect_;
+	int effectNum_;
+	//前の座標
+	VECTOR prePos_;
 	//状態
 	STATE state_;
 	//ターゲット座標

@@ -1,4 +1,5 @@
 #include <DxLib.h>
+#include <EffekseerForDXLib.h>
 #include "Manager/InputManager.h"
 #include "Manager/KeyConfig.h"
 #include "Manager/ResourceManager.h"
@@ -12,7 +13,7 @@ Application* Application::instance_ = nullptr;
 
 const std::string Application::PATH_IMAGE = "Data/Image/";
 const std::string Application::PATH_MODEL = "Data/Model/";
-//const std::string Application::PATH_EFFECT = "Data/Effect/";
+const std::string Application::PATH_EFFECT = "Data/Effect/";
 const std::string Application::PATH_SOUND_BGM = "Data/Sound/BGM/";
 const std::string Application::PATH_SOUND_SE = "Data/Sound/SE/";
 //const std::string Application::PATH_FONT = "Data/Font/";
@@ -54,12 +55,14 @@ void Application::Init(void)
 		return;
 	}
 
+	// Effekseerの初期化
+	InitEffekseer();
 	// キー制御初期化
 	SetUseDirectInputFlag(true);
 
 	// リソース管理初期化
 	ResourceManager::CreateInstance();	
-	
+
 	//入力管理の初期化
 	KeyConfig::CreateInstance();
 
@@ -103,7 +106,8 @@ void Application::Destroy(void)
 	ResourceManager::GetInstance().Destroy();
 	DataBank::GetInstance().Destroy();
 	KeyMap::GetInstance().Destroy();
-
+	// Effekseerを終了する。
+	Effkseer_End();
 	// DxLib終了
 	if (DxLib_End() == -1)
 	{
@@ -133,4 +137,15 @@ Application::Application(void)
 Application::~Application(void)
 {
 
+}
+void Application::InitEffekseer(void)
+{
+	if (Effekseer_Init(8000) == -1)
+	{
+		DxLib_End();
+	}
+
+	SetChangeScreenModeGraphicsSystemResetFlag(FALSE);
+
+	Effekseer_SetGraphicsDeviceLostCallbackFunctions();
 }

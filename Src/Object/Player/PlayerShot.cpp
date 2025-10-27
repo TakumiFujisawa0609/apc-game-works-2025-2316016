@@ -1,11 +1,14 @@
+#include "../../Manager/ResourceManager.h"
 #include "../../Renderer/ModelMaterial.h"
 #include "../../Renderer/ModelRenderer.h"
 #include "../Common/Gravity.h"
 #include "../Common/Transform.h"
+#include "../Common/EffectController.h"
 #include "PlayerShot.h"
 
 PlayerShot::PlayerShot(VECTOR pPos, VECTOR tPos)
 {
+	auto& res = ResourceManager::GetInstance();
 	transform_ = std::make_unique<Transform>();
 	transform_->pos = pPos;
 	startPos_ = pPos;
@@ -17,6 +20,8 @@ PlayerShot::PlayerShot(VECTOR pPos, VECTOR tPos)
 	gravity_->SetInitPower(POWER + (dir_.y < 0.0f?0.0f:dir_.y));
 	dir_.y = 0.0f;
 	dir_ = VNorm(dir_);
+	effect_ = std::make_unique<EffectController>();
+	effect_->Add(res.Load(ResourceManager::SRC::HIT_EFFECT).handleId_, EffectController::EFF_TYPE::HIT);
 	isDead_ = false;
 	state_ = STATE::SHOT;
 }
@@ -35,6 +40,7 @@ void PlayerShot::Update(void)
 	{
 		return;
 	}
+	prePos_ = transform_->pos;
 	switch (state_)
 	{
 	case PlayerShot::STATE::SHOT:
@@ -47,8 +53,14 @@ void PlayerShot::Update(void)
 		transform_->pos = VAdd(transform_->pos, VScale(gravity_->GetDir(), gravity_->GetPower()));
 		break;
 	case PlayerShot::STATE::BLAST:
+		effect_->Update();
+		if (effect_->IsEnd(EffectController::EFF_TYPE::HIT, effectNum_))
+		{
+			state_ = STATE::DEAD;
+		}
 		break;
 	case PlayerShot::STATE::DEAD:
+		isDead_ = true;
 		break;
 	default:
 		break;
@@ -72,6 +84,7 @@ void PlayerShot::Draw(void)
 		DrawSphere3D(transform_->pos, RADIUS, 16, GetColor(255, 255, 0), GetColor(255, 0, 0), true);
 		break;
 	case PlayerShot::STATE::BLAST:
+		
 		break;
 	case PlayerShot::STATE::DEAD:
 		break;
@@ -81,8 +94,8 @@ void PlayerShot::Draw(void)
 	
 }
 
-void PlayerShot::Hit(void)
+void PlayerShot::Hit(VECTOR hitPos,VECTOR  rot)
 {
 	state_ = STATE::BLAST;
-	isDead_ = true;	//爆発アニメーションまでの代用
+	effectNum_ = effect_->Play(EffectController::EFF_TYPE::HIT, hitPos, Quaternion(rot), VGet(10.0f, 10.0f, 10.0f), false, 1.0f);
 }

@@ -19,7 +19,7 @@ public:
 	//-------------------------------------------
 	static const std::string PATH_IMAGE;
 	static const std::string PATH_MODEL;
-	//static const std::string PATH_EFFECT;
+	static const std::string PATH_EFFECT;
 	static const std::string PATH_SOUND_BGM;
 	static const std::string PATH_SOUND_SE;
 	//static const std::string PATH_FONT;
@@ -66,5 +66,7 @@ private:
 	Application(void);
 	Application(const Application& manager) = default;
 	~Application(void);
+
+	void InitEffekseer(void);
 
 };

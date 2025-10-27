@@ -58,6 +58,8 @@
     <ClCompile Include="Src\Scene\Game\SceneGame.cpp" />
     <ClCompile Include="Src\Object\Common\AnimationController.cpp" />
     <ClCompile Include="Src\Object\ObjectBase.cpp" />
+    <ClCompile Include="Src\Common\FpsController.cpp" />
+    <ClCompile Include="Src\Object\Common\EffectController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Common\IntVector3.h" />
@@ -117,6 +119,8 @@
     <ClInclude Include="Src\Scene\Game\SceneGame.h" />
     <ClInclude Include="Src\Object\Common\AnimationController.h" />
     <ClInclude Include="Src\Object\ObjectBase.h" />
+    <ClInclude Include="Src\Common\FpsController.h" />
+    <ClInclude Include="Src\Object\Common\EffectController.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shader\Common\VertexToPixelHeader.hlsli" />

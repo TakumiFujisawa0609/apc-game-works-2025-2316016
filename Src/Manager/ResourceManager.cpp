@@ -102,6 +102,10 @@ void ResourceManager::Init(void)
 	resourcesMap_.emplace(SRC::SHOCK_WAVE, std::move(res));
 	res = Resource(Resource::TYPE::IMG, Application::PATH_MODEL + "Stage/ShockWave/Noise2.png");
 	resourcesMap_.emplace(SRC::NOISE, std::move(res));
+
+	//エフェクト
+	res = Resource(Resource::TYPE::EFFEKSEER, Application::PATH_EFFECT + "Hit.efkefc");
+	resourcesMap_.emplace(SRC::HIT_EFFECT, std::move(res));
 }
 
 void ResourceManager::Release(void)

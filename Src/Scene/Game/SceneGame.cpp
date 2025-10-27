@@ -230,11 +230,16 @@ void SceneGame::CheckCollision(void)
 	{
 		auto& playerShot = player_->GetPlayerShot(i);
 		if (!playerShot.IsShot())continue;
+		auto pShotPrePos = playerShot.GetPrePos();
 		auto& pShotTransform = playerShot.GetTransform();
-		if (Utility::IsColSphere2Model(pShotTransform.pos, playerShot.GetRadius(), enemy_->GetTransform().modelId))
+		auto result = MV1CollCheck_Line(enemy_->GetTransform().modelId, -1, pShotPrePos, pShotTransform.pos);
+		if (result.HitFlag > 0)
 		{
+			VECTOR rot = Utility::VECTOR_ZERO;
+			auto dir = VSub(pShotPrePos, pShotTransform.pos);
+			rot.y = atan2f(dir.x, dir.z);
 			enemy_->Damage(2.0f);
-			playerShot.Hit();
+			playerShot.Hit(result.HitPosition,rot);
 			SoundManager::GetInstance().Play(SoundManager::SRC::PSHOT_HIT, Sound::TIMES::ONCE);
 		}
 	}
