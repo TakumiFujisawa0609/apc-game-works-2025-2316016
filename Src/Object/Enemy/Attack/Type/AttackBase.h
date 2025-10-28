@@ -46,6 +46,7 @@ public:
 	virtual void Init(void)override;
 	virtual void Update(void)override;
 	virtual void Draw(void)override;
+	virtual int GetSubObjectNum(void) const = 0;
 
 	void SetTarget(Transform* target) { target_ = target; }
 

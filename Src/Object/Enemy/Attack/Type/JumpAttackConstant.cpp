@@ -119,7 +119,7 @@ void JumpAttackConstant::UpdateStateUpdate(void)
 		wave_.push_back(std::move(wave));
 		intervalTime_ = INTERVAL_TIME;
 	}
-	if (time_ <= 0.0f && !(GetWaveNum() > 0))
+	if (time_ <= 0.0f && !(GetSubObjectNum() > 0))
 	{
 		ChangeState(STATE::FINISH);
 	}

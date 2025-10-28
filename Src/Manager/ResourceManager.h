@@ -55,7 +55,8 @@ public:
 		NOISE,		//ノイズ
 
 		//エフェクト
-		HIT_EFFECT,	//ヒットエフェクト
+		HIT_EFFECT,		//ヒットエフェクト
+		WATER_SPLIT,	//渦巻
 	};
 
 	// 明示的にインステンスを生成する

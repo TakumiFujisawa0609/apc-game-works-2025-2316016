@@ -30,6 +30,8 @@ public:
 	static constexpr VECTOR VECTOR_ZERO = { 0.0f, 0.0f, 0.0f };
 	static constexpr VECTOR VECTOR_ONE = { 1.0f, 1.0f, 1.0f };
 
+	static constexpr float ONE_TRACK_DEG = 360.0f; //1Žü•ª‚ÌŠp“x
+
 	// ‰ñ“]Ž²
 	static constexpr VECTOR AXIS_X = { 1.0f, 0.0f, 0.0f };
 	static constexpr VECTOR AXIS_Y = { 0.0f, 1.0f, 0.0f };

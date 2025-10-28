@@ -15,6 +15,7 @@
 #include "Attack/Type/CrossAttack.h"
 #include "Attack/Type/FollowAttack.h"
 #include "Attack/Type/FallDownAttack.h"
+#include "Attack/Type/WaterSpritAttack.h"
 #include "EnemyBase.h"
 
 EnemyBase::EnemyBase(Transform& target) : target_(target)
@@ -29,12 +30,13 @@ EnemyBase::EnemyBase(Transform& target) : target_(target)
 	maxHP_ = 100.0f;
 	hp_ = maxHP_;
 	AplayChangeStateFunc();
-	AddAttack(ATTACK_TYPE::JUMP);
-	AddAttack(ATTACK_TYPE::JUMP_CONSTANT);
-	AddAttack(ATTACK_TYPE::FOLLOW);
-	AddAttack(ATTACK_TYPE::FALL_DOWN);
-	AddAttack(ATTACK_TYPE::CROSS_LINE);
-	AddAttack(ATTACK_TYPE::THUNDER_AROUND);
+	//AddAttack(ATTACK_TYPE::JUMP);
+	//AddAttack(ATTACK_TYPE::JUMP_CONSTANT);
+	//AddAttack(ATTACK_TYPE::FOLLOW);
+	//AddAttack(ATTACK_TYPE::FALL_DOWN);
+	//AddAttack(ATTACK_TYPE::CROSS_LINE);
+	//AddAttack(ATTACK_TYPE::THUNDER_AROUND);
+	AddAttack(ATTACK_TYPE::WATER_SPRIT);
 	ChangeState(STATE::IDLE);
 }
 
@@ -211,6 +213,9 @@ void EnemyBase::AddAttack(ATTACK_TYPE type)
 	case EnemyBase::ATTACK_TYPE::THUNDER_AROUND:
 		attack = std::make_unique<ThunderAroundAttack>(*this);
 		attack->SetTarget(&target_);
+		break;
+	case EnemyBase::ATTACK_TYPE::WATER_SPRIT:
+		attack = std::make_unique<WaterSpritAttack>(*this);
 		break;
 	case EnemyBase::ATTACK_TYPE::MAX:
 		break;

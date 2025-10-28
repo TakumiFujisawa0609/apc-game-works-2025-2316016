@@ -106,6 +106,8 @@ void ResourceManager::Init(void)
 	//エフェクト
 	res = Resource(Resource::TYPE::EFFEKSEER, Application::PATH_EFFECT + "Hit.efkefc");
 	resourcesMap_.emplace(SRC::HIT_EFFECT, std::move(res));
+	res = Resource(Resource::TYPE::EFFEKSEER, Application::PATH_EFFECT + "WaterSprit.efkefc");
+	resourcesMap_.emplace(SRC::WATER_SPLIT, std::move(res));
 }
 
 void ResourceManager::Release(void)

@@ -1,5 +1,4 @@
 #pragma once
-#include <memory>
 #include <vector>
 
 #include "AttackBase.h"
@@ -21,7 +20,7 @@ public:
 	void Init(void)override;
 	void Update(void)override;
 	void Draw(void)override;
-	int GetThunderNum(void) { return static_cast<int>(thunders_.size()); }
+	int GetSubObjectNum(void)const override { return static_cast<int>(thunders_.size()); }
 	Transform& GetThunderTransform(int thunderNum);
 private:
 

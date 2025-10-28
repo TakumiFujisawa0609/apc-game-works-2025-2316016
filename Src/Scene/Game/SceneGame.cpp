@@ -280,7 +280,7 @@ void SceneGame::CheckCollision(void)
 			if (follow != nullptr)
 			{
 				//追従との当たり判定
-				int shotNum = follow->GetShotNum();
+				int shotNum = follow->GetSubObjectNum();
 				for (int i = 0; i < shotNum; i++)
 				{
 					auto& transform = follow->GetShotTransform(i);
@@ -297,7 +297,7 @@ void SceneGame::CheckCollision(void)
 			if (fall != nullptr)
 			{
 				//落下との当たり判定
-				int shotNum = fall->GetFallDownShotNum();
+				int shotNum = fall->GetSubObjectNum();
 				for (int i = 0; i < shotNum; i++)
 				{
 					if (fall->GetShotState(i) != FallDownShot::STATE::BLAST)
@@ -317,7 +317,7 @@ void SceneGame::CheckCollision(void)
 			if (cross != nullptr)
 			{
 				//十字との当たり判定
-				int crossPointNum = cross->GetCrossLineNum();
+				int crossPointNum = cross->GetSubObjectNum();
 				for (int i = 0; i < crossPointNum; i++)
 				{
 					auto& transform = cross->GetLineTransform(i);
@@ -339,7 +339,7 @@ void SceneGame::CheckCollision(void)
 				VECTOR pPos = player_->GetTransform().pos;
 				pPos.y = 0.0f;
 				//サンダーとの当たり判定
-				int thunderNum = thunder->GetThunderNum();
+				int thunderNum = thunder->GetSubObjectNum();
 				for (int i = 0; i < thunderNum; i++)
 				{
 					auto& transform = thunder->GetThunderTransform(i);
@@ -363,7 +363,7 @@ void SceneGame::CheckCollision(void)
 					//ジャンプ中は当たらない
 					continue;
 				}
-				int waveNum = jump->GetWaveNum();
+				int waveNum = jump->GetSubObjectNum();
 				for (int i = 0; i < waveNum; i++)
 				{
 					float waveRadius;
@@ -387,7 +387,7 @@ void SceneGame::CheckCollision(void)
 					//ジャンプ中は当たらない
 					continue;
 				}
-				int waveNum = jumpC->GetWaveNum();
+				int waveNum = jumpC->GetSubObjectNum();
 				for (int i = 0; i < waveNum; i++)
 				{
 					float waveRadius;

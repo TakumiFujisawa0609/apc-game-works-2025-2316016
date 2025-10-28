@@ -16,7 +16,7 @@ public:
 	void Init(void)override;
 	void Update(void)override;
 	void Draw(void)override;
-	int GetShotNum(void) { return static_cast<int>(shots_.size()); }
+	int GetSubObjectNum(void)const override { return static_cast<int>(shots_.size()); }
 	Transform& GetShotTransform(int shotNum);
 	float GetRadius(void) { return RADIUS; }
 	void HitShot(int shotNum) { shots_[shotNum]->Hit(); }

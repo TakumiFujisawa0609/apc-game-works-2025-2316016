@@ -18,7 +18,7 @@ public:
 	void Init(void) override;
 	void Update(void) override;
 	void Draw(void) override;
-	int GetWaveNum(void) { return static_cast<int>(wave_.size()); }
+	int GetSubObjectNum(void)const override { return static_cast<int>(wave_.size()); }
 	void GetWaveState(float& radius, VECTOR& centerPos, int waveNum);
 private:
 	float time_;

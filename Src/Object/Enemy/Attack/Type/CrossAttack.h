@@ -18,7 +18,7 @@ public:
 	void Init(void)override;
 	void Update(void)override;
 	void Draw(void)override;
-	int GetCrossLineNum(void) { return static_cast<int>(crossLines_.size()); }
+	int GetSubObjectNum(void)const override { return static_cast<int>(crossLines_.size()); }
 	Transform& GetLineTransform(int lineNum);
 private:
 

@@ -114,7 +114,7 @@ void FallDownAttack::UpdateStateUpdate(void)
 	//—Ž‰º’e‚Ì¶¬
 	if (time_ > 0.0f)
 	{
-		int aliveNum = GetFallDownShotNum();
+		int aliveNum = GetSubObjectNum();
 		int createNum = MAX_FALL_NUM - aliveNum;
 		for (int i = 0; i < createNum; i++)
 		{
@@ -122,7 +122,7 @@ void FallDownAttack::UpdateStateUpdate(void)
 			fallDownShots_.push_back(std::move(fallDownShot));
 		}
 	}
-	int aliveNum = GetFallDownShotNum();
+	int aliveNum = GetSubObjectNum();
 	if (aliveNum == 0)
 	{
 		ChangeState(STATE::FINISH);
