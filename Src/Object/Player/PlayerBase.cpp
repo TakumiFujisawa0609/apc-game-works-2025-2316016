@@ -8,6 +8,7 @@
 #include "../../Renderer/ModelRenderer.h"
 #include "../Common/Gravity.h"
 #include "../Common/Transform.h"
+#include "../Common/EffectController.h"
 #include "../Common/AnimationController.h"
 #include "PlayerShot.h"
 #include "PlayerBase.h"

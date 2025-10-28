@@ -1,5 +1,8 @@
 #include <DxLib.h>
-#include "../EnemyBase.h"
+#include "../../Renderer/ModelMaterial.h"
+#include "../../Renderer/ModelRenderer.h"
+#include "../../../Common/EffectController.h"
+#include "../../../Common/Transform.h"
 #include "AttackBase.h"
 
 AttackBase::AttackBase(EnemyBase& enemy) : enemy_(enemy)

@@ -1,7 +1,7 @@
 #include "../../Utility/Utility.h"
 #include "../../Manager/SceneManager.h"
-#include "../EnemyBase.h"
-#include "CrossLine.h"
+#include "../../EnemyBase.h"
+#include "../SubObject/CrossLine.h"
 #include "CrossAttack.h"
 
 CrossAttack::CrossAttack(EnemyBase& enemy) : AttackBase(enemy)

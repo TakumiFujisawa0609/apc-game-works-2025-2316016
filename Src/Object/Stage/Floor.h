@@ -1,8 +1,5 @@
 #pragma once
 #include "../ObjectBase.h"
-class Transform;
-class ModelMaterial;
-class ModelRenderer;
 
 class Floor : public ObjectBase
 {

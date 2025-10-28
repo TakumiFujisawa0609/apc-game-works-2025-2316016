@@ -3,7 +3,6 @@
 #include "../ObjectBase.h"
 
 class Gravity;
-class EffectController;
 
 class PlayerShot : public ObjectBase
 {
@@ -38,8 +37,6 @@ public:
 private:
 	//重力
 	std::unique_ptr<Gravity> gravity_;
-	//エフェクト
-	std::unique_ptr<EffectController>effect_;
 	int effectNum_;
 	//前の座標
 	VECTOR prePos_;

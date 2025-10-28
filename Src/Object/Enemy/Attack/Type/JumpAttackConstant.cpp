@@ -1,8 +1,8 @@
 #include "../../Utility/Utility.h"
 #include "../../Manager/SceneManager.h"
-#include "../../Common/Gravity.h"
-#include "../EnemyBase.h"
-#include "Wave.h"
+#include "../../../Common/Gravity.h"
+#include "../../EnemyBase.h"
+#include "../SubObject/Wave.h"
 #include "JumpAttackConstant.h"
 
 JumpAttackConstant::JumpAttackConstant(EnemyBase& enemy) : AttackBase(enemy)

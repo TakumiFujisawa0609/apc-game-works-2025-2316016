@@ -3,6 +3,7 @@
 #include "../../Renderer/ModelMaterial.h"
 #include "../../Renderer/ModelRenderer.h"
 #include "../Common/Transform.h"
+#include "../Common/EffectController.h"
 #include "SkyDome.h"
 
 SkyDome::SkyDome(void)

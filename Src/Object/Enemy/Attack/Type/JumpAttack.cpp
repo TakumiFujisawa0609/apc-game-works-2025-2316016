@@ -1,9 +1,9 @@
-#include "../../Common/Transform.h"
-#include "../../Common/Gravity.h"
+#include "../../../Common/Transform.h"
+#include "../../../Common/Gravity.h"
 #include "../../Utility/Utility.h"
 #include "../../Manager/SceneManager.h"
-#include "Wave.h"
-#include "../EnemyBase.h"
+#include "../SubObject/Wave.h"
+#include "../../EnemyBase.h"
 #include "JumpAttack.h"
 
 JumpAttack::JumpAttack(EnemyBase& enemy) : AttackBase(enemy)

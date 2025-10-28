@@ -1,6 +1,6 @@
 #include "../../Utility/Utility.h"
 #include "../../Manager/SceneManager.h"
-#include "FallDownShot.h"
+#include "../SubObject/FallDownShot.h"
 #include "FallDownAttack.h"
 
 FallDownAttack::FallDownAttack(EnemyBase& enemy) : AttackBase(enemy)

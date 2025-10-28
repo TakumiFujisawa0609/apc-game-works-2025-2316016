@@ -1,30 +1,27 @@
 #pragma once
+#include <vector>
+#include <memory>
 #include "AttackBase.h"
-#include "FallDownShot.h"
+#include "../SubObject/FollowShot.h"
 
-class FallDownAttack :    public AttackBase
+class FollowAttack :    public AttackBase
 {
 public:
-	static constexpr float COOL_DOWN = 60.0f;	//クールダウン
-	static constexpr int MAX_FALL_NUM = 30; //落下弾の同時に出せる最大数
-	static constexpr float TIME = 30.0f; //落下弾が落ち続ける時間
+	static constexpr float COOL_DOWN = 3.0f;	//クールダウン
+	static constexpr float RADIUS = 20.0f;		//半径
+	static constexpr int RANDOM_SHOT_NUM = 5;	//ランダムスピードの数
 
-	FallDownAttack(EnemyBase& enemy);
-	~FallDownAttack(void)override;
+	FollowAttack(EnemyBase& enemy);
+	~FollowAttack(void)override;
 	void Init(void)override;
 	void Update(void)override;
 	void Draw(void)override;
-	int GetFallDownShotNum(void) { return static_cast<int>(fallDownShots_.size()); }
+	int GetShotNum(void) { return static_cast<int>(shots_.size()); }
 	Transform& GetShotTransform(int shotNum);
-	FallDownShot::STATE GetShotState(int shotNum);
-	float GetShotRadius(int shotNum);
-
+	float GetRadius(void) { return RADIUS; }
+	void HitShot(int shotNum) { shots_[shotNum]->Hit(); }
 private:
-
-	std::vector<std::unique_ptr<FallDownShot>> fallDownShots_; //落下弾
-
-	float time_;		//落下弾が落ち続ける時間
-
+	std::vector<std::unique_ptr<FollowShot>> shots_;
 	void ChangeStateNone(void) override;	//実行されていない
 	void ChangeStateReady(void) override;	//実行準備
 	void ChangeStateStart(void) override;	//実行開始

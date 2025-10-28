@@ -39,19 +39,19 @@
     <ClCompile Include="Src\Manager\DataBank.cpp" />
     <ClCompile Include="Src\Scene\Select\Control.cpp" />
     <ClCompile Include="Src\Scene\SceneStageSelect.cpp" />
-    <ClCompile Include="Src\Object\Enemy\Attack\JumpAttackConstant.cpp" />
-    <ClCompile Include="Src\Object\Enemy\Attack\CrossLine.cpp" />
-    <ClCompile Include="Src\Object\Enemy\Attack\CrossAttack.cpp" />
-    <ClCompile Include="Src\Object\Enemy\Attack\FallDownShot.cpp" />
-    <ClCompile Include="Src\Object\Enemy\Attack\FallDownAttack.cpp" />
-    <ClCompile Include="Src\Object\Enemy\Attack\FollowShot.cpp" />
-    <ClCompile Include="Src\Object\Enemy\Attack\FollowAttack.cpp" />
-    <ClCompile Include="Src\Object\Enemy\Attack\JumpAttack.cpp" />
-    <ClCompile Include="Src\Object\Enemy\Attack\Wave.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Attack\Type\JumpAttackConstant.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Attack\SubObject\CrossLine.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Attack\Type\CrossAttack.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Attack\SubObject\FallDownShot.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Attack\Type\FallDownAttack.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Attack\SubObject\FollowShot.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Attack\Type\FollowAttack.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Attack\Type\JumpAttack.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Attack\SubObject\Wave.cpp" />
     <ClCompile Include="Src\Object\UI\EnemyHPUI.cpp" />
     <ClCompile Include="Src\Object\Player\PlayerShot.cpp" />
     <ClCompile Include="Src\Object\Enemy\EnemyTutorial.cpp" />
-    <ClCompile Include="Src\Object\Enemy\Attack\AttackBase.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Attack\Type\AttackBase.cpp" />
     <ClCompile Include="Src\Object\Enemy\EnemyBase.cpp" />
     <ClCompile Include="Src\Object\SkyDome\SkyDome.cpp" />
     <ClCompile Include="Src\Object\Common\Gravity.cpp" />
@@ -76,8 +76,8 @@
     <ClCompile Include="Src\Scene\SceneTitle.cpp" />
     <ClCompile Include="Src\Utility\Utility.cpp" />
     <ClCompile Include="Src\Object\Stage\ShockWave.cpp" />
-    <ClCompile Include="Src\Object\Enemy\Attack\ThunderAroundAttack.cpp" />
-    <ClCompile Include="Src\Object\Enemy\Attack\ThunderAround.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Attack\Type\ThunderAroundAttack.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Attack\SubObject\ThunderAround.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Common\FpsController.h" />
@@ -100,19 +100,19 @@
     <ClInclude Include="Src\Manager\DataBank.h" />
     <ClInclude Include="Src\Scene\Select\Control.h" />
     <ClInclude Include="Src\Scene\SceneStageSelect.h" />
-    <ClInclude Include="Src\Object\Enemy\Attack\JumpAttackConstant.h" />
-    <ClInclude Include="Src\Object\Enemy\Attack\CrossLine.h" />
-    <ClInclude Include="Src\Object\Enemy\Attack\CrossAttack.h" />
-    <ClInclude Include="Src\Object\Enemy\Attack\FallDownShot.h" />
-    <ClInclude Include="Src\Object\Enemy\Attack\FallDownAttack.h" />
-    <ClInclude Include="Src\Object\Enemy\Attack\FollowShot.h" />
-    <ClInclude Include="Src\Object\Enemy\Attack\FollowAttack.h" />
-    <ClInclude Include="Src\Object\Enemy\Attack\JumpAttack.h" />
-    <ClInclude Include="Src\Object\Enemy\Attack\Wave.h" />
+    <ClInclude Include="Src\Object\Enemy\Attack\Type\JumpAttackConstant.h" />
+    <ClInclude Include="Src\Object\Enemy\Attack\SubObject\CrossLine.h" />
+    <ClInclude Include="Src\Object\Enemy\Attack\Type\CrossAttack.h" />
+    <ClInclude Include="Src\Object\Enemy\Attack\SubObject\FallDownShot.h" />
+    <ClInclude Include="Src\Object\Enemy\Attack\Type\FallDownAttack.h" />
+    <ClInclude Include="Src\Object\Enemy\Attack\SubObject\FollowShot.h" />
+    <ClInclude Include="Src\Object\Enemy\Attack\Type\FollowAttack.h" />
+    <ClInclude Include="Src\Object\Enemy\Attack\Type\JumpAttack.h" />
+    <ClInclude Include="Src\Object\Enemy\Attack\SubObject\Wave.h" />
     <ClInclude Include="Src\Object\UI\EnemyHPUI.h" />
     <ClInclude Include="Src\Object\Player\PlayerShot.h" />
     <ClInclude Include="Src\Object\Enemy\EnemyTutorial.h" />
-    <ClInclude Include="Src\Object\Enemy\Attack\AttackBase.h" />
+    <ClInclude Include="Src\Object\Enemy\Attack\Type\AttackBase.h" />
     <ClInclude Include="Src\Object\Enemy\EnemyBase.h" />
     <ClInclude Include="Src\Object\SkyDome\SkyDome.h" />
     <ClInclude Include="Src\Object\Common\Gravity.h" />
@@ -137,8 +137,8 @@
     <ClInclude Include="Src\Scene\SceneTitle.h" />
     <ClInclude Include="Src\Utility\Utility.h" />
     <ClInclude Include="Src\Object\Stage\ShockWave.h" />
-    <ClInclude Include="Src\Object\Enemy\Attack\ThunderAroundAttack.h" />
-    <ClInclude Include="Src\Object\Enemy\Attack\ThunderAround.h" />
+    <ClInclude Include="Src\Object\Enemy\Attack\Type\ThunderAroundAttack.h" />
+    <ClInclude Include="Src\Object\Enemy\Attack\SubObject\ThunderAround.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shader\Common\Pixel\PixelShader2DHeader.hlsli" />

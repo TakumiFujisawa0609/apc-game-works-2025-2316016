@@ -1,8 +1,8 @@
 #include "../../Utility/Utility.h"
-#include "../../Common/Transform.h"
+#include "../../../Common/Transform.h"
 #include "../../Manager/SceneManager.h"
-#include "../EnemyBase.h"
-#include "FollowShot.h"
+#include "../../EnemyBase.h"
+#include "../SubObject/FollowShot.h"
 #include "FollowAttack.h"
 
 FollowAttack::FollowAttack(EnemyBase& enemy) : AttackBase(enemy)

@@ -1,9 +1,9 @@
 #include "../../Utility/Utility.h"
 #include "../../Manager/ResourceManager.h"
 #include "../../Manager/SceneManager.h"
-#include "../../Common/Transform.h"
-#include "../../Player/PlayerBase.h"
-#include "../../Stage/ShockWave.h"
+#include "../../../Common/Transform.h"
+#include "../../../Player/PlayerBase.h"
+#include "../../../Stage/ShockWave.h"
 #include "FallDownShot.h"
 
 FallDownShot::FallDownShot(void)

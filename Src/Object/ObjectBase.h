@@ -3,6 +3,7 @@
 class Transform;
 class ModelMaterial;
 class ModelRenderer;
+class EffectController;
 
 class ObjectBase
 {
@@ -17,5 +18,6 @@ protected:
 	std::unique_ptr<Transform> transform_;
 	std::unique_ptr<ModelMaterial> material_;
 	std::unique_ptr<ModelRenderer> renderer_;
+	std::unique_ptr<EffectController> effect_;
 };
 

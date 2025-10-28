@@ -1,9 +1,6 @@
 #pragma once
 #include <memory>
 #include "../ObjectBase.h"
-class Transform;
-class ModelMaterial;
-class ModelRenderer;
 
 class ShockWave : public ObjectBase
 {

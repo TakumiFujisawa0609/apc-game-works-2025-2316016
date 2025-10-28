@@ -1,6 +1,6 @@
-#include "../../../Manager/ResourceManager.h"
-#include "../../../Manager/SceneManager.h"
-#include "../../Common/Transform.h"
+#include "../../../../Manager/ResourceManager.h"
+#include "../../../../Manager/SceneManager.h"
+#include "../../../Common/Transform.h"
 #include "FollowShot.h"
 
 FollowShot::FollowShot(Transform& target, SPEED_TYPE speed, VECTOR startPos) : target_(target)

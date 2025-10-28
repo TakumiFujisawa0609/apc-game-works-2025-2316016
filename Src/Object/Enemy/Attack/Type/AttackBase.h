@@ -2,11 +2,12 @@
 #include <DxLib.h>
 #include <map>
 #include <functional>
-#include "../EnemyBase.h"
+#include "../../EnemyBase.h"
+#include "../../../ObjectBase.h"
 
 class Transform;
 
-class AttackBase
+class AttackBase : public ObjectBase
 {
 public:
 
@@ -41,10 +42,10 @@ public:
 	};
 
 	AttackBase(EnemyBase& enemy);
-	virtual ~AttackBase(void);
-	virtual void Init(void);
-	virtual void Update(void);
-	virtual void Draw(void);
+	virtual ~AttackBase(void)override;
+	virtual void Init(void)override;
+	virtual void Update(void)override;
+	virtual void Draw(void)override;
 
 	void SetTarget(Transform* target) { target_ = target; }
 
@@ -59,6 +60,7 @@ public:
 	EnemyBase::ATTACK_TYPE GetMyType(void)const { return myType_; }
 protected:
 	EnemyBase& enemy_; //êeÇÃEnemyBase
+
 	EnemyBase::ATTACK_TYPE myType_;
 	RANGE range_; //çUåÇîÕàÕ
 	STATE state_; //èÛë‘

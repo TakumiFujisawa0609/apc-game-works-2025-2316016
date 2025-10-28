@@ -1,8 +1,8 @@
 #include <cmath>
 #include "../../Utility/Utility.h"
 #include "../../Manager/SceneManager.h"
-#include "../EnemyBase.h"
-#include "ThunderAround.h"
+#include "../../EnemyBase.h"
+#include "../SubObject/ThunderAround.h"
 #include "ThunderAroundAttack.h"
 
 ThunderAroundAttack::ThunderAroundAttack(EnemyBase& enemy) : AttackBase(enemy)

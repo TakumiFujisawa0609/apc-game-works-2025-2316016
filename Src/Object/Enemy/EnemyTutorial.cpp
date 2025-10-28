@@ -1,5 +1,7 @@
 #include "../../Renderer/ModelMaterial.h"
 #include "../../Renderer/ModelRenderer.h"
+#include "../Common/EffectController.h"
+#include "../Common/Transform.h"
 #include "EnemyTutorial.h"
 
 EnemyTutorial::EnemyTutorial(Transform& target) : EnemyBase(target)
