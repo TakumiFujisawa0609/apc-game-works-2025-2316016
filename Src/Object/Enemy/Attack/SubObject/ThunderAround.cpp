@@ -1,5 +1,8 @@
 #include "../../Utility/Utility.h"
 #include "../../Manager/SceneManager.h"
+#include "../../Renderer/ModelMaterial.h"
+#include "../../Renderer/ModelRenderer.h"
+#include "../../../Common/EffectController.h"
 #include "ThunderAround.h"
 
 ThunderAround::ThunderAround(VECTOR targetPos, VECTOR initPos,  float initRad) : initRad_(initRad)

@@ -3,10 +3,10 @@
 #include <map>
 #include <DxLib.h>
 #include <functional>
-
+#include "SubObjectBase.h"
 class Transform;
 
-class ThunderAround
+class ThunderAround : public SubObjectBase
 {
 public:
 
@@ -28,16 +28,13 @@ public:
 	};
 
 	ThunderAround(VECTOR targetPos,VECTOR initPos, float initRad);
-	~ThunderAround(void);
-	void Init(void);
-	void Update(void);
-	void Draw(void);
-	Transform& GetTransform(void) { return *transform_; }
+	~ThunderAround(void)override;
+	void Init(void)override;
+	void Update(void)override;
+	void Draw(void)override;
 	bool IsDead(void) const { return state_ == STATE::DEAD; }
 private:
 
-	//©•ª‚Ì
-	std::unique_ptr<Transform> transform_;
 	//‘Šè‚Ì
 	VECTOR targetPos_;
 	float rad_; //’†S‚©‚ç‚ÌŠp“x

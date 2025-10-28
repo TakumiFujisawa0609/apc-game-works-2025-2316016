@@ -1,6 +1,9 @@
 #include <cmath>
 #include "../../Manager/SceneManager.h"
+#include "../../Renderer/ModelMaterial.h"
+#include "../../Renderer/ModelRenderer.h"
 #include "../../Utility/Utility.h"
+#include "../../../Common/EffectController.h"
 #include "Wave.h"
 
 Wave::Wave(VECTOR centerPos, SPEED_TYPE speedType, int color)

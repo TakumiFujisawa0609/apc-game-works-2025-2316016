@@ -1,6 +1,8 @@
 #pragma once
 #include <DxLib.h>
-class Wave
+#include "SubObjectBase.h"
+
+class Wave : public SubObjectBase
 {
 public:
 	enum class SPEED_TYPE
@@ -21,10 +23,10 @@ public:
 	static constexpr float DAMAGE = 10.0f;
 
 	Wave(VECTOR centerPos,SPEED_TYPE speedType , int color );
-	~Wave(void);
-	void Init(void);
-	void Update(void);
-	void Draw(void);
+	~Wave(void)override;
+	void Init(void)override;
+	void Update(void)override;
+	void Draw(void)override;
 	void Reset(void);
 
 	float GetRadius(void) const { return speed_ * time_; }

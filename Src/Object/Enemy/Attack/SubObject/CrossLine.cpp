@@ -1,5 +1,8 @@
 #include "../../../../Manager/ResourceManager.h"
+#include "../../Renderer/ModelMaterial.h"
+#include "../../Renderer/ModelRenderer.h"
 #include "../../../Common/Transform.h"
+#include "../../../Common/EffectController.h"
 #include "CrossLine.h"
 
 CrossLine::CrossLine(VECTOR centerPos, float& rad, float initRad, int num) : centerPos_(centerPos), radian_(rad)

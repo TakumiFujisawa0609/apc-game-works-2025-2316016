@@ -1,9 +1,9 @@
 #pragma once
 #include <memory>
 #include <DxLib.h>
-class Transform;
+#include "SubObjectBase.h"
 
-class FollowShot
+class FollowShot : public SubObjectBase
 {
 public:
 	enum class SPEED_TYPE	//ë¨Ç≥éÌóﬁ
@@ -30,16 +30,13 @@ public:
 	static constexpr float ATTACK_TIME = 10.0f;	//çUåÇéûä‘
 
 	FollowShot(Transform& target, SPEED_TYPE speed,VECTOR startPos);
-	~FollowShot(void);
-	void Init(void);
-	void Update(void);
-	void Draw(void);
+	~FollowShot(void)override;
+	void Init(void)override;
+	void Update(void)override;
+	void Draw(void)override;
 	bool IsShot(void) { return state_ == STATE::SHOT; }
-	Transform& GetTransform(void) { return *transform_; }
 	void Hit(void);
 private:
-	//é©ï™ÇÃ
-	std::unique_ptr<Transform> transform_;
 	//ëäéËÇÃ
 	Transform& target_;
 

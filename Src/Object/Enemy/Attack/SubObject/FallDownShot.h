@@ -1,10 +1,8 @@
 #pragma once
-#include <memory>
 #include <DxLib.h>
+#include "SubObjectBase.h"
 
-class Transform;
-
-class FallDownShot
+class FallDownShot : public SubObjectBase
 {
 public:
 	enum class STATE
@@ -25,17 +23,14 @@ public:
 	static constexpr float BLAST_TIME = 0.5f;	//ìñÇΩÇËîªíËÇÃçdíºéûä‘
 
 	FallDownShot(void);
-	~FallDownShot(void);
-	void Init(void);
-	void Update(void);
-	void Draw(void);
+	~FallDownShot(void)override;
+	void Init(void)override;
+	void Update(void)override;
+	void Draw(void)override;
 	STATE GetState(void) const { return state_; }
-	Transform& GetTransform(void) { return *transform_; }
 	float GetRadius(void) { return radius_; }
 	void Hit(void);
 private:
-	//é©ï™ÇÃ
-	std::unique_ptr<Transform> transform_;
 	COLOR_F color_;	//êF
 	float radius_;	//îºåa
 	float initY;	//èâä˙Yç¿ïW

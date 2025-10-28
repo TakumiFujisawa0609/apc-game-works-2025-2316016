@@ -1,23 +1,19 @@
 #pragma once
 #include <DxLib.h>
-#include <memory>
+#include "SubObjectBase.h"
 
-class Transform;
-
-class CrossLine
+class CrossLine : public SubObjectBase
 {
 public:
 	static constexpr float RADIUS = 70.0f; //‰ñ“]”¼Œa
 	static constexpr float DAMAGE = 7.5f; //‰ñ“]”¼Œa
 
 	CrossLine(VECTOR centerPos,float& rad , float initRad,int num);
-	~CrossLine(void);
-	void Init(void);
-	void Update(void);
-	void Draw(void);
-	Transform& GetTransform(void) { return *transform_; }
+	~CrossLine(void)override;
+	void Init(void)override;
+	void Update(void)override;
+	void Draw(void)override;
 private:
-	std::unique_ptr<Transform> transform_;
 	float& radian_;
 	VECTOR centerPos_;
 	float initRadian_;
