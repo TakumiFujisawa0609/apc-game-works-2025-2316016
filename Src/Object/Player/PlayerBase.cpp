@@ -26,6 +26,16 @@ PlayerBase::PlayerBase(int playerNum) :keyIns_(KeyConfig::GetInstance())
 	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::PLAYER));
 	transform_->scl = VGet(SIZE, SIZE, SIZE);
 	transform_->Update();
+	material_ = std::make_unique<ModelMaterial>(
+		"PlayerVS.cso", 0,
+		"PlayerPS.cso", 0
+	);
+	//material_->AddConstBufVS({ TEXTURE_SCALE, 0.0f, 1.0f, 1.0f });
+	//material_->SetTextureBuf(3, ResourceManager::GetInstance().Load(ResourceManager::SRC::NOISE).handleId_);
+	renderer_ = std::make_unique<ModelRenderer>(
+		transform_->modelId, *material_
+	);
+
 	gravity_ = std::make_unique<Gravity>();
 	gravity_->ChengeState(Gravity::STATE::NONE);
 	gravity_->SetDir(Utility::DIR_D);
@@ -91,7 +101,8 @@ void PlayerBase::Draw(void)
 {
 	//int color = (state_ == STATE::DAMAGE) ? GetColor(255, 0, 0) : GetColor(0, 255, 0);
 	//DrawSphere3D(transform_->pos, RADIUS, 16, color,GetColor(255,0,0),true);
-	MV1DrawModel(transform_->modelId);
+	//MV1DrawModel(transform_->modelId);
+	renderer_->Draw();
 	for (auto& shot : shots_)
 	{
 		shot->Draw();

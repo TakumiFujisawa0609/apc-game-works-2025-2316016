@@ -60,6 +60,9 @@
     <ClCompile Include="Src\Object\ObjectBase.cpp" />
     <ClCompile Include="Src\Common\FpsController.cpp" />
     <ClCompile Include="Src\Object\Common\EffectController.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Attack\SubObject\SubObjectBase.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Attack\Type\WaterSpritAttack.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Attack\SubObject\WaterSprit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Common\IntVector3.h" />
@@ -121,6 +124,9 @@
     <ClInclude Include="Src\Object\ObjectBase.h" />
     <ClInclude Include="Src\Common\FpsController.h" />
     <ClInclude Include="Src\Object\Common\EffectController.h" />
+    <ClInclude Include="Src\Object\Enemy\Attack\SubObject\SubObjectBase.h" />
+    <ClInclude Include="Src\Object\Enemy\Attack\Type\WaterSpritAttack.h" />
+    <ClInclude Include="Src\Object\Enemy\Attack\SubObject\WaterSprit.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shader\Common\VertexToPixelHeader.hlsli" />
@@ -140,5 +146,11 @@
     <FxCompile Include="Src\Shader\Model\ShockWavePS.hlsl" />
     <FxCompile Include="Src\Shader\Model\FloorVS.hlsl" />
     <FxCompile Include="Src\Shader\Model\FloorPS.hlsl" />
+    <FxCompile Include="Src\Shader\Model\WaterSplitPS.hlsl" />
+    <FxCompile Include="Src\Shader\Model\WaterSplitVS.hlsl" />
+    <FxCompile Include="Src\Shader\Model\NoChangePS.hlsl" />
+    <FxCompile Include="Src\Shader\Model\NoChangeVS.hlsl" />
+    <FxCompile Include="Src\Shader\Model\PlayerVS.hlsl" />
+    <FxCompile Include="Src\Shader\Model\PlayerPS.hlsl" />
   </ItemGroup>
 </Project>

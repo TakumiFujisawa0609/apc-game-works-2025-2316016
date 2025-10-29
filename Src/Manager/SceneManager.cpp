@@ -99,7 +99,7 @@ void SceneManager::Init3D(void)
 	SetUseBackCulling(true);
 
 	// ライトの設定
-	SetUseLighting(false);
+	SetUseLighting(true);
 }
 
 //更新処理

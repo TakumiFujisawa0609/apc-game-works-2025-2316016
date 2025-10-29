@@ -57,6 +57,7 @@ public:
 		//エフェクト
 		HIT_EFFECT,		//ヒットエフェクト
 		WATER_SPLIT,	//渦巻
+		WATER_SPRIT_MODEL, //ウォータースプリット
 	};
 
 	// 明示的にインステンスを生成する
