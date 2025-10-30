@@ -18,6 +18,9 @@ public:
 	static constexpr float SPEED = 20.0f; //弾の速度
 	static constexpr float POWER = 15.0f; //玉の初期パワー
 	static constexpr float RADIUS = 5.0f;	//球の大きさ
+	static constexpr float MODEL_RADIUS = 100.0f; //モデルの大きさ
+	static constexpr float MODEL_SCL = RADIUS / MODEL_RADIUS; //モデルのスケール
+	static constexpr FLOAT4 COLOR = { 1.0f,1.0f,0.0f,1.0f }; //弾の色
 	/// <summary>
 	/// クリエイト
 	/// </summary>

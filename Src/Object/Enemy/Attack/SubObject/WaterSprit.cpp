@@ -1,7 +1,8 @@
 #include <memory>
 #include "../../Utility/Utility.h"
 #include "../../Manager/ResourceManager.h"
-#include "../../../../Manager/SceneManager.h"
+#include "../../Manager/SceneManager.h"
+#include "../../Manager/DrawTranslucentManager.h"
 #include "../../Renderer/ModelMaterial.h"
 #include "../../Renderer/ModelRenderer.h"
 #include "../../../Common/EffectController.h"
@@ -11,7 +12,7 @@
 
 WaterSprit::WaterSprit(VECTOR direction, VECTOR startPos , float speed)
 {
-	transform_ = std::make_unique<Transform>();
+	transform_ = std::make_shared<Transform>();
 	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::WATER_SPRIT_MODEL));
 	transform_->pos = startPos;
 	transform_->Update();
@@ -23,7 +24,7 @@ WaterSprit::WaterSprit(VECTOR direction, VECTOR startPos , float speed)
 	material_->AddConstBufVS({ startPos_.x, startPos_.y, startPos_.z,0.0f });
 	material_->AddConstBufPS({ time_,TIME_SCALE, 0.0f, 0.0f });
 	//material_->SetTextureBuf(3, ResourceManager::GetInstance().Load(ResourceManager::SRC::NOISE).handleId_);
-	renderer_ = std::make_unique<ModelRenderer>(
+	renderer_ = std::make_shared<ModelRenderer>(
 		transform_->modelId, *material_
 	);
 	speed_ = speed;
@@ -76,7 +77,8 @@ void WaterSprit::Update(void)
 
 void WaterSprit::Draw(void)
 {
-	Utility::DrawCircle3DXZ(transform_->pos, size_, 16, GetColor(0, 0, 255), true);
-	renderer_->Draw();
+	//Utility::DrawCircle3DXZ(transform_->pos, size_, 16, GetColor(0, 0, 255), true);
+	DrawTranslucentManager::GetInstance().Add(transform_,renderer_);
+	//renderer_->Draw();
 }
 

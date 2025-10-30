@@ -7,15 +7,19 @@
 
 class Gravity;
 class AttackBase;
+class AnimationController;
 
 class EnemyBase : public ObjectBase
 {
 public:
 
+	//デフォルトの色
+	static constexpr COLOR_F DEFAULT_COLOR = { 1.0f,1.0f,1.0f,1.0f };
+
 	//ダメージ関連
 	static constexpr float DAMAGE_EFECT_TIME = 0.6f;	//ダメージのエフェクトの時間
 
-	static constexpr float MODEL_SIZE = 5.0f;
+	static constexpr float MODEL_SIZE = 1.0f;
 
 	enum class STATE
 	{
@@ -33,6 +37,29 @@ public:
 		CROSS_LINE,	//十字	
 		THUNDER_AROUND, //周囲雷
 		WATER_SPRIT,	//水しぶき
+		MAX
+	};
+
+	enum class ANIM_TYPE_DRAGON
+	{
+		IDLE_1,	//待機1
+		FLY_FORWARD, //前飛び
+		BASIC_ATTACK, //基本攻撃
+		TAKE_OFF,	//飛び立つ
+		LAND,		//着地
+		SCREAM,		//叫び
+		CLAW_ATTACK, //爪攻撃
+		FLAME_ATTACK, //炎攻撃
+		DEFEND,		//防御
+		HIT,		//ヒット
+		SLEEP,		//睡眠
+		WALK,		//歩き
+		RUN,		//走り
+		FLY_FLAME,	//飛び炎
+		FLY_GLIDE,	//飛び滑空
+		IDLE_2,	//待機2
+		DIE,		//死亡
+		FLY_FLOAT,	//飛び浮遊
 		MAX
 	};
 
@@ -91,6 +118,8 @@ protected:
 
 	Transform& target_; //ターゲット
 	std::vector<std::unique_ptr<AttackBase>> attackList_; //攻撃リスト
+
+	std::unique_ptr<AnimationController> animCtrl_;	//アニメーションコントローラー
 	//体力
 	float maxHP_; //最大体力
 	float hp_; //体力
@@ -112,6 +141,7 @@ protected:
 
 	virtual void AplayChangeStateFunc(void);
 
+	void InitAnimationControllerDragon(void); //ドラゴン用アニメーションコントローラー初期化
 private:
 
 

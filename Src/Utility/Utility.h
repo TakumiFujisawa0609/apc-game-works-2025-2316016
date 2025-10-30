@@ -378,6 +378,8 @@ public:
 	/// <returns>‰æ‘œ‚Ìƒnƒ“ƒhƒ‹ID</returns>
 	static int GetBtnImage(KeyConfig::JOYPAD_BTN btn);
 
+	static FLOAT4 COLOR_F2FLOAT4(const COLOR_F& color);
+
 	/// <summary>
 	/// vector”z—ñ‚Ì’†‚Ìnullptr‚ğíœ‚·‚é
 	/// </summary>

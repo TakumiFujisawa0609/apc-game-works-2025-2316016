@@ -9,8 +9,19 @@
 PlayerShot::PlayerShot(VECTOR pPos, VECTOR tPos)
 {
 	auto& res = ResourceManager::GetInstance();
-	transform_ = std::make_unique<Transform>();
+	transform_ = std::make_shared<Transform>();
+	transform_->SetModel(res.LoadModelDuplicate(ResourceManager::SRC::SHOT));
 	transform_->pos = pPos;
+	transform_->scl = VGet(MODEL_SCL, MODEL_SCL, MODEL_SCL);
+	transform_->Update();
+	material_ = std::make_unique<ModelMaterial>(
+		"NoTextureVS.cso", 0,
+		"NoTexturePS.cso", 1
+	);
+	material_->AddConstBufPS(static_cast<FLOAT4>(COLOR));
+	renderer_ = std::make_shared<ModelRenderer>(
+		transform_->modelId, *material_
+	);
 	startPos_ = pPos;
 	targetPos_ = tPos;
 	dir_ = VSub(targetPos_, startPos_);
@@ -51,6 +62,7 @@ void PlayerShot::Update(void)
 		//À•W‚ÌXV
 		transform_->pos = VAdd(transform_->pos, VScale(dir_, SPEED));
 		transform_->pos = VAdd(transform_->pos, VScale(gravity_->GetDir(), gravity_->GetPower()));
+		transform_->Update();
 		break;
 	case PlayerShot::STATE::BLAST:
 		effect_->Update();
@@ -81,7 +93,8 @@ void PlayerShot::Draw(void)
 	switch (state_)
 	{
 	case PlayerShot::STATE::SHOT:
-		DrawSphere3D(transform_->pos, RADIUS, 16, GetColor(255, 255, 0), GetColor(255, 0, 0), true);
+		//DrawSphere3D(transform_->pos, RADIUS, 16, GetColor(255, 255, 0), GetColor(255, 0, 0), true);
+		renderer_->Draw();
 		break;
 	case PlayerShot::STATE::BLAST:
 		

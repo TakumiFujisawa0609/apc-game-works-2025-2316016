@@ -9,7 +9,7 @@
 
 Floor::Floor(void)
 {
-	transform_ = std::make_unique<Transform>();
+	transform_ = std::make_shared<Transform>();
 	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::FLOOR));
 	transform_->pos = { 0.0f,-10.0f,0.0f };
 	transform_->scl = { SIZE,SIZE,SIZE };
@@ -21,7 +21,7 @@ Floor::Floor(void)
 	);
 	material_->AddConstBufVS({ TEXTURE_SCALE, 0.0f, 1.0f, 1.0f });
 	material_->SetTextureBuf(3, ResourceManager::GetInstance().Load(ResourceManager::SRC::NOISE).handleId_);
-	renderer_ = std::make_unique<ModelRenderer>(
+	renderer_ = std::make_shared<ModelRenderer>(
 		transform_->modelId, *material_
 	);
 }

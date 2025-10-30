@@ -49,6 +49,39 @@ void AnimationController::Add(int type, const std::string& path, float speed)
 
 }
 
+void AnimationController::Add(int type, const float speed, int modelId)
+{
+	Animation anim;
+	if (modelId != -1)
+	{
+		//リソースマネージャでロードしたものを使う
+		anim.model = modelId;
+	}
+	else
+	{
+		//持ち主のモデル
+		anim.model = modelId_;
+	}
+	anim.animIndex = type;
+	anim.speed = speed;
+
+	//指定番号の配列にアニメーションが存在しない場合
+	if (animations_.count(type) == 0)
+	{
+		//追加
+		animations_.emplace(type, anim);
+	}
+	//存在する場合
+	else
+	{
+		//上書き
+		animations_[type].model = anim.model;
+		animations_[type].animIndex = anim.animIndex;
+		animations_[type].attachNo = anim.attachNo;
+		animations_[type].totalTime = anim.totalTime;
+	}
+}
+
 void AnimationController::Play(int type, bool isLoop, 
 	float startStep, float endStep, bool isStop, bool isForce)
 {
@@ -75,6 +108,11 @@ void AnimationController::Play(int type, bool isLoop,
 			// アニメーションが複数保存されていたら、番号1を指定
 			animIdx = 1;
 		}
+		if (modelId_ == playAnim_.model)
+		{
+			animIdx = type;
+		}
+
 		playAnim_.attachNo = MV1AttachAnim(modelId_, animIdx, playAnim_.model);
 
 		// アニメーション総時間の取得

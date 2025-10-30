@@ -49,7 +49,10 @@ public:
 		//オブジェクト
 		SKY_DOME,	//スカイドーム
 		PLAYER,		//プレイヤー
-		ENEMY,		//エネミー
+		SHOT,		//プレイヤーショット
+		CHICKIN,	//チキン
+		SNOW_MAN,	//スノーマン
+		DRAGON,		//ドラゴン
 		FLOOR,		//ステージ
 		SHOCK_WAVE,	//ショックウェーブ
 		NOISE,		//ノイズ

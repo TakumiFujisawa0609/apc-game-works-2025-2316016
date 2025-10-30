@@ -1,5 +1,6 @@
 #include<DxLib.h>
 #include <EffekseerForDXLib.h>
+#include "DrawTranslucentManager.h"
 #include"SceneManager.h"
 #include"../Application.h"
 #include "Camera.h"
@@ -26,6 +27,7 @@ SceneManager::SceneManager(void)
 	isSceneChanging_ = false;
 	fader_ = nullptr;
 	deltaTime_ = 0.0f;
+	DrawTranslucentManager::CreateInstance();
 }
 
 SceneManager::~SceneManager(void)
@@ -83,6 +85,7 @@ bool SceneManager::Init(void)
 	mainScreen_ = MakeScreen(
 		Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y, true);
 	Init3D();
+
 	return true;
 }
 
@@ -133,10 +136,10 @@ void SceneManager::Draw(void)
 	camera_->SetBeforeDraw();
 	// Effekseerにより再生中のエフェクトを更新する。
 	UpdateEffekseer3D();
+	// Effekseerにより再生中のエフェクトを描画する。
 	for (auto& scene : scenes_) {
 		scene->Draw();
 	}
-	// Effekseerにより再生中のエフェクトを描画する。
 	DrawEffekseer3D();
 	fader_->Draw();
 	SetDrawScreen(DX_SCREEN_BACK);
@@ -148,6 +151,8 @@ void SceneManager::Draw(void)
 void SceneManager::Destroy(void)
 {
 	fader_ = nullptr;
+
+	DrawTranslucentManager::GetInstance().Destroy();
 
 	delete instance_;               //インスタンスを削除
 	instance_ = nullptr;            //インスタンス格納領域を初期化

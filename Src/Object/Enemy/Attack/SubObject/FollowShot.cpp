@@ -8,8 +8,8 @@
 
 FollowShot::FollowShot(Transform& target, SPEED_TYPE speed, VECTOR startPos) : target_(target)
 {
-	transform_ = std::make_unique<Transform>();
-	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::ENEMY));
+	transform_ = std::make_shared<Transform>();
+	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::CHICKIN));
 	transform_->pos = startPos;
 	time_ = ATTACK_TIME;
 	transform_->Update();

@@ -94,8 +94,14 @@ void ResourceManager::Init(void)
 	resourcesMap_.emplace(SRC::SKY_DOME, std::move(res));
 	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "Player/Player.mv1");
 	resourcesMap_.emplace(SRC::PLAYER, std::move(res));
-	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "Enemy/Chicken.mv1");
-	resourcesMap_.emplace(SRC::ENEMY, std::move(res));
+	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "Shot/Shot.mv1");
+	resourcesMap_.emplace(SRC::SHOT, std::move(res));
+	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "Chicken/Chicken.mv1");
+	resourcesMap_.emplace(SRC::CHICKIN, std::move(res));
+	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "SnowMan/SnowMan.mv1");
+	resourcesMap_.emplace(SRC::SNOW_MAN, std::move(res));
+	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "Dragon/Blue.mv1");
+	resourcesMap_.emplace(SRC::DRAGON, std::move(res));
 	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "Stage/Floor/Floor.mv1");
 	resourcesMap_.emplace(SRC::FLOOR, std::move(res));
 	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "Stage/ShockWave/ShockWave.mv1");

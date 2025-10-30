@@ -10,7 +10,7 @@
 ShockWave::ShockWave(void)
 {
 	time_ = 0.0f;
-	transform_ = std::make_unique<Transform>();
+	transform_ = std::make_shared<Transform>();
 	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::SHOCK_WAVE));
 	transform_->pos = { 0.0f,-10.0f,0.0f };
 	transform_->scl = SIZE;
@@ -24,7 +24,7 @@ ShockWave::ShockWave(void)
 	material_->AddConstBufPS({ time_, WAVE_SCALE, 1.0f, 1.0f });
 
 	material_->SetTextureBuf(3, ResourceManager::GetInstance().Load(ResourceManager::SRC::NOISE).handleId_);
-	renderer_ = std::make_unique<ModelRenderer>(
+	renderer_ = std::make_shared<ModelRenderer>(
 		transform_->modelId, *material_
 	);
 }

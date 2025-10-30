@@ -26,6 +26,7 @@ public :
 
 	// アニメーション追加
 	void Add(int type, const std::string& path, float speed);
+	void Add(int type, const float speed, int modelId = -1);
 
 	// アニメーション再生
 	void Play(int type, bool isLoop = true, 

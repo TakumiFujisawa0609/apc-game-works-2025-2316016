@@ -15,9 +15,9 @@ public:
 	virtual void Draw(void) = 0;
 	Transform& GetTransform(void) const{ return *transform_; }
 protected:
-	std::unique_ptr<Transform> transform_;
+	std::shared_ptr<Transform> transform_;
 	std::unique_ptr<ModelMaterial> material_;
-	std::unique_ptr<ModelRenderer> renderer_;
+	std::shared_ptr<ModelRenderer> renderer_;
 	std::unique_ptr<EffectController> effect_;
 };
 

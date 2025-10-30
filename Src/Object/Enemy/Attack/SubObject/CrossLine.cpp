@@ -7,8 +7,8 @@
 
 CrossLine::CrossLine(VECTOR centerPos, float& rad, float initRad, int num) : centerPos_(centerPos), radian_(rad)
 {
-	transform_ = std::make_unique<Transform>();
-	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::ENEMY));
+	transform_ = std::make_shared<Transform>();
+	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::CHICKIN));
 	transform_->scl = VGet(2.0f, 2.0f, 2.0f);
 	transform_->Update();
 	initRadian_ = initRad;

@@ -1053,3 +1053,8 @@ int Utility::GetBtnImage(KeyConfig::JOYPAD_BTN btn)
     }
     return img;
 }
+
+FLOAT4 Utility::COLOR_F2FLOAT4(const COLOR_F& color)
+{
+    return FLOAT4{ color.r, color.g, color.b, color.a };
+}

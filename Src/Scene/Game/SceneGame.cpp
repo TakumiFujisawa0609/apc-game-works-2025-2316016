@@ -5,6 +5,7 @@
 #include "../../Manager/ResourceManager.h"
 #include "../../Manager/SoundManager.h"
 #include "../../Manager/InputManager.h"
+#include "../../Manager/DrawTranslucentManager.h"
 #include "../../Manager/KeyConfig.h"
 #include "../../Manager/Camera.h"
 #include "../../Manager/DataBank.h"
@@ -131,7 +132,7 @@ void SceneGame::Draw(void)
 	enemy_->Draw();
 	shockWave_->Draw();
 	//DebugDraw();
-
+	DrawTranslucentManager::GetInstance().Draw();
 	//ポストエフェクト用のスクリーンに変える
 	SetDrawScreen(postEffectScreen_);
 

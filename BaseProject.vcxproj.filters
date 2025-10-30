@@ -63,6 +63,7 @@
     <ClCompile Include="Src\Object\Enemy\Attack\SubObject\SubObjectBase.cpp" />
     <ClCompile Include="Src\Object\Enemy\Attack\Type\WaterSpritAttack.cpp" />
     <ClCompile Include="Src\Object\Enemy\Attack\SubObject\WaterSprit.cpp" />
+    <ClCompile Include="Src\Manager\DrawTranslucentManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Common\IntVector3.h" />
@@ -127,6 +128,7 @@
     <ClInclude Include="Src\Object\Enemy\Attack\SubObject\SubObjectBase.h" />
     <ClInclude Include="Src\Object\Enemy\Attack\Type\WaterSpritAttack.h" />
     <ClInclude Include="Src\Object\Enemy\Attack\SubObject\WaterSprit.h" />
+    <ClInclude Include="Src\Manager\DrawTranslucentManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shader\Common\VertexToPixelHeader.hlsli" />
@@ -152,5 +154,9 @@
     <FxCompile Include="Src\Shader\Model\NoChangeVS.hlsl" />
     <FxCompile Include="Src\Shader\Model\PlayerVS.hlsl" />
     <FxCompile Include="Src\Shader\Model\PlayerPS.hlsl" />
+    <FxCompile Include="Src\Shader\Model\EnemyPS.hlsl" />
+    <FxCompile Include="Src\Shader\Model\EnemyVS.hlsl" />
+    <FxCompile Include="Src\Shader\Model\NoTexturePS.hlsl" />
+    <FxCompile Include="Src\Shader\Model\NoTextureVS.hlsl" />
   </ItemGroup>
 </Project>

@@ -7,6 +7,7 @@
 #include "../Player/PlayerBase.h"
 #include "../Common/Transform.h"
 #include "../Common/Gravity.h"
+#include "../Common/AnimationController.h"
 #include "../Common/EffectController.h"
 #include "Attack/Type/AttackBase.h"
 #include "Attack/Type/JumpAttack.h"
@@ -20,15 +21,26 @@
 
 EnemyBase::EnemyBase(Transform& target) : target_(target)
 {
-	transform_ = std::make_unique<Transform>();
-	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::ENEMY));
+	transform_ = std::make_shared<Transform>();
+	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::DRAGON));
 	transform_->scl = { MODEL_SIZE,MODEL_SIZE,MODEL_SIZE };
 	transform_->Update();
+	material_ = std::make_unique<ModelMaterial>(
+		"EnemyVS.cso", 0,
+		"EnemyPS.cso", 1
+	);
+	//material_->AddConstBufVS({ TEXTURE_SCALE, 0.0f, 1.0f, 1.0f });
+	material_->AddConstBufPS(static_cast<FLOAT4>(Utility::COLOR_F2FLOAT4(DEFAULT_COLOR)));
+	//material_->SetTextureBuf(3, ResourceManager::GetInstance().Load(ResourceManager::SRC::NOISE).handleId_);
+	renderer_ = std::make_shared<ModelRenderer>(
+		transform_->modelId, *material_
+	);
 	gravity_ = std::make_unique<Gravity>();
 	gravity_->Init();
 	gravity_->SetDir(Utility::DIR_D);
 	maxHP_ = 100.0f;
 	hp_ = maxHP_;
+	InitAnimationControllerDragon();
 	AplayChangeStateFunc();
 	//AddAttack(ATTACK_TYPE::JUMP);
 	//AddAttack(ATTACK_TYPE::JUMP_CONSTANT);
@@ -63,12 +75,14 @@ void EnemyBase::Update(void)
 	AplayGravity();
 	MoveLimit();
 	transform_->Update();
+	animCtrl_->Update();
 }
 
 void EnemyBase::Draw(void)
 {
 	//float size = 50.0f;
-	MV1DrawModel(transform_->modelId);
+	//MV1DrawModel(transform_->modelId);
+	renderer_->Draw();
 	for (auto& attack : attackList_)
 	{
 		attack->Draw();
@@ -249,4 +263,16 @@ void EnemyBase::AplayChangeStateFunc(void)
 	changeState_[(STATE::IDLE)] = std::bind(&EnemyBase::ChangeStateIdle, this);
 	changeState_[(STATE::ATTACK)] = std::bind(&EnemyBase::ChangeStateAttack, this);
 	changeState_[(STATE::DEAD)] = std::bind(&EnemyBase::ChangeStateDead, this);
+}
+
+void EnemyBase::InitAnimationControllerDragon(void)
+{
+	animCtrl_ = std::make_unique<AnimationController>(transform_->modelId);
+	for (int i = 0; i < (int)ANIM_TYPE_DRAGON::MAX;i++)
+	{
+		animCtrl_->Add(i, 60.0f);
+	}
+	//animCtrl_->Add((int)STATE::DEAD, path + "Falling.mv1", 80.0f);
+
+	animCtrl_->Play((int)ANIM_TYPE_DRAGON::IDLE_1);
 }

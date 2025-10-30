@@ -9,7 +9,7 @@ ThunderAround::ThunderAround(VECTOR targetPos, VECTOR initPos,  float initRad) :
 {
 	targetPos_ = targetPos;
 	targetPos_.y = 0.0f;
-	transform_ = std::make_unique<Transform>();
+	transform_ = std::make_shared<Transform>();
 	transform_->SetModel(-1);
 	transform_->pos = initPos;
 	transform_->pos.y = 0.0f;

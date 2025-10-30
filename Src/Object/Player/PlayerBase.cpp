@@ -21,18 +21,19 @@ PlayerBase::PlayerBase(int playerNum) :keyIns_(KeyConfig::GetInstance())
 	attackDeley_ = 0.0f;
 	damageInvincibleTime_ = 0.0f;
 	damageTime_ = 0.0f;
-	transform_ = std::make_unique<Transform>();
+	transform_ = std::make_shared<Transform>();
 	transform_->pos = MOVE_LIMIT_MIN;
 	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::PLAYER));
 	transform_->scl = VGet(SIZE, SIZE, SIZE);
 	transform_->Update();
 	material_ = std::make_unique<ModelMaterial>(
 		"PlayerVS.cso", 0,
-		"PlayerPS.cso", 0
+		"PlayerPS.cso", 1
 	);
 	//material_->AddConstBufVS({ TEXTURE_SCALE, 0.0f, 1.0f, 1.0f });
+	material_->AddConstBufPS(static_cast<FLOAT4>(Utility::COLOR_F2FLOAT4(DEFAULT_COLOR)));
 	//material_->SetTextureBuf(3, ResourceManager::GetInstance().Load(ResourceManager::SRC::NOISE).handleId_);
-	renderer_ = std::make_unique<ModelRenderer>(
+	renderer_ = std::make_shared<ModelRenderer>(
 		transform_->modelId, *material_
 	);
 
@@ -133,7 +134,7 @@ void PlayerBase::Damage(float damage, VECTOR dir)
 		{
 			isDesth_ = true;
 		}
-		MV1SetDifColorScale(transform_->modelId, DAMAGE_COLOR);
+		material_->SetConstBufPS(0,Utility::COLOR_F2FLOAT4(DAMAGE_COLOR));
 		hp_ -= damage;
 		damageDir_ = dir;
 		damageDir_.y = 0.0f;
@@ -489,7 +490,7 @@ void PlayerBase::StateUpdateDamage(void)
 		}
 		else
 		{
-			MV1SetDifColorScale(transform_->modelId, DEFAULT_COLOR);
+			material_->SetConstBufPS(0, Utility::COLOR_F2FLOAT4(DEFAULT_COLOR));
 			ChangeState(STATE::IDLE);
 		}
 	}
