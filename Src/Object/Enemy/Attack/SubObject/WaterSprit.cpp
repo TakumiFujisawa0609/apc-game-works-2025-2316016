@@ -12,9 +12,12 @@
 
 WaterSprit::WaterSprit(VECTOR direction, VECTOR startPos , float speed)
 {
+	size_ = INIT_SIZE;
 	transform_ = std::make_shared<Transform>();
 	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::WATER_SPRIT_MODEL));
 	transform_->pos = startPos;
+	float scl = size_ / MODEL_RADIUS;
+	transform_->scl = VGet(scl, 1.0f, scl);
 	transform_->Update();
 	material_ = std::make_unique<ModelMaterial>(
 		"WaterSplitVS.cso", 2,
@@ -30,7 +33,6 @@ WaterSprit::WaterSprit(VECTOR direction, VECTOR startPos , float speed)
 	speed_ = speed;
 	startPos_ = startPos;
 	dir_ = VNorm(direction);
-	size_ = INIT_SIZE;
 	time_ = ALIVE_TIME;
 	effect_ = std::make_unique<EffectController>();
 	effect_->Add(ResourceManager::GetInstance().Load(ResourceManager::SRC::WATER_SPLIT).handleId_, EffectController::EFF_TYPE::WATER_SPLIT);
@@ -56,6 +58,8 @@ void WaterSprit::Update(void)
 	time_ -= deltaTime;
 	transform_->pos = VAdd(transform_->pos, VScale(dir_, speed_));
 	transform_->quaRot = Quaternion(VGet(0.0f, rot_, 0.0f));
+	float scl = size_ / MODEL_RADIUS;
+	transform_->scl = VGet(scl, 1.0f, scl);
 	transform_->Update();
 	if (time_ < 0.0f || Utility::Distance(startPos_ , transform_->pos) > Stage::RADIUS)
 	{
@@ -77,7 +81,7 @@ void WaterSprit::Update(void)
 
 void WaterSprit::Draw(void)
 {
-	//Utility::DrawCircle3DXZ(transform_->pos, size_, 16, GetColor(0, 0, 255), true);
+	Utility::DrawCircle3DXZ(transform_->pos, size_, 16, GetColor(0, 0, 255), true);
 	DrawTranslucentManager::GetInstance().Add(transform_,renderer_);
 	//renderer_->Draw();
 }

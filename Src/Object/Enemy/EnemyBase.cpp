@@ -47,12 +47,12 @@ EnemyBase::EnemyBase(Transform& target) : target_(target)
 	hp_ = maxHP_;
 	InitAnimationControllerDragon();
 	AplayChangeStateFunc();
-	//AddAttack(ATTACK_TYPE::JUMP);
-	//AddAttack(ATTACK_TYPE::JUMP_CONSTANT);
-	//AddAttack(ATTACK_TYPE::FOLLOW);
-	//AddAttack(ATTACK_TYPE::FALL_DOWN);
-	//AddAttack(ATTACK_TYPE::CROSS_LINE);
-	//AddAttack(ATTACK_TYPE::THUNDER_AROUND);
+	AddAttack(ATTACK_TYPE::JUMP);
+	AddAttack(ATTACK_TYPE::JUMP_CONSTANT);
+	AddAttack(ATTACK_TYPE::FOLLOW);
+	AddAttack(ATTACK_TYPE::FALL_DOWN);
+	AddAttack(ATTACK_TYPE::CROSS_LINE);
+	AddAttack(ATTACK_TYPE::THUNDER_AROUND);
 	AddAttack(ATTACK_TYPE::WATER_SPRIT);
 	ChangeState(STATE::IDLE);
 }

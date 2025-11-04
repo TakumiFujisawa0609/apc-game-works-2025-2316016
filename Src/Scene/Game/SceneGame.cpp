@@ -25,11 +25,13 @@
 #include "../../Object/Enemy/Attack/Type/FallDownAttack.h"
 #include "../../Object/Enemy/Attack/Type/CrossAttack.h"
 #include "../../Object/Enemy/Attack/Type/ThunderAroundAttack.h"
+#include "../../Object/Enemy/Attack/Type/WaterSpritAttack.h"
 #include "../../Object/Enemy/Attack/SubObject/Wave.h"
 #include "../../Object/Enemy/Attack/SubObject/FollowShot.h"
 #include "../../Object/Enemy/Attack/SubObject/FallDownShot.h"
 #include "../../Object/Enemy/Attack/SubObject/CrossLine.h"
 #include "../../Object/Enemy/Attack/SubObject/ThunderAround.h"
+#include "../../Object/Enemy/Attack/SubObject/WaterSprit.h"
 #include "../../Object/UI/EnemyHPUI.h"
 #include "SceneGame.h"
 
@@ -275,7 +277,7 @@ void SceneGame::CheckCollision(void)
 		for (auto& attack : enemyAttack)
 		{
 			//UŒ‚‚µ‚Ä‚¢‚é‚©
-			if (attack->GetState() == AttackBase::STATE::NONE || attack->GetState() == AttackBase::STATE::FINISH)
+			if (attack->GetState() == AttackBase::STATE::NONE/* || attack->GetState() == AttackBase::STATE::FINISH*/)
 			{
 				//‚µ‚Ä‚¢‚È‚¢‚©‚çŽŸ‚Ö
 				continue;
@@ -352,6 +354,22 @@ void SceneGame::CheckCollision(void)
 					{
 						auto& transform = thunder->GetThunderTransform(i);
 						if (Utility::IsColSphere2Sphere(checkPos, PlayerBase::RADIUS, transform.pos, ThunderAround::RADIUS))
+						{
+							VECTOR vec = VNorm(VSub(pPos, transform.pos));
+							player_->Damage(ThunderAround::DAMAGE, VNorm(vec));
+						}
+					}
+				}
+				auto water = dynamic_cast<WaterSpritAttack*>(attack);
+				if (water != nullptr)
+				{
+					//…‚Æ‚Ì“–‚½‚è”»’è
+					int waterNum = water->GetSubObjectNum();
+					for (int i = 0; i < waterNum; i++)
+					{
+						auto& transform = water->GetWaterTransform(i);
+						auto radius = water->GetWaterRadius(i);
+						if (Utility::IsColSphere2Sphere(checkPos, PlayerBase::RADIUS, transform.pos,radius))
 						{
 							VECTOR vec = VNorm(VSub(pPos, transform.pos));
 							player_->Damage(ThunderAround::DAMAGE, VNorm(vec));

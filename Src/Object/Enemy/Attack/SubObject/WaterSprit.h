@@ -10,6 +10,7 @@ public:
 	static constexpr float EFFECT_INIT_SIZE = 0.5f;	//エフェクト初期サイズ
 	static constexpr float ALIVE_TIME = 15.0f;		//生存時間
 	static constexpr float TIME_SCALE = 5.0f;		//時間スケール
+	static constexpr float MODEL_RADIUS = 100.0f;	//モデルの初期半径
 
 	WaterSprit(VECTOR direction, VECTOR startPos , float speed);
 	~WaterSprit(void)override;
@@ -17,6 +18,7 @@ public:
 	void Update(void)override;
 	void Draw(void)override;
 	bool IsEnd(void)const { return isEnd_; }
+	float GetRadius(void)const { return size_; }
 private:
 	VECTOR startPos_;
 	VECTOR dir_;

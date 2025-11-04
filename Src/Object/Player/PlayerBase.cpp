@@ -103,8 +103,11 @@ void PlayerBase::Draw(void)
 	int color = (state_ == STATE::DAMAGE) ? GetColor(255, 0, 0) : GetColor(0, 255, 0);
 	for (auto& pos : GetCollisionSpherePositions())
 	{
-		DrawSphere3D(pos, RADIUS, 16, color, GetColor(255, 0, 0), true);
+		//DrawSphere3D(pos, RADIUS, 16, color, GetColor(255, 0, 0), true);
 	}
+	VECTOR landPos = transform_->pos;
+	landPos.y = MOVE_LIMIT_MIN.y;
+	Utility::DrawCircle3DXZ(landPos, RADIUS, 16, GetColor(0, 0, 0), true);
 	//MV1DrawModel(transform_->modelId);
 	renderer_->Draw();
 	for (auto& shot : shots_)

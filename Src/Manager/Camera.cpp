@@ -477,10 +477,13 @@ void Camera::SetBeforeDrawTwoTargetFollow(void)
 {
 	if (followTransform1_ == nullptr || followTransform2_ == nullptr) return;
 	targetPos_ = followTransform2_->pos;
-	auto dis = VSub(followTransform2_->pos, followTransform1_->pos);
+	auto pos = followTransform1_->pos;
+	auto disY = followTransform2_->pos.y - followTransform1_->pos.y;
+	pos.y = (pos.y + followTransform2_->pos.y) / 2;
+	auto dis = VSub(targetPos_,pos);
 	auto vec = dis;
 	vec = VNorm(vec);
-	auto back = VScale(vec, TWO_TARGET_LOCAL_POS.z);
+	auto back = VScale(vec, TWO_TARGET_LOCAL_POS.z + disY);
 	auto up = VGet(0.0f, TWO_TARGET_LOCAL_POS.y, 0.0f);
 	VECTOR right = VCross(Utility::DIR_U, vec);
 	right = VNorm(right);

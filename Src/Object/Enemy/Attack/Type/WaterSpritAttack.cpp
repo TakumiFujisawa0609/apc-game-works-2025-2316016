@@ -36,6 +36,16 @@ void WaterSpritAttack::Draw(void)
 	}
 }
 
+Transform& WaterSpritAttack::GetWaterTransform(int index)
+{
+	return waterSprit_[index]->GetTransform();
+}
+
+float WaterSpritAttack::GetWaterRadius(int index) const
+{
+	return waterSprit_[index]->GetRadius();
+}
+
 void WaterSpritAttack::ChangeStateNone(void)
 {
 	AttackBase::ChangeStateNone();
