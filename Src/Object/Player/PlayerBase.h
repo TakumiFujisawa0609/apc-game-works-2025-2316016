@@ -49,6 +49,10 @@ public:
 	//攻撃関連
 	static constexpr float ATTACK_DELEY = 0.5f; //攻撃ディレイ
 
+	//回復関連
+	static constexpr float HEAL_PER_SEC = 3.0f;	//１秒にどれくらい回復するか
+	static constexpr float DAMAGE_HEAL_DERAY = 10.0f;	//ダメージ後何秒回復しないか
+
 	enum class STATE
 	{
 		IDLE,	//待機
@@ -120,7 +124,7 @@ public:
 protected:
 
 	VECTOR prePos_;
-	bool isDesth_;
+	bool isDeath_;
 	KeyConfig::TYPE controlType_;
 	int playerNum_; //プレイヤー番号
 	//基本情報
@@ -147,6 +151,9 @@ protected:
 
 	//体力
 	float hp_;
+	
+	//回復ディレイ
+	float healDeray_;
 
 	//状態変更
 	std::map<STATE, std::function<void(void)>> stateChanges_;
@@ -185,6 +192,8 @@ protected:
 	void Rotation(void); //プレイヤーの向き調整
 
 	void InitAnimationController(void); //アニメーションコントローラーの初期化
+
+	void Heal(void);
 private:
 
 };

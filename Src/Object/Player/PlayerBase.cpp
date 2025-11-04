@@ -42,7 +42,8 @@ PlayerBase::PlayerBase(int playerNum) :keyIns_(KeyConfig::GetInstance())
 	gravity_->SetDir(Utility::DIR_D);
 	gravity_->ChengeState(Gravity::STATE::JUMP);
 	controlType_ = DataBank::GetInstance().GetControlType();
-	isDesth_ = false;
+	isDeath_ = false;
+	healDeray_ = 0.0f;
 	InitAnimationController();
 	SetupStateChange();
 	ChangeState(STATE::IDLE,true);
@@ -62,6 +63,17 @@ void PlayerBase::Update(void)
 	{
 		return;
 	}
+	if (state_ != STATE::DAMAGE)
+	{
+		if (hp_ < 0.0f)
+		{
+			isDeath_ = true;
+		}
+		else
+		{
+			isDeath_ = false;
+		}
+	}
 	prePos_ = transform_->pos;
 	//デルタタイムを取得し各種時間関係を更新する
 	float deltaTime = SceneManager::GetInstance().GetDeltaTime();
@@ -69,6 +81,7 @@ void PlayerBase::Update(void)
 	attackDeley_ -= deltaTime;
 	damageTime_ -= deltaTime;
 	damageInvincibleTime_ -= deltaTime;
+	healDeray_ -= deltaTime;
 	//状態ごとの更新
 	stateUpdate_();
 	//重力の更新
@@ -78,6 +91,7 @@ void PlayerBase::Update(void)
 	//移動制限
 	MoveLimit();
 	Rotation();
+	Heal();
 	transform_->Update();
 	//攻撃のクールタイム中ではなく攻撃ボタンを押したら攻撃する
 	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK, KeyConfig::JOYPAD_NO::PAD1, controlType_) && attackDeley_ < 0.0f && state_ != STATE::DAMAGE && state_ != STATE::DEAD)
@@ -136,12 +150,9 @@ void PlayerBase::Damage(float damage, VECTOR dir)
 {
 	if (ChangeState(STATE::DAMAGE))
 	{
-		if (hp_ < 0.0f)
-		{
-			isDesth_ = true;
-		}
 		material_->SetConstBufPS(0,Utility::COLOR_F2FLOAT4(DAMAGE_COLOR));
 		hp_ -= damage;
+		healDeray_ = DAMAGE_HEAL_DERAY;
 		damageDir_ = dir;
 		damageDir_.y = 0.0f;
 		damageDir_ = VNorm(damageDir_);
@@ -323,6 +334,18 @@ void PlayerBase::InitAnimationController(void)
 	animCtrl_->Play((int)STATE::IDLE);
 }
 
+void PlayerBase::Heal(void)
+{
+	if (healDeray_ < 0.0f)
+	{
+		hp_ += HEAL_PER_SEC * SceneManager::GetInstance().GetDeltaTime();
+	}
+	if (hp_ > MAX_HP)
+	{
+		hp_ = MAX_HP;
+	}
+}
+
 void PlayerBase::StateChangeIdle(void)
 {
 	stateUpdate_ = std::bind(&PlayerBase::StateUpdateIdle, this);
@@ -498,7 +521,7 @@ void PlayerBase::StateUpdateDamage(void)
 {
 	if (damageTime_ < 0.0f)
 	{
-		if (isDesth_)
+		if (isDeath_)
 		{
 			ChangeState(STATE::DEAD);
 		}
