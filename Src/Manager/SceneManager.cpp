@@ -140,7 +140,6 @@ void SceneManager::Draw(void)
 	for (auto& scene : scenes_) {
 		scene->Draw();
 	}
-	DrawEffekseer3D();
 	fader_->Draw();
 	SetDrawScreen(DX_SCREEN_BACK);
 	ClearDrawScreen(); // ‰æ–ÊƒNƒŠƒA

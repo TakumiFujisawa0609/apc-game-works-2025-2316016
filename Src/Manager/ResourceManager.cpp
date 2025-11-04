@@ -106,6 +106,8 @@ void ResourceManager::Init(void)
 	resourcesMap_.emplace(SRC::FLOOR, std::move(res));
 	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "Stage/ShockWave/ShockWave.mv1");
 	resourcesMap_.emplace(SRC::SHOCK_WAVE, std::move(res));
+	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "Stage/ShockWave/ShockWave1.mv1");
+	resourcesMap_.emplace(SRC::SHOCK_WAVE1, std::move(res));
 	res = Resource(Resource::TYPE::IMG, Application::PATH_MODEL + "Stage/ShockWave/Noise2.png");
 	resourcesMap_.emplace(SRC::NOISE, std::move(res));
 

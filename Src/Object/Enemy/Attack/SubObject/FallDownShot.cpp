@@ -6,7 +6,7 @@
 #include "../../../Common/Transform.h"
 #include "../../../Common/EffectController.h"
 #include "../../../Player/PlayerBase.h"
-#include "../../../Stage/ShockWave.h"
+#include "../../../Stage/Stage.h"
 #include "FallDownShot.h"
 
 FallDownShot::FallDownShot(void)
@@ -86,10 +86,10 @@ VECTOR FallDownShot::InitPos(void)
 	//pos.z = PlayerBase::MOVE_LIMIT_MIN.z + GetRand(static_cast<int>(PlayerBase::MOVE_LIMIT_MAX.z - PlayerBase::MOVE_LIMIT_MIN.z));
 	int deg = GetRand(360);
 	float rad = Utility::Deg2RadF(static_cast<float>(deg));
-	int range = GetRand(static_cast<int>(ShockWave::RADIUS));
+	int range = GetRand(static_cast<int>(Stage::RADIUS));
 	pos.x = std::sinf(rad) * range;
 	pos.y = PlayerBase::MOVE_LIMIT_MAX.y;
-	range = GetRand(static_cast<int>(ShockWave::RADIUS));
+	range = GetRand(static_cast<int>(Stage::RADIUS));
 	pos.z = std::cosf(rad) * range;
 	return pos;
 }

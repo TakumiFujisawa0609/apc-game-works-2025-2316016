@@ -82,6 +82,7 @@
     <ClCompile Include="Src\Object\Enemy\Attack\SubObject\SubObjectBase.cpp" />
     <ClCompile Include="Src\Object\Enemy\Attack\Type\WaterSpritAttack.cpp" />
     <ClCompile Include="Src\Object\Enemy\Attack\SubObject\WaterSprit.cpp" />
+    <ClCompile Include="Src\Object\Stage\Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Manager\DrawTranslucentManager.h" />
@@ -147,6 +148,7 @@
     <ClInclude Include="Src\Object\Enemy\Attack\SubObject\SubObjectBase.h" />
     <ClInclude Include="Src\Object\Enemy\Attack\Type\WaterSpritAttack.h" />
     <ClInclude Include="Src\Object\Enemy\Attack\SubObject\WaterSprit.h" />
+    <ClInclude Include="Src\Object\Stage\Stage.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shader\Common\Pixel\PixelShader2DHeader.hlsli" />

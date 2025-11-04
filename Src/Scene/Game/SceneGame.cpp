@@ -1,4 +1,5 @@
 #include <DxLib.h>
+#include <EffekseerForDXLib.h>
 #include "../../Utility/Utility.h"
 #include "../../Application.h"
 #include "../../Manager/SceneManager.h"
@@ -14,8 +15,7 @@
 #include "../../Object/Common/Gravity.h"
 #include "../../Object/Player/PlayerBase.h"
 #include "../../Object/SkyDome/SkyDome.h"
-#include "../../Object/Stage/ShockWave.h"
-#include "../../Object/Stage/Floor.h"
+#include "../../Object/Stage/Stage.h"
 #include "../../Object/Player/PlayerShot.h"
 #include "../../Object/Enemy/EnemyBase.h"
 #include "../../Object/Enemy/Attack/Type/AttackBase.h"
@@ -66,10 +66,7 @@ bool SceneGame::Init(void)
 	skyDome_->Init();
 
 	//ステージ
-	floor_ = std::make_unique<Floor>();
-	floor_->Init();
-	shockWave_ = std::make_unique<ShockWave>();
-	shockWave_->Init();
+	stage_ = std::make_unique<Stage>();
 
 	// ポストエフェクト用スクリーン
 	postEffectScreen_ = MakeScreen(
@@ -93,8 +90,7 @@ void SceneGame::Update(void)
 	//スカイドーム
 	skyDome_->Update();
 	//ステージ
-	floor_->Update();
-	shockWave_->Update();
+	stage_->Update();
 	ChangeCameraMode();
 	//プレイヤー
 	player_->Update();
@@ -127,10 +123,11 @@ void SceneGame::Draw(void)
 
 	//各オブジェクトの描画
 	skyDome_->Draw();
-	floor_->Draw();
+	stage_->Draw();
 	player_->Draw();
 	enemy_->Draw();
-	shockWave_->Draw();
+
+	DrawEffekseer3D();
 	//DebugDraw();
 	DrawTranslucentManager::GetInstance().Draw();
 	//ポストエフェクト用のスクリーンに変える
@@ -245,178 +242,185 @@ void SceneGame::CheckCollision(void)
 		}
 	}
 	//プレイヤーの移動制限
-	int waveId = shockWave_->GetTransform().modelId;
-	VECTOR pPrePos = player_->GetPrePos();
-	pPrePos.y = 0.0f;
+	//VECTOR pPrePos = player_->GetPrePos();
+	//pPrePos.y = 0.0f;
 	VECTOR pPos = player_->GetTransform().pos;
 	pPos.y = 0.0f;
-	auto result = MV1CollCheck_Line(waveId, -1, pPrePos, pPos);
-	if (result.HitFlag > 0)
+	//auto result = MV1CollCheck_Line(waveId, -1, pPrePos, pPos);
+	//if (result.HitFlag > 0)
+	//{
+	//	VECTOR hitPos = result.HitPosition;
+	//	hitPos.y = player_->GetTransform().pos.y;
+	//	player_->SetPos(VAdd(hitPos,VNorm(VSub(Utility::VECTOR_ZERO,hitPos))));
+	//}
+	auto dis = Utility::Distance(pPos, Utility::VECTOR_ZERO);
+	if (dis > Stage::RADIUS)
 	{
-		VECTOR hitPos = result.HitPosition;
-		hitPos.y = player_->GetTransform().pos.y;
-		player_->SetPos(VAdd(hitPos,VNorm(VSub(Utility::VECTOR_ZERO,hitPos))));
+		VECTOR dir = VNorm(VSub(pPos,Utility::VECTOR_ZERO));
+		VECTOR pos = VScale(dir, Stage::RADIUS);
+		pos.y = player_->GetTransform().pos.y;
+		player_->SetPos(pos);
 	}
 
 	if (!player_->IsDamageHit())
 	{
 		return;
 	}
-	//敵の攻撃とプレイヤーの当たり判定
-	for (auto& attack : enemyAttack)
+	for (auto& pPos : player_->GetCollisionSpherePositions())
 	{
-		//攻撃しているか
-		if (attack->GetState() == AttackBase::STATE::NONE || attack->GetState() == AttackBase::STATE::FINISH)
+		//地面の位置
+		VECTOR checkPos = pPos;
+		checkPos.y = 0.0f;
+		//敵の攻撃とプレイヤーの当たり判定
+		for (auto& attack : enemyAttack)
 		{
-			//していないから次へ
-			continue;
-		}
-		//攻撃の形状で場合分け
-		auto geo = attack->GetGeometory();
-		switch (geo)
-		{
-		case AttackBase::GEOMETORY::SPHERE:
-		{
-			auto follow = dynamic_cast<FollowAttack*>(attack);
-			if (follow != nullptr)
+			//攻撃しているか
+			if (attack->GetState() == AttackBase::STATE::NONE || attack->GetState() == AttackBase::STATE::FINISH)
 			{
-				//追従との当たり判定
-				int shotNum = follow->GetSubObjectNum();
-				for (int i = 0; i < shotNum; i++)
-				{
-					auto& transform = follow->GetShotTransform(i);
-					if (Utility::IsColSphere2Sphere(player_->GetTransform().pos, PlayerBase::RADIUS, transform.pos, FollowAttack::RADIUS))
-					{
-						VECTOR vec = VNorm(VSub(player_->GetTransform().pos, transform.pos));
-						player_->Damage(FollowShot::DAMAGE, VNorm(vec));
-						follow->HitShot(i);
-					}
-				}
+				//していないから次へ
 				continue;
 			}
-			auto fall = dynamic_cast<FallDownAttack*>(attack);
-			if (fall != nullptr)
+			//攻撃の形状で場合分け
+			auto geo = attack->GetGeometory();
+			switch (geo)
 			{
-				//落下との当たり判定
-				int shotNum = fall->GetSubObjectNum();
-				for (int i = 0; i < shotNum; i++)
+			case AttackBase::GEOMETORY::SPHERE:
+			{
+				auto follow = dynamic_cast<FollowAttack*>(attack);
+				if (follow != nullptr)
 				{
-					if (fall->GetShotState(i) != FallDownShot::STATE::BLAST)
+					//追従との当たり判定
+					int shotNum = follow->GetSubObjectNum();
+					for (int i = 0; i < shotNum; i++)
 					{
+						auto& transform = follow->GetShotTransform(i);
+						if (Utility::IsColSphere2Sphere(pPos, PlayerBase::RADIUS, transform.pos, FollowAttack::RADIUS))
+						{
+							VECTOR vec = VNorm(VSub(pPos, transform.pos));
+							player_->Damage(FollowShot::DAMAGE, VNorm(vec));
+							follow->HitShot(i);
+						}
+					}
+					continue;
+				}
+				auto fall = dynamic_cast<FallDownAttack*>(attack);
+				if (fall != nullptr)
+				{
+					//落下との当たり判定
+					int shotNum = fall->GetSubObjectNum();
+					for (int i = 0; i < shotNum; i++)
+					{
+						if (fall->GetShotState(i) != FallDownShot::STATE::BLAST)
+						{
+							continue;
+						}
+						auto& transform = fall->GetShotTransform(i);
+						if (Utility::IsColSphere2Sphere(pPos, PlayerBase::RADIUS, transform.pos, fall->GetShotRadius(i)))
+						{
+							VECTOR vec = VNorm(VSub(pPos, transform.pos));
+							player_->Damage(FallDownShot::DAMAGE, VNorm(vec));
+						}
+					}
+					continue;
+				}
+				auto cross = dynamic_cast<CrossAttack*>(attack);
+				if (cross != nullptr)
+				{
+					//十字との当たり判定
+					int crossPointNum = cross->GetSubObjectNum();
+					for (int i = 0; i < crossPointNum; i++)
+					{
+						auto& transform = cross->GetLineTransform(i);
+						if (Utility::IsColSphere2Sphere(pPos, PlayerBase::RADIUS, transform.pos, CrossLine::RADIUS))
+						{
+							VECTOR vec = VNorm(VSub(pPos, transform.pos));
+							player_->Damage(CrossLine::DAMAGE, VNorm(vec));
+						}
+					}
+					continue;
+				}
+			}
+			break;
+			case AttackBase::GEOMETORY::CIRCLE:
+			{
+				auto thunder = dynamic_cast<ThunderAroundAttack*>(attack);
+				if (thunder != nullptr)
+				{
+					//サンダーとの当たり判定
+					int thunderNum = thunder->GetSubObjectNum();
+					for (int i = 0; i < thunderNum; i++)
+					{
+						auto& transform = thunder->GetThunderTransform(i);
+						if (Utility::IsColSphere2Sphere(checkPos, PlayerBase::RADIUS, transform.pos, ThunderAround::RADIUS))
+						{
+							VECTOR vec = VNorm(VSub(pPos, transform.pos));
+							player_->Damage(ThunderAround::DAMAGE, VNorm(vec));
+						}
+					}
+				}
+			}
+			break;
+			case AttackBase::GEOMETORY::CIRCUMFERENCE:
+			{
+				auto jump = dynamic_cast<JumpAttack*>(attack);
+				if (jump != nullptr)
+				{
+					//Waveとの当たり判定
+					if (player_->GetGravity().GetState() == Gravity::STATE::JUMP)
+					{
+						//ジャンプ中は当たらない
 						continue;
 					}
-					auto& transform = fall->GetShotTransform(i);
-					if (Utility::IsColSphere2Sphere(player_->GetTransform().pos, PlayerBase::RADIUS, transform.pos, fall->GetShotRadius(i)))
+					int waveNum = jump->GetSubObjectNum();
+					for (int i = 0; i < waveNum; i++)
 					{
-						VECTOR vec = VNorm(VSub(player_->GetTransform().pos, transform.pos));
-						player_->Damage(FallDownShot::DAMAGE, VNorm(vec));
+						float waveRadius;
+						VECTOR wavePos;
+						jump->GetWaveState(waveRadius, wavePos, i);
+						if (Utility::IsColCircumference2Circle(wavePos, waveRadius, checkPos, PlayerBase::RADIUS))
+						{
+							VECTOR vec = VNorm(VSub(pPos, wavePos));
+							player_->Damage(Wave::DAMAGE, VNorm(vec));
+						}
 					}
 				}
-				continue;
-			}
-			auto cross = dynamic_cast<CrossAttack*>(attack);
-			if (cross != nullptr)
-			{
-				//十字との当たり判定
-				int crossPointNum = cross->GetSubObjectNum();
-				for (int i = 0; i < crossPointNum; i++)
+				auto jumpC = dynamic_cast<JumpAttackConstant*>(attack);
+				if (jumpC != nullptr)
 				{
-					auto& transform = cross->GetLineTransform(i);
-					if (Utility::IsColSphere2Sphere(player_->GetTransform().pos, PlayerBase::RADIUS, transform.pos, CrossLine::RADIUS))
+					//Waveとの当たり判定
+					if (player_->GetGravity().GetState() == Gravity::STATE::JUMP)
 					{
-						VECTOR vec = VNorm(VSub(player_->GetTransform().pos, transform.pos));
-						player_->Damage(CrossLine::DAMAGE, VNorm(vec));
+						//ジャンプ中は当たらない
+						continue;
 					}
-				}
-				continue;
-			}
-		}
-		break;
-		case AttackBase::GEOMETORY::CIRCLE:
-		{
-			auto thunder = dynamic_cast<ThunderAroundAttack*>(attack);
-			if (thunder != nullptr)
-			{
-				VECTOR pPos = player_->GetTransform().pos;
-				pPos.y = 0.0f;
-				//サンダーとの当たり判定
-				int thunderNum = thunder->GetSubObjectNum();
-				for (int i = 0; i < thunderNum; i++)
-				{
-					auto& transform = thunder->GetThunderTransform(i);
-					if (Utility::IsColSphere2Sphere(pPos, PlayerBase::RADIUS, transform.pos, ThunderAround::RADIUS))
+					int waveNum = jumpC->GetSubObjectNum();
+					for (int i = 0; i < waveNum; i++)
 					{
-						VECTOR vec = VNorm(VSub(player_->GetTransform().pos, transform.pos));
-						player_->Damage(ThunderAround::DAMAGE, VNorm(vec));
+						float waveRadius;
+						VECTOR wavePos;
+						jumpC->GetWaveState(waveRadius, wavePos, i);
+						if (Utility::IsColCircumference2Circle(wavePos, waveRadius, checkPos, PlayerBase::RADIUS))
+						{
+							VECTOR vec = VNorm(VSub(pPos, wavePos));
+							player_->Damage(Wave::DAMAGE, VNorm(vec));
+						}
 					}
 				}
 			}
-		}
 			break;
-		case AttackBase::GEOMETORY::CIRCUMFERENCE:
-		{
-			auto jump = dynamic_cast<JumpAttack*>(attack);
-			if (jump != nullptr)
-			{
-				//Waveとの当たり判定
-				if (player_->GetGravity().GetState() == Gravity::STATE::JUMP)
-				{
-					//ジャンプ中は当たらない
-					continue;
-				}
-				int waveNum = jump->GetSubObjectNum();
-				for (int i = 0; i < waveNum; i++)
-				{
-					float waveRadius;
-					VECTOR wavePos;
-					jump->GetWaveState(waveRadius, wavePos, i);
-					VECTOR pPos = player_->GetTransform().pos;
-					pPos.y = wavePos.y;
-					if (Utility::IsColCircumference2Circle(wavePos, waveRadius, pPos, PlayerBase::RADIUS))
-					{
-						VECTOR vec = VNorm(VSub(player_->GetTransform().pos, wavePos));
-						player_->Damage(Wave::DAMAGE, VNorm(vec));
-					}
-				}
-			}
-			auto jumpC = dynamic_cast<JumpAttackConstant*>(attack);
-			if (jumpC != nullptr)
-			{
-				//Waveとの当たり判定
-				if (player_->GetGravity().GetState() == Gravity::STATE::JUMP)
-				{
-					//ジャンプ中は当たらない
-					continue;
-				}
-				int waveNum = jumpC->GetSubObjectNum();
-				for (int i = 0; i < waveNum; i++)
-				{
-					float waveRadius;
-					VECTOR wavePos;
-					jumpC->GetWaveState(waveRadius, wavePos, i);
-					VECTOR pPos = player_->GetTransform().pos;
-					pPos.y = wavePos.y;
-					if (Utility::IsColCircumference2Circle(wavePos, waveRadius, pPos, PlayerBase::RADIUS))
-					{
-						VECTOR vec = VNorm(VSub(player_->GetTransform().pos, wavePos));
-						player_->Damage(Wave::DAMAGE, VNorm(vec));
-					}
-				}
-			}
-		}
-		break;
-		case AttackBase::GEOMETORY::MODEL:
+			case AttackBase::GEOMETORY::MODEL:
 
-			break;
-		default:
-			break;
+				break;
+			default:
+				break;
+			}
 		}
-	}
-	//敵とプレイヤーの当たり判定
-	if (Utility::IsColSphere2Model(player_->GetTransform().pos, PlayerBase::RADIUS, enemy_->GetTransform().modelId))
-	{
-		VECTOR vec = VNorm(VSub(player_->GetTransform().pos, enemy_->GetTransform().pos));
-		player_->Damage(5.0f, VNorm(vec));
+		//敵とプレイヤーの当たり判定
+		if (Utility::IsColSphere2Model(pPos, PlayerBase::RADIUS, enemy_->GetTransform().modelId))
+		{
+			VECTOR vec = VNorm(VSub(pPos, enemy_->GetTransform().pos));
+			player_->Damage(5.0f, VNorm(vec));
+		}
 	}
 }
 

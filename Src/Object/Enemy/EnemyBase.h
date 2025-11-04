@@ -19,7 +19,7 @@ public:
 	//ダメージ関連
 	static constexpr float DAMAGE_EFECT_TIME = 0.6f;	//ダメージのエフェクトの時間
 
-	static constexpr float MODEL_SIZE = 1.0f;
+	static constexpr float MODEL_SIZE = 0.5f;
 
 	enum class STATE
 	{

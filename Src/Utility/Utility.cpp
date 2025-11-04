@@ -1058,3 +1058,32 @@ FLOAT4 Utility::COLOR_F2FLOAT4(const COLOR_F& color)
 {
     return FLOAT4{ color.r, color.g, color.b, color.a };
 }
+
+void Utility::GetModelFlameBox(int modelId, VECTOR& minPos, VECTOR& maxPos, std::vector<int>outFlameNum)
+{
+	bool isFirst = true;
+    MV1GetFrameNum(modelId);
+    for (int i = 0; i < MV1GetFrameNum(modelId); i++)
+    {
+        if (std::find(outFlameNum.begin(), outFlameNum.end(), i) != outFlameNum.end())
+        {
+            continue;
+        }
+        VECTOR pos = MV1GetFramePosition(modelId, i);
+		if (isFirst)
+		{
+			minPos = pos;
+			maxPos = pos;
+			isFirst = false;
+		}
+		else
+		{
+			minPos.x = std::min(minPos.x, pos.x);
+			minPos.y = std::min(minPos.y, pos.y);
+			minPos.z = std::min(minPos.z, pos.z);
+			maxPos.x = std::max(maxPos.x, pos.x);
+			maxPos.y = std::max(maxPos.y, pos.y);
+			maxPos.z = std::max(maxPos.z, pos.z);
+		}
+    }
+}

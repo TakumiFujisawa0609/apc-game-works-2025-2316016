@@ -7,7 +7,7 @@
 #include "../../Renderer/ModelRenderer.h"
 #include "../../../Common/EffectController.h"
 #include "../../../Common/Transform.h"
-#include "../../../Stage/ShockWave.h"
+#include "../../../Stage/Stage.h"
 #include "WaterSprit.h"
 
 WaterSprit::WaterSprit(VECTOR direction, VECTOR startPos , float speed)
@@ -57,7 +57,7 @@ void WaterSprit::Update(void)
 	transform_->pos = VAdd(transform_->pos, VScale(dir_, speed_));
 	transform_->quaRot = Quaternion(VGet(0.0f, rot_, 0.0f));
 	transform_->Update();
-	if (time_ < 0.0f || Utility::Distance(startPos_ , transform_->pos) > ShockWave::RADIUS)
+	if (time_ < 0.0f || Utility::Distance(startPos_ , transform_->pos) > Stage::RADIUS)
 	{
 		isEnd_ = true;
 		effect_->Stop(EffectController::EFF_TYPE::WATER_SPLIT, effectHandle_);

@@ -55,6 +55,7 @@ public:
 		DRAGON,		//ドラゴン
 		FLOOR,		//ステージ
 		SHOCK_WAVE,	//ショックウェーブ
+		SHOCK_WAVE1,	//ショックウェーブ
 		NOISE,		//ノイズ
 
 		//エフェクト

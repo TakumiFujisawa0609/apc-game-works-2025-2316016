@@ -5,14 +5,19 @@
 #include "../../Renderer/ModelRenderer.h"
 #include "../../Manager/ResourceManager.h"
 #include "../../Manager/SceneManager.h"
+#include "../../Manager/DrawTranslucentManager.h"
+#include "Stage.h"
 #include "ShockWave.h"
 
-ShockWave::ShockWave(void)
+ShockWave::ShockWave(float deg)
 {
 	time_ = 0.0f;
 	transform_ = std::make_shared<Transform>();
-	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::SHOCK_WAVE));
-	transform_->pos = { 0.0f,-10.0f,0.0f };
+	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::SHOCK_WAVE1));
+	float rad = Utility::Deg2RadF(deg);
+	transform_->pos = { sinf(rad) * Stage::RADIUS,-10.0f,cosf(rad) * Stage::RADIUS};
+	transform_->quaRot = Quaternion(VGet(0.0f, rad, 0.0f));
+	transform_->quaRotLocal = Quaternion(VGet(0.0f, Utility::Deg2RadF(90.0f), 0.0f));
 	transform_->scl = SIZE;
 	transform_->Update();
 
@@ -48,5 +53,6 @@ void ShockWave::Draw(void)
 {
 	//Utility::DrawCircle3DXZ(VGet(0.0f, 0.0f, 0.0f), RADIUS, VERTEX_NUM, 0xff00ff, false);
 	//MV1DrawModel(transform_->modelId);
-	renderer_->Draw();
+	//renderer_->Draw();
+	DrawTranslucentManager::GetInstance().Add(transform_, renderer_);
 }

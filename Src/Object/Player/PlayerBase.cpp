@@ -100,8 +100,11 @@ void PlayerBase::Update(void)
 
 void PlayerBase::Draw(void)
 {
-	//int color = (state_ == STATE::DAMAGE) ? GetColor(255, 0, 0) : GetColor(0, 255, 0);
-	//DrawSphere3D(transform_->pos, RADIUS, 16, color,GetColor(255,0,0),true);
+	int color = (state_ == STATE::DAMAGE) ? GetColor(255, 0, 0) : GetColor(0, 255, 0);
+	for (auto& pos : GetCollisionSpherePositions())
+	{
+		DrawSphere3D(pos, RADIUS, 16, color, GetColor(255, 0, 0), true);
+	}
 	//MV1DrawModel(transform_->modelId);
 	renderer_->Draw();
 	for (auto& shot : shots_)
@@ -151,6 +154,14 @@ bool PlayerBase::IsDamageHit(void)
 {
 	//回避状態じゃなく無敵状態じゃなかったらダメージを食らう
 	return state_ != STATE::AVOID && damageInvincibleTime_ <0.0f;
+}
+
+std::vector<VECTOR> PlayerBase::GetCollisionSpherePositions(void)
+{
+	std::vector<VECTOR> positions;
+	positions.push_back(transform_->pos);
+	positions.push_back(MV1GetFramePosition(transform_->modelId, HEAD_BONE_NO));
+	return positions;
 }
 
 void PlayerBase::PlayerMove(void)

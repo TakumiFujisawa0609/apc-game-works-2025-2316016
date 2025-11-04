@@ -44,6 +44,7 @@ public:
 
 	//当たり判定
 	static constexpr float RADIUS = 10.0f;
+	static constexpr int HEAD_BONE_NO = 5; //頭のボーン番号
 
 	//攻撃関連
 	static constexpr float ATTACK_DELEY = 0.5f; //攻撃ディレイ
@@ -115,6 +116,7 @@ public:
 	int GetPlayerShotNum(void) { return static_cast<int>(shots_.size()); }
 	PlayerShot& GetPlayerShot(int num) { return *shots_[num]; }
 	Gravity& GetGravity(void) { return *gravity_; }
+	std::vector<VECTOR> GetCollisionSpherePositions(void);	//当たり判定用の球の位置を取得
 protected:
 
 	VECTOR prePos_;

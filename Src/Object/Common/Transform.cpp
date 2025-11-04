@@ -50,7 +50,7 @@ void Transform::Update(void)
 	matRot = quaRot.ToMatrix();
 
 	// à íu
-	matPos = MGetTranslate(pos);
+	matPos = MGetTranslate(VAdd(pos ,localPos));
 
 	// çsóÒÇÃçáê¨
 	MATRIX mat = MGetIdent();

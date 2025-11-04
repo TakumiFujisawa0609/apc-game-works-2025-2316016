@@ -381,6 +381,15 @@ public:
 	static FLOAT4 COLOR_F2FLOAT4(const COLOR_F& color);
 
 	/// <summary>
+	/// モデルのフレームの最小最大座標を取得
+	/// </summary>
+	/// <param name="modelId">求めるモデルのハンドルID</param>
+	/// <param name="minPos">最小座標(参照型)</param>
+	/// <param name="maxPos">最大座標(参照型)</param>
+	/// <param name="outFlameNum">計算に含めないフレーム番号</param>
+	static void GetModelFlameBox(int modelId, VECTOR& minPos, VECTOR& maxPos,std::vector<int>outFlameNum ={});
+
+	/// <summary>
 	/// vector配列の中のnullptrを削除する
 	/// </summary>
 	/// <typeparam name="T">型名</typeparam>

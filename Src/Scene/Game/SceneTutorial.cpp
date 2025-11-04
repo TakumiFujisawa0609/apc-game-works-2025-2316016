@@ -12,8 +12,7 @@
 #include "../../Renderer/PixelRenderer.h"
 #include "../../Object/Player/PlayerBase.h"
 #include "../../Object/SkyDome/SkyDome.h"
-#include "../../Object/Stage/ShockWave.h"
-#include "../../Object/Stage/Floor.h"
+#include "../../Object/Stage/Stage.h"
 #include "../../Object/Player/PlayerShot.h"
 #include "../../Object/Enemy/EnemyBase.h"
 #include "../../Object/Enemy/EnemyTutorial.h"
@@ -70,10 +69,7 @@ bool SceneTutorial::Init(void)
 	skyDome_->Init();
 
 	//ステージ
-	floor_ = std::make_unique<Floor>();
-	floor_->Init();
-	shockWave_ = std::make_unique<ShockWave>();
-	shockWave_->Init();
+	stage_ = std::make_unique<Stage>();
 
 	// ポストエフェクト用スクリーン
 	postEffectScreen_ = MakeScreen(

@@ -25,6 +25,11 @@ EnemyBase::EnemyBase(Transform& target) : target_(target)
 	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::DRAGON));
 	transform_->scl = { MODEL_SIZE,MODEL_SIZE,MODEL_SIZE };
 	transform_->Update();
+	VECTOR minPos, maxPos;
+	Utility::GetModelFlameBox(transform_->modelId, minPos, maxPos, { 0,1 });
+	transform_->localPos.y -= minPos.y;
+	transform_->Update();
+
 	material_ = std::make_unique<ModelMaterial>(
 		"EnemyVS.cso", 0,
 		"EnemyPS.cso", 1
@@ -74,6 +79,9 @@ void EnemyBase::Update(void)
 	gravity_->Update();
 	AplayGravity();
 	MoveLimit();
+	VECTOR minPos, maxPos;
+	Utility::GetModelFlameBox(transform_->modelId, minPos, maxPos,{0,1});
+	transform_->localPos.y -= minPos.y;
 	transform_->Update();
 	animCtrl_->Update();
 }
@@ -83,6 +91,7 @@ void EnemyBase::Draw(void)
 	//float size = 50.0f;
 	//MV1DrawModel(transform_->modelId);
 	renderer_->Draw();
+
 	for (auto& attack : attackList_)
 	{
 		attack->Draw();
@@ -274,5 +283,5 @@ void EnemyBase::InitAnimationControllerDragon(void)
 	}
 	//animCtrl_->Add((int)STATE::DEAD, path + "Falling.mv1", 80.0f);
 
-	animCtrl_->Play((int)ANIM_TYPE_DRAGON::IDLE_1);
+	animCtrl_->Play((int)ANIM_TYPE_DRAGON::FLY_GLIDE);
 }
