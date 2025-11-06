@@ -96,6 +96,8 @@ public:
 	/// <param name=""></param>
 	virtual void Draw(void)override;
 
+	void UIDraw(void)override;
+
 	const VECTOR& GetPrePos(void)const { return prePos_; }
 	void SetPos(const VECTOR& pos);
 	/// <summary>

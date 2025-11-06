@@ -1,5 +1,6 @@
 #include "../../../Common/Transform.h"
 #include "../../../Common/Gravity.h"
+#include "../../../Common/AnimationController.h"
 #include "../../Utility/Utility.h"
 #include "../../Manager/SceneManager.h"
 #include "../SubObject/Wave.h"
@@ -11,6 +12,7 @@ JumpAttack::JumpAttack(EnemyBase& enemy) : AttackBase(enemy)
 	range_ = RANGE::SHORT;
 	geo_ = GEOMETORY::CIRCUMFERENCE;
 	myType_ = EnemyBase::ATTACK_TYPE::JUMP;
+	isDown_ = false;
 }
 
 JumpAttack::~JumpAttack(void)
@@ -44,6 +46,7 @@ void JumpAttack::GetWaveState(float& radius, VECTOR& centerPos,int waveNum)
 void JumpAttack::ChangeStateNone(void)
 {
 	AttackBase::ChangeStateNone();
+	isDown_ = false;
 }
 
 void JumpAttack::ChangeStateReady(void)
@@ -53,6 +56,9 @@ void JumpAttack::ChangeStateReady(void)
 	enemy_.GetGravity().ChengeState(Gravity::STATE::JUMP);
 	enemy_.GetGravity().SetDir(Utility::DIR_D);
 	enemy_.GetGravity().SetInitPower(JUMP_POW);
+	auto& animCtr = enemy_.GetAnimController();
+	
+	animCtr.Play((int)EnemyBase::ANIM_TYPE_DRAGON::TAKE_OFF, true, 0.0f, -1.0f);
 }
 
 void JumpAttack::ChangeStateStart(void)
@@ -89,9 +95,17 @@ void JumpAttack::UpdateStateNone(void)
 
 void JumpAttack::UpdateStateReady(void)
 {
+	auto& animCtr = enemy_.GetAnimController();
+	auto& gravity = enemy_.GetGravity();
+	if (gravity.GetPower() > 0.0f && isDown_ == false)
+	{
+		isDown_ = true;
+		animCtr.Play((int)EnemyBase::ANIM_TYPE_DRAGON::LAND, true, 0.0f, -1.0f,0.01f ,false, true, false);
+	}
 	if (enemy_.GetGravity().GetState() != Gravity::STATE::JUMP)
 	{
 		ChangeState(STATE::START);
+		animCtr.Play((int)EnemyBase::ANIM_TYPE_DRAGON::SCREAM);
 	}
 }
 
@@ -115,7 +129,7 @@ void JumpAttack::UpdateStateUpdate(void)
 		}
 	}
 	//std::erase_if(wave_, [](auto& wave) {return wave->IsShot();});
-	Utility::EraseVectorAllay(wave_);
+	wave_.clear();
 	ChangeState(STATE::FINISH);
 
 }

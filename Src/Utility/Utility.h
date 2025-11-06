@@ -356,6 +356,18 @@ public:
 	static bool IsColCircumference2Circle(VECTOR pos1, float radius1, VECTOR pos2, float radius2);
 
 	/// <summary>
+	/// 線と三角形の当たり判定(AI産のため理論は不明)
+	/// </summary>
+	/// <param name="tPos1">三角形の座標1</param>
+	/// <param name="tPos2">三角形の座標2</param>
+	/// <param name="tPos3">三角形の座標3</param>
+	/// <param name="lPos1">線の座標1</param>
+	/// <param name="lPos2">線の座標2</param>
+	/// <param name="hitPos">当たった座標(参照型)</param>
+	/// <returns>当たったかどうか</returns>
+	static bool IsColTriangle2Line(VECTOR tPos1, VECTOR tPos2, VECTOR tPos3, VECTOR lPos1, VECTOR lPos2,VECTOR& hitPos);
+
+	/// <summary>
 	/// XZ平面に円を描画する
 	/// </summary>
 	/// <param name="center">円の中心座標</param>
@@ -378,6 +390,11 @@ public:
 	/// <returns>画像のハンドルID</returns>
 	static int GetBtnImage(KeyConfig::JOYPAD_BTN btn);
 
+	/// <summary>
+	/// COLOR_FからFLOAT4に変換
+	/// </summary>
+	/// <param name="color"></param>
+	/// <returns></returns>
 	static FLOAT4 COLOR_F2FLOAT4(const COLOR_F& color);
 
 	/// <summary>
@@ -388,6 +405,14 @@ public:
 	/// <param name="maxPos">最大座標(参照型)</param>
 	/// <param name="outFlameNum">計算に含めないフレーム番号</param>
 	static void GetModelFlameBox(int modelId, VECTOR& minPos, VECTOR& maxPos,std::vector<int>outFlameNum ={});
+
+	/// <summary>
+	/// モデルのメッシュの最小最大座標を取得
+	/// </summary>
+	/// <param name="modelId">モデルのハンドルID</param>
+	/// <param name="minPos">最小座標(参照型)</param>
+	/// <param name="maxPos">最大座標(参照型)</param>
+	static void GetModelMeshLocalBox(int modelId, VECTOR& minPos, VECTOR& maxPos);
 
 	/// <summary>
 	/// vector配列の中のnullptrを削除する

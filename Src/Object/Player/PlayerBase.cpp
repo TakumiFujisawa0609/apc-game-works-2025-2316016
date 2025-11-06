@@ -130,6 +130,11 @@ void PlayerBase::Draw(void)
 	}
 }
 
+void PlayerBase::UIDraw(void)
+{
+	animCtrl_->DebugDraw();
+}
+
 void PlayerBase::SetPos(const VECTOR& pos)
 {
 	transform_->pos = pos;
@@ -380,7 +385,7 @@ void PlayerBase::StateChangeAvoid(void)
 		VECTOR left = front;
 		std::swap(left.x, left.z);
 		left.x = -left.x;
-		animCtrl_->Play((int)STATE::AVOID);
+		animCtrl_->Play((int)STATE::AVOID,false,0.0f,-1.0f,0.001f);
 		if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_UP, KeyConfig::JOYPAD_NO::PAD1, controlType_))
 		{
 			avoidDir_ = front;
@@ -494,6 +499,7 @@ void PlayerBase::StateUpdateAvoid(void)
 	if (avoidTime_ <= 0.0f)
 	{
 		avoidCoolTime_ = AVOID_COOL_TIME;
+		animCtrl_->Play((int)STATE::IDLE, true, 0.0f, -1.0f, 0.01f);
 		ChangeState(STATE::IDLE);
 		return;
 	}

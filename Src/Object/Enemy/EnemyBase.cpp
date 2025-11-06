@@ -25,10 +25,6 @@ EnemyBase::EnemyBase(Transform& target) : target_(target)
 	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::DRAGON));
 	transform_->scl = { MODEL_SIZE,MODEL_SIZE,MODEL_SIZE };
 	transform_->Update();
-	VECTOR minPos, maxPos;
-	Utility::GetModelFlameBox(transform_->modelId, minPos, maxPos, { 0,1 });
-	transform_->localPos.y -= minPos.y;
-	transform_->Update();
 
 	material_ = std::make_unique<ModelMaterial>(
 		"EnemyVS.cso", 0,
@@ -46,14 +42,18 @@ EnemyBase::EnemyBase(Transform& target) : target_(target)
 	maxHP_ = 100.0f;
 	hp_ = maxHP_;
 	InitAnimationControllerDragon();
+	VECTOR minPos, maxPos;
+	Utility::GetModelFlameBox(transform_->modelId, minPos, maxPos, { 0,1 });
+	flyLocalPos_.y -= minPos.y;
+	animCtrl_->Play((int)ANIM_TYPE_DRAGON::IDLE_1);
 	AplayChangeStateFunc();
 	AddAttack(ATTACK_TYPE::JUMP);
-	AddAttack(ATTACK_TYPE::JUMP_CONSTANT);
-	AddAttack(ATTACK_TYPE::FOLLOW);
-	AddAttack(ATTACK_TYPE::FALL_DOWN);
-	AddAttack(ATTACK_TYPE::CROSS_LINE);
-	AddAttack(ATTACK_TYPE::THUNDER_AROUND);
-	AddAttack(ATTACK_TYPE::WATER_SPRIT);
+	//AddAttack(ATTACK_TYPE::JUMP_CONSTANT);
+	//AddAttack(ATTACK_TYPE::FOLLOW);
+	//AddAttack(ATTACK_TYPE::FALL_DOWN);
+	//AddAttack(ATTACK_TYPE::CROSS_LINE);
+	//AddAttack(ATTACK_TYPE::THUNDER_AROUND);
+	//AddAttack(ATTACK_TYPE::WATER_SPRIT);
 	ChangeState(STATE::IDLE);
 }
 
@@ -71,7 +71,7 @@ void EnemyBase::Update(void)
 	{
 		hp_ -= 0.5f;
 	}
-	for (auto& attack : attackList_)
+	for (auto& attack : attackList_  )
 	{
 		attack->Update();
 	}
@@ -81,7 +81,7 @@ void EnemyBase::Update(void)
 	MoveLimit();
 	VECTOR minPos, maxPos;
 	Utility::GetModelFlameBox(transform_->modelId, minPos, maxPos,{0,1});
-	transform_->localPos.y -= minPos.y;
+	transform_->localPos.y -= minPos.y - transform_->pos.y;
 	transform_->Update();
 	animCtrl_->Update();
 }
@@ -91,11 +91,18 @@ void EnemyBase::Draw(void)
 	//float size = 50.0f;
 	//MV1DrawModel(transform_->modelId);
 	renderer_->Draw();
-
+	VECTOR minPos, maxPos;
+	Utility::GetModelMeshLocalBox(transform_->modelId, minPos, maxPos);
+	DrawCube3D(minPos, maxPos, 0xffffff, 0xffffff, false);
 	for (auto& attack : attackList_)
 	{
 		attack->Draw();
 	}
+}
+
+void EnemyBase::UIDraw(void)
+{
+	animCtrl_->DebugDraw();
 }
 
 void EnemyBase::Damage(float damage)
@@ -267,6 +274,11 @@ void EnemyBase::AllDeleteAttack(void)
 	attackList_.clear();
 }
 
+void EnemyBase::SetAnim(ANIM_TYPE_DRAGON type)
+{
+	animCtrl_->Play((int)type);
+}
+
 void EnemyBase::AplayChangeStateFunc(void)
 {
 	changeState_[(STATE::IDLE)] = std::bind(&EnemyBase::ChangeStateIdle, this);
@@ -279,9 +291,7 @@ void EnemyBase::InitAnimationControllerDragon(void)
 	animCtrl_ = std::make_unique<AnimationController>(transform_->modelId);
 	for (int i = 0; i < (int)ANIM_TYPE_DRAGON::MAX;i++)
 	{
-		animCtrl_->Add(i, 60.0f);
+		animCtrl_->Add(i, 30.0f);
 	}
-	//animCtrl_->Add((int)STATE::DEAD, path + "Falling.mv1", 80.0f);
-
-	animCtrl_->Play((int)ANIM_TYPE_DRAGON::FLY_GLIDE);
+	SetAnim(ANIM_TYPE_DRAGON::FLY_FORWARD);
 }

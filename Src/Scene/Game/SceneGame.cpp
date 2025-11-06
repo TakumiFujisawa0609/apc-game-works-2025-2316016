@@ -146,8 +146,10 @@ void SceneGame::Draw(void)
 
 	//シェーダーの効果を受けないUI等を描画
 	enemyHPUI_->Draw();
-	DrawFormatString(0, 0, 0, "%f", player_->GetHP());
-	DrawFormatString(0, 20, 0, "%d", GetDrawCallCount());
+	//DrawFormatString(0, 0, 0, "%f", player_->GetHP());
+	//DrawFormatString(0, 20, 0, "%d", GetDrawCallCount());
+	//player_->UIDraw();
+	enemy_->UIDraw();
 }
 
 void SceneGame::DebugDraw(void)

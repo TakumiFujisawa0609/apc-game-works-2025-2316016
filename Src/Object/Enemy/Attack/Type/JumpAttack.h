@@ -19,6 +19,7 @@ public:
 	int GetSubObjectNum(void)const override { return static_cast<int>(wave_.size()); }
 	void GetWaveState(float& radius, VECTOR& centerPos,int waveNum);
 private:
+	bool isDown_;	//‰º‚è‚É“ü‚Á‚½‚©
 	std::vector<std::unique_ptr<Wave>> wave_;
 	void ChangeStateNone(void) override;		//Às‚³‚ê‚Ä‚¢‚È‚¢
 	void ChangeStateReady(void) override;	//Às€”õ

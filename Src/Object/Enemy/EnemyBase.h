@@ -21,6 +21,14 @@ public:
 
 	static constexpr float MODEL_SIZE = 0.5f;
 
+	//当たり判定関連
+	static constexpr float SMALL_RADIUS = 50.0f;	//手の先。足の先、頭等の小さい当たり判定
+	static constexpr int HAND_L_BORN_NUM = 29;	//左手のボーン番号
+	static constexpr int HAND_R_BORN_NUM = 43;	//右手のボーン番号
+	static constexpr int LEG_L_BORN_NUM = 95;	//左足のボーン番号
+	static constexpr int LEG_R_BORN_NUM = 109;	//右足のボーン番号
+	static constexpr int HEAD_BORN_NUM = 14;	//頭のボーン番号
+
 	enum class STATE
 	{
 		IDLE,	//待機
@@ -93,6 +101,8 @@ public:
 	/// <param name=""></param>
 	virtual void Draw(void)override;
 
+	virtual void UIDraw(void)override;
+
 	Transform& GetTransform(void) { return *transform_; }
 
 	Gravity& GetGravity(void) { return *gravity_; }
@@ -106,11 +116,12 @@ public:
 
 	int GetAttackNum(void) { return static_cast<int>(attackList_.size()); }
 	AttackBase& GetAttack(int num) { return *attackList_[num]; }
-
+	AnimationController& GetAnimController(void) { return *animCtrl_; }
 
 	void AddAttack(ATTACK_TYPE type);	//攻撃を追加
 	void DeleteAttack(ATTACK_TYPE type); //攻撃を削除
 	void AllDeleteAttack(void); //全ての攻撃を削除
+	void SetAnim(ANIM_TYPE_DRAGON type);	//アニメーションを適用する
 protected:
 
 	STATE state_; //状態
@@ -127,6 +138,8 @@ protected:
 	void MoveLimit(void); //移動制限
 	void AplayGravity(void);	//重力適用
 
+	//飛行時の座標
+	VECTOR flyLocalPos_;
 	//状態変更用
 	std::map<STATE, std::function<void(void)>> changeState_; //状態変更時の関数格納用
 	virtual void ChangeStateIdle(void);	//待機

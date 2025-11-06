@@ -17,7 +17,10 @@ public :
 		float speed = 0.0f;
 		float totalTime = 0.0f;
 		float step = 0.0f;
+		float blendRate = 0.0f;	// アニメーションブレンド進行度
 	};
+
+	static constexpr float DEFAULT_BLEND_ANIM_TIME = 0.5f;
 
 	// コンストラクタ
 	AnimationController(int modelId);
@@ -30,7 +33,7 @@ public :
 
 	// アニメーション再生
 	void Play(int type, bool isLoop = true, 
-		float startStep = 0.0f, float endStep = -1.0f, bool isStop = false, bool isForce = false);
+		float startStep = 0.0f, float endStep = -1.0f, float blendAnimTime = DEFAULT_BLEND_ANIM_TIME, bool isStop = false, bool isForce = false,bool isReverse = false);
 
 	void Update(void);
 
@@ -43,6 +46,7 @@ public :
 	// 再生終了
 	bool IsEnd(void) const;
 
+	void DebugDraw();
 private :
 
 	// モデルのハンドルID
@@ -52,7 +56,7 @@ private :
 	std::map<int, Animation> animations_;
 
 	int playType_;
-	Animation playAnim_;
+	//Animation playAnim_;
 
 	// アニメーションをループするかしないか
 	bool isLoop_;
@@ -68,5 +72,19 @@ private :
 	// 逆再生
 	float switchLoopReverse_;
 
+	//ブレンドアニメーション時間
+	float blendAnimTime_;
+
+	// ブレンド
+	float blendAnimRate_;
+
+	// 再生中のアニメーションデータマップ
+	std::map<int, Animation> playAnimations_;
+
+	// メインの更新処理
+	void UpdateMainAnimation();
+
+	// ブレンドアニメーションの更新処理
+	void UpdateBlendAnimation();
 };
 

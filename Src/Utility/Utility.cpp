@@ -911,6 +911,56 @@ bool Utility::IsColCircumference2Circle(VECTOR pos1, float radius1, VECTOR pos2,
     return abs(dis - radius1) < radius2;
 }
 
+bool Utility::IsColTriangle2Line(VECTOR tPos1, VECTOR tPos2, VECTOR tPos3, VECTOR lPos1, VECTOR lPos2, VECTOR& hitPos)
+{
+    const float EPSILON = 1e-6f;    //浮動小数誤差対策の極小値
+
+    VECTOR dir = VSub(lPos1, lPos2);    //線の方向ベクトル
+    VECTOR edge1 = VSub(tPos3, tPos1);  //三角形の辺ベクトル1
+    VECTOR edge2 = VSub(tPos2, tPos1);  //三角形の辺ベクトル2
+
+    VECTOR h = VCross(dir, edge2);  //平面と線の位置関係を求める補助ベクトル
+    float a = VDot(edge1, h);   //三角形と線分の考査判定に必要な係数
+
+    if (fabs(a) < EPSILON)
+    {
+        // aが0に近ければ、線分は平面とほぼ平行
+        return false;
+    }
+
+    float f = 1.0f / a; //逆数を求めて計算を高速化(何度も使うから)
+
+    VECTOR s = VSub(lPos1, tPos1);  //線分視点から三角形の頂点へのベクトル
+
+    float u = f * VDot(s, h);   //三角形の重心座標
+    if (u < 0.0f || u > 1.0f)
+    {
+        //三角形の外側
+        return false;
+    }
+
+    VECTOR q = VCross(s, edge1);    //三角形内での位置関係補助ベクトル
+
+    float v = f * VDot(dir, q); //三角形のもう一方向の重心座標
+    if (v < 0.0f || u + v > 1.0f)
+    {
+        //三角形の外側
+        return false;
+    }
+
+    float t = f * VDot(edge2, q);   //線分上で交点までの距離
+    if (t < 0.0f || t > 1.0f)
+    {
+        //線分の範囲外
+        return false; 
+    }
+
+    hitPos = VAdd(lPos1,VScale(dir,t)); //当たった座標の計算
+    return true;
+
+    return false;
+}
+
 void Utility::DrawCircle3DXZ(VECTOR center, float radius, int vertexNum,int color, bool fillFlag)
 {
     float angleDeg = 360.0f / vertexNum;
@@ -1062,7 +1112,6 @@ FLOAT4 Utility::COLOR_F2FLOAT4(const COLOR_F& color)
 void Utility::GetModelFlameBox(int modelId, VECTOR& minPos, VECTOR& maxPos, std::vector<int>outFlameNum)
 {
 	bool isFirst = true;
-    MV1GetFrameNum(modelId);
     for (int i = 0; i < MV1GetFrameNum(modelId); i++)
     {
         if (std::find(outFlameNum.begin(), outFlameNum.end(), i) != outFlameNum.end())
@@ -1085,5 +1134,30 @@ void Utility::GetModelFlameBox(int modelId, VECTOR& minPos, VECTOR& maxPos, std:
 			maxPos.y = std::max(maxPos.y, pos.y);
 			maxPos.z = std::max(maxPos.z, pos.z);
 		}
+    }
+}
+
+void Utility::GetModelMeshLocalBox(int modelId, VECTOR& minPos, VECTOR& maxPos)
+{
+    bool isFirst = true;
+    for (int i = 0; i < MV1GetMeshNum(modelId); i++)
+    {
+        VECTOR meshMaxPos = MV1GetMeshMaxPosition(modelId, i);
+        VECTOR meshMinPos = MV1GetMeshMinPosition(modelId, i);
+        if (isFirst)
+        {
+            minPos = meshMinPos;
+            maxPos = meshMaxPos;
+            isFirst = false;
+        }
+        else
+        {
+            minPos.x = std::min(minPos.x, meshMinPos.x);
+            minPos.y = std::min(minPos.y, meshMinPos.y);
+            minPos.z = std::min(minPos.z, meshMinPos.z);
+            maxPos.x = std::max(maxPos.x, meshMaxPos.x);
+            maxPos.y = std::max(maxPos.y, meshMaxPos.y);
+            maxPos.z = std::max(maxPos.z, meshMaxPos.z);
+        }
     }
 }
