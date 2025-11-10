@@ -59,6 +59,8 @@ public:
 	GEOMETORY GetGeometory(void) const { return geo_; }
 
 	EnemyBase::ATTACK_TYPE GetMyType(void)const { return myType_; }
+
+	const virtual float GetDamage(void)const = 0;
 protected:
 	EnemyBase& enemy_; //êeÇÃEnemyBase
 

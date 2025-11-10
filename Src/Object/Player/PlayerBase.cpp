@@ -10,6 +10,8 @@
 #include "../Common/Transform.h"
 #include "../Common/EffectController.h"
 #include "../Common/AnimationController.h"
+#include "../Common/Geometry/Sphere.h"
+#include "../Enemy/EnemyBase.h"
 #include "PlayerShot.h"
 #include "PlayerBase.h"
 
@@ -44,6 +46,11 @@ PlayerBase::PlayerBase(int playerNum) :keyIns_(KeyConfig::GetInstance())
 	controlType_ = DataBank::GetInstance().GetControlType();
 	isDeath_ = false;
 	healDeray_ = 0.0f;
+	headPos_ = Utility::VECTOR_ZERO;
+	std::unique_ptr<Geometry>geo = std::make_unique<Sphere>(transform_->pos, RADIUS);
+	MakeCollider(Collider::TAG::PLAYER, std::move(geo), { Collider::TAG::PLAYER,Collider::TAG::PLAYER });
+	geo = std::make_unique<Sphere>(headPos_, RADIUS);
+	MakeCollider(Collider::TAG::PLAYER, std::move(geo), { Collider::TAG::PLAYER,Collider::TAG::PLAYER });
 	InitAnimationController();
 	SetupStateChange();
 	ChangeState(STATE::IDLE,true);
@@ -133,6 +140,60 @@ void PlayerBase::Draw(void)
 void PlayerBase::UIDraw(void)
 {
 	animCtrl_->DebugDraw();
+}
+
+void PlayerBase::OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos)
+{
+	if (!IsDamageHit())
+	{
+		false;
+	}
+	std::shared_ptr<Collider> hitCol = _hitCol.lock();
+	Collider::TAG tag = hitCol->GetTag();
+	auto& hit = hitCol->GetParent();
+	float damage = 0.0f;
+	VECTOR dir = Utility::VECTOR_ZERO;
+	for (auto& colParam : colParam_)
+	{
+		auto& geo = colParam.geometry_;
+		auto& collider = colParam.collider_;
+		if (!collider->IsHit())
+		{
+			continue;
+		}
+		auto& sph = dynamic_cast<Sphere&>(*geo);
+		VECTOR pos = sph.GetPos();
+		dir = VSub(pos, hitPos);
+	}
+	switch (tag)
+	{
+	case Collider::TAG::PLAYER:
+	case Collider::TAG::PLAYER_ATTACK:
+		return;
+		break;
+	case Collider::TAG::ENEMY:
+		damage = 5.0f;
+		break;
+	case Collider::TAG::ENEMY_ATTACK:
+		break;
+	default:
+		break;
+	}
+
+	if (ChangeState(STATE::DAMAGE))
+	{
+		material_->SetConstBufPS(0, Utility::COLOR_F2FLOAT4(DAMAGE_COLOR));
+		hp_ -= damage;
+		healDeray_ = DAMAGE_HEAL_DERAY;
+		damageDir_ = dir;
+		damageDir_.y = 0.0f;
+		damageDir_ = VNorm(damageDir_);
+		if (gravity_->GetState() == Gravity::STATE::NONE)
+		{
+			gravity_->SetInitPower(DAMAGE_POW);
+			gravity_->ChengeState(Gravity::STATE::JUMP);
+		}
+	}
 }
 
 void PlayerBase::SetPos(const VECTOR& pos)
@@ -332,7 +393,7 @@ void PlayerBase::InitAnimationController(void)
 	animCtrl_->Add((int)STATE::MOVE, path + "Move.mv1", 120.0f);
 	animCtrl_->Add((int)STATE::JUMP, path + "Jump.mv1", 80.0f);
 	animCtrl_->Add((int)STATE::AVOID, path + "Avoid2.mv1", 100.0f);
-	animCtrl_->Add((int)STATE::ATTACK, path + "Throw.mv1", 120.0f);
+	animCtrl_->Add((int)STATE::ATTACK, path + "Throw.mv1", 180.0f);
 	animCtrl_->Add((int)STATE::DAMAGE, path + "Damage.mv1", 120.0f);
 	//animCtrl_->Add((int)STATE::DEAD, path + "Falling.mv1", 80.0f);
 

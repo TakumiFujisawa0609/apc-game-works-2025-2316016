@@ -20,6 +20,8 @@ public:
 	Transform& GetShotTransform(int shotNum);
 	float GetRadius(void) { return RADIUS; }
 	void HitShot(int shotNum) { shots_[shotNum]->Hit(); }
+	const float GetDamage(void)const override { return FollowShot::DAMAGE; }
+
 private:
 	std::vector<std::unique_ptr<FollowShot>> shots_;
 	void ChangeStateNone(void) override;	//Às‚³‚ê‚Ä‚¢‚È‚¢

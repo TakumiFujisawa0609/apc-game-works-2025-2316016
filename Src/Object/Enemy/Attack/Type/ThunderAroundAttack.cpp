@@ -1,6 +1,7 @@
 #include <cmath>
 #include "../../Utility/Utility.h"
 #include "../../Manager/SceneManager.h"
+#include "../../../Common/AnimationController.h"
 #include "../../EnemyBase.h"
 #include "../SubObject/ThunderAround.h"
 #include "ThunderAroundAttack.h"
@@ -53,6 +54,7 @@ void ThunderAroundAttack::ChangeStateReady(void)
 
 void ThunderAroundAttack::ChangeStateStart(void)
 {
+	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::FLY_FLAME);
 	CreateThunder();
 	time_ = TIME;
 	intervalTime_ = INTERVAL_TIME;
@@ -68,6 +70,7 @@ void ThunderAroundAttack::ChangeStateFinish(void)
 {
 	AttackBase::ChangeStateFinish();
 	deleyTime_ = COOL_DOWN;
+	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::IDLE_1);
 }
 
 void ThunderAroundAttack::UpdateStateNone(void)

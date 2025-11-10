@@ -72,6 +72,8 @@ public:
 	//アルファ最大値
 	static constexpr int ALPHA_MAX = 255;
 
+	static constexpr float EPSILON = 1e-6f;    //浮動小数誤差対策の極小値
+
 	// 四捨五入
 	static int Round(float v);
 
@@ -364,8 +366,53 @@ public:
 	/// <param name="lPos1">線の座標1</param>
 	/// <param name="lPos2">線の座標2</param>
 	/// <param name="hitPos">当たった座標(参照型)</param>
-	/// <returns>当たったかどうか</returns>
+	/// <returns>当たったらtrue</returns>
 	static bool IsColTriangle2Line(VECTOR tPos1, VECTOR tPos2, VECTOR tPos3, VECTOR lPos1, VECTOR lPos2,VECTOR& hitPos);
+
+	/// <summary>
+	/// 線とカプセルの当たり判定(AI産のため理論は不明)
+	/// </summary>
+	/// <param name="cPos1">カプセルの座標１</param>
+	/// <param name="cPos2">カプセルの座標２</param>
+	/// <param name="cRadius">カプセルの半径</param>
+	/// <param name="lPos1">線の座標１</param>
+	/// <param name="lPos2">線の座標２</param>
+	/// <param name="hitPos">当たった座標(参照型)</param>
+	/// <returns>当たったらtrue</returns>
+	static bool IsColCapsule2Line(VECTOR cPos1, VECTOR cPos2, float cRadius, VECTOR lPos1, VECTOR lPos2, VECTOR& hitPos);
+
+	/// <summary>
+	/// カプセルと球の当たり判定(Ai)
+	/// </summary>
+	/// <param name="cPos1">カプセル座標１</param>
+	/// <param name="cPos2">カプセル座標２</param>
+	/// <param name="cRadius">カプセルの半径</param>
+	/// <param name="sPos">球の座標</param>
+	/// <param name="sRadius">球の半径</param>
+	/// <param name="hitPos">当たった座標(参照型)</param>
+	/// <returns>当たったらtrue</returns>
+	static bool IsColCapsule2Sphere(VECTOR cPos1, VECTOR cPos2, float cRadius, VECTOR sPos, float sRadius, VECTOR& hitPos);
+
+	/// <summary>
+	/// 球と三角形の当たり判定
+	/// </summary>
+	/// <param name="sPos">球の座標</param>
+	/// <param name="radius">球の半径</param>
+	/// <param name="tPos1">三角形の座標１</param>
+	/// <param name="tPos2">三角形の座標２</param>
+	/// <param name="tPos3">三角形の座標３</param>
+	/// <param name="hitPos">当たった座標(参照型)</param>
+	/// <returns>当たったらtrue</returns>
+	static bool IsColSphere2Triangle(VECTOR sPos, float radius, VECTOR tPos1, VECTOR tPos2, VECTOR tPos3, VECTOR& hitPos);
+
+	/// <summary>
+	/// 点pから線分abへの最近点を求める
+	/// </summary>
+	/// <param name="p"></param>
+	/// <param name="a"></param>
+	/// <param name="b"></param>
+	/// <returns>最近点の座標</returns>
+	static VECTOR ClosestPointOnSegment(VECTOR p, VECTOR a, VECTOR b);
 
 	/// <summary>
 	/// XZ平面に円を描画する

@@ -4,6 +4,7 @@
 #include"SceneManager.h"
 #include"../Application.h"
 #include "Camera.h"
+#include "CollisionManager.h"
 #include"../Scene/SceneBase.h"
 #include"../Common/Fader.h"
 #include"../Scene/SceneTitle.h"
@@ -84,6 +85,9 @@ bool SceneManager::Init(void)
 	// メインスクリーン
 	mainScreen_ = MakeScreen(
 		Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y, true);
+
+	//当たり判定管理の初期化(各シーンで追加の可能性があるため)
+	CollisionManager::CreateInstance();
 	Init3D();
 
 	return true;

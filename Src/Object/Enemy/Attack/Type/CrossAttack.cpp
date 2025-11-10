@@ -13,6 +13,8 @@ CrossAttack::CrossAttack(EnemyBase& enemy) : AttackBase(enemy)
 	reverseTime_ = 0.0f;
 	myType_ = EnemyBase::ATTACK_TYPE::CROSS_LINE;
 	sign_ = 1;
+	createInterval_ = 0.0f;
+	createPointNum_ = 0;
 }
 CrossAttack::~CrossAttack(void)
 {
@@ -81,17 +83,24 @@ void CrossAttack::UpdateStateReady(void)
 
 void CrossAttack::UpdateStateStart(void)
 {
-	for (int i = 0; i < LINE_NUM; i++)
+	float deltaTime = SceneManager::GetInstance().GetDeltaTime();
+	createInterval_ -= deltaTime;
+	if (createInterval_ < 0.0f)
 	{
-		for (int j = 0; j < LINE_POINT_NUM; j++)
+		for (int i = 0; i < LINE_NUM; i++)
 		{
 			std::unique_ptr<CrossLine> line;
-			line = std::make_unique<CrossLine>(enemy_.GetTransform().pos, radian_, Utility::Deg2RadF(360.0f / LINE_NUM * i), j);
+			line = std::make_unique<CrossLine>(enemy_.GetTransform().pos, radian_, Utility::Deg2RadF(360.0f / LINE_NUM * i), createPointNum_);
 			crossLines_.push_back(std::move(line));
-			reverseTime_ = LINE_DIR_REVERSE_TIME;
 		}
+		createPointNum_++;
+		createInterval_ = CREATE_INTERVAL;
 	}
-	ChangeState(STATE::UPDATE);
+	if (createPointNum_ == LINE_POINT_NUM)
+	{
+		reverseTime_ = LINE_DIR_REVERSE_TIME;
+		ChangeState(STATE::UPDATE);
+	}
 }
 
 void CrossAttack::UpdateStateUpdate(void)

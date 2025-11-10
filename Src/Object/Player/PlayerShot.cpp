@@ -1,9 +1,11 @@
+#include "../../Utility/Utility.h"
 #include "../../Manager/ResourceManager.h"
 #include "../../Renderer/ModelMaterial.h"
 #include "../../Renderer/ModelRenderer.h"
 #include "../Common/Gravity.h"
 #include "../Common/Transform.h"
 #include "../Common/EffectController.h"
+#include "../Common/Geometry/Line3D.h"
 #include "PlayerShot.h"
 
 PlayerShot::PlayerShot(VECTOR pPos, VECTOR tPos)
@@ -35,6 +37,8 @@ PlayerShot::PlayerShot(VECTOR pPos, VECTOR tPos)
 	effect_->Add(res.Load(ResourceManager::SRC::HIT_EFFECT).handleId_, EffectController::EFF_TYPE::HIT);
 	isDead_ = false;
 	state_ = STATE::SHOT;
+	std::unique_ptr<Geometry> geo = std::make_unique<Line3D>(prePos_, transform_->pos);
+	MakeCollider(Collider::TAG::PLAYER_ATTACK, std::move(geo), { Collider::TAG::PLAYER,Collider::TAG::PLAYER_ATTACK,Collider::TAG::ENEMY_ATTACK });
 }
 
 PlayerShot::~PlayerShot()
@@ -111,4 +115,17 @@ void PlayerShot::Hit(VECTOR hitPos,VECTOR  rot)
 {
 	state_ = STATE::BLAST;
 	effectNum_ = effect_->Play(EffectController::EFF_TYPE::HIT, hitPos, Quaternion(rot), VGet(10.0f, 10.0f, 10.0f), false, 1.0f);
+}
+
+void PlayerShot::OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos)
+{
+	state_ = STATE::BLAST;
+	VECTOR dir = VSub(hitPos, prePos_);
+	VECTOR rot = Utility::VECTOR_ZERO;
+	rot.y = atan2f(dir.x, dir.z);
+	effectNum_ = effect_->Play(EffectController::EFF_TYPE::HIT, hitPos, Quaternion(rot), VGet(10.0f, 10.0f, 10.0f), false, 1.0f);
+	for (auto& colParam : colParam_)
+	{
+		colParam.collider_->Kill();
+	}
 }

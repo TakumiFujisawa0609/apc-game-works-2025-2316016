@@ -913,7 +913,6 @@ bool Utility::IsColCircumference2Circle(VECTOR pos1, float radius1, VECTOR pos2,
 
 bool Utility::IsColTriangle2Line(VECTOR tPos1, VECTOR tPos2, VECTOR tPos3, VECTOR lPos1, VECTOR lPos2, VECTOR& hitPos)
 {
-    const float EPSILON = 1e-6f;    //浮動小数誤差対策の極小値
 
     VECTOR dir = VSub(lPos1, lPos2);    //線の方向ベクトル
     VECTOR edge1 = VSub(tPos3, tPos1);  //三角形の辺ベクトル1
@@ -958,7 +957,173 @@ bool Utility::IsColTriangle2Line(VECTOR tPos1, VECTOR tPos2, VECTOR tPos3, VECTO
     hitPos = VAdd(lPos1,VScale(dir,t)); //当たった座標の計算
     return true;
 
+}
+
+bool Utility::IsColCapsule2Line(VECTOR cPos1, VECTOR cPos2, float cRadius, VECTOR lPos1, VECTOR lPos2, VECTOR& hitPos)
+{
+    // 線分Aの方向ベクトル（P1→P2）
+    VECTOR u = VSub(lPos2, lPos1);
+
+    // カプセル中心線の方向ベクトル（Q1→Q2）
+    VECTOR v = VSub(cPos2, cPos1);
+
+    // 両線分の始点間ベクトル（P1→Q1）
+    VECTOR w = VSub(lPos1, cPos1);
+
+    // a = u・u → 線分Aの長さの二乗
+    double a = VDot(u, u);
+
+    // b = u・v → AとBの方向の平行度（角度の関係）
+    double b = VDot(u, v);
+
+    // c = v・v → カプセル中心線の長さの二乗
+    double c = VDot(v, v);
+
+    // d = u・w → A方向におけるBの始点の位置関係
+    double d = VDot(u, w);
+
+    // e = v・w → B方向におけるAの始点の位置関係
+    double e = VDot(v, w);
+
+    // D = a*c - b*b → 連立方程式の判別式（平行かどうかの指標）
+    double D = a * c - b * b;
+
+    // s, t → 各線分上の最近点パラメータ (0～1)
+    double s = (b * e - c * d);
+    double t = (a * e - b * d);
+
+    if (D != 0) 
+    {
+        // 通常ケース（非平行）
+        s /= D;
+        t /= D;
+    }
+    else 
+    {
+        // 平行もしくはほぼ平行
+        s = 0;
+        t = e / c;
+    }
+
+    // s, t を [0,1] の範囲に制限（線分内に収める）
+    if (s < 0)s = 0;
+    if (s > 1)s = 1;
+    if (t < 0)t = 0;
+    if (t > 1)t = 1;
+
+    // 各線分上の最近接点座標
+    VECTOR pA = VAdd(lPos1, VScale(u, s));  // 線分A上の最近点
+    VECTOR pB = VAdd(cPos1, VScale(v, t));  // カプセル中心線上の最近点
+
+    // 2点間の距離ベクトル
+    VECTOR diff = VSub(pA, pB);
+
+    // 最近距離
+    double dist = Magnitude(diff);
+
+    // 衝突判定：最近距離がカプセル半径以下なら当たり
+    if (dist > cRadius)
+    {
+        return false;
+    }
+    // 接触点計算：中心線から法線方向へ半径分移動した位置
+    if (dist > 1e-9)
+    {
+        hitPos = VAdd(pB, VScale(VNorm(diff), cRadius));
+    }
+    else
+    {
+        hitPos = pA; // 完全に重なっている場合
+    }
+    return true;
+}
+
+bool Utility::IsColCapsule2Sphere(VECTOR cPos1, VECTOR cPos2, float cRadius, VECTOR sPos, float sRadius, VECTOR& hitPos)
+{
+    VECTOR ab = VSub(cPos2, cPos1); //カプセルの軸方向ベクトル
+    VECTOR ac = VSub(sPos, cPos1);  //球からカプセルの方向ベクトル
+    float t = VDot(ac, ab) / VDot(ab, ab);  //線分上の最近接位置係数
+    t = std::fmax(0.0f, std::fmin(1.0f, t));
+    VECTOR closest = VAdd(cPos1, VScale(ab, t));
+
+    VECTOR diff = VSub(sPos, closest);
+    float dist = MagnitudeF(diff);
+
+    float rSum = sRadius + cRadius;
+
+    if (dist <= rSum)
+    {
+        VECTOR dir = dist > 0 ? VNorm(diff) : VECTOR(0, 1, 0);  //方向
+        hitPos = VSub(sPos, VScale(dir, sRadius));              //球の表面上の接触点
+        return true;
+    }
     return false;
+}
+
+bool Utility::IsColSphere2Triangle(VECTOR sPos, float radius, VECTOR tPos1, VECTOR tPos2, VECTOR tPos3, VECTOR& hitPos)
+{
+    VECTOR n = VCross(VSub(tPos2, tPos1), VSub(tPos3, tPos1));
+    float len = MagnitudeF(n);
+    if (len < EPSILON)
+    {
+        return false;
+    }
+    n = VScale(n, 1.0f / len);
+
+    float dist = VDot(n, VSub(sPos, tPos1));
+    if (fabs(dist) > radius)
+    {
+        //平面から遠い
+        return false;
+    }
+
+    VECTOR p = VSub(sPos, VScale(n, dist));
+
+    VECTOR c0 = VCross(VSub(tPos2, tPos1), VSub(p, tPos1));
+    VECTOR c1 = VCross(VSub(tPos3, tPos2), VSub(p, tPos2));
+    VECTOR c2 = VCross(VSub(tPos1, tPos3), VSub(p, tPos3));
+    if (VDot(c0, n) >= 0 && VDot(c1, n) >= 0 && VDot(c2, n) >= 0)
+    {
+        hitPos = p;
+        return true;
+    }
+
+    // 各辺との最近点を確認
+    VECTOR cp1 = ClosestPointOnSegment(sPos, tPos1, tPos2);
+    VECTOR cp2 = ClosestPointOnSegment(sPos, tPos2, tPos3);
+    VECTOR cp3 = ClosestPointOnSegment(sPos, tPos3, tPos1);
+
+    float d1 = MagnitudeF(VSub(sPos, cp1));
+    float d2 = MagnitudeF(VSub(sPos, cp2));
+    float d3 = MagnitudeF(VSub(sPos, cp3));
+
+    hitPos = cp1;
+    float minD = d1;
+    if (d2 < minD) 
+    {
+        hitPos = cp2; minD = d2;
+    }
+    if (d3 < minD)
+    {
+        hitPos = cp3; minD = d3;
+    }
+
+    return minD <= radius;
+}
+
+VECTOR Utility::ClosestPointOnSegment(VECTOR p, VECTOR a, VECTOR b)
+{
+    VECTOR ab = VSub(b, a);
+    float t = VDot(VSub(p, a), ab) / VDot(ab, ab);
+    if (t < 0)
+    {
+        t = 0;
+    }
+    else if (t > 1)
+    {
+        t = 1;
+    }
+    return VAdd(a, VScale(ab, t));
 }
 
 void Utility::DrawCircle3DXZ(VECTOR center, float radius, int vertexNum,int color, bool fillFlag)

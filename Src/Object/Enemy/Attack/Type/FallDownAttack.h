@@ -18,7 +18,7 @@ public:
 	Transform& GetShotTransform(int shotNum);
 	FallDownShot::STATE GetShotState(int shotNum);
 	float GetShotRadius(int shotNum);
-
+	const float GetDamage(void)const override { return FallDownShot::DAMAGE; }
 private:
 
 	std::vector<std::unique_ptr<FallDownShot>> fallDownShots_; //—Ž‰º’e

@@ -1,6 +1,7 @@
 #include "../../Utility/Utility.h"
 #include "../../Manager/SceneManager.h"
 #include "../SubObject/FallDownShot.h"
+#include "../../../Common/AnimationController.h"
 #include "FallDownAttack.h"
 
 FallDownAttack::FallDownAttack(EnemyBase& enemy) : AttackBase(enemy)
@@ -57,11 +58,13 @@ void FallDownAttack::ChangeStateNone(void)
 
 void FallDownAttack::ChangeStateReady(void)
 {
+	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::TAKE_OFF,false);
 	AttackBase::ChangeStateReady();
 }
 
 void FallDownAttack::ChangeStateStart(void)
 {
+	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::FLAME_ATTACK);
 	time_ = TIME;
 	//óéâ∫íeÇÃê∂ê¨
 	for (int i = 0; i < MAX_FALL_NUM; i++)
@@ -79,6 +82,7 @@ void FallDownAttack::ChangeStateUpdate(void)
 
 void FallDownAttack::ChangeStateFinish(void)
 {
+	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::IDLE_1);
 	deleyTime_ = COOL_DOWN;
 	AttackBase::ChangeStateFinish();
 }
@@ -90,7 +94,10 @@ void FallDownAttack::UpdateStateNone(void)
 
 void FallDownAttack::UpdateStateReady(void)
 {
-	ChangeState(STATE::START);
+	if (enemy_.GetAnimController().IsEnd())
+	{
+		ChangeState(STATE::START);
+	}
 }
 
 void FallDownAttack::UpdateStateStart(void)

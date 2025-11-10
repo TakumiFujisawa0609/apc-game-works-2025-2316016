@@ -87,6 +87,8 @@ void JumpAttack::ChangeStateFinish(void)
 {
 	AttackBase::ChangeStateFinish();
 	deleyTime_ = COOL_DOWN;
+	auto& animCtr = enemy_.GetAnimController();
+	animCtr.Play((int)EnemyBase::ANIM_TYPE_DRAGON::IDLE_1);
 }
 
 void JumpAttack::UpdateStateNone(void)

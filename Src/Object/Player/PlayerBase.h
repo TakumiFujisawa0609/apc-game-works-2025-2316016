@@ -38,7 +38,7 @@ public:
 	static constexpr COLOR_F DAMAGE_COLOR = { 1.0f,0.0f,0.0f,1.0f }; //ダメージ時の色
 
 
-	static constexpr float JUMP_POW = 30.0f; //ジャンプ力
+	static constexpr float JUMP_POW = 15.0f; //ジャンプ力
 	
 	static constexpr float SIZE = 0.3f; //プレイヤーの大きさ
 
@@ -98,6 +98,8 @@ public:
 
 	void UIDraw(void)override;
 
+	void OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos)override;
+
 	const VECTOR& GetPrePos(void)const { return prePos_; }
 	void SetPos(const VECTOR& pos);
 	/// <summary>
@@ -125,6 +127,7 @@ public:
 	std::vector<VECTOR> GetCollisionSpherePositions(void);	//当たり判定用の球の位置を取得
 protected:
 
+	VECTOR headPos_;	//頭座標
 	VECTOR prePos_;
 	bool isDeath_;
 	KeyConfig::TYPE controlType_;

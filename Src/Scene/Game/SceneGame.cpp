@@ -10,6 +10,7 @@
 #include "../../Manager/KeyConfig.h"
 #include "../../Manager/Camera.h"
 #include "../../Manager/DataBank.h"
+#include "../../Manager/CollisionManager.h"
 #include "../../Renderer/PixelMaterial.h"
 #include "../../Renderer/PixelRenderer.h"
 #include "../../Object/Common/Gravity.h"
@@ -102,7 +103,7 @@ void SceneGame::Update(void)
 	KeyConfig& ins = KeyConfig::GetInstance();
 	//全ての更新が終わったら当たり判定をする
 	CheckCollision();
-
+	CollisionManager::GetInstance().Update();
 	vignetteTime_ += SceneManager::GetInstance().GetDeltaTime();
 
 	ChangeScene();
@@ -227,24 +228,24 @@ void SceneGame::CheckCollision(void)
 		enemyAttack.push_back(&enemy_->GetAttack(i));
 	}
 	//敵とプレイヤーの球の当たり判定
-	int playerShotNum = player_->GetPlayerShotNum();
-	for (int i = 0;i < playerShotNum;i++)
-	{
-		auto& playerShot = player_->GetPlayerShot(i);
-		if (!playerShot.IsShot())continue;
-		auto pShotPrePos = playerShot.GetPrePos();
-		auto& pShotTransform = playerShot.GetTransform();
-		auto result = MV1CollCheck_Line(enemy_->GetTransform().modelId, -1, pShotPrePos, pShotTransform.pos);
-		if (result.HitFlag > 0)
-		{
-			VECTOR rot = Utility::VECTOR_ZERO;
-			auto dir = VSub(pShotPrePos, pShotTransform.pos);
-			rot.y = atan2f(dir.x, dir.z);
-			enemy_->Damage(2.0f);
-			playerShot.Hit(result.HitPosition,rot);
-			SoundManager::GetInstance().Play(SoundManager::SRC::PSHOT_HIT, Sound::TIMES::ONCE);
-		}
-	}
+	//int playerShotNum = player_->GetPlayerShotNum();
+	//for (int i = 0;i < playerShotNum;i++)
+	//{
+	//	auto& playerShot = player_->GetPlayerShot(i);
+	//	if (!playerShot.IsShot())continue;
+	//	auto pShotPrePos = playerShot.GetPrePos();
+	//	auto& pShotTransform = playerShot.GetTransform();
+	//	auto result = MV1CollCheck_Line(enemy_->GetTransform().modelId, -1, pShotPrePos, pShotTransform.pos);
+	//	if (result.HitFlag > 0)
+	//	{
+	//		VECTOR rot = Utility::VECTOR_ZERO;
+	//		auto dir = VSub(pShotPrePos, pShotTransform.pos);
+	//		rot.y = atan2f(dir.x, dir.z);
+	//		enemy_->Damage(2.0f);
+	//		playerShot.Hit(result.HitPosition,rot);
+	//		SoundManager::GetInstance().Play(SoundManager::SRC::PSHOT_HIT, Sound::TIMES::ONCE);
+	//	}
+	//}
 	//プレイヤーの移動制限
 	//VECTOR pPrePos = player_->GetPrePos();
 	//pPrePos.y = 0.0f;
@@ -374,7 +375,7 @@ void SceneGame::CheckCollision(void)
 						if (Utility::IsColSphere2Sphere(checkPos, PlayerBase::RADIUS, transform.pos,radius))
 						{
 							VECTOR vec = VNorm(VSub(pPos, transform.pos));
-							player_->Damage(ThunderAround::DAMAGE, VNorm(vec));
+							player_->Damage(WaterSprit::DAMAGE, VNorm(vec));
 						}
 					}
 				}
@@ -436,11 +437,11 @@ void SceneGame::CheckCollision(void)
 			}
 		}
 		//敵とプレイヤーの当たり判定
-		if (Utility::IsColSphere2Model(pPos, PlayerBase::RADIUS, enemy_->GetTransform().modelId))
-		{
-			VECTOR vec = VNorm(VSub(pPos, enemy_->GetTransform().pos));
-			player_->Damage(5.0f, VNorm(vec));
-		}
+		//if (Utility::IsColSphere2Model(pPos, PlayerBase::RADIUS, enemy_->GetTransform().modelId))
+		//{
+		//	VECTOR vec = VNorm(VSub(pPos, enemy_->GetTransform().pos));
+		//	player_->Damage(5.0f, VNorm(vec));
+		//}
 	}
 }
 

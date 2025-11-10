@@ -36,6 +36,7 @@ public:
 	float GetRadius(void)const { return RADIUS; }
 	void Hit(VECTOR hitPos,VECTOR rot );
 	bool IsShot(void) const { return state_ == STATE::SHOT; }
+	void OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos)override;
 	VECTOR GetPrePos(void)const { return prePos_; }
 private:
 	//èdóÕ

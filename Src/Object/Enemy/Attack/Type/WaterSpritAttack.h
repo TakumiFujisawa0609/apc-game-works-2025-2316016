@@ -1,7 +1,6 @@
 #pragma once
 #include "AttackBase.h"
-
-class WaterSprit;
+#include "../SubObject/WaterSprit.h"
 
 class WaterSpritAttack : public AttackBase
 {
@@ -20,6 +19,7 @@ public:
 	int GetSubObjectNum(void)const override { return static_cast<int>(waterSprit_.size()); }
 	Transform& GetWaterTransform(int index);
 	float GetWaterRadius(int index) const;
+	const float GetDamage(void)const override { return WaterSprit::DAMAGE; }
 
 private:
 

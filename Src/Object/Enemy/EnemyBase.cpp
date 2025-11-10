@@ -9,6 +9,9 @@
 #include "../Common/Gravity.h"
 #include "../Common/AnimationController.h"
 #include "../Common/EffectController.h"
+#include "../Common/Geometry/Triangle3D.h"
+#include "../Common/Geometry/Sphere.h"
+#include "../Common/Geometry/Capsule.h"
 #include "Attack/Type/AttackBase.h"
 #include "Attack/Type/JumpAttack.h"
 #include "Attack/Type/JumpAttackConstant.h"
@@ -42,18 +45,11 @@ EnemyBase::EnemyBase(Transform& target) : target_(target)
 	maxHP_ = 100.0f;
 	hp_ = maxHP_;
 	InitAnimationControllerDragon();
-	VECTOR minPos, maxPos;
-	Utility::GetModelFlameBox(transform_->modelId, minPos, maxPos, { 0,1 });
-	flyLocalPos_.y -= minPos.y;
 	animCtrl_->Play((int)ANIM_TYPE_DRAGON::IDLE_1);
 	AplayChangeStateFunc();
-	AddAttack(ATTACK_TYPE::JUMP);
-	//AddAttack(ATTACK_TYPE::JUMP_CONSTANT);
-	//AddAttack(ATTACK_TYPE::FOLLOW);
-	//AddAttack(ATTACK_TYPE::FALL_DOWN);
-	//AddAttack(ATTACK_TYPE::CROSS_LINE);
-	//AddAttack(ATTACK_TYPE::THUNDER_AROUND);
-	//AddAttack(ATTACK_TYPE::WATER_SPRIT);
+	InitAddAttack();
+	InitFramePos();
+	InitGeometry();
 	ChangeState(STATE::IDLE);
 }
 
@@ -84,6 +80,7 @@ void EnemyBase::Update(void)
 	transform_->localPos.y -= minPos.y - transform_->pos.y;
 	transform_->Update();
 	animCtrl_->Update();
+	UpdateFramePos();
 }
 
 void EnemyBase::Draw(void)
@@ -91,9 +88,11 @@ void EnemyBase::Draw(void)
 	//float size = 50.0f;
 	//MV1DrawModel(transform_->modelId);
 	renderer_->Draw();
-	VECTOR minPos, maxPos;
-	Utility::GetModelMeshLocalBox(transform_->modelId, minPos, maxPos);
-	DrawCube3D(minPos, maxPos, 0xffffff, 0xffffff, false);
+	for (auto& col : colParam_)
+	{
+		//col.geometry_->Draw();
+	}
+
 	for (auto& attack : attackList_)
 	{
 		attack->Draw();
@@ -103,6 +102,26 @@ void EnemyBase::Draw(void)
 void EnemyBase::UIDraw(void)
 {
 	animCtrl_->DebugDraw();
+}
+
+void EnemyBase::OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos)
+{
+	std::shared_ptr<Collider> hitCol = _hitCol.lock();
+	Collider::TAG tag = hitCol->GetTag();
+	switch (tag)
+	{
+	case Collider::TAG::PLAYER_ATTACK:
+		Damage(2.0f);
+		break;
+	case Collider::TAG::PLAYER:
+	case Collider::TAG::ENEMY:
+	case Collider::TAG::ENEMY_ATTACK:
+		return;
+		break;
+	default:
+		break;
+	}
+	auto& hit = hitCol->GetParent();
 }
 
 void EnemyBase::Damage(float damage)
@@ -294,4 +313,111 @@ void EnemyBase::InitAnimationControllerDragon(void)
 		animCtrl_->Add(i, 30.0f);
 	}
 	SetAnim(ANIM_TYPE_DRAGON::FLY_FORWARD);
+}
+
+void EnemyBase::InitGeometry(void)
+{
+	Collider::TAG tag = Collider::TAG::ENEMY;
+	std::vector<Collider::TAG> notHitTags;
+	notHitTags.push_back(Collider::TAG::ENEMY);
+	notHitTags.push_back(Collider::TAG::ENEMY_ATTACK);
+	//âHÇÃìñÇΩÇËîªíË
+	std::unique_ptr<Geometry> geo = std::make_unique<Triangle3D>(framePos_[WING_L_BASE_BORN_NUM], framePos_[WING_L_1_BORN_NUM], framePos_[WING_L_2_BORN_NUM]);
+	MakeCollider(tag, std::move(geo), notHitTags);
+	geo = std::make_unique<Triangle3D>( framePos_[WING_L_BASE_BORN_NUM], framePos_[WING_L_2_BORN_NUM], framePos_[WING_L_3_BORN_NUM]);
+	MakeCollider(tag, std::move(geo), notHitTags);
+	geo = std::make_unique<Triangle3D>( framePos_[WING_L_BASE_BORN_NUM], framePos_[WING_L_3_BORN_NUM], framePos_[WING_L_4_BORN_NUM]);
+	MakeCollider(tag, std::move(geo), notHitTags);
+	geo = std::make_unique<Triangle3D>( framePos_[WING_L_BASE_BORN_NUM], framePos_[WING_L_4_BORN_NUM], framePos_[WING_L_5_BORN_NUM]);
+	MakeCollider(tag, std::move(geo), notHitTags);
+	geo = std::make_unique<Triangle3D>( framePos_[WING_L_BASE_BORN_NUM], framePos_[WING_L_5_BORN_NUM], framePos_[WING_L_NEAR_BODY_BORN_NUM]);
+	MakeCollider(tag, std::move(geo), notHitTags);
+	geo = std::make_unique<Triangle3D>( framePos_[WING_R_BASE_BORN_NUM], framePos_[WING_R_1_BORN_NUM], framePos_[WING_R_2_BORN_NUM]);
+	MakeCollider(tag, std::move(geo), notHitTags);
+	geo = std::make_unique<Triangle3D>( framePos_[WING_R_BASE_BORN_NUM], framePos_[WING_R_2_BORN_NUM], framePos_[WING_R_3_BORN_NUM]);
+	MakeCollider(tag, std::move(geo), notHitTags);
+	geo = std::make_unique<Triangle3D>( framePos_[WING_R_BASE_BORN_NUM], framePos_[WING_R_3_BORN_NUM], framePos_[WING_R_4_BORN_NUM]);
+	MakeCollider(tag, std::move(geo), notHitTags);
+	geo = std::make_unique<Triangle3D>( framePos_[WING_R_BASE_BORN_NUM], framePos_[WING_R_4_BORN_NUM], framePos_[WING_R_5_BORN_NUM]);
+	MakeCollider(tag, std::move(geo), notHitTags);
+	geo = std::make_unique<Triangle3D>( framePos_[WING_R_BASE_BORN_NUM], framePos_[WING_R_5_BORN_NUM], framePos_[WING_R_NEAR_BODY_BORN_NUM]);
+	MakeCollider(tag, std::move(geo), notHitTags);
+	//ì∑ëÃÇÃìñÇΩÇËîªíË
+	geo = std::make_unique<Capsule>( framePos_[BODY_1_BORN_NUM],framePos_[BODY_2_BORN_NUM],BIG_RADIUS);
+	MakeCollider(tag, std::move(geo), notHitTags);
+	//éÒÇÃìñÇΩÇËîªíË
+	geo = std::make_unique<Capsule>( framePos_[BODY_2_BORN_NUM],framePos_[NECK_BORN_NUM],MIDIUM_RADIUS);
+	MakeCollider(tag, std::move(geo), notHitTags);
+	//éÒÇÃìñÇΩÇËîªíË
+	geo = std::make_unique<Capsule>( framePos_[HEAD_BORN_NUM],framePos_[NECK_BORN_NUM],MIDIUM_RADIUS);
+	MakeCollider(tag, std::move(geo), notHitTags);
+	//êKîˆÇÃìñÇΩÇËîªíË
+	geo = std::make_unique<Capsule>( framePos_[BODY_1_BORN_NUM],framePos_[TAIL_1_BORN_NUM],SMALL_RADIUS);
+	MakeCollider(tag, std::move(geo), notHitTags);
+	geo = std::make_unique<Capsule>( framePos_[TAIL_2_BORN_NUM],framePos_[TAIL_1_BORN_NUM],SMALL_RADIUS);
+	MakeCollider(tag, std::move(geo), notHitTags);
+	//òrãrÇÃìñÇΩÇËîªíË
+	geo = std::make_unique<Capsule>( framePos_[BODY_1_BORN_NUM],framePos_[FOOT_L_BORN_NUM],SMALL_RADIUS);
+	MakeCollider(tag, std::move(geo), notHitTags);
+	geo = std::make_unique<Capsule>( framePos_[BODY_1_BORN_NUM],framePos_[FOOT_R_BORN_NUM],SMALL_RADIUS);
+	MakeCollider(tag, std::move(geo), notHitTags);
+	geo = std::make_unique<Capsule>( framePos_[LEG_L_BORN_NUM],framePos_[FOOT_L_BORN_NUM],SMALL_RADIUS);
+	MakeCollider(tag, std::move(geo), notHitTags);
+	geo = std::make_unique<Capsule>( framePos_[LEG_R_BORN_NUM],framePos_[FOOT_R_BORN_NUM],SMALL_RADIUS);
+	MakeCollider(tag, std::move(geo), notHitTags);
+	geo = std::make_unique<Capsule>( framePos_[BODY_2_BORN_NUM],framePos_[ARM_L_BORN_NUM],SMALL_RADIUS);
+	MakeCollider(tag, std::move(geo), notHitTags);
+	geo = std::make_unique<Capsule>( framePos_[BODY_2_BORN_NUM],framePos_[ARM_R_BORN_NUM],SMALL_RADIUS);
+	MakeCollider(tag, std::move(geo), notHitTags);
+	geo = std::make_unique<Capsule>( framePos_[HAND_L_BORN_NUM],framePos_[ARM_L_BORN_NUM],SMALL_RADIUS);
+	MakeCollider(tag, std::move(geo), notHitTags);
+	geo = std::make_unique<Capsule>( framePos_[HAND_R_BORN_NUM],framePos_[ARM_R_BORN_NUM],SMALL_RADIUS);
+	MakeCollider(tag, std::move(geo), notHitTags);
+}
+
+void EnemyBase::InitAddAttack(void)
+{
+	//AddAttack(ATTACK_TYPE::JUMP);
+	//AddAttack(ATTACK_TYPE::JUMP_CONSTANT);
+	//AddAttack(ATTACK_TYPE::FOLLOW);
+	//AddAttack(ATTACK_TYPE::FALL_DOWN);
+	AddAttack(ATTACK_TYPE::CROSS_LINE);
+	//AddAttack(ATTACK_TYPE::THUNDER_AROUND);
+	//AddAttack(ATTACK_TYPE::WATER_SPRIT);
+}
+
+void EnemyBase::InitFramePos(void)
+{
+	//VECTOR initPos = Utility::VECTOR_ZERO;
+	//framePos_[HAND_L_BORN_NUM] = initPos;
+	//framePos_[HAND_R_BORN_NUM] = initPos;
+	//framePos_[LEG_L_BORN_NUM] = initPos;
+	//framePos_[LEG_R_BORN_NUM] = initPos;
+	//framePos_[HEAD_BORN_NUM] = initPos;
+
+	//framePos_[WING_L_BASE_BORN_NUM] = initPos;
+	//framePos_[WING_L_1_BORN_NUM] = initPos;
+	//framePos_[WING_L_2_BORN_NUM] = initPos;
+	//framePos_[WING_L_3_BORN_NUM] = initPos;
+	//framePos_[WING_L_4_BORN_NUM] = initPos;
+
+	//framePos_[WING_R_BASE_BORN_NUM] = initPos;
+	//framePos_[WING_R_1_BORN_NUM] = initPos;
+	//framePos_[WING_R_2_BORN_NUM] = initPos;
+	//framePos_[WING_R_3_BORN_NUM] = initPos;
+	//framePos_[WING_R_4_BORN_NUM] = initPos;
+
+	//framePos_[BODY_1_BORN_NUM] = initPos;
+	//framePos_[BODY_2_BORN_NUM] = initPos;
+
+	//framePos_[NECK_BORN_NUM] = initPos;
+}
+
+void EnemyBase::UpdateFramePos(void)
+{
+	int modelId = transform_->modelId;
+	for (auto& framePos : framePos_)
+	{
+		framePos.second = MV1GetFramePosition(modelId, framePos.first);
+	}
 }

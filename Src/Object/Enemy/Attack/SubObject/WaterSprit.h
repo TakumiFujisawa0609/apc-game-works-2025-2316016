@@ -11,6 +11,7 @@ public:
 	static constexpr float ALIVE_TIME = 15.0f;		//生存時間
 	static constexpr float TIME_SCALE = 5.0f;		//時間スケール
 	static constexpr float MODEL_RADIUS = 100.0f;	//モデルの初期半径
+	static constexpr float DAMAGE = 17.5f;	//モデルの初期半径
 
 	WaterSprit(VECTOR direction, VECTOR startPos , float speed);
 	~WaterSprit(void)override;

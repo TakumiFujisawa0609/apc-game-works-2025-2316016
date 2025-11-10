@@ -2,7 +2,7 @@
 #include <memory>
 #include <vector>
 #include "AttackBase.h"
-
+#include "../SubObject/Wave.h"
 class Wave;
 
 class JumpAttackConstant :    public AttackBase
@@ -20,6 +20,8 @@ public:
 	void Draw(void) override;
 	int GetSubObjectNum(void)const override { return static_cast<int>(wave_.size()); }
 	void GetWaveState(float& radius, VECTOR& centerPos, int waveNum);
+	const float GetDamage(void)const override { return Wave::DAMAGE; }
+
 private:
 	float time_;
 	float intervalTime_;

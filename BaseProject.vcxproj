@@ -19,6 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Manager\CollisionManager.cpp" />
+    <ClCompile Include="Src\Object\Common\Collider.cpp" />
+    <ClCompile Include="Src\Object\Common\Geometry\Line3D.cpp" />
+    <ClCompile Include="Src\Object\Common\Geometry\Capsule.cpp" />
+    <ClCompile Include="Src\Object\Common\Geometry\Sphere.cpp" />
+    <ClCompile Include="Src\Object\Common\Geometry\Geometry.cpp" />
     <ClCompile Include="Src\Manager\DrawTranslucentManager.cpp" />
     <ClCompile Include="Src\Common\FpsController.cpp" />
     <ClCompile Include="Src\Object\Common\EffectController.cpp" />
@@ -83,8 +89,15 @@
     <ClCompile Include="Src\Object\Enemy\Attack\Type\WaterSpritAttack.cpp" />
     <ClCompile Include="Src\Object\Enemy\Attack\SubObject\WaterSprit.cpp" />
     <ClCompile Include="Src\Object\Stage\Stage.cpp" />
+    <ClCompile Include="Src\Object\Common\Geometry\Triangle3D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Manager\CollisionManager.h" />
+    <ClInclude Include="Src\Object\Common\Collider.h" />
+    <ClInclude Include="Src\Object\Common\Geometry\Line3D.h" />
+    <ClInclude Include="Src\Object\Common\Geometry\Capsule.h" />
+    <ClInclude Include="Src\Object\Common\Geometry\Sphere.h" />
+    <ClInclude Include="Src\Object\Common\Geometry\Geometry.h" />
     <ClInclude Include="Src\Manager\DrawTranslucentManager.h" />
     <ClInclude Include="Src\Common\FpsController.h" />
     <ClInclude Include="Src\Object\Common\EffectController.h" />
@@ -149,6 +162,7 @@
     <ClInclude Include="Src\Object\Enemy\Attack\Type\WaterSpritAttack.h" />
     <ClInclude Include="Src\Object\Enemy\Attack\SubObject\WaterSprit.h" />
     <ClInclude Include="Src\Object\Stage\Stage.h" />
+    <ClInclude Include="Src\Object\Common\Geometry\Triangle3D.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shader\Common\Pixel\PixelShader2DHeader.hlsli" />

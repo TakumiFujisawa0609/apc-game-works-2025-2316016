@@ -2,8 +2,7 @@
 #include <vector>
 
 #include "AttackBase.h"
-
-class ThunderAround;
+#include "../SubObject/ThunderAround.h"
 
 class ThunderAroundAttack :    public AttackBase
 {
@@ -22,6 +21,7 @@ public:
 	void Draw(void)override;
 	int GetSubObjectNum(void)const override { return static_cast<int>(thunders_.size()); }
 	Transform& GetThunderTransform(int thunderNum);
+	const float GetDamage(void)const override { return ThunderAround::DAMAGE; }
 private:
 
 	std::vector<std::unique_ptr<ThunderAround>> thunders_;
