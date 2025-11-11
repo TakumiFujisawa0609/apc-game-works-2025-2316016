@@ -43,6 +43,8 @@ SceneGame::SceneGame(void)
 SceneGame::~SceneGame(void)
 {
 	DeleteGraph(postEffectScreen_);
+	SoundManager& ins = SoundManager::GetInstance();
+	ins.Stop(SoundManager::SRC::GAME_BGM);
 }
 
 
@@ -84,6 +86,13 @@ bool SceneGame::Init(void)
 		Vector2(Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y)
 	);
 	vignetteTime_ = 0.0f;
+
+	SoundManager& ins = SoundManager::GetInstance();
+	bool b = ins.Play(SoundManager::SRC::GAME_BGM,Sound::TIMES::ONCE);
+	//std::string str = Application::PATH_SOUND_BGM + "GameBGM.mp3";
+	//int i = LoadSoundMem(str.c_str());
+	//PlaySoundMem(i, DX_PLAYTYPE_LOOP, true);
+
 	return true;
 }
 
@@ -151,6 +160,15 @@ void SceneGame::Draw(void)
 	//DrawFormatString(0, 20, 0, "%d", GetDrawCallCount());
 	//player_->UIDraw();
 	enemy_->UIDraw();
+}
+
+void SceneGame::Load(void)
+{
+	SoundManager& ins = SoundManager::GetInstance();
+	ins.Load(SoundManager::SRC::FIRE);
+	ins.Load(SoundManager::SRC::PSHOT_HIT);
+	ins.Load(SoundManager::SRC::PSHOT_THROW);
+	ins.Load(SoundManager::SRC::GAME_BGM);
 }
 
 void SceneGame::DebugDraw(void)
@@ -285,6 +303,7 @@ void SceneGame::CheckCollision(void)
 				//‚µ‚Ä‚¢‚È‚¢‚©‚çŽŸ‚Ö
 				continue;
 			}
+			float damage = attack->GetDamage();
 			//UŒ‚‚ÌŒ`ó‚Åê‡•ª‚¯
 			auto geo = attack->GetGeometory();
 			switch (geo)
@@ -302,7 +321,7 @@ void SceneGame::CheckCollision(void)
 						if (Utility::IsColSphere2Sphere(pPos, PlayerBase::RADIUS, transform.pos, FollowAttack::RADIUS))
 						{
 							VECTOR vec = VNorm(VSub(pPos, transform.pos));
-							player_->Damage(FollowShot::DAMAGE, VNorm(vec));
+							player_->Damage(damage, VNorm(vec));
 							follow->HitShot(i);
 						}
 					}
@@ -323,7 +342,7 @@ void SceneGame::CheckCollision(void)
 						if (Utility::IsColSphere2Sphere(pPos, PlayerBase::RADIUS, transform.pos, fall->GetShotRadius(i)))
 						{
 							VECTOR vec = VNorm(VSub(pPos, transform.pos));
-							player_->Damage(FallDownShot::DAMAGE, VNorm(vec));
+							player_->Damage(damage, VNorm(vec));
 						}
 					}
 					continue;
@@ -339,7 +358,7 @@ void SceneGame::CheckCollision(void)
 						if (Utility::IsColSphere2Sphere(pPos, PlayerBase::RADIUS, transform.pos, CrossLine::RADIUS))
 						{
 							VECTOR vec = VNorm(VSub(pPos, transform.pos));
-							player_->Damage(CrossLine::DAMAGE, VNorm(vec));
+							player_->Damage(damage, VNorm(vec));
 						}
 					}
 					continue;
@@ -359,7 +378,7 @@ void SceneGame::CheckCollision(void)
 						if (Utility::IsColSphere2Sphere(checkPos, PlayerBase::RADIUS, transform.pos, ThunderAround::RADIUS))
 						{
 							VECTOR vec = VNorm(VSub(pPos, transform.pos));
-							player_->Damage(ThunderAround::DAMAGE, VNorm(vec));
+							player_->Damage(damage, VNorm(vec));
 						}
 					}
 				}
@@ -375,7 +394,7 @@ void SceneGame::CheckCollision(void)
 						if (Utility::IsColSphere2Sphere(checkPos, PlayerBase::RADIUS, transform.pos,radius))
 						{
 							VECTOR vec = VNorm(VSub(pPos, transform.pos));
-							player_->Damage(WaterSprit::DAMAGE, VNorm(vec));
+							player_->Damage(damage, VNorm(vec));
 						}
 					}
 				}
@@ -401,7 +420,7 @@ void SceneGame::CheckCollision(void)
 						if (Utility::IsColCircumference2Circle(wavePos, waveRadius, checkPos, PlayerBase::RADIUS))
 						{
 							VECTOR vec = VNorm(VSub(pPos, wavePos));
-							player_->Damage(Wave::DAMAGE, VNorm(vec));
+							player_->Damage(damage, VNorm(vec));
 						}
 					}
 				}
@@ -423,7 +442,7 @@ void SceneGame::CheckCollision(void)
 						if (Utility::IsColCircumference2Circle(wavePos, waveRadius, checkPos, PlayerBase::RADIUS))
 						{
 							VECTOR vec = VNorm(VSub(pPos, wavePos));
-							player_->Damage(Wave::DAMAGE, VNorm(vec));
+							player_->Damage(damage, VNorm(vec));
 						}
 					}
 				}

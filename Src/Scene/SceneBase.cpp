@@ -25,3 +25,7 @@ void SceneBase::Update(void)
 void SceneBase::Draw(void)
 {
 }
+
+void SceneBase::Load(void)
+{
+}

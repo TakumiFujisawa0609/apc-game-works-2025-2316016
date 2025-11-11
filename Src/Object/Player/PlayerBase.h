@@ -36,7 +36,7 @@ public:
 	static constexpr float DAMAGE_SPEED = 30.0f;	//ダメージの吹っ飛びスピード
 	static constexpr float DAMAGE_POW = 10.0f;	//ダメージの吹っ飛びスピード
 	static constexpr COLOR_F DAMAGE_COLOR = { 1.0f,0.0f,0.0f,1.0f }; //ダメージ時の色
-
+	static constexpr float ENEMY_HIT_DAMAGE = 5.0f;
 
 	static constexpr float JUMP_POW = 15.0f; //ジャンプ力
 	
@@ -47,7 +47,7 @@ public:
 	static constexpr int HEAD_BONE_NO = 5; //頭のボーン番号
 
 	//攻撃関連
-	static constexpr float ATTACK_DELEY = 0.5f; //攻撃ディレイ
+	static constexpr float ATTACK_DELEY = 1.0f; //攻撃ディレイ
 
 	//回復関連
 	static constexpr float HEAL_PER_SEC = 3.0f;	//１秒にどれくらい回復するか

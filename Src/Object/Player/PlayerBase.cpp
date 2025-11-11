@@ -100,6 +100,7 @@ void PlayerBase::Update(void)
 	Rotation();
 	Heal();
 	transform_->Update();
+	headPos_ = MV1GetFramePosition(transform_->modelId, HEAD_BONE_NO);
 	//攻撃のクールタイム中ではなく攻撃ボタンを押したら攻撃する
 	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK, KeyConfig::JOYPAD_NO::PAD1, controlType_) && attackDeley_ < 0.0f && state_ != STATE::DAMAGE && state_ != STATE::DEAD)
 	{
@@ -116,7 +117,6 @@ void PlayerBase::Update(void)
 	}
 	Utility::EraseVectorAllay(shots_);
 	animCtrl_->Update();
-	auto i = animCtrl_->GetPlayType();
 }
 
 void PlayerBase::Draw(void)
@@ -172,7 +172,7 @@ void PlayerBase::OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos)
 		return;
 		break;
 	case Collider::TAG::ENEMY:
-		damage = 5.0f;
+		damage = ENEMY_HIT_DAMAGE;
 		break;
 	case Collider::TAG::ENEMY_ATTACK:
 		break;
@@ -306,6 +306,8 @@ void PlayerBase::MoveLimit(void)
 	if (prePos.y < pos.y && state_ != STATE::DAMAGE)
 	{
 		gravity_->ChengeState(Gravity::STATE::NONE);
+		SoundManager& ins = SoundManager::GetInstance();
+		ins.Play(SoundManager::SRC::LAND, Sound::TIMES::ONCE);
 	}
 }
 
@@ -391,9 +393,9 @@ void PlayerBase::InitAnimationController(void)
 	animCtrl_ = std::make_unique<AnimationController>(transform_->modelId);
 	animCtrl_->Add((int)STATE::IDLE, path + "Idle.mv1", 60.0f);
 	animCtrl_->Add((int)STATE::MOVE, path + "Move.mv1", 120.0f);
-	animCtrl_->Add((int)STATE::JUMP, path + "Jump.mv1", 80.0f);
+	animCtrl_->Add((int)STATE::JUMP, path + "Jump.mv1", 120.0f);
 	animCtrl_->Add((int)STATE::AVOID, path + "Avoid2.mv1", 100.0f);
-	animCtrl_->Add((int)STATE::ATTACK, path + "Throw.mv1", 180.0f);
+	animCtrl_->Add((int)STATE::ATTACK, path + "Throw.mv1", 210.0f);
 	animCtrl_->Add((int)STATE::DAMAGE, path + "Damage.mv1", 120.0f);
 	//animCtrl_->Add((int)STATE::DEAD, path + "Falling.mv1", 80.0f);
 
@@ -415,7 +417,7 @@ void PlayerBase::Heal(void)
 void PlayerBase::StateChangeIdle(void)
 {
 	stateUpdate_ = std::bind(&PlayerBase::StateUpdateIdle, this);
-	animCtrl_->Play((int)STATE::IDLE);
+	animCtrl_->Play((int)STATE::IDLE,0.0f,-1.0f,0.1f);
 }
 
 void PlayerBase::StateChangeMove(void)
@@ -426,10 +428,12 @@ void PlayerBase::StateChangeMove(void)
 
 void PlayerBase::StateChangeJump(void)
 {
+	SoundManager& ins = SoundManager::GetInstance();
+	ins.Play(SoundManager::SRC::JAMP, Sound::TIMES::ONCE);
 	gravity_->ChengeState(Gravity::STATE::JUMP);
 	gravity_->SetInitPower(JUMP_POW);
 	stateUpdate_ = std::bind(&PlayerBase::StateUpdateJump, this);
-	animCtrl_->Play((int)STATE::JUMP);
+	animCtrl_->Play((int)STATE::JUMP,false,30.0f,90.0f,0.1f,false,true);
 };
 
 void PlayerBase::StateChangeAvoid(void)
@@ -493,7 +497,7 @@ void PlayerBase::StateChangeAttack(void)
 {
 	CreateShot();
 	attackDeley_ = ATTACK_DELEY;
-	animCtrl_->Play((int)STATE::ATTACK);
+	animCtrl_->Play((int)STATE::ATTACK,false,0.0f,-1.0f,0.1f,false,true);
 	stateUpdate_ = std::bind(&PlayerBase::StateUpdateAttack, this);
 }
 
@@ -501,7 +505,7 @@ void PlayerBase::StateChangeDamage(void)
 {
 	damageTime_ = DAMAGE_TIME;
 	damageInvincibleTime_ = DAMAGE_INVINCIBLE_TIME;
-	animCtrl_->Play((int)STATE::DAMAGE);
+	animCtrl_->Play((int)STATE::DAMAGE,true,0.0f,-1.0f,0.1f);
 	stateUpdate_ = std::bind(&PlayerBase::StateUpdateDamage, this);
 }
 
@@ -578,8 +582,9 @@ void PlayerBase::StateUpdateAvoid(void)
 void PlayerBase::StateUpdateAttack(void)
 {
 	PlayerMove();
-	if (attackDeley_ < 0.0f)
+	if (animCtrl_->IsEnd())
 	{
+		animCtrl_->Play((int)STATE::IDLE, true, 0.0f, -1.0f, -1.0f);
 		ChangeState(STATE::IDLE);
 	}
 }

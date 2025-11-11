@@ -24,7 +24,7 @@ public:
 
 	static constexpr float SLOW_SPEED = 3.0f;	//遅いスピード
 	static constexpr float MIDIUM_SPEED = 5.5f;	//普通のスピード
-	static constexpr float FAST_SPEED = 10.0f;	//速いスピード
+	static constexpr float FAST_SPEED = 7.0f;	//速いスピード
 
 	static constexpr float DAMAGE = 15.0f;	//ダメージ
 	static constexpr float ATTACK_TIME = 10.0f;	//攻撃時間

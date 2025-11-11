@@ -1,6 +1,7 @@
 #pragma once
 #include "AttackBase.h"
-#include "../SubObject/CrossLine.h"
+
+class CrossLine;
 
 class CrossAttack :    public AttackBase
 {
@@ -12,6 +13,7 @@ public:
 	static constexpr int LINE_POINT_NUM = 12; //クロスラインの点の数
 	static constexpr float LINE_DIR_REVERSE_TIME = 10.0f; //ラインの向きが逆になる時間
 	static constexpr float CREATE_INTERVAL = 0.5f;
+	static constexpr float DAMAGE = 7.5f; //ダメージ
 	CrossAttack(EnemyBase& enemy);
 	~CrossAttack(void)override;
 	void Init(void)override;
@@ -19,7 +21,7 @@ public:
 	void Draw(void)override;
 	int GetSubObjectNum(void)const override { return static_cast<int>(crossLines_.size()); }
 	Transform& GetLineTransform(int lineNum);
-	const float GetDamage(void)const override { return CrossLine::DAMAGE; }
+	const float GetDamage(void)const override { return DAMAGE; }
 private:
 
 	std::vector<std::unique_ptr<CrossLine>> crossLines_; //クロスライン

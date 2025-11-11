@@ -63,6 +63,9 @@ std::unique_ptr<SceneBase> SceneManager::MakeScene(SCENE_ID id)
 		scene = std::make_unique<SceneSetting>();
 		break;
 	}
+	SetUseASyncLoadFlag(true);
+	scene->Load();
+	SetUseASyncLoadFlag(false);
 	scene->Init();
 	return std::move(scene);
 }

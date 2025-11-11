@@ -1,6 +1,7 @@
 #include "../../Utility/Utility.h"
 #include "../../Manager/SceneManager.h"
 #include "../../../Common/Gravity.h"
+#include "../../../Common/AnimationController.h"
 #include "../../EnemyBase.h"
 #include "../SubObject/Wave.h"
 #include "JumpAttackConstant.h"
@@ -58,6 +59,9 @@ void JumpAttackConstant::ChangeStateReady(void)
 	enemy_.GetGravity().ChengeState(Gravity::STATE::JUMP);
 	enemy_.GetGravity().SetDir(Utility::DIR_D);
 	enemy_.GetGravity().SetInitPower(JUMP_POW);
+	auto& animCtr = enemy_.GetAnimController();
+
+	animCtr.Play((int)EnemyBase::ANIM_TYPE_DRAGON::LAND, true, 0.0f, -1.0f);
 }
 
 void JumpAttackConstant::ChangeStateStart(void)
@@ -78,6 +82,8 @@ void JumpAttackConstant::ChangeStateUpdate(void)
 void JumpAttackConstant::ChangeStateFinish(void)
 {
 	AttackBase::ChangeStateFinish();
+	auto& animCtr = enemy_.GetAnimController();
+	animCtr.Play((int)EnemyBase::ANIM_TYPE_DRAGON::IDLE_1);
 	deleyTime_ = COOL_DOWN;
 }
 
@@ -87,9 +93,17 @@ void JumpAttackConstant::UpdateStateNone(void)
 
 void JumpAttackConstant::UpdateStateReady(void)
 {
+	auto& animCtr = enemy_.GetAnimController();
+	auto& gravity = enemy_.GetGravity();
+	if (gravity.GetPower() > 0.0f && isDown_ == false)
+	{
+		isDown_ = true;
+		animCtr.Play((int)EnemyBase::ANIM_TYPE_DRAGON::TAKE_OFF, true, 0.0f, -1.0f, 0.01f, false, true, false);
+	}
 	if (enemy_.GetGravity().GetState() != Gravity::STATE::JUMP)
 	{
 		ChangeState(STATE::START);
+		animCtr.Play((int)EnemyBase::ANIM_TYPE_DRAGON::SCREAM);
 	}
 }
 

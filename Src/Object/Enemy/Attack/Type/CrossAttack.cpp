@@ -1,6 +1,8 @@
 #include "../../Utility/Utility.h"
 #include "../../Manager/SceneManager.h"
+#include "../../Manager/SoundManager.h"
 #include "../../EnemyBase.h"
+#include "../../../Common/AnimationController.h"
 #include "../SubObject/CrossLine.h"
 #include "CrossAttack.h"
 
@@ -54,6 +56,8 @@ void CrossAttack::ChangeStateNone(void)
 void CrossAttack::ChangeStateReady(void)
 {
 	AttackBase::ChangeStateReady();
+	SoundManager::GetInstance().Play(SoundManager::SRC::FIRE, Sound::TIMES::LOOP);
+	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::FLY_GLIDE);
 }
 
 void CrossAttack::ChangeStateStart(void)
@@ -64,11 +68,14 @@ void CrossAttack::ChangeStateStart(void)
 void CrossAttack::ChangeStateUpdate(void)
 {
 	AttackBase::ChangeStateUpdate();
+	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::SCREAM);
 }
 
 void CrossAttack::ChangeStateFinish(void)
 {
 	deleyTime_ = COOL_DOWN;
+	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::IDLE_1);
+	SoundManager::GetInstance().Stop(SoundManager::SRC::FIRE);
 	AttackBase::ChangeStateFinish();
 }
 
@@ -99,6 +106,7 @@ void CrossAttack::UpdateStateStart(void)
 	if (createPointNum_ == LINE_POINT_NUM)
 	{
 		reverseTime_ = LINE_DIR_REVERSE_TIME;
+		createPointNum_ = 0;
 		ChangeState(STATE::UPDATE);
 	}
 }

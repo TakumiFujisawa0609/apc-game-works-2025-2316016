@@ -118,6 +118,10 @@ void ResourceManager::Init(void)
 	resourcesMap_.emplace(SRC::WATER_SPLIT, std::move(res));
 	res = Resource(Resource::TYPE::MODEL, Application::PATH_EFFECT + "WaterSprit.mv1");
 	resourcesMap_.emplace(SRC::WATER_SPRIT_MODEL, std::move(res));
+	res = Resource(Resource::TYPE::MODEL, Application::PATH_EFFECT + "Fire.mv1");
+	resourcesMap_.emplace(SRC::FIRE_MODEL, std::move(res));
+	res = Resource(Resource::TYPE::MODEL, Application::PATH_EFFECT + "Thunder.mv1");
+	resourcesMap_.emplace(SRC::THUNDER_MODEL, std::move(res));
 }
 
 void ResourceManager::Release(void)

@@ -11,6 +11,11 @@ public:
 		SWITCH, //押すたびにロックオンのON/OFF切り替え
 	};
 
+	enum class DIFFICULTY
+	{
+		TUTORIAL,	//チュートリアル
+	};
+
 	// インスタンスを明示的に生成
 	static void CreateInstance(void);
 

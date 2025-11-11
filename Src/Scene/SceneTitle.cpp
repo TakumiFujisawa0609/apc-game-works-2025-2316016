@@ -23,6 +23,9 @@ bool SceneTitle::Init(void)
 {
 	auto camera = SceneManager::GetInstance().GetCamera();
 	camera.ChangeMode(Camera::MODE::FIXED_POINT);
+	SetUseASyncLoadFlag(true);
+	SoundManager::GetInstance().Load(SoundManager::SRC::GAME_BGM);
+	SetUseASyncLoadFlag(false);
 	return true;
 }
 
@@ -46,4 +49,9 @@ void SceneTitle::Draw(void)
 	DrawRotaGraph(Application::SCREEN_HALF_X, Application::SCREEN_HALF_Y, 1.0f, 0.0f, ResourceManager::GetInstance().Load(ResourceManager::SRC::TITLE_IMAGE_2).handleId_, true);
 	SetDrawBright(255, 255, 255);
 	//DrawExtendGraph(0, 0, Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y, ResourceManager::GetInstance().Load(ResourceManager::SRC::TITLE_IMAGE_1).handleId_, true);
+}
+
+void SceneTitle::Load(void)
+{
+
 }

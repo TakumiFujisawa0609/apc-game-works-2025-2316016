@@ -12,6 +12,7 @@ public:
 	virtual bool Init(void);
 	virtual void Update(void);
 	virtual void Draw(void);
+	virtual void Load(void);
 protected:
 
 private:

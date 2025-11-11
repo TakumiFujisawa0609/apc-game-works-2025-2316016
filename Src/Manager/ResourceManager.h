@@ -62,6 +62,8 @@ public:
 		HIT_EFFECT,		//ヒットエフェクト
 		WATER_SPLIT,	//渦巻
 		WATER_SPRIT_MODEL, //ウォータースプリット
+		FIRE_MODEL,		//炎のモデル
+		THUNDER_MODEL,	//雷のモデル
 	};
 
 	// 明示的にインステンスを生成する

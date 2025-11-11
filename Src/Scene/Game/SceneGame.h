@@ -28,6 +28,8 @@ public:
 	//•`‰æˆ—
 	virtual void Draw(void) override;
 
+	virtual void Load(void)override;
+
 	void DebugDraw(void);
 protected:
 

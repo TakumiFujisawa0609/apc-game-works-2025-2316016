@@ -174,5 +174,9 @@
     <FxCompile Include="Src\Shader\Model\EnemyVS.hlsl" />
     <FxCompile Include="Src\Shader\Model\NoTexturePS.hlsl" />
     <FxCompile Include="Src\Shader\Model\NoTextureVS.hlsl" />
+    <FxCompile Include="Src\Shader\Model\FirePS.hlsl" />
+    <FxCompile Include="Src\Shader\Model\FireVS.hlsl" />
+    <FxCompile Include="Src\Shader\Model\ThunderPS.hlsl" />
+    <FxCompile Include="Src\Shader\Model\ThunderVS.hlsl" />
   </ItemGroup>
 </Project>

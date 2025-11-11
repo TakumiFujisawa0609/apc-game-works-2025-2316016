@@ -21,5 +21,6 @@ public:
 	//•`‰æˆ—
 	void Draw(void) override;
 
+	void Load(void)override;
 private:
 };

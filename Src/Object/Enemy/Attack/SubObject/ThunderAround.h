@@ -18,6 +18,12 @@ public:
 	static constexpr float ROTATION_TIME = 5.0f; //‰ñ“]ŠÔ
 	static constexpr float EXPANSION_TIME = 1.5f; //Šg‘åŠÔ
 	static constexpr float ROTATION_SPEED = 360.0f; //1•b‚Ì‰ñ“]‘¬“x
+	static constexpr float MODEL_SIZE_XZ = 100.0f;
+	static constexpr float MODEL_SCALE_XZ = RADIUS / MODEL_SIZE_XZ;
+	static constexpr float TEXTURE_SCALE_X = 2.0f;
+	static constexpr float TEXTURE_SCALE_Y = 5.0f;
+	static constexpr float TIME_SCALE = 3.0f;
+	static constexpr float THRESHOLD = 5.0f;
 
 	enum class STATE
 	{
@@ -39,7 +45,7 @@ private:
 	VECTOR targetPos_;
 	float rad_; //’†S‚©‚ç‚ÌŠp“x
 	float initRad_; //‰ŠúŠp“x
-
+	float sumTime_;	//‡ŒvŠÔ@
 	float time_;
 	float distance_;
 	VECTOR dir_;

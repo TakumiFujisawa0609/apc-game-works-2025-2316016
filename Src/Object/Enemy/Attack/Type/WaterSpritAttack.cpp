@@ -4,6 +4,7 @@
 #include "../../Renderer/ModelRenderer.h"
 #include "../../../Common/EffectController.h"
 #include "../../../Common/Transform.h"
+#include "../../../Common/AnimationController.h"
 #include "../SubObject/WaterSprit.h"
 #include "WaterSpritAttack.h"
 
@@ -53,6 +54,7 @@ void WaterSpritAttack::ChangeStateNone(void)
 
 void WaterSpritAttack::ChangeStateReady(void)
 {
+	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::FLY_FLAME, false,0.0f,-0.1f,-1.0f);
 	AttackBase::ChangeStateReady();
 }
 
@@ -60,6 +62,7 @@ void WaterSpritAttack::ChangeStateStart(void)
 {
 	CreateWaterSpritWave();
 	intervalTime_ = INTERVAL_TIME;
+	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::FLAME_ATTACK);
 	AttackBase::ChangeStateStart();
 }
 
@@ -73,6 +76,7 @@ void WaterSpritAttack::ChangeStateFinish(void)
 	AttackBase::ChangeStateFinish();
 	deleyTime_ = COOL_DOWN;
 	waveNum_ = 0;
+	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::IDLE_1, true);
 }
 
 void WaterSpritAttack::UpdateStateNone(void)
@@ -81,7 +85,10 @@ void WaterSpritAttack::UpdateStateNone(void)
 
 void WaterSpritAttack::UpdateStateReady(void)
 {
-	ChangeState(STATE::START);
+	if (enemy_.GetAnimController().IsEnd())
+	{
+		ChangeState(STATE::START);
+	}
 }
 
 void WaterSpritAttack::UpdateStateStart(void)

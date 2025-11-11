@@ -1,5 +1,7 @@
 #include "../../Utility/Utility.h"
 #include "../../Manager/SceneManager.h"
+#include "../../Manager/ResourceManager.h"
+#include "../../Manager/DrawTranslucentManager.h"
 #include "../../Renderer/ModelMaterial.h"
 #include "../../Renderer/ModelRenderer.h"
 #include "../../../Common/EffectController.h"
@@ -7,13 +9,29 @@
 
 ThunderAround::ThunderAround(VECTOR targetPos, VECTOR initPos,  float initRad) : initRad_(initRad)
 {
+	sumTime_ = 0.0f;
 	targetPos_ = targetPos;
 	targetPos_.y = 0.0f;
 	transform_ = std::make_shared<Transform>();
-	transform_->SetModel(-1);
+	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::THUNDER_MODEL));
 	transform_->pos = initPos;
 	transform_->pos.y = 0.0f;
+	transform_->scl = {MODEL_SCALE_XZ,1.0f,MODEL_SCALE_XZ};
 	transform_->Update();
+
+	material_ = std::make_unique<ModelMaterial>(
+		"ThunderVS.cso", 2,
+		"ThunderPS.cso", 1
+	);
+	VECTOR pos = transform_->pos;
+	material_->AddConstBufVS({ TEXTURE_SCALE_X,TEXTURE_SCALE_Y,RADIUS,0.0f });
+	material_->AddConstBufVS({ pos.x,pos.y,pos.z,static_cast<float>(rand())});
+	material_->AddConstBufPS({ sumTime_,TIME_SCALE, THRESHOLD, 0.0f });
+	//material_->SetTextureBuf(3, ResourceManager::GetInstance().Load(ResourceManager::SRC::NOISE).handleId_);
+	renderer_ = std::make_shared<ModelRenderer>(
+		transform_->modelId, *material_
+	);
+
 	rad_ = 0.0f;
 	dir_ = VNorm(VSub(targetPos, initPos));
 	distance_ = Utility::Distance(targetPos,initPos);
@@ -35,13 +53,20 @@ void ThunderAround::Init(void)
 
 void ThunderAround::Update(void)
 {
-	time_ -= SceneManager::GetInstance().GetDeltaTime();
+	float deltaTime = SceneManager::GetInstance().GetDeltaTime();
+	time_ -= deltaTime;
+	sumTime_ += deltaTime;
 	updateState_();
+	transform_->Update();
+	VECTOR pos = transform_->pos;
+	material_->SetConstBufVS(1,{ pos.x,pos.y,pos.z,static_cast<float>(rand()) });
+	material_->SetConstBufPS(0,{ sumTime_,TIME_SCALE, THRESHOLD, 0.0f });
 }
 
 void ThunderAround::Draw(void)
 {
-	Utility::DrawCircle3DXZ(transform_->pos, RADIUS, VERTEX_NUM, GetColor(255, 0, 0), true);
+	//Utility::DrawCircle3DXZ(transform_->pos, RADIUS, VERTEX_NUM, GetColor(255, 0, 0), true);
+	DrawTranslucentManager::GetInstance().Add(transform_, renderer_);
 }
 
 void ThunderAround::ChangeState(STATE state)

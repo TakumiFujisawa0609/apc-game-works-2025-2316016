@@ -1,6 +1,7 @@
 #include <cmath>
 #include "../../Utility/Utility.h"
 #include "../../Manager/SceneManager.h"
+#include "../../Manager/SoundManager.h"
 #include "../../../Common/AnimationController.h"
 #include "../../EnemyBase.h"
 #include "../SubObject/ThunderAround.h"
@@ -49,6 +50,7 @@ void ThunderAroundAttack::ChangeStateNone(void)
 
 void ThunderAroundAttack::ChangeStateReady(void)
 {
+	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::TAKE_OFF,false);
 	AttackBase::ChangeStateReady();
 }
 
@@ -58,6 +60,7 @@ void ThunderAroundAttack::ChangeStateStart(void)
 	CreateThunder();
 	time_ = TIME;
 	intervalTime_ = INTERVAL_TIME;
+	SoundManager::GetInstance().Play(SoundManager::SRC::THUNDER, Sound::TIMES::LOOP);
 	AttackBase::ChangeStateStart();
 }
 
@@ -69,6 +72,7 @@ void ThunderAroundAttack::ChangeStateUpdate(void)
 void ThunderAroundAttack::ChangeStateFinish(void)
 {
 	AttackBase::ChangeStateFinish();
+	SoundManager::GetInstance().Stop(SoundManager::SRC::THUNDER);
 	deleyTime_ = COOL_DOWN;
 	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::IDLE_1);
 }
@@ -79,7 +83,10 @@ void ThunderAroundAttack::UpdateStateNone(void)
 
 void ThunderAroundAttack::UpdateStateReady(void)
 {
-	ChangeState(STATE::START);
+	if (enemy_.GetAnimController().IsEnd())
+	{
+		ChangeState(STATE::START);
+	}
 }
 
 void ThunderAroundAttack::UpdateStateStart(void)

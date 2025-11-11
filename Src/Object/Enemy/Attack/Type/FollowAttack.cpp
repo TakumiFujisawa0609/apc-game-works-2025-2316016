@@ -1,5 +1,6 @@
 #include "../../Utility/Utility.h"
 #include "../../../Common/Transform.h"
+#include "../../../Common/AnimationController.h"
 #include "../../Manager/SceneManager.h"
 #include "../../EnemyBase.h"
 #include "../SubObject/FollowShot.h"
@@ -46,11 +47,13 @@ void FollowAttack::ChangeStateNone(void)
 
 void FollowAttack::ChangeStateReady(void)
 {
+	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::DEFEND, false);
 	AttackBase::ChangeStateReady();
 }
 
 void FollowAttack::ChangeStateStart(void)
 {
+	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::FLY_FORWARD, true);
 	AttackBase::ChangeStateStart();
 	std::unique_ptr<FollowShot> slow = std::make_unique<FollowShot>(*target_,FollowShot::SPEED_TYPE::SLOW,enemy_.GetTransform().pos);
 	std::unique_ptr<FollowShot> midium = std::make_unique<FollowShot>(*target_, FollowShot::SPEED_TYPE::MIDIUM, enemy_.GetTransform().pos);
@@ -74,6 +77,7 @@ void FollowAttack::ChangeStateFinish(void)
 {
 	AttackBase::ChangeStateFinish();
 	deleyTime_ = COOL_DOWN;
+	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::IDLE_1, true);
 }
 
 void FollowAttack::UpdateStateNone(void)
@@ -82,7 +86,10 @@ void FollowAttack::UpdateStateNone(void)
 
 void FollowAttack::UpdateStateReady(void)
 {
-	ChangeState(STATE::START);
+	if (enemy_.GetAnimController().IsEnd())
+	{
+		ChangeState(STATE::START);
+	}
 }
 
 void FollowAttack::UpdateStateStart(void)

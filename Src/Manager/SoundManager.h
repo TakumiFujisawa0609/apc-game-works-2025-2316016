@@ -11,12 +11,16 @@ public:
 	enum class SRC
 	{
 		TITLE_BGM,		//タイトルシーンのBGM
+		GAME_BGM,	//げーむのBGM	
 
 		ENTER_SOUND,	//決定音
 
 		PSHOT_HIT,	//プレイヤーの球の衝突音
 		PSHOT_THROW,	//プレイヤーの球を投げる音
-
+		FIRE,	//炎
+		JAMP,	//ジャンプ
+		LAND,	//着地
+		THUNDER,	//雷
 		MAX
 
 	};
@@ -98,6 +102,12 @@ public:
 	/// <param name="type">BGMかSE</param>
 	/// <returns>0.0～1.0でパーセンテージを返す</returns>
 	float GetVolume(SOUND_TYPE type) { return volume_[type]; }
+
+	/// <summary>
+	/// 音の前ロード
+	/// </summary>
+	/// <param name="src">種類</param>
+	void Load(SRC src);
 private:
 	// 静的インスタンス
 	static SoundManager* instance_;

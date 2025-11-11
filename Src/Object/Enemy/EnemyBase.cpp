@@ -76,6 +76,7 @@ void EnemyBase::Update(void)
 	AplayGravity();
 	MoveLimit();
 	VECTOR minPos, maxPos;
+	transform_->Update();
 	Utility::GetModelFlameBox(transform_->modelId, minPos, maxPos,{0,1});
 	transform_->localPos.y -= minPos.y - transform_->pos.y;
 	transform_->Update();
@@ -101,7 +102,7 @@ void EnemyBase::Draw(void)
 
 void EnemyBase::UIDraw(void)
 {
-	animCtrl_->DebugDraw();
+	//animCtrl_->DebugDraw();
 }
 
 void EnemyBase::OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos)
@@ -377,13 +378,13 @@ void EnemyBase::InitGeometry(void)
 
 void EnemyBase::InitAddAttack(void)
 {
-	//AddAttack(ATTACK_TYPE::JUMP);
-	//AddAttack(ATTACK_TYPE::JUMP_CONSTANT);
-	//AddAttack(ATTACK_TYPE::FOLLOW);
-	//AddAttack(ATTACK_TYPE::FALL_DOWN);
+	AddAttack(ATTACK_TYPE::JUMP);
+	AddAttack(ATTACK_TYPE::JUMP_CONSTANT);
+	AddAttack(ATTACK_TYPE::FOLLOW);
+	AddAttack(ATTACK_TYPE::FALL_DOWN);
 	AddAttack(ATTACK_TYPE::CROSS_LINE);
-	//AddAttack(ATTACK_TYPE::THUNDER_AROUND);
-	//AddAttack(ATTACK_TYPE::WATER_SPRIT);
+	AddAttack(ATTACK_TYPE::THUNDER_AROUND);
+	AddAttack(ATTACK_TYPE::WATER_SPRIT);
 }
 
 void EnemyBase::InitFramePos(void)

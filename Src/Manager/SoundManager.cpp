@@ -22,9 +22,13 @@ void SoundManager::Init(void)
 {
 	//BGMÇ©SEÇ…ï™ÇØÇÈ
 	soundType_[SOUND_TYPE::BGM].push_back(SRC::TITLE_BGM);
+	soundType_[SOUND_TYPE::BGM].push_back(SRC::GAME_BGM);
 	soundType_[SOUND_TYPE::SE].push_back(SRC::ENTER_SOUND);
 	soundType_[SOUND_TYPE::SE].push_back(SRC::PSHOT_HIT);
 	soundType_[SOUND_TYPE::SE].push_back(SRC::PSHOT_THROW);
+	soundType_[SOUND_TYPE::SE].push_back(SRC::FIRE);
+	soundType_[SOUND_TYPE::SE].push_back(SRC::JAMP);
+	soundType_[SOUND_TYPE::SE].push_back(SRC::LAND);
 	//ç≈ëÂçƒê∂êîÇèâä˙âªÇ∑ÇÈ
 	for (int i = 0; i < static_cast<int>(SRC::MAX);i++)
 	{
@@ -39,12 +43,29 @@ void SoundManager::Init(void)
 	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_BGM + "TitleBGM.mp3");
 	res->ChengeMaxVolume(1.0f);
 	loadMap_.emplace(SRC::TITLE_BGM, std::move(res));
+	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_BGM + "Game.mp3");
+	res->ChengeMaxVolume(1.0f);
+	loadMap_.emplace(SRC::GAME_BGM, std::move(res));
 	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_SE + "PShotHit.mp3");
 	res->ChengeMaxVolume(1.0f);
 	loadMap_.emplace(SRC::PSHOT_HIT, std::move(res));
 	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_SE + "PShotThrow.mp3");
 	res->ChengeMaxVolume(1.0f);
 	loadMap_.emplace(SRC::PSHOT_THROW, std::move(res));
+	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_SE + "Fire.mp3");
+	res->ChengeMaxVolume(1.0f);
+	loadMap_.emplace(SRC::FIRE, std::move(res));
+	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_SE + "Jamp.mp3");
+	maxPlayNum[SRC::JAMP] = 2;
+	res->ChengeMaxVolume(1.0f);
+	loadMap_.emplace(SRC::JAMP, std::move(res));
+	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_SE + "Land.mp3");
+	maxPlayNum[SRC::LAND] = 2;
+	res->ChengeMaxVolume(1.0f);
+	loadMap_.emplace(SRC::LAND, std::move(res));
+	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_SE + "Thunder.mp3");
+	res->ChengeMaxVolume(1.0f);
+	loadMap_.emplace(SRC::THUNDER, std::move(res));
 	ChangeVolume(SOUND_TYPE::BGM, 0.8f);
 	ChangeVolume(SOUND_TYPE::SE, 0.8f);
 }
@@ -209,4 +230,16 @@ void SoundManager::ChangeVolume(SOUND_TYPE type, float per)
 void SoundManager::Set3DListenPosAndFrontPos(VECTOR pos, VECTOR frontPos)
 {
 	Set3DSoundListenerPosAndFrontPos_UpVecY(pos, frontPos);
+}
+
+void SoundManager::Load(SRC src)
+{
+	const auto& lPair = loadMap_.find(src);
+	if (lPair != loadMap_.end())
+	{
+		if (!lPair->second->CheckLoad())
+		{
+			lPair->second->Load();
+		}
+	}
 }
