@@ -111,6 +111,16 @@ void ResourceManager::Init(void)
 	res = Resource(Resource::TYPE::IMG, Application::PATH_MODEL + "Stage/ShockWave/Noise2.png");
 	resourcesMap_.emplace(SRC::NOISE, std::move(res));
 
+	//UI
+	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "UI/EnemyHP.png");
+	resourcesMap_.emplace(SRC::ENEMY_HP_UI_IMG, std::move(res));
+	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "UI/EnemyHPSide.png");
+	resourcesMap_.emplace(SRC::ENEMY_HP_UI_SIDE_IMG, std::move(res));
+	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "UI/EnemyHPCenter.png");
+	resourcesMap_.emplace(SRC::ENEMY_HP_UI_CENTER_IMG, std::move(res));
+	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "UI/EnemyHPMask.png");
+	resourcesMap_.emplace(SRC::ENEMY_HP_UI_MASK_IMG, std::move(res));
+
 	//エフェクト
 	res = Resource(Resource::TYPE::EFFEKSEER, Application::PATH_EFFECT + "Hit.efkefc");
 	resourcesMap_.emplace(SRC::HIT_EFFECT, std::move(res));

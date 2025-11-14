@@ -87,11 +87,11 @@ bool SceneGame::Init(void)
 	);
 	vignetteTime_ = 0.0f;
 
-	SoundManager& ins = SoundManager::GetInstance();
-	bool b = ins.Play(SoundManager::SRC::GAME_BGM,Sound::TIMES::ONCE);
-	//std::string str = Application::PATH_SOUND_BGM + "GameBGM.mp3";
-	//int i = LoadSoundMem(str.c_str());
-	//PlaySoundMem(i, DX_PLAYTYPE_LOOP, true);
+	//SoundManager& ins = SoundManager::GetInstance();
+	//bool b = ins.Play(SoundManager::SRC::GAME_BGM,Sound::TIMES::LOOP);
+	std::string str = Application::PATH_SOUND_BGM + "Game.mp3";
+	int i = LoadSoundMem(str.c_str());
+	PlaySoundMem(i, DX_PLAYTYPE_LOOP, true);
 
 	return true;
 }
@@ -99,6 +99,10 @@ bool SceneGame::Init(void)
 //更新処理
 void SceneGame::Update(void)
 {
+	if (!SoundManager::GetInstance().CheckMove(SoundManager::SRC::GAME_BGM))
+	{
+		int a = 0;
+	}
 	//スカイドーム
 	skyDome_->Update();
 	//ステージ
@@ -114,7 +118,7 @@ void SceneGame::Update(void)
 	CheckCollision();
 	CollisionManager::GetInstance().Update();
 	vignetteTime_ += SceneManager::GetInstance().GetDeltaTime();
-
+	enemyHPUI_->Update();
 	ChangeScene();
 
 	//メニューを開くキーが押されたらメニューを開く

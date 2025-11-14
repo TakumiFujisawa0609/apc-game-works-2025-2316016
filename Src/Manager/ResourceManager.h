@@ -58,6 +58,12 @@ public:
 		SHOCK_WAVE1,	//ショックウェーブ
 		NOISE,		//ノイズ
 
+		//UI
+		ENEMY_HP_UI_IMG,	//敵HPのUI
+		ENEMY_HP_UI_SIDE_IMG,	//敵HPのUI
+		ENEMY_HP_UI_CENTER_IMG,	//敵HPのUI
+		ENEMY_HP_UI_MASK_IMG,	//敵HPのUIマスク
+
 		//エフェクト
 		HIT_EFFECT,		//ヒットエフェクト
 		WATER_SPLIT,	//渦巻

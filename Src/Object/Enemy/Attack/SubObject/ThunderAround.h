@@ -23,7 +23,7 @@ public:
 	static constexpr float TEXTURE_SCALE_X = 2.0f;
 	static constexpr float TEXTURE_SCALE_Y = 5.0f;
 	static constexpr float TIME_SCALE = 3.0f;
-	static constexpr float THRESHOLD = 5.0f;
+	static constexpr float THRESHOLD = 1.5f;
 
 	enum class STATE
 	{

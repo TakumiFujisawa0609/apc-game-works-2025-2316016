@@ -16,10 +16,9 @@ public:
 
 	//デフォルトの色
 	static constexpr COLOR_F DEFAULT_COLOR = { 1.0f,1.0f,1.0f,1.0f };
+	static constexpr COLOR_F DAMAGE_COLOR_ADD = { 0.7f,0.1f,0.0f,0.0f };
 
 	//ダメージ関連
-	static constexpr float DAMAGE_EFECT_TIME = 0.6f;	//ダメージのエフェクトの時間
-
 	static constexpr float MODEL_SIZE = 0.5f;
 
 	//当たり判定関連
@@ -60,6 +59,9 @@ public:
 	static constexpr int TAIL_1_BORN_NUM = 4;	//尻尾１のボーン番号
 	static constexpr int TAIL_2_BORN_NUM = 7;	//尻尾２のボーン番号
 
+
+	static constexpr float DAMAGE_EFECT_RADIUS = 20.0f;	//ダメージ状態のエフェクト範囲
+	static constexpr float DAMAGE_EFECT_TIME = 0.5f;	//ダメージエフェクトの時間
 
 	enum class STATE
 	{
@@ -157,6 +159,9 @@ public:
 	void AllDeleteAttack(void); //全ての攻撃を削除
 	void SetAnim(ANIM_TYPE_DRAGON type);	//アニメーションを適用する
 protected:
+
+	float damageTime_;
+	VECTOR hitPos_;
 
 	STATE state_; //状態
 	std::unique_ptr<Gravity> gravity_; //重力

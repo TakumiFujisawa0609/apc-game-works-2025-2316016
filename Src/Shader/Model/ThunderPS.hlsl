@@ -25,9 +25,17 @@ float4 main(PS_INPUT PSInput) : SV_TARGET
     uv.y = frac(uv.y);
     float4 color = diffuseMapTexture.Sample(diffuseMapSampler, uv);
     float4 ret = float4(1.0f, 1.0f, 0.1f, color.a);
-    if (abs(PSInput.worldPos.y)  < threshold)
+    if (abs(PSInput.worldPos.y) < threshold)
     {
-        ret = float4(1.0f, 1.0f, 0.1f, 1.0f);
+        return float4(1.0f, 1.0f, 0.1f, 1.0f);
+    }
+    if(color.a < 0.1f)
+    {
+        discard;
+    }
+    if(color.a < 0.3f)
+    {
+        ret = float4(0.0f, 0.1f, 0.0f, color.a);
     }
     return ret;
 }

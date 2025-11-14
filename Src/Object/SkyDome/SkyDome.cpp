@@ -22,6 +22,15 @@ void SkyDome::Init(void)
 	transform_->scl = { SCALE,SCALE,SCALE };
 	transform_->Update();
 
+	material_ = std::make_unique<ModelMaterial>(
+		"SkyDomeVS.cso", 0,
+		"SkyDomePS.cso", 0
+	);
+	//material_->AddConstBufVS({ TEXTURE_SCALE, 0.0f, 1.0f, 1.0f });
+	//material_->SetTextureBuf(3, ResourceManager::GetInstance().Load(ResourceManager::SRC::NOISE).handleId_);
+	renderer_ = std::make_shared<ModelRenderer>(
+		transform_->modelId, *material_
+	);
 	//material_ = std::make_unique<ModelMaterial>(
 	//	"FloorVS.cso", 1,
 	//	"FloorPS.cso", 0
@@ -39,5 +48,6 @@ void SkyDome::Update(void)
 
 void SkyDome::Draw(void)
 {
-	MV1DrawModel(transform_->modelId);
+	//MV1DrawModel(transform_->modelId);
+	renderer_->Draw();
 }

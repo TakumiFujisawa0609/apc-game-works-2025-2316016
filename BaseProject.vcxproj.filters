@@ -178,5 +178,8 @@
     <FxCompile Include="Src\Shader\Model\FireVS.hlsl" />
     <FxCompile Include="Src\Shader\Model\ThunderPS.hlsl" />
     <FxCompile Include="Src\Shader\Model\ThunderVS.hlsl" />
+    <FxCompile Include="Src\Shader\Image\EnemyHPUI.hlsl" />
+    <FxCompile Include="Src\Shader\Model\SkyDomePS.hlsl" />
+    <FxCompile Include="Src\Shader\Model\SkyDomeVS.hlsl" />
   </ItemGroup>
 </Project>

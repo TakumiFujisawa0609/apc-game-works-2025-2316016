@@ -2,6 +2,7 @@
 #include <memory>
 #include "../../Utility/Utility.h"
 #include "../../Manager/ResourceManager.h"
+#include "../../Manager/SceneManager.h"
 #include "../../Renderer/ModelMaterial.h"
 #include "../../Renderer/ModelRenderer.h"
 #include "../Player/PlayerBase.h"
@@ -24,6 +25,8 @@
 
 EnemyBase::EnemyBase(Transform& target) : target_(target)
 {
+	damageTime_ = 0.0f;
+	hitPos_ = Utility::VECTOR_ZERO;
 	transform_ = std::make_shared<Transform>();
 	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::DRAGON));
 	transform_->scl = { MODEL_SIZE,MODEL_SIZE,MODEL_SIZE };
@@ -31,10 +34,13 @@ EnemyBase::EnemyBase(Transform& target) : target_(target)
 
 	material_ = std::make_unique<ModelMaterial>(
 		"EnemyVS.cso", 0,
-		"EnemyPS.cso", 1
+		"EnemyPS.cso", 4
 	);
 	//material_->AddConstBufVS({ TEXTURE_SCALE, 0.0f, 1.0f, 1.0f });
 	material_->AddConstBufPS(static_cast<FLOAT4>(Utility::COLOR_F2FLOAT4(DEFAULT_COLOR)));
+	material_->AddConstBufPS(static_cast<FLOAT4>(Utility::COLOR_F2FLOAT4(DAMAGE_COLOR_ADD)));
+	material_->AddConstBufPS({damageTime_, hitPos_.x, hitPos_.y, hitPos_.z});
+	material_->AddConstBufPS({DAMAGE_EFECT_RADIUS,0.0f, 0.0f, 0.0f});
 	//material_->SetTextureBuf(3, ResourceManager::GetInstance().Load(ResourceManager::SRC::NOISE).handleId_);
 	renderer_ = std::make_shared<ModelRenderer>(
 		transform_->modelId, *material_
@@ -67,6 +73,7 @@ void EnemyBase::Update(void)
 	{
 		hp_ -= 0.5f;
 	}
+	damageTime_ -= SceneManager::GetInstance().GetDeltaTime();
 	for (auto& attack : attackList_  )
 	{
 		attack->Update();
@@ -82,6 +89,7 @@ void EnemyBase::Update(void)
 	transform_->Update();
 	animCtrl_->Update();
 	UpdateFramePos();
+	material_->SetConstBufPS(2,{ damageTime_, hitPos_.x, hitPos_.y, hitPos_.z });
 }
 
 void EnemyBase::Draw(void)
@@ -122,7 +130,10 @@ void EnemyBase::OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos)
 	default:
 		break;
 	}
-	auto& hit = hitCol->GetParent();
+	//auto& hit = hitCol->GetParent();
+	damageTime_ = DAMAGE_EFECT_TIME;
+	hitPos_ = hitPos;
+	material_->SetConstBufPS(2, { damageTime_, hitPos_.x, hitPos_.y, hitPos_.z });
 }
 
 void EnemyBase::Damage(float damage)
@@ -378,13 +389,13 @@ void EnemyBase::InitGeometry(void)
 
 void EnemyBase::InitAddAttack(void)
 {
-	AddAttack(ATTACK_TYPE::JUMP);
-	AddAttack(ATTACK_TYPE::JUMP_CONSTANT);
-	AddAttack(ATTACK_TYPE::FOLLOW);
-	AddAttack(ATTACK_TYPE::FALL_DOWN);
-	AddAttack(ATTACK_TYPE::CROSS_LINE);
+	//AddAttack(ATTACK_TYPE::JUMP);
+	//AddAttack(ATTACK_TYPE::JUMP_CONSTANT);
+	//AddAttack(ATTACK_TYPE::FOLLOW);
+	//AddAttack(ATTACK_TYPE::FALL_DOWN);
+	//AddAttack(ATTACK_TYPE::CROSS_LINE);
 	AddAttack(ATTACK_TYPE::THUNDER_AROUND);
-	AddAttack(ATTACK_TYPE::WATER_SPRIT);
+	//AddAttack(ATTACK_TYPE::WATER_SPRIT);
 }
 
 void EnemyBase::InitFramePos(void)
