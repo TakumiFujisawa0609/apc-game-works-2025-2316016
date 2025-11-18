@@ -9,16 +9,22 @@
 class PlayerShot;
 class Gravity;
 class AnimationController;
+class PointLight;
 
 class PlayerBase : public ObjectBase
 {
 public:
 
+	//リムライトの色
+	static constexpr COLOR_F RIM_COLOR = { 1.0f,1.0f,1.0f,1.0f };
+	static constexpr float RIM_MIN_POW = 5.0f;
+	static constexpr float RIM_MAX_POW = 0.1f;
+
 	//最大体力
 	static constexpr float MAX_HP = 100.0f; 
 
 	//デフォルトの色
-	static constexpr COLOR_F DEFAULT_COLOR = { 1.0f,1.0f,1.0f,1.0f };
+	static constexpr COLOR_F DEFAULT_COLOR_TIMES = { 1.0f,1.0f,1.0f,1.0f };
 
 	//移動関連
 	static constexpr float MOVE_SPEED = 8.0f; //移動速度
@@ -28,14 +34,14 @@ public:
 	//回避関連
 	static constexpr float AVOID_DISTANCE = 400.0f; //回避距離
 	static constexpr float AVOID_TIME = 0.6f; //回避タイム
-	static constexpr float AVOID_COOL_TIME = 0.3f; //回避クールタイム
+	static constexpr float AVOID_COOL_TIME = 0.5f; //回避クールタイム
 
 	//ダメージ関連
 	static constexpr float DAMAGE_TIME = 0.5f; //ダメージ時間
 	static constexpr float DAMAGE_INVINCIBLE_TIME = 1.5f; //ダメージ無敵時間
 	static constexpr float DAMAGE_SPEED = 30.0f;	//ダメージの吹っ飛びスピード
 	static constexpr float DAMAGE_POW = 10.0f;	//ダメージの吹っ飛びスピード
-	static constexpr COLOR_F DAMAGE_COLOR = { 1.0f,0.0f,0.0f,1.0f }; //ダメージ時の色
+	static constexpr COLOR_F DAMAGE_COLOR_TIMES = { 1.0f,0.0f,0.0f,1.0f }; //ダメージ時の色
 	static constexpr float ENEMY_HIT_DAMAGE = 5.0f;
 
 	static constexpr float JUMP_POW = 15.0f; //ジャンプ力
@@ -125,6 +131,9 @@ public:
 	PlayerShot& GetPlayerShot(int num) { return *shots_[num]; }
 	Gravity& GetGravity(void) { return *gravity_; }
 	std::vector<VECTOR> GetCollisionSpherePositions(void);	//当たり判定用の球の位置を取得
+
+	PointLight& GetPointLight(void) { return *pointLight_; }
+
 protected:
 
 	VECTOR headPos_;	//頭座標
@@ -138,6 +147,9 @@ protected:
 	std::unique_ptr<AnimationController> animCtrl_;
 	//弾
 	std::vector<std::unique_ptr<PlayerShot>> shots_;
+
+	std::unique_ptr<PointLight> pointLight_; //ポイントライト
+
 	//状態
 	STATE state_; 
 
@@ -145,6 +157,9 @@ protected:
 	VECTOR avoidDir_; //回避方向
 	float avoidTime_; //回避時間
 	float avoidCoolTime_; //回避クールタイム
+	bool isAvoidSaccess_; //回避成功したか
+	float avoidSaccessTime_; //回避成功した時間
+	float rimPow_;
 
 	//攻撃
 	float attackDeley_; //攻撃ディレイ
@@ -159,6 +174,7 @@ protected:
 	
 	//回復ディレイ
 	float healDeray_;
+
 
 	//状態変更
 	std::map<STATE, std::function<void(void)>> stateChanges_;

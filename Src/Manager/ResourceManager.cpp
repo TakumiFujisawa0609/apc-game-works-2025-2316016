@@ -114,24 +114,20 @@ void ResourceManager::Init(void)
 	//UI
 	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "UI/EnemyHP.png");
 	resourcesMap_.emplace(SRC::ENEMY_HP_UI_IMG, std::move(res));
-	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "UI/EnemyHPSide.png");
-	resourcesMap_.emplace(SRC::ENEMY_HP_UI_SIDE_IMG, std::move(res));
-	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "UI/EnemyHPCenter.png");
-	resourcesMap_.emplace(SRC::ENEMY_HP_UI_CENTER_IMG, std::move(res));
 	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "UI/EnemyHPMask.png");
 	resourcesMap_.emplace(SRC::ENEMY_HP_UI_MASK_IMG, std::move(res));
+	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "UI/EnemyHPNormal.png");
+	resourcesMap_.emplace(SRC::ENEMY_HP_UI_NORMAL_IMG, std::move(res));
 
 	//エフェクト
 	res = Resource(Resource::TYPE::EFFEKSEER, Application::PATH_EFFECT + "Hit.efkefc");
 	resourcesMap_.emplace(SRC::HIT_EFFECT, std::move(res));
 	res = Resource(Resource::TYPE::EFFEKSEER, Application::PATH_EFFECT + "WaterSprit.efkefc");
 	resourcesMap_.emplace(SRC::WATER_SPLIT, std::move(res));
-	res = Resource(Resource::TYPE::MODEL, Application::PATH_EFFECT + "WaterSprit.mv1");
-	resourcesMap_.emplace(SRC::WATER_SPRIT_MODEL, std::move(res));
+	res = Resource(Resource::TYPE::MODEL, Application::PATH_EFFECT + "WaterSprit_Thunder.mv1");
+	resourcesMap_.emplace(SRC::WATER_SPRIT_THUNDER_MODEL, std::move(res));
 	res = Resource(Resource::TYPE::MODEL, Application::PATH_EFFECT + "Fire.mv1");
 	resourcesMap_.emplace(SRC::FIRE_MODEL, std::move(res));
-	res = Resource(Resource::TYPE::MODEL, Application::PATH_EFFECT + "Thunder.mv1");
-	resourcesMap_.emplace(SRC::THUNDER_MODEL, std::move(res));
 }
 
 void ResourceManager::Release(void)

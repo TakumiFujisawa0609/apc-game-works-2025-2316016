@@ -5,6 +5,7 @@
 #include "../../Renderer/ModelMaterial.h"
 #include "../../Renderer/ModelRenderer.h"
 #include "../../../Common/EffectController.h"
+#include "../../../Common/Geometry/Cylinder.h"
 #include "ThunderAround.h"
 
 ThunderAround::ThunderAround(VECTOR targetPos, VECTOR initPos,  float initRad) : initRad_(initRad)
@@ -13,7 +14,7 @@ ThunderAround::ThunderAround(VECTOR targetPos, VECTOR initPos,  float initRad) :
 	targetPos_ = targetPos;
 	targetPos_.y = 0.0f;
 	transform_ = std::make_shared<Transform>();
-	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::THUNDER_MODEL));
+	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::WATER_SPRIT_THUNDER_MODEL));
 	transform_->pos = initPos;
 	transform_->pos.y = 0.0f;
 	transform_->scl = {MODEL_SCALE_XZ,1.0f,MODEL_SCALE_XZ};
@@ -32,6 +33,9 @@ ThunderAround::ThunderAround(VECTOR targetPos, VECTOR initPos,  float initRad) :
 		transform_->modelId, *material_
 	);
 
+	std::unique_ptr<Geometry>geo = std::make_unique<Cylinder>(transform_->pos, RADIUS);
+	MakeCollider(Collider::TAG::ENEMY_ATTACK, std::move(geo), { Collider::TAG::ENEMY,Collider::TAG::ENEMY_ATTACK });
+	damage_ = DAMAGE;
 	rad_ = 0.0f;
 	dir_ = VNorm(VSub(targetPos, initPos));
 	distance_ = Utility::Distance(targetPos,initPos);

@@ -5,6 +5,8 @@ class Capsule;
 class Line3D;
 class Sphere;
 class Triangle3D;
+class Cylinder;
+class Circumference;
 
 class Geometry
 {
@@ -16,6 +18,8 @@ public:
 		SPHERE,		//‹…
 		TRIANGLE3D,	//3DOŠpŒ`
 		LINE3D,		//3Dü
+		CYLINDER,	//XZ‰~’Œ
+		CIRCUMFERENCE,	//‰~ü
 	};
 
 	Geometry(void) = default;
@@ -73,6 +77,20 @@ public:
 	/// <param name="_geometry">OŠpŒ`î•ñ</param>
 	/// <returns>“–‚½‚è”»’è(true:“–‚½‚Á‚½)</returns>
 	virtual const bool IsHit(Triangle3D& _triangle, VECTOR& _hitPos) = 0;
+
+	/// <summary>
+	/// XZ‰~‚Æ‚Ì“–‚½‚è”»’è
+	/// </summary>
+	/// <param name="_circle">‰~’Œî•ñ</param>
+	/// <returns>“–‚½‚è”»’è(true:“–‚½‚Á‚½)</returns>
+	virtual const bool IsHit(Cylinder& _circle, VECTOR& _hitPos) = 0;
+
+	/// <summary>
+	/// ‰~ü‚Æ‚Ì“–‚½‚è”»’è
+	/// </summary>
+	/// <param name="_circle">‰~üî•ñ</param>
+	/// <returns>“–‚½‚è”»’è(true:“–‚½‚Á‚½)</returns>
+	virtual const bool IsHit(Circumference& _circle, VECTOR& _hitPos) = 0;
 protected:
 	static constexpr int DRAW_COLOR = 0xff00ff;
 };

@@ -8,6 +8,8 @@ class Sound
 {
 public:
 
+	static constexpr int THREE_MINIT_MILI_TIME = 180000;
+
 	// サウンドタイプ
 	enum class TYPE
 	{
@@ -65,6 +67,8 @@ public:
 
 	float pitch_;	//ピッチ
 
+	LONGLONG totalTime_;	//総時間を取得する(ミリ秒)
+
 	bool Play(TIMES times);						//2D用音源再生
 	bool Play(VECTOR pos, float radius, TIMES times);	//3D用音源再生
 
@@ -82,4 +86,6 @@ public:
 
 	void DuplicateSound(void);
 	void DuplicateSound(int currentHandle);
+
+	LONGLONG GetTotalTime(void);
 };

@@ -4,6 +4,7 @@
 #include "../../Renderer/ModelRenderer.h"
 #include "../../Utility/Utility.h"
 #include "../../../Common/EffectController.h"
+#include "../../../Common/Geometry/Circumference.h"
 #include "Wave.h"
 
 Wave::Wave(VECTOR centerPos, SPEED_TYPE speedType, int color)
@@ -12,6 +13,9 @@ Wave::Wave(VECTOR centerPos, SPEED_TYPE speedType, int color)
 	speed_ = InitSpeed(speedType);
 	color_ = color;
 	time_ = 0.0f;
+	damage_ = DAMAGE;
+	std::unique_ptr<Geometry> geo = std::make_unique<Circumference>(centerPos_, GetRadius());
+	MakeCollider(Collider::TAG::ENEMY_ATTACK, std::move(geo), { Collider::TAG::ENEMY,Collider::TAG::ENEMY_ATTACK });
 }
 
 Wave::~Wave(void)
@@ -24,8 +28,12 @@ void Wave::Init(void)
 
 void Wave::Update(void)
 {
-	//time_ += SceneManager::GetInstance().GetDeltaTime();
-	time_ += 1.0f / 60;
+	time_ += SceneManager::GetInstance().GetDeltaTime();
+	for(auto& col : colParam_)
+	{
+		auto circumference = static_cast<Circumference*>(col.geometry_.get());
+		circumference->SetRadius(GetRadius());
+	}
 }
 
 void Wave::Draw(void)

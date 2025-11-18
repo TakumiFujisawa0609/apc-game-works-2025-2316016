@@ -1,9 +1,11 @@
+#include <memory>
 #include "../../../../Manager/ResourceManager.h"
 #include "../../../../Manager/SceneManager.h"
 #include "../../Renderer/ModelMaterial.h"
 #include "../../Renderer/ModelRenderer.h"
 #include "../../../Common/Transform.h"
 #include "../../../Common/EffectController.h"
+#include "../../../Common/Geometry/Sphere.h"
 #include "FollowShot.h"
 
 FollowShot::FollowShot(Transform& target, SPEED_TYPE speed, VECTOR startPos) : target_(target)
@@ -13,7 +15,10 @@ FollowShot::FollowShot(Transform& target, SPEED_TYPE speed, VECTOR startPos) : t
 	transform_->pos = startPos;
 	time_ = ATTACK_TIME;
 	transform_->Update();
+	std::unique_ptr<Geometry>geo = std::make_unique<Sphere>(transform_->pos, RADIUS);
+	MakeCollider(Collider::TAG::ENEMY_ATTACK, std::move(geo), { Collider::TAG::ENEMY,Collider::TAG::ENEMY_ATTACK });
 	speed_ = InitSpeed(speed);
+	damage_ = DAMAGE;
 }
 
 FollowShot::~FollowShot(void)

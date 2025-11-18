@@ -9,22 +9,26 @@
 EnemyHPUI::EnemyHPUI(float maxHP, EnemyBase& enemy) :enemy_(enemy)
 {
 	maxHP_ = maxHP;
+	lightDir_ = INIT_LIGHT_DIR;
 	pos_ = { MARGIN_X,MARGIN_Y };
 	size_ = { Application::SCREEN_SIZE_X - (MARGIN_X * 2),SIZE_Y };
 	screenHandle_ = MakeScreen(size_.x, size_.y,true);
 	ResourceManager& ins = ResourceManager::GetInstance();
 	uiHandle_ = ins.Load(ResourceManager::SRC::ENEMY_HP_UI_IMG).handleId_;
 	uiMaskHandle_ = ins.Load(ResourceManager::SRC::ENEMY_HP_UI_MASK_IMG).handleId_;
+	uiNormalHandle_ = ins.Load(ResourceManager::SRC::ENEMY_HP_UI_NORMAL_IMG).handleId_;
 	InitMaskImageMinMax();
 	rate_ = enemy_.GetHP() / maxHP_;
 	rate_ = (rate_ < 0.0f) ? 0.0f : rate_;
 	// ポストエフェクト用(ビネット)
-	uiMaterial_ = std::make_unique<PixelMaterial>("EnemyHPUI.cso", 2);
+	uiMaterial_ = std::make_unique<PixelMaterial>("EnemyHPUI.cso", 3);
 	uiMaterial_->AddConstBuf({ rate_, GAGE_COL.x, GAGE_COL.y, GAGE_COL.z });
 	uiMaterial_->AddConstBuf({ gageMin_,gageMax_,0.0f,0.0f});
+	uiMaterial_->AddConstBuf({ lightDir_.x,lightDir_.y,lightDir_.z,0.0f});
 	uiMaterial_->AddTextureBuf(screenHandle_);
 	uiMaterial_->AddTextureBuf(uiHandle_);
 	uiMaterial_->AddTextureBuf(uiMaskHandle_);
+	uiMaterial_->AddTextureBuf(uiNormalHandle_);
 	uiRenderer_ = std::make_unique<PixelRenderer>(*uiMaterial_);
 	uiRenderer_->MakeSquereVertex(
 		Vector2(0, 0),
@@ -46,7 +50,14 @@ void EnemyHPUI::Update(void)
 	//体力の割合を取得
 	rate_ = enemy_.GetHP() / maxHP_;
 	rate_ = (rate_ < 0.0f) ? 0.0f : rate_;
+	auto& inc = SceneManager::GetInstance();
+	float deltaTime = inc.GetDeltaTime();
+	float rad = atan2(lightDir_.x, lightDir_.z);
+	rad += Utility::Deg2RadF(ROT_DEG_SEC * deltaTime);
+	lightDir_.x = sinf(rad);
+	lightDir_.z = cosf(rad);
 	uiMaterial_->SetConstBuf(0,{ rate_, GAGE_COL.x, GAGE_COL.y, GAGE_COL.z });
+	uiMaterial_->SetConstBuf(2,{ lightDir_.x,lightDir_.y,lightDir_.z,0.0f });
 }
 
 void EnemyHPUI::Draw(void)

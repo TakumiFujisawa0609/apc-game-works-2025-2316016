@@ -43,7 +43,7 @@ void SoundManager::Init(void)
 	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_BGM + "TitleBGM.mp3");
 	res->ChengeMaxVolume(1.0f);
 	loadMap_.emplace(SRC::TITLE_BGM, std::move(res));
-	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_BGM + "Game.mp3");
+	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_BGM + "GameBGM.mp3");
 	res->ChengeMaxVolume(1.0f);
 	loadMap_.emplace(SRC::GAME_BGM, std::move(res));
 	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_SE + "PShotHit.mp3");
@@ -230,6 +230,18 @@ void SoundManager::ChangeVolume(SOUND_TYPE type, float per)
 void SoundManager::Set3DListenPosAndFrontPos(VECTOR pos, VECTOR frontPos)
 {
 	Set3DSoundListenerPosAndFrontPos_UpVecY(pos, frontPos);
+}
+
+LONGLONG SoundManager::GetTotalTime(SRC src)
+{
+	const auto& lPair = playMap_.find(src);
+	if (lPair != playMap_.end())
+	{
+		for (auto& sound : lPair->second)
+		{
+			return sound->GetTotalTime();
+		}
+	}
 }
 
 void SoundManager::Load(SRC src)

@@ -46,7 +46,7 @@ public:
 	virtual void Init(void)override;
 	virtual void Update(void)override;
 	virtual void Draw(void)override;
-	virtual int GetSubObjectNum(void) const = 0;
+	virtual int GetSubObjectNum(void);
 
 	void SetTarget(Transform* target) { target_ = target; }
 
@@ -60,7 +60,6 @@ public:
 
 	EnemyBase::ATTACK_TYPE GetMyType(void)const { return myType_; }
 
-	const virtual float GetDamage(void)const = 0;
 protected:
 	EnemyBase& enemy_; //êeÇÃEnemyBase
 

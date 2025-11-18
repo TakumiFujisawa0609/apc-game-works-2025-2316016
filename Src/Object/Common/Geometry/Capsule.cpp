@@ -3,6 +3,8 @@
 #include "Sphere.h"
 #include "Line3D.h"
 #include "Capsule.h"
+#include "Circumference.h"
+#include "Cylinder.h"
 
 Capsule::Capsule(VECTOR& pos1, VECTOR& pos2, float radius) : pos1_(pos1), pos2_(pos2), radius_(radius)
 {
@@ -49,6 +51,16 @@ const bool Capsule::IsHit(Line3D& _line, VECTOR& _hitPos)
 }
 
 const bool Capsule::IsHit(Triangle3D& _triangle, VECTOR& _hitPos)
+{
+	return false;
+}
+
+const bool Capsule::IsHit(Cylinder& _circle, VECTOR& _hitPos)
+{
+	return false;
+}
+
+const bool Capsule::IsHit(Circumference& _circle, VECTOR& _hitPos)
 {
 	return false;
 }

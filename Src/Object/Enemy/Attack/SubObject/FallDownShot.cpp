@@ -1,3 +1,4 @@
+#include <memory>
 #include "../../Utility/Utility.h"
 #include "../../Manager/ResourceManager.h"
 #include "../../Manager/SceneManager.h"
@@ -5,6 +6,7 @@
 #include "../../Renderer/ModelRenderer.h"
 #include "../../../Common/Transform.h"
 #include "../../../Common/EffectController.h"
+#include "../../../Common/Geometry/Sphere.h"
 #include "../../../Player/PlayerBase.h"
 #include "../../../Stage/Stage.h"
 #include "FallDownShot.h"
@@ -20,6 +22,7 @@ FallDownShot::FallDownShot(void)
 	state_ = STATE::FALL;
 	blastTime_ = 0.0f;
 	color_ = { 1.0f,0.0f,0.0f };
+	damage_ = DAMAGE;
 }
 
 FallDownShot::~FallDownShot(void)
@@ -40,6 +43,8 @@ void FallDownShot::Update(void)
 		{
 			state_ = STATE::BLAST;
 			blastTime_ = BLAST_TIME;
+			std::unique_ptr<Geometry>geo = std::make_unique<Sphere>(transform_->pos, radius_);
+			MakeCollider(Collider::TAG::ENEMY_ATTACK, std::move(geo), { Collider::TAG::ENEMY,Collider::TAG::ENEMY_ATTACK });
 		}
 		transform_->Update();
 	}

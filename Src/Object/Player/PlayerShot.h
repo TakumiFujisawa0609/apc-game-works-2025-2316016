@@ -3,6 +3,7 @@
 #include "../ObjectBase.h"
 
 class Gravity;
+class EffectController;
 
 class PlayerShot : public ObjectBase
 {
@@ -16,7 +17,7 @@ public:
 	};
 
 	static constexpr float SPEED = 20.0f; //弾の速度
-	static constexpr float POWER = 15.0f; //玉の初期パワー
+	static constexpr float POWER = 20.0f; //玉の初期パワー
 	static constexpr float RADIUS = 5.0f;	//球の大きさ
 	static constexpr float MODEL_RADIUS = 100.0f; //モデルの大きさ
 	static constexpr float MODEL_SCL = RADIUS / MODEL_RADIUS; //モデルのスケール
@@ -54,6 +55,8 @@ private:
 	VECTOR dir_;
 	//死んだか
 	bool isDead_;
+	//エフェクトコントローラ
+	std::unique_ptr<EffectController> effect_;
 
 };
 

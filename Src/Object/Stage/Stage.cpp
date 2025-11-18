@@ -1,15 +1,9 @@
 #include "../../Utility/Utility.h"
-#include "../Common/Transform.h"
-#include "../Common/EffectController.h"
-#include "../../Renderer/ModelMaterial.h"
-#include "../../Renderer/ModelRenderer.h"
-#include "Floor.h"
-#include "ShockWave.h"
 #include "Stage.h"
 
-Stage::Stage(void)
+Stage::Stage(PointLight& light)
 {
-	floor_ = std::make_unique<Floor>();
+	floor_ = std::make_unique<Floor>(light);
 	for (int i = 0; i < WAVE_VERTEX_NUM; ++i)
 	{
 		shockWave_[i] = std::make_unique<ShockWave>(Utility::ONE_TRACK_DEG / WAVE_VERTEX_NUM * i);

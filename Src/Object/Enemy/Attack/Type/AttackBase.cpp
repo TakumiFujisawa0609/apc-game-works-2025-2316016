@@ -33,6 +33,11 @@ void AttackBase::Draw()
 {
 }
 
+int AttackBase::GetSubObjectNum()
+{
+	return -1;
+}
+
 void AttackBase::ChangeState(STATE state)
 {
 	state_ = state;

@@ -7,6 +7,7 @@
 #include "../../Renderer/ModelRenderer.h"
 #include "../../../Common/EffectController.h"
 #include "../../../Common/Transform.h"
+#include "../../../Common/Geometry/Cylinder.h"
 #include "../../../Stage/Stage.h"
 #include "WaterSprit.h"
 
@@ -14,7 +15,7 @@ WaterSprit::WaterSprit(VECTOR direction, VECTOR startPos , float speed)
 {
 	size_ = INIT_SIZE;
 	transform_ = std::make_shared<Transform>();
-	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::WATER_SPRIT_MODEL));
+	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::WATER_SPRIT_THUNDER_MODEL));
 	transform_->pos = startPos;
 	float scl = size_ / MODEL_RADIUS;
 	transform_->scl = VGet(scl, 1.0f, scl);
@@ -34,12 +35,13 @@ WaterSprit::WaterSprit(VECTOR direction, VECTOR startPos , float speed)
 	startPos_ = startPos;
 	dir_ = VNorm(direction);
 	time_ = ALIVE_TIME;
-	effect_ = std::make_unique<EffectController>();
-	effect_->Add(ResourceManager::GetInstance().Load(ResourceManager::SRC::WATER_SPLIT).handleId_, EffectController::EFF_TYPE::WATER_SPLIT);
 	float size = size_ * EFFECT_INIT_SIZE;
 	//effectHandle_ =effect_->Play(EffectController::EFF_TYPE::WATER_SPLIT, transform_->pos, Quaternion::Identity(), VGet(size, size, size), true,1.0f );
 	isEnd_ = false;
 	rot_ =0.0f;
+	damage_ = DAMAGE;
+	std::unique_ptr<Geometry>geo = std::make_unique<Cylinder>(transform_->pos, size_);
+	MakeCollider(Collider::TAG::ENEMY_ATTACK, std::move(geo), { Collider::TAG::ENEMY,Collider::TAG::ENEMY_ATTACK });
 }
 
 WaterSprit::~WaterSprit(void)
@@ -61,22 +63,22 @@ void WaterSprit::Update(void)
 	float scl = size_ / MODEL_RADIUS;
 	transform_->scl = VGet(scl, 1.0f, scl);
 	transform_->Update();
-	if (time_ < 0.0f || Utility::Distance(startPos_ , transform_->pos) > Stage::RADIUS)
+	if (time_ < 0.0f || Utility::Distance(startPos_, transform_->pos) > Stage::RADIUS)
 	{
 		isEnd_ = true;
-		effect_->Stop(EffectController::EFF_TYPE::WATER_SPLIT, effectHandle_);
-		effect_->AllDelete();
 	}
 	else
 	{
-		effect_->SetPos(EffectController::EFF_TYPE::WATER_SPLIT, effectHandle_, transform_->pos);
 		float size = size_ * EFFECT_INIT_SIZE;
-		effect_->SetScale(EffectController::EFF_TYPE::WATER_SPLIT, effectHandle_, VGet(size, size, size));
-		effect_->Update();
 	}
 	auto pos = transform_->pos;
-	material_->SetConstBufVS(1,{pos.x, pos.y, pos.z ,0.0f });
-	material_->SetConstBufPS(0,{ time_, TIME_SCALE,0.0f, 0.0f });
+	material_->SetConstBufVS(1, { pos.x, pos.y, pos.z ,0.0f });
+	material_->SetConstBufPS(0, { time_, TIME_SCALE,0.0f, 0.0f });
+	for (auto& col : colParam_)
+	{
+		auto& geo = dynamic_cast<Cylinder&>(*col.geometry_);
+		geo.SetRadius(size_);
+	}
 }
 
 void WaterSprit::Draw(void)

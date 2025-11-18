@@ -11,7 +11,10 @@
 #include "../Common/EffectController.h"
 #include "../Common/AnimationController.h"
 #include "../Common/Geometry/Sphere.h"
+#include "../Common/Geometry/Cylinder.h"
+#include "../Light/PointLight.h"
 #include "../Enemy/EnemyBase.h"
+#include "../Enemy/Attack/SubObject/SubObjectBase.h"
 #include "PlayerShot.h"
 #include "PlayerBase.h"
 
@@ -23,6 +26,7 @@ PlayerBase::PlayerBase(int playerNum) :keyIns_(KeyConfig::GetInstance())
 	attackDeley_ = 0.0f;
 	damageInvincibleTime_ = 0.0f;
 	damageTime_ = 0.0f;
+	rimPow_ = RIM_MIN_POW;
 	transform_ = std::make_shared<Transform>();
 	transform_->pos = MOVE_LIMIT_MIN;
 	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::PLAYER));
@@ -30,10 +34,13 @@ PlayerBase::PlayerBase(int playerNum) :keyIns_(KeyConfig::GetInstance())
 	transform_->Update();
 	material_ = std::make_unique<ModelMaterial>(
 		"PlayerVS.cso", 0,
-		"PlayerPS.cso", 1
+		"PlayerPS.cso", 3
 	);
 	//material_->AddConstBufVS({ TEXTURE_SCALE, 0.0f, 1.0f, 1.0f });
-	material_->AddConstBufPS(static_cast<FLOAT4>(Utility::COLOR_F2FLOAT4(DEFAULT_COLOR)));
+	material_->AddConstBufPS(static_cast<FLOAT4>(Utility::COLOR_F2FLOAT4(DEFAULT_COLOR_TIMES)));
+	auto cameraPos = SceneManager::GetInstance().GetCamera().GetPos();
+	material_->AddConstBufPS({ cameraPos.x,cameraPos.y,cameraPos.z,rimPow_ });
+	material_->AddConstBufPS(static_cast<FLOAT4>(Utility::COLOR_F2FLOAT4(RIM_COLOR)));
 	//material_->SetTextureBuf(3, ResourceManager::GetInstance().Load(ResourceManager::SRC::NOISE).handleId_);
 	renderer_ = std::make_shared<ModelRenderer>(
 		transform_->modelId, *material_
@@ -51,8 +58,11 @@ PlayerBase::PlayerBase(int playerNum) :keyIns_(KeyConfig::GetInstance())
 	MakeCollider(Collider::TAG::PLAYER, std::move(geo), { Collider::TAG::PLAYER,Collider::TAG::PLAYER });
 	geo = std::make_unique<Sphere>(headPos_, RADIUS);
 	MakeCollider(Collider::TAG::PLAYER, std::move(geo), { Collider::TAG::PLAYER,Collider::TAG::PLAYER });
+	isAvoidSaccess_ = false;
 	InitAnimationController();
 	SetupStateChange();
+	avoidSaccessTime_ = -1.0f;
+	pointLight_ = std::make_unique<PointLight>(*transform_);
 	ChangeState(STATE::IDLE,true);
 }
 
@@ -102,9 +112,9 @@ void PlayerBase::Update(void)
 	transform_->Update();
 	headPos_ = MV1GetFramePosition(transform_->modelId, HEAD_BONE_NO);
 	//攻撃のクールタイム中ではなく攻撃ボタンを押したら攻撃する
-	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK, KeyConfig::JOYPAD_NO::PAD1, controlType_) && attackDeley_ < 0.0f && state_ != STATE::DAMAGE && state_ != STATE::DEAD)
+	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK, KeyConfig::JOYPAD_NO::PAD1, controlType_) && attackDeley_ < 0.0f )
 	{
-		if (state_ != STATE::DAMAGE && state_ !=STATE::DEAD)
+		if (state_ == STATE::IDLE ||state_ == STATE::MOVE || state_ == STATE::JUMP)
 		{
 			ChangeState(STATE::ATTACK);
 		}
@@ -117,6 +127,8 @@ void PlayerBase::Update(void)
 	}
 	Utility::EraseVectorAllay(shots_);
 	animCtrl_->Update();
+	auto cameraPos = SceneManager::GetInstance().GetCamera().GetPos();
+	material_->SetConstBufPS(1,{ cameraPos.x,cameraPos.y,cameraPos.z,rimPow_ });
 }
 
 void PlayerBase::Draw(void)
@@ -144,11 +156,21 @@ void PlayerBase::UIDraw(void)
 
 void PlayerBase::OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos)
 {
+	std::shared_ptr<Collider> hitCol = _hitCol.lock();
 	if (!IsDamageHit())
 	{
-		false;
+		if (state_ == STATE::AVOID && avoidSaccessTime_ < 0.0f)
+		{
+			isAvoidSaccess_ = true;
+			avoidSaccessTime_ = avoidTime_;
+			rimPow_ = RIM_MAX_POW;
+		}
+		return;
 	}
-	std::shared_ptr<Collider> hitCol = _hitCol.lock();
+	if (hitCol->GetGeometry().GetType() == Geometry::GEOMETRY_TYPE::CIRCUMFERENCE && state_ == STATE::JUMP)
+	{
+		return;
+	}
 	Collider::TAG tag = hitCol->GetTag();
 	auto& hit = hitCol->GetParent();
 	float damage = 0.0f;
@@ -175,14 +197,18 @@ void PlayerBase::OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos)
 		damage = ENEMY_HIT_DAMAGE;
 		break;
 	case Collider::TAG::ENEMY_ATTACK:
-		break;
+	{
+		auto& subObject =dynamic_cast<SubObjectBase&>(hit);
+		damage = subObject.GetDamage();
+	}
+	break;
 	default:
 		break;
 	}
 
 	if (ChangeState(STATE::DAMAGE))
 	{
-		material_->SetConstBufPS(0, Utility::COLOR_F2FLOAT4(DAMAGE_COLOR));
+		material_->SetConstBufPS(0, Utility::COLOR_F2FLOAT4(DAMAGE_COLOR_TIMES));
 		hp_ -= damage;
 		healDeray_ = DAMAGE_HEAL_DERAY;
 		damageDir_ = dir;
@@ -216,7 +242,7 @@ void PlayerBase::Damage(float damage, VECTOR dir)
 {
 	if (ChangeState(STATE::DAMAGE))
 	{
-		material_->SetConstBufPS(0,Utility::COLOR_F2FLOAT4(DAMAGE_COLOR));
+		material_->SetConstBufPS(0,Utility::COLOR_F2FLOAT4(DAMAGE_COLOR_TIMES));
 		hp_ -= damage;
 		healDeray_ = DAMAGE_HEAL_DERAY;
 		damageDir_ = dir;
@@ -451,25 +477,27 @@ void PlayerBase::StateChangeAvoid(void)
 		std::swap(left.x, left.z);
 		left.x = -left.x;
 		animCtrl_->Play((int)STATE::AVOID,false,0.0f,-1.0f,0.001f);
+		avoidDir_ = Utility::VECTOR_ZERO;
 		if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_UP, KeyConfig::JOYPAD_NO::PAD1, controlType_))
 		{
-			avoidDir_ = front;
+			avoidDir_ = VAdd(avoidDir_,front);
 		}
 		if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_DOWN, KeyConfig::JOYPAD_NO::PAD1, controlType_))
 		{
-			avoidDir_ = VScale(front, -1);
+			avoidDir_ = VAdd(avoidDir_,VScale(front, -1));
 		}
 		if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_RIGHT, KeyConfig::JOYPAD_NO::PAD1, controlType_))
 		{
-			avoidDir_ =  VScale(left, -1);
+			avoidDir_ = VAdd(avoidDir_, VScale(left, -1));
 		}
 		if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_LEFT, KeyConfig::JOYPAD_NO::PAD1, controlType_))
 		{
-			avoidDir_ = left;
+			avoidDir_ =VAdd(avoidDir_, left);
 		}
 
 		if (controlType_ == KeyConfig::TYPE::KEYBORD_MOUSE)
 		{
+			avoidDir_ = VNorm(avoidDir_);
 			return;
 		}
 		auto stick2D = (keyIns_.GetKnockLStickSize(KeyConfig::JOYPAD_NO::PAD1));
@@ -485,13 +513,9 @@ void PlayerBase::StateChangeAvoid(void)
 		avoidDir_.y = 0.0f;
 		avoidDir_ = VNorm(avoidDir_);
 	}
-	animCtrl_->Play((int)STATE::AVOID);
+	animCtrl_->Play((int)STATE::AVOID, false, 0.0f, -1.0f, 0.1f, false, true);
 }
 
-//void PlayerBase::StateChangeCharge(void)
-//{
-//	stateUpdate_ = std::bind(&PlayerBase::StateUpdateCharge, this);
-//}
 
 void PlayerBase::StateChangeAttack(void)
 {
@@ -560,24 +584,28 @@ void PlayerBase::StateUpdateAvoid(void)
 {
 	float deltaTime = SceneManager::GetInstance().GetDeltaTime();
 	avoidTime_ -= deltaTime;
+	rimPow_ = Utility::Lerp(RIM_MAX_POW, RIM_MIN_POW, 1.0f - (avoidTime_ / avoidSaccessTime_));
+	pointLight_->SetRadiusPercent((avoidTime_ / avoidSaccessTime_));
 	transform_->pos = VAdd(transform_->pos, VScale(avoidDir_, AVOID_DISTANCE / ((1.0f /deltaTime) * AVOID_TIME) ));
 	if (avoidTime_ <= 0.0f)
 	{
-		avoidCoolTime_ = AVOID_COOL_TIME;
+		if (!isAvoidSaccess_)
+		{
+			avoidCoolTime_ = AVOID_COOL_TIME;
+		}
+		isAvoidSaccess_ = false;
+		avoidSaccessTime_ = -1.0f;
+		rimPow_ = RIM_MIN_POW;
+		if(KeyConfig::GetInstance().IsNew(KeyConfig::CONTROL_TYPE::PLAYER_AVOID, KeyConfig::JOYPAD_NO::PAD1, controlType_)&& avoidCoolTime_ < 0.0f)
+		{
+			ChangeState(STATE::AVOID,true);
+			return;
+		}
 		animCtrl_->Play((int)STATE::IDLE, true, 0.0f, -1.0f, 0.01f);
 		ChangeState(STATE::IDLE);
 		return;
 	}
 }
-
-//void PlayerBase::StateUpdateCharge(void)
-//{
-//	PlayerMove();
-//	if (keyIns_.IsTrgDown(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK, KeyConfig::JOYPAD_NO::PAD1, controlType_))
-//	{
-//		ChangeState(STATE::ATTACK);
-//	}
-//}
 
 void PlayerBase::StateUpdateAttack(void)
 {
@@ -599,7 +627,7 @@ void PlayerBase::StateUpdateDamage(void)
 		}
 		else
 		{
-			material_->SetConstBufPS(0, Utility::COLOR_F2FLOAT4(DEFAULT_COLOR));
+			material_->SetConstBufPS(0, Utility::COLOR_F2FLOAT4(DEFAULT_COLOR_TIMES));
 			ChangeState(STATE::IDLE);
 		}
 	}

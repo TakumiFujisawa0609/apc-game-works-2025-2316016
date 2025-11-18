@@ -1,17 +1,17 @@
 #pragma once
-#include <DxLib.h>
 #include "Geometry.h"
-class Triangle3D :   public Geometry
+class Circumference : public Geometry
 {
 public:
-
-	Triangle3D(VECTOR& pos1,VECTOR& pos2,VECTOR& pos3);
-	~Triangle3D(void)override;
+	Circumference(VECTOR& pos, float radius);
+	~Circumference(void)override;
 
 	void Update(void)override;
 	void Draw(void)override;
-	GEOMETRY_TYPE GetType(void)override { return GEOMETRY_TYPE::TRIANGLE3D; }
-
+	GEOMETRY_TYPE GetType(void)override { return GEOMETRY_TYPE::CIRCUMFERENCE; }
+	VECTOR GetPos(void) { return pos_; }
+	float GetRadius(void) { return radius_; }
+	void SetRadius(float radius) { radius_ = radius; }
 	/// <summary>
 	/// å`èÛìñÇΩÇËîªíË
 	/// </summary>
@@ -75,9 +75,9 @@ public:
 	/// <returns>ìñÇΩÇËîªíË(true:ìñÇΩÇ¡ÇΩ)</returns>
 	const bool IsHit(Circumference& _circle, VECTOR& _hitPos)override;
 private:
-	VECTOR& pos1_;
-	VECTOR& pos2_;
-	VECTOR& pos3_;
+	static constexpr int DRAW_VERTEX_NUM = 16;
 
+	VECTOR& pos_;
+	float radius_;
 };
 

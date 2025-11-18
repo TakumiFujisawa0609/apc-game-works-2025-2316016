@@ -28,6 +28,7 @@ public:
 
 	static constexpr float DAMAGE = 15.0f;	//ƒ_ƒ[ƒW
 	static constexpr float ATTACK_TIME = 10.0f;	//UŒ‚ŠÔ
+	static constexpr float RADIUS = 20.0f;		//”¼Œa
 
 	FollowShot(Transform& target, SPEED_TYPE speed,VECTOR startPos);
 	~FollowShot(void)override;

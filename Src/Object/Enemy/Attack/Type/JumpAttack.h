@@ -15,9 +15,8 @@ public:
 	void Init(void) override;
 	void Update(void) override;
 	void Draw(void) override;
-	int GetSubObjectNum(void)const override { return static_cast<int>(wave_.size()); }
+	int GetSubObjectNum(void)override { return static_cast<int>(wave_.size()); }
 	void GetWaveState(float& radius, VECTOR& centerPos,int waveNum);
-	const float GetDamage(void)const override { return Wave::DAMAGE; }
 private:
 	bool isDown_;	//‰º‚è‚É“ü‚Á‚½‚©
 	std::vector<std::unique_ptr<Wave>> wave_;

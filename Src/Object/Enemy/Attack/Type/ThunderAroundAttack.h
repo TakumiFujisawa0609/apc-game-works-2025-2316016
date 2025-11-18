@@ -19,9 +19,8 @@ public:
 	void Init(void)override;
 	void Update(void)override;
 	void Draw(void)override;
-	int GetSubObjectNum(void)const override { return static_cast<int>(thunders_.size()); }
+	int GetSubObjectNum(void)override { return static_cast<int>(thunders_.size()); }
 	Transform& GetThunderTransform(int thunderNum);
-	const float GetDamage(void)const override { return ThunderAround::DAMAGE; }
 private:
 
 	std::vector<std::unique_ptr<ThunderAround>> thunders_;

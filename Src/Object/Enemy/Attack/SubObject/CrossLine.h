@@ -12,6 +12,7 @@ public:
 	static constexpr float SIZE_XZ = RADIUS / MODEL_SIZE_XZ; //
 	static constexpr float SIZE_Y = RADIUS / MODEL_SIZE_Y * 2.0f; //
 	static constexpr float DISTANCE = 200.0f;	//‰Šú‹——£
+	static constexpr float DAMAGE = 7.5f; //ƒ_ƒ[ƒW
 
 	//static constexpr float SIZE_Z = CrossAttack::LINE_POINT_NUM * SIZE_XZ;	//‰Šú‹——£
 

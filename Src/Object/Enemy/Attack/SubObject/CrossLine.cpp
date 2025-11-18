@@ -5,6 +5,7 @@
 #include "../../Renderer/ModelRenderer.h"
 #include "../../../Common/Transform.h"
 #include "../../../Common/EffectController.h"
+#include "../../../Common/Geometry/Sphere.h"
 #include "CrossLine.h"
 
 CrossLine::CrossLine(VECTOR centerPos, float& rad, float initRad, int num) : centerPos_(centerPos), radian_(rad)
@@ -27,8 +28,12 @@ CrossLine::CrossLine(VECTOR centerPos, float& rad, float initRad, int num) : cen
 	renderer_ = std::make_shared<ModelRenderer>(
 		transform_->modelId, *material_
 	);
+	std::unique_ptr<Geometry>geo = std::make_unique<Sphere>(transform_->pos, RADIUS);
+	MakeCollider(Collider::TAG::ENEMY_ATTACK, std::move(geo), { Collider::TAG::ENEMY,Collider::TAG::ENEMY_ATTACK });
+
 	initRadian_ = initRad;
 	num_ = num;
+	damage_ = DAMAGE;
 }
 
 CrossLine::~CrossLine(void)
@@ -55,5 +60,4 @@ void CrossLine::Draw(void)
 {
 	//MV1DrawModel(transform_->modelId);
 	DrawTranslucentManager::GetInstance().Add(transform_, renderer_);
-	//DrawSphere3D(transform_->pos, RADIUS, 16, GetColor(255, 0, 0), GetColor(255, 0, 0), true);
 }

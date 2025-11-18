@@ -9,5 +9,7 @@ public:
 	void Init(void) override;
 	void Update(void) override;
 	void Draw(void) override;
+private:
+	void InitAddAttack(void)override;
 };
 

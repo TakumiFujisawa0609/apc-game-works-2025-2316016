@@ -54,7 +54,6 @@ EnemyBase::EnemyBase(Transform& target) : target_(target)
 	animCtrl_->Play((int)ANIM_TYPE_DRAGON::IDLE_1);
 	AplayChangeStateFunc();
 	InitAddAttack();
-	InitFramePos();
 	InitGeometry();
 	ChangeState(STATE::IDLE);
 }
@@ -389,40 +388,13 @@ void EnemyBase::InitGeometry(void)
 
 void EnemyBase::InitAddAttack(void)
 {
-	//AddAttack(ATTACK_TYPE::JUMP);
-	//AddAttack(ATTACK_TYPE::JUMP_CONSTANT);
-	//AddAttack(ATTACK_TYPE::FOLLOW);
-	//AddAttack(ATTACK_TYPE::FALL_DOWN);
-	//AddAttack(ATTACK_TYPE::CROSS_LINE);
+	AddAttack(ATTACK_TYPE::JUMP);
+	AddAttack(ATTACK_TYPE::JUMP_CONSTANT);
+	AddAttack(ATTACK_TYPE::FOLLOW);
+	AddAttack(ATTACK_TYPE::FALL_DOWN);
+	AddAttack(ATTACK_TYPE::CROSS_LINE);
 	AddAttack(ATTACK_TYPE::THUNDER_AROUND);
-	//AddAttack(ATTACK_TYPE::WATER_SPRIT);
-}
-
-void EnemyBase::InitFramePos(void)
-{
-	//VECTOR initPos = Utility::VECTOR_ZERO;
-	//framePos_[HAND_L_BORN_NUM] = initPos;
-	//framePos_[HAND_R_BORN_NUM] = initPos;
-	//framePos_[LEG_L_BORN_NUM] = initPos;
-	//framePos_[LEG_R_BORN_NUM] = initPos;
-	//framePos_[HEAD_BORN_NUM] = initPos;
-
-	//framePos_[WING_L_BASE_BORN_NUM] = initPos;
-	//framePos_[WING_L_1_BORN_NUM] = initPos;
-	//framePos_[WING_L_2_BORN_NUM] = initPos;
-	//framePos_[WING_L_3_BORN_NUM] = initPos;
-	//framePos_[WING_L_4_BORN_NUM] = initPos;
-
-	//framePos_[WING_R_BASE_BORN_NUM] = initPos;
-	//framePos_[WING_R_1_BORN_NUM] = initPos;
-	//framePos_[WING_R_2_BORN_NUM] = initPos;
-	//framePos_[WING_R_3_BORN_NUM] = initPos;
-	//framePos_[WING_R_4_BORN_NUM] = initPos;
-
-	//framePos_[BODY_1_BORN_NUM] = initPos;
-	//framePos_[BODY_2_BORN_NUM] = initPos;
-
-	//framePos_[NECK_BORN_NUM] = initPos;
+	AddAttack(ATTACK_TYPE::WATER_SPRIT);
 }
 
 void EnemyBase::UpdateFramePos(void)

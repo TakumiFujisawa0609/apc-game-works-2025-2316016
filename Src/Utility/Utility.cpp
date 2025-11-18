@@ -1111,6 +1111,47 @@ bool Utility::IsColSphere2Triangle(VECTOR sPos, float radius, VECTOR tPos1, VECT
     return minD <= radius;
 }
 
+bool Utility::IsColSphere2Sphere(VECTOR s1Pos, float radius1, VECTOR s2Pos, float radius2, VECTOR& hitPos)
+{
+    VECTOR dir = VNorm(VSub(s1Pos, s2Pos));
+    float distance = Distance(s1Pos, s2Pos);
+    if (distance > radius1 + radius2)
+    {
+        return false;
+    }
+    hitPos = VAdd(s1Pos, VScale(dir, radius1 - (radius1 + radius2 - distance) / 2));
+    return true;
+}
+
+bool Utility::IsColCylinder2Cylinder(VECTOR c1Pos, float radius1, VECTOR c2Pos, float radius2, VECTOR& hitPos)
+{
+    VECTOR dir = VNorm(VSub(c1Pos, c2Pos));
+    c1Pos.y = 0.0f;
+    c2Pos.y = 0.0f;
+    float distance = Distance(c1Pos, c2Pos);
+    if (distance > radius1 + radius2)
+    {
+        return false;
+    }
+    hitPos = VAdd(c1Pos, VScale(dir, radius1 - (radius1 + radius2 - distance) / 2));
+    return true;
+}
+
+bool Utility::IsColCircumference2Circle(VECTOR pos1, float radius1, VECTOR pos2, float radius2, VECTOR& hitPos)
+{
+    VECTOR dir = VNorm(VSub(pos2, pos1));
+	pos1.y = 0.0f;
+	pos2.y = 0.0f;
+    float dis = static_cast<float>(Distance(pos1, pos2));
+    bool ret = abs(dis - radius1) < radius2;
+    if (!ret)
+    {
+        return ret;
+    }
+	hitPos = VAdd(pos1, VScale(dir, radius1));
+    return ret;
+}
+
 VECTOR Utility::ClosestPointOnSegment(VECTOR p, VECTOR a, VECTOR b)
 {
     VECTOR ab = VSub(b, a);

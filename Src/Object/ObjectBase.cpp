@@ -1,7 +1,4 @@
 #include "../Manager/CollisionManager.h"
-#include "../Renderer/ModelMaterial.h"
-#include "../Renderer/ModelRenderer.h"
-#include "Common/EffectController.h"
 #include "Common/Collider.h"
 #include "ObjectBase.h"
 

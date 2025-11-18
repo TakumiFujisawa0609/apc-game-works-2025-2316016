@@ -1,36 +1,57 @@
 #include "../Common/Pixel/PixelShader2DHeader.hlsli"
 
-Texture2D ui : register(t1); //ƒeƒNƒXƒ`ƒƒ
-SamplerState uiSampler : register(s1); //ƒTƒ“ƒvƒ‰[
-Texture2D mask : register(t2); //ƒeƒNƒXƒ`ƒƒ
-SamplerState maskSampler : register(s2); //ƒTƒ“ƒvƒ‰[
+Texture2D ui : register(t1); //ãƒ†ã‚¯ã‚¹ãƒãƒ£
+SamplerState uiSampler : register(s1); //ã‚µãƒ³ãƒ—ãƒ©ãƒ¼
+Texture2D mask : register(t2); //ãƒ†ã‚¯ã‚¹ãƒãƒ£
+SamplerState maskSampler : register(s2); //ã‚µãƒ³ãƒ—ãƒ©ãƒ¼
+Texture2D normal : register(t3); //ãƒ†ã‚¯ã‚¹ãƒãƒ£
+SamplerState normalSampler : register(s3); //ã‚µãƒ³ãƒ—ãƒ©ãƒ¼
 
 
-// ’è”ƒoƒbƒtƒ@FƒXƒƒbƒg4”Ô–Ú(b4‚Æ‘‚­)
+// å®šæ•°ãƒãƒƒãƒ•ã‚¡ï¼šã‚¹ãƒ­ãƒƒãƒˆ4ç•ªç›®(b4ã¨æ›¸ã)
 cbuffer cbParam : register(b4)
 {
-    float rate;     //‘Ì—ÍŠ„‡
-    float3 color;   //ƒQ[ƒW‚ÌF
-    float min;
-    float max;
+    float rate; //ä½“åŠ›å‰²åˆ
+    float3 color; //ã‚²ãƒ¼ã‚¸ã®è‰²
+    float g_min;
+    float g_max;
     float2 dummy;
+    float3 g_right_dir; //ãƒ©ã‚¤ãƒˆæ–¹å‘
+    float dummy1;
 }
 
 float4 main(PS_INPUT PSInput) : SV_TARGET
 {
     float2 uv = PSInput.uv;
     float4 col = ui.Sample(uiSampler, uv);
-    if(col.a < 0.1f)
+    if (col.a < 0.1f)
     {
         discard;
     }
-    float dif = max - min;
+    float dif = g_max - g_min;
     float size = dif * rate;
-    size += min;
+    size += g_min;
     float4 maskCol = mask.Sample(maskSampler, uv);
-    if(maskCol.r < 0.9f || size < uv.x)
+    float3 normalCol = normal.Sample(normalSampler, uv).xyz;
+    normalCol = normalCol * 2.0f - 1.0f;
+    normalCol.z = saturate(normalCol.z);
+    normalCol = normalize(normalCol);
+    float3 L = normalize(g_right_dir);
+    float ndotl = saturate(dot(normalCol, L));
+    //float cDot = (dot(normalize(normalCol.rgb), normalize(g_right_dir)));
+    //cDot = 1.0f - cDot;
+    float3 lightCol = float3(0.5f, 0.5f, 0.5f);
+    float3 lighting = lightCol * ndotl;
+    if (maskCol.r < 0.9f || size < uv.x)
     {
-        return col;
+        float4 ret = float4(col.rgb + lighting, col.a);
+        //float cmax = max(ret.r, max(ret.g, ret.b));
+        //ret.rgb += (1.0f - cmax);
+        return ret;
     }
-    return float4(color, 1.0f);
+    float4 ret = float4(color.rgb + lighting, col.a);
+    //float cmax = max(ret.r, max(ret.g, ret.b));
+    //ret.rgb += (1.0f - cmax);
+    return ret;
+    //return float4(color * col.rgb, 1.0f);
 }

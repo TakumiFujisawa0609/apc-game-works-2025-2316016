@@ -200,7 +200,6 @@ protected:
 	virtual void InitGeometry(void);
 	virtual void InitAddAttack(void);
 
-	void InitFramePos(void);
 	void UpdateFramePos(void);	//framePos_‚ğXV‚·‚é
 private:
 

@@ -406,6 +406,39 @@ public:
 	static bool IsColSphere2Triangle(VECTOR sPos, float radius, VECTOR tPos1, VECTOR tPos2, VECTOR tPos3, VECTOR& hitPos);
 
 	/// <summary>
+	/// ‹…‚Æ‹…‚Ì“–‚½‚è”»’è
+	/// </summary>
+	/// <param name="s1Pos">‹…‚P‚ÌÀ•W</param>
+	/// <param name="radius1">‹…‚P‚Ì”¼Œa</param>
+	/// <param name="s2Pos">‹…‚Q‚ÌÀ•W</param>
+	/// <param name="radius2">‹…‚Q‚Ì”¼Œa</param>
+	/// <param name="hitPos">“–‚½‚Á‚½À•W(QÆŒ^)</param>
+	/// <returns>“–‚½‚Á‚½‚çtrue</returns>
+	static bool IsColSphere2Sphere(VECTOR s1Pos, float radius1, VECTOR s2Pos, float radius2, VECTOR& hitPos);
+
+	/// <summary>
+	/// ‰~’Œ‚Æ‰~’Œ‚Ì“–‚½‚è”»’è
+	/// </summary>
+	/// <param name="c1Pos">‰~’Œ‚P‚ÌÀ•W</param>
+	/// <param name="radius1">‰~’Œ‚P‚Ì”¼Œa</param>
+	/// <param name="c2Pos">‰~’Œ‚Q‚ÌÀ•W</param>
+	/// <param name="radius2">‰~’Œ‚Q‚Ì”¼Œa</param>
+	/// <param name="hitPos">“–‚½‚Á‚½À•W(QÆŒ^)</param>
+	/// <returns>“–‚½‚Á‚½‚çtrue</returns>
+	static bool IsColCylinder2Cylinder(VECTOR c1Pos, float radius1, VECTOR c2Pos, float radius2, VECTOR& hitPos);
+
+	/// <summary>
+	/// ‰~ü‚Æ‰~‚Ì“–‚½‚è”»’è
+	/// </summary>
+	/// <param name="pos1">‰~ü‚Ì’†SÀ•W</param>
+	/// <param name="radius1">‰~ü‚Ì”¼Œa</param>
+	/// <param name="pos2">‰~‚Ì’†SÀ•W</param>
+	/// <param name="radius2">‰~‚Ì”¼Œa</param>
+	/// <param name="hitPos">“–‚½‚Á‚½À•W(QÆŒ^)</param>
+	/// <returns>“–‚½‚Á‚½‚çtrue</returns>
+	static bool IsColCircumference2Circle(VECTOR pos1, float radius1, VECTOR pos2, float radius2,VECTOR& hitPos);
+
+	/// <summary>
 	/// “_p‚©‚çü•ªab‚Ö‚ÌÅ‹ß“_‚ğ‹‚ß‚é
 	/// </summary>
 	/// <param name="p"></param>

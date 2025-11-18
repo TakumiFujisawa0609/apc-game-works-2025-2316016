@@ -1,180 +1,228 @@
+#include "AnimationController.h"
 #include <DxLib.h>
 #include "../../Manager/SceneManager.h"
-#include "AnimationController.h"
 
+// ------------------------------------------------------
+// コンストラクタ
+// ------------------------------------------------------
 AnimationController::AnimationController(int modelId)
+	: modelId_(modelId)
+	, playType_(-1)
+	, isLoop_(false)
+	, isStop_(false)
+	, stepEndLoopStart_(-1.0f)
+	, stepEndLoopEnd_(-1.0f)
+	, endLoopSpeed_(0.0f)
+	, switchLoopReverse_(1.0f)
+	, blendAnimTime_(DEFAULT_BLEND_ANIM_TIME)
+	, blendAnimRate_(0.0f)
 {
-	modelId_ = modelId;
-
-	playType_ = -1;
-	isLoop_ = false;
-
-	isStop_ = false;
-	switchLoopReverse_ = 0.0f;
-	endLoopSpeed_ = 0.0f;
-	stepEndLoopStart_ = 0.0f;
-	stepEndLoopEnd_ = 0.0f;
 }
 
+// ------------------------------------------------------
+// デストラクタ（外部アニメだけ破棄）
+// ------------------------------------------------------
 AnimationController::~AnimationController(void)
 {
-	for (const auto& anim : animations_)
+	for (auto& kv : animations_)
 	{
-		MV1DeleteModel(anim.second.model);
+		Animation& anim = kv.second;
+		// 外部アニメとしてロードしたモデルだけ削除する
+		if (anim.isLoadedFromFile && anim.sourceModel != -1)
+		{
+			MV1DeleteModel(anim.sourceModel);
+			anim.sourceModel = -1;
+		}
 	}
 }
 
+// ------------------------------------------------------
+// 外部アニメ追加（mv1 から読み込む）
+// ------------------------------------------------------
 void AnimationController::Add(int type, const std::string& path, float speed)
 {
-
 	Animation anim;
 
-	anim.model = MV1LoadModel(path.c_str());
-	anim.animIndex = type;
+	anim.isLoadedFromFile = true;
+	anim.sourceModel = MV1LoadModel(path.c_str());
+	anim.model = anim.sourceModel;        // Attach 時に参照するモデル
+	anim.animIndex = 0;                   // 外部アニメは 0 番固定（慣習）
 	anim.speed = speed;
 
-	if (animations_.count(type) == 0)
-	{
-		// 入れ替え
-		animations_.emplace(type, anim);
-	}
-	else
-	{
-		// 追加
-		animations_[type].model = anim.model;
-		animations_[type].animIndex = anim.animIndex;
-		animations_[type].attachNo = anim.attachNo;
-		animations_[type].totalTime = anim.totalTime;
-	}
+	// attach は Play 時に行うため総時間は 0 としておく（Play 内で取得）
+	anim.totalTime = 0.0f;
+	anim.step = 0.0f;
+	anim.attachNo = -1;
+	anim.blendRate = 0.0f;
 
+	animations_[type] = anim;
 }
 
+// ------------------------------------------------------
+// 内蔵アニメ追加（modelId から直接使う）
+// ------------------------------------------------------
 void AnimationController::Add(int type, const float speed, int modelId)
 {
 	Animation anim;
+
+	anim.isLoadedFromFile = false;
+	anim.sourceModel = -1;
+
 	if (modelId != -1)
 	{
-		//リソースマネージャでロードしたものを使う
-		anim.model = modelId;
+		anim.model = modelId; // 指定モデル
 	}
 	else
 	{
-		//持ち主のモデル
-		anim.model = modelId_;
+		anim.model = modelId_; // 自分のメインモデル
 	}
-	anim.animIndex = type;
+
+	anim.animIndex = type; // 内蔵アニメは type 番号を使う
 	anim.speed = speed;
 
-	//指定番号の配列にアニメーションが存在しない場合
-	if (animations_.count(type) == 0)
-	{
-		//追加
-		animations_.emplace(type, anim);
-	}
-	//存在する場合
-	else
-	{
-		//上書き
-		animations_[type].model = anim.model;
-		animations_[type].animIndex = anim.animIndex;
-		animations_[type].attachNo = anim.attachNo;
-		animations_[type].totalTime = anim.totalTime;
-	}
+	// attach は Play 時に行うため総時間は 0 としておく
+	anim.totalTime = 0.0f;
+	anim.step = 0.0f;
+	anim.attachNo = -1;
+	anim.blendRate = 0.0f;
+
+	animations_[type] = anim;
 }
 
-void AnimationController::Play(int type, bool isLoop,
-	float startStep, float endStep, float blendAnimTime, bool isStop, bool isForce, bool isReverse)
+// ------------------------------------------------------
+// 再生開始（同一 type の連続再生を適切に扱う）
+// ------------------------------------------------------
+void AnimationController::Play(
+	int type, bool isLoop,
+	float startStep, float endStep, float blendAnimTime,
+	bool isStop, bool isForce, bool isReverse)
 {
-	//同じ種類かつ強制再生を行わない場合
-	if (type == playType_ && !isForce)
+	// 即時切替（負値は「即時切替」のシグナル）
+	const bool immediateSwitchRequested = (blendAnimTime < 0.0f);
+
+	// 再生対象が存在しないなら何もしない
+	auto itTemplate = animations_.find(type);
+	if (itTemplate == animations_.end())
 	{
 		return;
 	}
-	//if (playType_ != -1)
-	//{
-	//	// モデルからアニメーションを外す
-	//	playAnim_.attachNo = MV1DetachAnim(modelId_, playAnim_.attachNo);
-	//}
 
-	// アニメーション種別を変更
+	// 同一 type の連続 Play をどう扱うか判定する
+	bool sameType = (type == playType_);
+	if (sameType && !isForce && !immediateSwitchRequested)
+	{
+		// 再生中のアニメ情報があれば終了判定を見る
+		auto itCurrent = playAnimations_.find(playType_);
+		if (itCurrent != playAnimations_.end())
+		{
+			const Animation& cur = itCurrent->second;
+			// 再生が終了していない（まだ再生中）なら早期リターン
+			// ※ cur.totalTime が 0 の場合は未取得なので再生中と判断する
+			if (cur.totalTime > 0.0f && cur.step < cur.totalTime)
+			{
+				return;
+			}
+			// 終了しているならリスタートを許可する（以下で上書き処理）
+		}
+		else
+		{
+			// playAnimations_ に現在アニメが無い場合は通常処理を継続
+		}
+	}
+
+	// 各種フラグ反映
 	playType_ = type;
-	blendAnimRate_ = 0.0f;
-	//playAnim_ = animations_[type];
+	isLoop_ = isLoop;
+	isStop_ = isStop;
+	switchLoopReverse_ = isReverse ? -1.0f : 1.0f;
 
-	//再生中のアニメーション情報がある場合
-	if (playAnimations_.find(playType_) != playAnimations_.end())
-	{
-		return;
-	}
-	Animation anim = animations_[playType_];
-
-	//ブレンドアニメーション時間の設定
 	blendAnimTime_ = blendAnimTime;
-	// 初期化
+	blendAnimRate_ = 0.0f;
+
+	// テンプレートからコピーして準備
+	Animation anim = itTemplate->second;
 	anim.step = startStep;
 
-	// モデルにアニメーションを付ける
-	int animIdx = 0;
-	if (MV1GetAnimNum(anim.model) > 1)
-	{
-		// アニメーションが複数保存されていたら、番号1を指定
-		animIdx = 1;
-	}
-	if (modelId_ == anim.model)
-	{
-		animIdx = type;
-	}
-
-	anim.attachNo = MV1AttachAnim(modelId_, animIdx, anim.model);
-
-	// アニメーション総時間の取得
+	// endStep 指定があれば上書き
 	if (endStep > 0.0f)
 	{
 		anim.totalTime = endStep;
 	}
-	else
+
+	// Attach（既存 attach があれば安全にデタッチして置き換える）
+	auto itPlaying = playAnimations_.find(type);
+	if (itPlaying != playAnimations_.end())
+	{
+		// 既に同じ type が登録されている（終了済みでリスタートする場合等）
+		if (itPlaying->second.attachNo != -1)
+		{
+			MV1DetachAnim(modelId_, itPlaying->second.attachNo);
+		}
+		playAnimations_.erase(itPlaying);
+	}
+
+	// アニメをモデルにアタッチする
+	// anim.animIndex は Add() で正しく設定済み
+	anim.attachNo = MV1AttachAnim(modelId_, anim.animIndex, anim.model);
+
+	// アタッチ後に総時間を取得（Add() 時には取得していないため）
+	if (anim.totalTime <= 0.0f)
 	{
 		anim.totalTime = MV1GetAttachAnimTotalTime(modelId_, anim.attachNo);
 	}
 
-	// アニメーションループ
-	isLoop_ = isLoop;
-
-	// アニメーションしない
-	isStop_ = isStop;
-
-
-	//再生中のアニメーション配列が空の場合
+	// ブレンド初期値
 	if (playAnimations_.empty())
 	{
-		//進行率は最大にしておく
+		// 最初のアニメなら完全に表示
 		anim.blendRate = 1.0f;
+		MV1SetAttachAnimBlendRate(modelId_, anim.attachNo, anim.blendRate);
+	}
+	else
+	{
+		// 既に別アニメがある場合は通常 0 から開始だが、
+		// 即時切替要求がある場合は 1 にして他を即座に消す
+		if (immediateSwitchRequested)
+		{
+			anim.blendRate = 1.0f;
+			MV1SetAttachAnimBlendRate(modelId_, anim.attachNo, anim.blendRate);
+
+			// 他のアニメは即時デタッチ
+			for (auto it = playAnimations_.begin(); it != playAnimations_.end(); )
+			{
+				MV1DetachAnim(modelId_, it->second.attachNo);
+				it = playAnimations_.erase(it);
+			}
+		}
+		else
+		{
+			anim.blendRate = 0.0f;
+			MV1SetAttachAnimBlendRate(modelId_, anim.attachNo, anim.blendRate);
+			// 旧アニメは残してブレンドさせる
+		}
 	}
 
-	// ブレンドアニメーションを追加
-	playAnimations_.emplace(playType_, anim);
-
-	stepEndLoopStart_ = -1.0f;
-	stepEndLoopEnd_ = -1.0f;
-	switchLoopReverse_ = isReverse ? -1.0f : 1.0f;
+	// 登録（同じ type が残っていれば上書き）
+	playAnimations_[type] = anim;
 }
 
+// ------------------------------------------------------
+// 毎フレーム更新
+// ------------------------------------------------------
 void AnimationController::Update(void)
 {
-	//停止してる場合
-	if (isStop_)
-	{
-		//処理は実行しない
-		return;
-	}
+	if (isStop_) return;
 
-	// メインアニメーション更新
+	// playAnimations_ が空なら何もしない
+	if (playAnimations_.empty()) return;
+
 	UpdateMainAnimation();
-
-	// ブレンドアニメーション更新
 	UpdateBlendAnimation();
 }
 
+// ------------------------------------------------------
+// EndLoop設定
+// ------------------------------------------------------
 void AnimationController::SetEndLoop(float startStep, float endStep, float speed)
 {
 	stepEndLoopStart_ = startStep;
@@ -182,184 +230,209 @@ void AnimationController::SetEndLoop(float startStep, float endStep, float speed
 	endLoopSpeed_ = speed;
 }
 
+// ------------------------------------------------------
+// 現在再生中アニメタイプ
+// ------------------------------------------------------
 int AnimationController::GetPlayType(void) const
 {
 	return playType_;
 }
 
+// ------------------------------------------------------
+// 再生終了判定
+// ------------------------------------------------------
 bool AnimationController::IsEnd(void) const
-{	
+{
 	auto it = playAnimations_.find(playType_);
-	//再生中のアニメーション情報がない場合
 	if (it == playAnimations_.end())
 	{
 		return false;
 	}
 
-	//再生中のアニメーション情報を取得
-	//Animation& playAnim = playAnimations_[playType_];
-	//Animation& playAnim = playAnimations_.at(playType_);
 	const Animation& playAnim = it->second;
 
-	if (isLoop_)
-	{
-		// ループ設定されているなら、
-		// 無条件で終了しないを返す
-		return true;
-	}
+	// ループ設定があるなら「終了とは見なさない」
+	if (isLoop_) return false;
 
-	if (playAnim.step >= playAnim.totalTime)
-	{
-		// 再生時間を過ぎたらtrue
-		return true;
-	}
-
-	return false;
-
-}
-
-void AnimationController::DebugDraw()
-{
-	int marginY = 20;
-	int index = 0;
-	float rate = 0.0f;
-
-	for (auto it = playAnimations_.begin(); it != playAnimations_.end(); )
-	{
-		//std::wstring type = Utility::GetWStringFromString(it->first);
-		int type = it->first;
-		DrawFormatString(0, 30 + marginY, 0xff0000, "animType:%d", type);
-		DrawFormatString(150, 30 + marginY, 0xff0000, "attachNo:%d", it->second.attachNo);
-		DrawFormatString(250, 30 + marginY, 0xff0000, "blendRate:%2f", it->second.blendRate);
-		marginY += 20;
-		rate += it->second.blendRate;
-		it++;
-	}
-	//合計
-	DrawFormatString(0, 0, 0xff0000, "合計:%2f", rate);
-	DrawFormatString(0, 100, 0xff0000, "再生中のアタッチNo:%d", playAnimations_[playType_].attachNo);
-}
-
-void AnimationController::UpdateMainAnimation()
-{
-	//再生中のアニメーション情報を取得
-	Animation& playAnim = playAnimations_[playType_];
-
-	// 経過時間の取得
-	float deltaTime = SceneManager::GetInstance().GetDeltaTime();
-	//再生
-	playAnim.step += (deltaTime * playAnim.speed * switchLoopReverse_);
-
-	// アニメーション終了判定
-	bool isEnd = false;
 	if (switchLoopReverse_ > 0.0f)
 	{
-		// 通常再生の場合
-		if (playAnim.step > playAnim.totalTime)
-		{
-			isEnd = true;
-		}
+		return (playAnim.step >= playAnim.totalTime);
 	}
 	else
 	{
-		// 逆再生の場合
-		if (playAnim.step < playAnim.totalTime)
-		{
+		return (playAnim.step <= 0.0f);
+	}
+}
+
+// ------------------------------------------------------
+// デバッグ描画
+// ------------------------------------------------------
+void AnimationController::DebugDraw()
+{
+	int y = 20;
+	float total = 0.0f;
+
+	for (auto& kv : playAnimations_)
+	{
+		int type = kv.first;
+		const Animation& a = kv.second;
+		DrawFormatString(0, y, 0xff0000, "type:%d attach:%d blend:%f step:%f",
+			type, a.attachNo, a.blendRate, a.step);
+		y += 20;
+		total += a.blendRate;
+	}
+
+	DrawFormatString(0, 0, 0xff0000, "blendTotal:%f", total);
+
+	if (playAnimations_.count(playType_))
+	{
+		DrawFormatString(0, 100, 0xff0000, "MainAttach:%d",
+			playAnimations_.at(playType_).attachNo);
+	}
+}
+
+// ------------------------------------------------------
+// メインアニメ更新
+// ------------------------------------------------------
+void AnimationController::UpdateMainAnimation()
+{
+	// 再生中の main アニメが存在しなければ終了
+	auto itMain = playAnimations_.find(playType_);
+	if (itMain == playAnimations_.end()) return;
+
+	Animation& anim = itMain->second;
+
+	float dt = SceneManager::GetInstance().GetDeltaTime();
+
+	// ストップ中でなければ時間を進める（逆再生は switchLoopReverse_ により符号が入る）
+	if (!isStop_)
+	{
+		anim.step += dt * anim.speed * switchLoopReverse_;
+	}
+
+	// 終了判定（forward: step > totalTime, reverse: step < 0）
+	bool isEnd = false;
+	if (switchLoopReverse_ > 0.0f)
+	{
+		if (anim.step > anim.totalTime)
 			isEnd = true;
-		}
+	}
+	else
+	{
+		if (anim.step < 0.0f)
+			isEnd = true;
 	}
 
 	if (isEnd)
 	{
-		// アニメーションが終了したら
 		if (isLoop_)
 		{
-			// ループ再生
-			if (stepEndLoopStart_ > 0.0f)
+			if (stepEndLoopStart_ >= 0.0f)
 			{
-				// アニメーション終了後の指定フレーム再生
+				// 指定区間ループ（往復）
 				switchLoopReverse_ *= -1.0f;
+
 				if (switchLoopReverse_ > 0.0f)
 				{
-					playAnim.step = stepEndLoopStart_;
-					playAnim.totalTime = stepEndLoopEnd_;
+					anim.step = stepEndLoopStart_;
+					anim.totalTime = stepEndLoopEnd_;
 				}
 				else
 				{
-					playAnim.step = stepEndLoopEnd_;
-					playAnim.totalTime = stepEndLoopStart_;
+					anim.step = stepEndLoopEnd_;
+					anim.totalTime = stepEndLoopStart_;
 				}
-				playAnim.speed = endLoopSpeed_;
+
+				anim.speed = endLoopSpeed_;
 			}
 			else
 			{
-				// 通常のループ再生
-				playAnim.step = 0.0f;
+				// 通常ループ（時間を折り返す）
+				if (switchLoopReverse_ > 0.0f)
+					anim.step = 0.0f;
+				else
+					anim.step = anim.totalTime;
 			}
 		}
 		else
 		{
-			// ループしない
-			playAnim.step = playAnim.totalTime;
+			// 非ループは終端で固定
+			if (switchLoopReverse_ > 0.0f)
+				anim.step = anim.totalTime;
+			else
+				anim.step = 0.0f;
 		}
 	}
 
-	// 再生するアニメーション時間の設定
-	MV1SetAttachAnimTime(modelId_, playAnim.attachNo, playAnim.step);
+	// アニメ時間（秒）をセット
+	MV1SetAttachAnimTime(modelId_, anim.attachNo, anim.step);
 }
 
+// ------------------------------------------------------
+// ブレンド更新
+// ------------------------------------------------------
 void AnimationController::UpdateBlendAnimation()
 {
-	// 再生中のアニメーションが一定以上登録されているなら
+	// ブレンド対象が 1 以下なら何もしない
 	if (static_cast<int>(playAnimations_.size()) <= 1)
 	{
 		return;
 	}
 
-	// 経過時間の取得
-	float deltaTime = SceneManager::GetInstance().GetDeltaTime();
-	// ブレンドアニメーション率を増加
-	blendAnimRate_ += deltaTime;
+	float dt = SceneManager::GetInstance().GetDeltaTime();
 
-	if (blendAnimRate_ >= blendAnimTime_)
+	// 即時切替（blendAnimTime_ <= 0） の扱い
+	if (blendAnimTime_ <= 0.0f)
 	{
-		blendAnimRate_ = blendAnimTime_;
+		// 新アニメを 1.0 にし、他は即座に削除する
+		for (auto it = playAnimations_.begin(); it != playAnimations_.end(); )
+		{
+			if (it->first == playType_)
+			{
+				it->second.blendRate = 1.0f;
+				MV1SetAttachAnimBlendRate(modelId_, it->second.attachNo, 1.0f);
+				++it;
+			}
+			else
+			{
+				MV1DetachAnim(modelId_, it->second.attachNo);
+				it = playAnimations_.erase(it);
+			}
+		}
+		// 経過は設定しておく（安定化のため）
+		blendAnimRate_ = blendAnimTime_ <= 0.0f ? 0.0f : blendAnimTime_;
+		return;
 	}
 
-	//ブレンド進行率を計算
-	float blendRate = blendAnimRate_ / blendAnimTime_;
+	// 通常の線形ブレンド（blendAnimRate_ は秒単位の経過）
+	blendAnimRate_ += dt;
+	if (blendAnimRate_ > blendAnimTime_) blendAnimRate_ = blendAnimTime_;
 
-	// 登録されているブレンドアニメーション率を更新
+	float t = blendAnimRate_ / blendAnimTime_;
+	if (t < 0.0f) t = 0.0f;
+	if (t > 1.0f) t = 1.0f;
+
 	for (auto it = playAnimations_.begin(); it != playAnimations_.end(); )
 	{
-		//変更後のアニメーションの場合
 		if (it->first == playType_)
 		{
-			//ブレンドアニメーション率を増加
-			it->second.blendRate += (1.0f - it->second.blendRate) * blendRate;
-
-			//アニメーションのアタッチ
+			it->second.blendRate = t;
 			MV1SetAttachAnimBlendRate(modelId_, it->second.attachNo, it->second.blendRate);
+			++it;
 		}
-		//変更前のアニメーションの場合
 		else
 		{
-			//ブレンドアニメーション率を減少
-			it->second.blendRate -= it->second.blendRate * blendRate;
-
-			// ブレンドアニメーション率が0以下になったら
-			if (it->second.blendRate <= 0.0f)
+			it->second.blendRate = 1.0f - t;
+			if (it->second.blendRate <= 0.001f)
 			{
-				//アニメーションのデタッチ
-				it->second.attachNo = MV1DetachAnim(modelId_, it->second.attachNo);
-
-				// ブレンドアニメーション率が0以下になったら、リストから削除
+				MV1DetachAnim(modelId_, it->second.attachNo);
 				it = playAnimations_.erase(it);
-				continue;
 			}
-			//アニメーションのアタッチ
-			MV1SetAttachAnimBlendRate(modelId_, it->second.attachNo, it->second.blendRate);
+			else
+			{
+				MV1SetAttachAnimBlendRate(modelId_, it->second.attachNo, it->second.blendRate);
+				++it;
+			}
 		}
-		++it;
 	}
 }

@@ -103,6 +103,9 @@ public:
 	/// <returns>0.0～1.0でパーセンテージを返す</returns>
 	float GetVolume(SOUND_TYPE type) { return volume_[type]; }
 
+
+	LONGLONG GetTotalTime(SRC src);
+
 	/// <summary>
 	/// 音の前ロード
 	/// </summary>

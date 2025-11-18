@@ -60,16 +60,14 @@ public:
 
 		//UI
 		ENEMY_HP_UI_IMG,	//敵HPのUI
-		ENEMY_HP_UI_SIDE_IMG,	//敵HPのUI
-		ENEMY_HP_UI_CENTER_IMG,	//敵HPのUI
 		ENEMY_HP_UI_MASK_IMG,	//敵HPのUIマスク
+		ENEMY_HP_UI_NORMAL_IMG,	//敵HPのUI法線
 
 		//エフェクト
 		HIT_EFFECT,		//ヒットエフェクト
 		WATER_SPLIT,	//渦巻
-		WATER_SPRIT_MODEL, //ウォータースプリット
+		WATER_SPRIT_THUNDER_MODEL, //ウォータースプリットと雷モデル
 		FIRE_MODEL,		//炎のモデル
-		THUNDER_MODEL,	//雷のモデル
 	};
 
 	// 明示的にインステンスを生成する

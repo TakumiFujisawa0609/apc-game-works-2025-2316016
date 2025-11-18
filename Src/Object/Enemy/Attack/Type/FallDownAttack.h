@@ -14,11 +14,10 @@ public:
 	void Init(void)override;
 	void Update(void)override;
 	void Draw(void)override;
-	int GetSubObjectNum(void)const override { return static_cast<int>(fallDownShots_.size()); }
+	int GetSubObjectNum(void)override { return static_cast<int>(fallDownShots_.size()); }
 	Transform& GetShotTransform(int shotNum);
 	FallDownShot::STATE GetShotState(int shotNum);
 	float GetShotRadius(int shotNum);
-	const float GetDamage(void)const override { return FallDownShot::DAMAGE; }
 private:
 
 	std::vector<std::unique_ptr<FallDownShot>> fallDownShots_; //—Ž‰º’e

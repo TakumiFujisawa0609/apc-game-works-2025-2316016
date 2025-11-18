@@ -2,6 +2,8 @@
 #include "Triangle3D.h"
 #include "Capsule.h"
 #include "Line3D.h"
+#include "Cylinder.h"
+#include "Circumference.h"
 #include "Sphere.h"
 
 Sphere::Sphere(VECTOR& pos, float radius) : pos_(pos), radius_(radius)
@@ -29,7 +31,10 @@ const bool Sphere::IsHit(Geometry& _geometry, VECTOR& _hitPos)
 
 const bool Sphere::IsHit(Sphere& _sphere, VECTOR& _hitPos)
 {
-	return false;
+	VECTOR pos = _sphere.GetPos();
+	float radius = _sphere.GetRadius();
+	bool ret = Utility::IsColSphere2Sphere(pos_, radius_, pos, radius,_hitPos);
+	return ret;
 }
 
 const bool Sphere::IsHit(Capsule& _capsule, VECTOR& _hitPos)
@@ -48,5 +53,22 @@ const bool Sphere::IsHit(Line3D& _line, VECTOR& _hitPos)
 const bool Sphere::IsHit(Triangle3D& _triangle, VECTOR& _hitPos)
 {
 	bool ret = _triangle.IsHit(*this, _hitPos);
+	return ret;
+}
+
+const bool Sphere::IsHit(Cylinder& _circle, VECTOR& _hitPos)
+{
+
+	VECTOR pos = _circle.GetPos();
+	float radius = _circle.GetRadius();
+	bool ret = Utility::IsColCylinder2Cylinder(pos_, radius_, pos, radius, _hitPos);
+	return ret;
+}
+
+const bool Sphere::IsHit(Circumference& _circle, VECTOR& _hitPos)
+{
+	VECTOR pos = _circle.GetPos();
+	float radius = _circle.GetRadius();
+	bool ret = Utility::IsColCircumference2Circle(pos, radius, pos_, radius_, _hitPos);
 	return ret;
 }

@@ -14,6 +14,9 @@ public:
 	static constexpr int MARGIN_Y = 10;		//Yの余白
 	static constexpr int SIZE_Y = 80;		//Yの大きさ
 	static constexpr VECTOR GAGE_COL = { 0.1f,1.0f,0.1f };
+	static constexpr VECTOR INIT_LIGHT_DIR = { 0.0f,-0.3f,1.0f };
+	static constexpr float ROT_DEG_SEC = 90.0f;	//1秒に回る量
+	static constexpr float LIGHT_TIME = 2.0f;
 
 	/// <summary>
 	/// コンストラクタ
@@ -34,6 +37,7 @@ private:
 	//敵のクラス
 	EnemyBase& enemy_;
 
+	VECTOR lightDir_;
 	//最大体力
 	float maxHP_;
 	//左上座標
@@ -49,6 +53,8 @@ private:
 	int uiHandle_;
 	//マスク画像
 	int uiMaskHandle_;
+	//法線画像
+	int uiNormalHandle_;
 
 	float gageMin_;
 	float gageMax_;

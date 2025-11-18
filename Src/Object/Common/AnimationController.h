@@ -1,23 +1,30 @@
 #pragma once
 #include <string>
 #include <map>
+
 class SceneManager;
 
 class AnimationController
 {
-	
-public :
+public:
 
 	// アニメーションデータ
 	struct Animation
 	{
-		int model = -1;
-		int attachNo = -1;
-		int animIndex = 0;
+		// ------------- 追加ここから -------------
+		// 外部アニメとしてロードされたファイルか？
+		bool isLoadedFromFile = false;
+		// 外部アニメの場合、そのモデルID（内蔵アニメは -1）
+		int sourceModel = -1;
+		// ------------- 追加ここまで -------------
+
+		int model = -1;          // 再生に使うモデルID（内蔵の場合 modelId_、外部の場合 sourceModel）
+		int attachNo = -1;       // AttachAnim の返り値
+		int animIndex = 0;       // モデルのアニメ番号
 		float speed = 0.0f;
-		float totalTime = 0.0f;
-		float step = 0.0f;
-		float blendRate = 0.0f;	// アニメーションブレンド進行度
+		float totalTime = 0.0f;  // アニメ総時間（秒）
+		float step = 0.0f;       // 現在の再生時間（秒）
+		float blendRate = 0.0f;  // ブレンド進行度（0..1）
 	};
 
 	static constexpr float DEFAULT_BLEND_ANIM_TIME = 0.5f;
@@ -27,17 +34,22 @@ public :
 	// デストラクタ
 	~AnimationController(void);
 
-	// アニメーション追加
+	// アニメーション追加（外部アニメ）
 	void Add(int type, const std::string& path, float speed);
+
+	// アニメーション追加（モデル内蔵アニメ）
 	void Add(int type, const float speed, int modelId = -1);
 
 	// アニメーション再生
-	void Play(int type, bool isLoop = true, 
-		float startStep = 0.0f, float endStep = -1.0f, float blendAnimTime = DEFAULT_BLEND_ANIM_TIME, bool isStop = false, bool isForce = false,bool isReverse = false);
+	void Play(int type, bool isLoop = true,
+		float startStep = 0.0f, float endStep = -1.0f,
+		float blendAnimTime = DEFAULT_BLEND_ANIM_TIME, bool isStop = false,
+		bool isForce = false, bool isReverse = false);
 
+	// 更新
 	void Update(void);
 
-	// アニメーション終了後に繰り返すループステップ
+	// 終了後のループステップ設定
 	void SetEndLoop(float startStep, float endStep, float speed);
 
 	// 再生中のアニメーション
@@ -47,44 +59,25 @@ public :
 	bool IsEnd(void) const;
 
 	void DebugDraw();
-private :
 
-	// モデルのハンドルID
-	int modelId_;
+private:
 
-	// 種類別のアニメーションデータ
-	std::map<int, Animation> animations_;
+	int modelId_;                       // メインモデル
+	std::map<int, Animation> animations_; // 種類別アニメ
+	std::map<int, Animation> playAnimations_; // 再生中アニメ
 
-	int playType_;
-	//Animation playAnim_;
+	int playType_;          // 現在のメインアニメ種別
+	bool isLoop_;           // ループ再生
+	bool isStop_;           // 停止状態
 
-	// アニメーションをループするかしないか
-	bool isLoop_;
-
-	// アニメーションを止めたままにする
-	bool isStop_;
-
-	// アニメーション終了後に繰り返すループステップ
 	float stepEndLoopStart_;
 	float stepEndLoopEnd_;
 	float endLoopSpeed_;
+	float switchLoopReverse_;           // 1 or -1
 
-	// 逆再生
-	float switchLoopReverse_;
+	float blendAnimTime_;               // ブレンド時間（秒）
+	float blendAnimRate_;               // 経過ブレンド時間（秒）
 
-	//ブレンドアニメーション時間
-	float blendAnimTime_;
-
-	// ブレンド
-	float blendAnimRate_;
-
-	// 再生中のアニメーションデータマップ
-	std::map<int, Animation> playAnimations_;
-
-	// メインの更新処理
 	void UpdateMainAnimation();
-
-	// ブレンドアニメーションの更新処理
 	void UpdateBlendAnimation();
 };
-

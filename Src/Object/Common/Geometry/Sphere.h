@@ -12,6 +12,7 @@ public:
 	GEOMETRY_TYPE GetType(void)override { return GEOMETRY_TYPE::SPHERE; }
 	VECTOR GetPos(void) { return pos_; }
 	float GetRadius(void) { return radius_; }
+	void SetRadius(float radius) { radius_ = radius; }
 
 	/// <summary>
 	/// Œ`ó“–‚½‚è”»’è
@@ -61,6 +62,20 @@ public:
 	/// <param name="_geometry">OŠpŒ`î•ñ</param>
 	/// <returns>“–‚½‚è”»’è(true:“–‚½‚Á‚½)</returns>
 	const bool IsHit(Triangle3D& _triangle, VECTOR& _hitPos)override;
+
+	/// <summary>
+	/// ‰~’Œ‚Æ‚Ì“–‚½‚è”»’è
+	/// </summary>
+	/// <param name="_circle">‰~’Œî•ñ</param>
+	/// <returns>“–‚½‚è”»’è(true:“–‚½‚Á‚½)</returns>
+	const bool IsHit(Cylinder& _circle, VECTOR& _hitPos)override;
+
+	/// <summary>
+	/// ‰~ü‚Æ‚Ì“–‚½‚è”»’è
+	/// </summary>
+	/// <param name="_circle">‰~üî•ñ</param>
+	/// <returns>“–‚½‚è”»’è(true:“–‚½‚Á‚½)</returns>
+	const bool IsHit(Circumference& _circle, VECTOR& _hitPos)override;
 private:
 	static constexpr int DRAW_VERTEX_NUM = 16;
 

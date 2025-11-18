@@ -58,7 +58,7 @@ public:
 	/// </summary>
 	/// <param name=""></param>
 	/// <returns>親オブジェクト</returns>
-	inline const ObjectBase& GetParent(void)const { return parent_; }
+	inline  ObjectBase& GetParent(void)const { return parent_; }
 
 	/// <summary>
 	/// 当たり判定の取得

@@ -1,8 +1,4 @@
 #include "../../Utility/Utility.h"
-#include "../Common/Transform.h"
-#include "../Common/EffectController.h"
-#include "../../Renderer/ModelMaterial.h"
-#include "../../Renderer/ModelRenderer.h"
 #include "../../Manager/ResourceManager.h"
 #include "../../Manager/SceneManager.h"
 #include "../../Manager/DrawTranslucentManager.h"
