@@ -95,6 +95,7 @@
     <ClCompile Include="Src\Object\Stage\Stage.cpp" />
     <ClCompile Include="Src\Object\Common\Geometry\Triangle3D.cpp" />
     <ClCompile Include="Src\Scene\Game\Tutorial\TutorialBase.cpp" />
+    <ClCompile Include="Src\Scene\Game\Tutorial\TutorialMove.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Object\Gate\Gate.h" />
@@ -173,6 +174,7 @@
     <ClInclude Include="Src\Object\Stage\Stage.h" />
     <ClInclude Include="Src\Object\Common\Geometry\Triangle3D.h" />
     <ClInclude Include="Src\Scene\Game\Tutorial\TutorialBase.h" />
+    <ClInclude Include="Src\Scene\Game\Tutorial\TutorialMove.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shader\Common\Pixel\PixelShader2DHeader.hlsli" />

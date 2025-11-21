@@ -2,6 +2,9 @@
 #include <functional>
 #include <map>
 #include "SceneGame.h"
+
+class TutorialMove;
+
 class SceneTutorial :  public SceneGame
 {
 public:
@@ -33,6 +36,8 @@ public:
 
 private:
 	STEP step_;	//チュートリアルの進行度
+	std::unique_ptr<TutorialMove> tutorialMove_; //移動チュートリアル
+
 	void ChangeStep(STEP step);
 	std::map<STEP, std::function<void(void)>> changeStep_;	//ステップ変更関数格納
 	void ChangeStepMove(void);
