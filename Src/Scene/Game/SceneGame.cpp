@@ -44,6 +44,7 @@ bool SceneGame::Init(void)
 	//ìGê∂ê¨
 	enemy_ = std::make_unique<EnemyBase>(player_->GetTransform());
 	enemy_->Init();
+	player_->SetEnemyTransform(&enemy_->GetTransform());
 	//ìGHPUIê∂ê¨
 	enemyHPUI_ = std::make_unique<EnemyHPUI>(enemy_->GetMaxHP(), *enemy_);
 	enemyHPUI_->Init();

@@ -1,6 +1,8 @@
 #pragma once
 #include "../../../ObjectBase.h"
 
+class AttackBase;
+
 class SubObjectBase : public ObjectBase
 {
 public:
@@ -10,6 +12,7 @@ public:
 	virtual void Update(void) override;
 	virtual void Draw(void) override;
 	float GetDamage(void) { return damage_; }
+
 protected:
 	float damage_;
 };

@@ -17,8 +17,8 @@ public:
 
 	//リムライトの色
 	static constexpr COLOR_F RIM_COLOR = { 1.0f,1.0f,1.0f,1.0f };
-	static constexpr float RIM_MIN_POW = 5.0f;
-	static constexpr float RIM_MAX_POW = 0.1f;
+	static constexpr float RIM_MIN_POW = 10.0f;
+	static constexpr float RIM_MAX_POW = 0.0f;
 
 	//最大体力
 	static constexpr float MAX_HP = 100.0f; 
@@ -134,10 +134,13 @@ public:
 
 	PointLight& GetPointLight(void) { return *pointLight_; }
 
+	void SetEnemyTransform(Transform* enemyTrans) { enemyTrans_ = enemyTrans; }
 protected:
 
+	Transform* enemyTrans_; //敵の座標
 	VECTOR headPos_;	//頭座標
 	VECTOR prePos_;
+	VECTOR landPos_; //着地座標
 	bool isDeath_;
 	KeyConfig::TYPE controlType_;
 	int playerNum_; //プレイヤー番号
@@ -215,6 +218,9 @@ protected:
 	void InitAnimationController(void); //アニメーションコントローラーの初期化
 
 	void Heal(void);
+
+	void SaccessAvoid(void); //回避成功時の処理
+	void SaccessJumpAvoid(void); //ジャンプ成功時の処理
 private:
 
 };

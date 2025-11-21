@@ -1,9 +1,12 @@
+#include "../Manager/Camera.h"
 #include "../Manager/KeyConfig.h"
 #include "../Manager/SceneManager.h"
 #include "SceneGameClear.h"
 
 SceneGameClear::SceneGameClear(void)
 {
+    auto& camera = SceneManager::GetInstance().GetCamera();
+    camera.ChangeMode(Camera::MODE::FIXED_POINT);
 }
 
 SceneGameClear::~SceneGameClear(void)

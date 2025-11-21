@@ -8,14 +8,6 @@
 
 SkyDome::SkyDome(void)
 {
-}
-
-SkyDome::~SkyDome(void)
-{
-}
-
-void SkyDome::Init(void)
-{
 	transform_ = std::make_unique<Transform>();
 	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::SKY_DOME));
 	transform_->pos = { 0.0f,0.0f,0.0f };
@@ -26,11 +18,19 @@ void SkyDome::Init(void)
 		"SkyDomeVS.cso", 0,
 		"SkyDomePS.cso", 0
 	);
+	renderer_ = std::make_shared<ModelRenderer>(transform_->modelId, *material_	);
+}
+
+SkyDome::~SkyDome(void)
+{
+}
+
+void SkyDome::Init(void)
+{
+
 	//material_->AddConstBufVS({ TEXTURE_SCALE, 0.0f, 1.0f, 1.0f });
 	//material_->SetTextureBuf(3, ResourceManager::GetInstance().Load(ResourceManager::SRC::NOISE).handleId_);
-	renderer_ = std::make_shared<ModelRenderer>(
-		transform_->modelId, *material_
-	);
+
 	//material_ = std::make_unique<ModelMaterial>(
 	//	"FloorVS.cso", 1,
 	//	"FloorPS.cso", 0

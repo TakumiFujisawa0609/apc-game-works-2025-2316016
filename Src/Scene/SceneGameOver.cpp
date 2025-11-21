@@ -1,9 +1,12 @@
 #include "../Manager/KeyConfig.h"
+#include "../Manager/Camera.h"
 #include "../Manager/SceneManager.h"
 #include "SceneGameOver.h"
 
 SceneGameOver::SceneGameOver(void)
 {
+    auto& camera = SceneManager::GetInstance().GetCamera();
+    camera.ChangeMode(Camera::MODE::FIXED_POINT);
 }
 
 SceneGameOver::~SceneGameOver(void)

@@ -21,7 +21,7 @@ SceneTitle::~SceneTitle(void)
 //‰Šú‰»ˆ—(‰‰ñ‚Ì1“x‚Ì‚İÀs‚³‚ê‚é)
 bool SceneTitle::Init(void)
 {
-	auto camera = SceneManager::GetInstance().GetCamera();
+	auto& camera = SceneManager::GetInstance().GetCamera();
 	camera.ChangeMode(Camera::MODE::FIXED_POINT);
 	SetUseASyncLoadFlag(true);
 	SoundManager::GetInstance().Load(SoundManager::SRC::GAME_BGM);
@@ -36,7 +36,7 @@ void SceneTitle::Update(void)
 	if (KeyConfig::GetInstance().IsTrgDown(KeyConfig::CONTROL_TYPE::ENTER,KeyConfig::JOYPAD_NO::PAD1))
 	{
 		SoundManager::GetInstance().Play(SoundManager::SRC::ENTER_SOUND, Sound::TIMES::ONCE);
-		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::GAME, true);
+		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::SELECT, true);
 	}
 	
 }

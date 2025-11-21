@@ -139,6 +139,7 @@ void WaterSpritAttack::CreateWaterSpritWave(void)
 	{
 		float rad = Utility::Deg2RadF(Utility::ONE_TRACK_DEG / ONE_WATER_SPRIT_NUM * i + randomDeg);
 		VECTOR dir = { cosf(rad),0.0f,sinf(rad) };
-		waterSprit_.push_back(std::make_unique<WaterSprit>(dir, startPos, speed));
+		auto water = std::make_unique<WaterSprit>(dir, startPos, speed);
+		waterSprit_.push_back(std::move(water));
 	}
 }

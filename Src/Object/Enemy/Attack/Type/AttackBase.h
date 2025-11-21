@@ -59,7 +59,6 @@ public:
 	GEOMETORY GetGeometory(void) const { return geo_; }
 
 	EnemyBase::ATTACK_TYPE GetMyType(void)const { return myType_; }
-
 protected:
 	EnemyBase& enemy_; //êeÇÃEnemyBase
 

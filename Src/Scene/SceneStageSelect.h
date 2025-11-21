@@ -3,19 +3,21 @@
 #include <vector>
 #include <map>
 #include <functional>
+#include <memory>
 #include "../../Manager/KeyConfig.h"
 #include "SceneBase.h"
+
+class PlayerBase;
+class SkyDome;
+class Stage;
+class Gate;
 
 class SceneStageSelect : public SceneBase
 {
 public:
 
-	enum class STATE
-	{
-		CHOOSE,	//選択中
-		CHECK,	//決定確認
-		DECIDE,	//決定
-	};
+	static constexpr int GATE_NUM = 4;
+	static constexpr float GATE_RADIUS = 1000.0f;
 
 	//メンバー関数
 	SceneStageSelect(void);
@@ -33,6 +35,9 @@ public:
 
 private:
 
-	void DrawEnterCancelKey(void);
-	void DrawEnterCancelKeyTemp(void);
+	std::unique_ptr<SkyDome> skyDome_;
+	std::unique_ptr<PlayerBase> player_;
+	std::unique_ptr<Stage> stage_;
+	std::unique_ptr<Gate> gate_[GATE_NUM];
+
 };

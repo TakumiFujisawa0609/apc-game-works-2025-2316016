@@ -28,6 +28,7 @@ public:
 	};
 
 	static constexpr float DEFAULT_BLEND_ANIM_TIME = 0.5f;
+	static constexpr float DEFAULT_ANIM_SPEED = 60.0f;
 
 	// コンストラクタ
 	AnimationController(int modelId);

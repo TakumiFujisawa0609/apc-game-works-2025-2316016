@@ -15,6 +15,8 @@
 #include "../Light/PointLight.h"
 #include "../Enemy/EnemyBase.h"
 #include "../Enemy/Attack/SubObject/SubObjectBase.h"
+#include "../Enemy/Attack/Type/AttackBase.h"
+#include "../Enemy/Attack/Type/CrossAttack.h"
 #include "PlayerShot.h"
 #include "PlayerBase.h"
 
@@ -54,10 +56,13 @@ PlayerBase::PlayerBase(int playerNum) :keyIns_(KeyConfig::GetInstance())
 	isDeath_ = false;
 	healDeray_ = 0.0f;
 	headPos_ = Utility::VECTOR_ZERO;
+	landPos_ = Utility::VECTOR_ZERO;
 	std::unique_ptr<Geometry>geo = std::make_unique<Sphere>(transform_->pos, RADIUS);
-	MakeCollider(Collider::TAG::PLAYER, std::move(geo), { Collider::TAG::PLAYER,Collider::TAG::PLAYER });
+	MakeCollider(Collider::TAG::PLAYER, std::move(geo), { Collider::TAG::PLAYER,Collider::TAG::PLAYER_ATTACK ,Collider::TAG::PLAYER_LAND});
 	geo = std::make_unique<Sphere>(headPos_, RADIUS);
-	MakeCollider(Collider::TAG::PLAYER, std::move(geo), { Collider::TAG::PLAYER,Collider::TAG::PLAYER });
+	MakeCollider(Collider::TAG::PLAYER, std::move(geo), { Collider::TAG::PLAYER,Collider::TAG::PLAYER_ATTACK ,Collider::TAG::PLAYER_LAND });
+	geo = std::make_unique<Sphere>(landPos_, RADIUS);
+	MakeCollider(Collider::TAG::PLAYER_LAND, std::move(geo), { Collider::TAG::PLAYER,Collider::TAG::PLAYER_ATTACK ,Collider::TAG::PLAYER_LAND });
 	isAvoidSaccess_ = false;
 	InitAnimationController();
 	SetupStateChange();
@@ -111,10 +116,12 @@ void PlayerBase::Update(void)
 	Heal();
 	transform_->Update();
 	headPos_ = MV1GetFramePosition(transform_->modelId, HEAD_BONE_NO);
+	landPos_ = transform_->pos;
+	landPos_.y = MOVE_LIMIT_MIN.y;
 	//攻撃のクールタイム中ではなく攻撃ボタンを押したら攻撃する
 	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK, KeyConfig::JOYPAD_NO::PAD1, controlType_) && attackDeley_ < 0.0f )
 	{
-		if (state_ == STATE::IDLE ||state_ == STATE::MOVE || state_ == STATE::JUMP)
+		if (state_ == STATE::IDLE ||state_ == STATE::MOVE)
 		{
 			ChangeState(STATE::ATTACK);
 		}
@@ -161,14 +168,13 @@ void PlayerBase::OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos)
 	{
 		if (state_ == STATE::AVOID && avoidSaccessTime_ < 0.0f)
 		{
-			isAvoidSaccess_ = true;
-			avoidSaccessTime_ = avoidTime_;
-			rimPow_ = RIM_MAX_POW;
+			SaccessAvoid();
 		}
 		return;
 	}
 	if (hitCol->GetGeometry().GetType() == Geometry::GEOMETRY_TYPE::CIRCUMFERENCE && state_ == STATE::JUMP)
 	{
+		SaccessJumpAvoid();
 		return;
 	}
 	Collider::TAG tag = hitCol->GetTag();
@@ -183,6 +189,16 @@ void PlayerBase::OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos)
 		{
 			continue;
 		}
+		if (collider->GetTag() == Collider::TAG::PLAYER_LAND)
+		{
+			if (tag != Collider::TAG::ENEMY_ATTACK)
+			{
+				return;
+			}
+			auto& attack = dynamic_cast<SubObjectBase&>(hit);
+			return;
+
+		}
 		auto& sph = dynamic_cast<Sphere&>(*geo);
 		VECTOR pos = sph.GetPos();
 		dir = VSub(pos, hitPos);
@@ -191,6 +207,8 @@ void PlayerBase::OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos)
 	{
 	case Collider::TAG::PLAYER:
 	case Collider::TAG::PLAYER_ATTACK:
+	case Collider::TAG::PLAYER_LAND:
+	case Collider::TAG::GATE:
 		return;
 		break;
 	case Collider::TAG::ENEMY:
@@ -206,25 +224,13 @@ void PlayerBase::OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos)
 		break;
 	}
 
-	if (ChangeState(STATE::DAMAGE))
-	{
-		material_->SetConstBufPS(0, Utility::COLOR_F2FLOAT4(DAMAGE_COLOR_TIMES));
-		hp_ -= damage;
-		healDeray_ = DAMAGE_HEAL_DERAY;
-		damageDir_ = dir;
-		damageDir_.y = 0.0f;
-		damageDir_ = VNorm(damageDir_);
-		if (gravity_->GetState() == Gravity::STATE::NONE)
-		{
-			gravity_->SetInitPower(DAMAGE_POW);
-			gravity_->ChengeState(Gravity::STATE::JUMP);
-		}
-	}
+	Damage(damage, dir);
 }
 
 void PlayerBase::SetPos(const VECTOR& pos)
 {
 	transform_->pos = pos;
+	transform_->Update();
 }
 
 bool PlayerBase::ChangeState(STATE state, bool isAbsolute )
@@ -301,7 +307,7 @@ void PlayerBase::PlayerMove(void)
 	{
 		dir = VAdd(dir, left);
 	}
-	if (dir.x != 0.0f && dir.z != 0.0f)
+	if (dir.x != 0.0f || dir.z != 0.0f)
 	{
 		dir = VNorm(dir);
 		transform_->pos = VAdd(transform_->pos, VScale(dir, MOVE_SPEED));
@@ -440,6 +446,18 @@ void PlayerBase::Heal(void)
 	}
 }
 
+void PlayerBase::SaccessAvoid(void)
+{
+	isAvoidSaccess_ = true;
+	avoidSaccessTime_ = avoidTime_;
+	rimPow_ = RIM_MAX_POW;
+}
+
+void PlayerBase::SaccessJumpAvoid(void)
+{
+	//ジャンプ回避成功時の処理
+}
+
 void PlayerBase::StateChangeIdle(void)
 {
 	stateUpdate_ = std::bind(&PlayerBase::StateUpdateIdle, this);
@@ -460,6 +478,7 @@ void PlayerBase::StateChangeJump(void)
 	gravity_->SetInitPower(JUMP_POW);
 	stateUpdate_ = std::bind(&PlayerBase::StateUpdateJump, this);
 	animCtrl_->Play((int)STATE::JUMP,false,30.0f,90.0f,0.1f,false,true);
+
 };
 
 void PlayerBase::StateChangeAvoid(void)
@@ -544,11 +563,11 @@ void PlayerBase::StateUpdateIdle(void)
 	{
 		ChangeState(STATE::MOVE);
 	}
-	else if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_AVOID, KeyConfig::JOYPAD_NO::PAD1, controlType_) && avoidCoolTime_ < 0.0f)
+	else if (keyIns_.IsTrgDown(KeyConfig::CONTROL_TYPE::PLAYER_AVOID, KeyConfig::JOYPAD_NO::PAD1, controlType_) && avoidCoolTime_ < 0.0f)
 	{
 		ChangeState(STATE::AVOID);
 	}
-	else if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_JUMP, KeyConfig::JOYPAD_NO::PAD1, controlType_))
+	else if (keyIns_.IsTrgDown(KeyConfig::CONTROL_TYPE::PLAYER_JUMP, KeyConfig::JOYPAD_NO::PAD1, controlType_))
 	{
 		ChangeState(STATE::JUMP);
 	}
@@ -557,11 +576,11 @@ void PlayerBase::StateUpdateIdle(void)
 void PlayerBase::StateUpdateMove(void)
 {
 	PlayerMove();
-	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_AVOID, KeyConfig::JOYPAD_NO::PAD1, controlType_) && avoidCoolTime_ < 0.0f)
+	if (keyIns_.IsTrgDown(KeyConfig::CONTROL_TYPE::PLAYER_AVOID, KeyConfig::JOYPAD_NO::PAD1, controlType_) && avoidCoolTime_ < 0.0f)
 	{
 		ChangeState(STATE::AVOID);
 	}
-	else if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_JUMP, KeyConfig::JOYPAD_NO::PAD1, controlType_))
+	else if (keyIns_.IsTrgDown(KeyConfig::CONTROL_TYPE::PLAYER_JUMP, KeyConfig::JOYPAD_NO::PAD1, controlType_))
 	{
 		ChangeState(STATE::JUMP);
 	}
@@ -596,7 +615,7 @@ void PlayerBase::StateUpdateAvoid(void)
 		isAvoidSaccess_ = false;
 		avoidSaccessTime_ = -1.0f;
 		rimPow_ = RIM_MIN_POW;
-		if(KeyConfig::GetInstance().IsNew(KeyConfig::CONTROL_TYPE::PLAYER_AVOID, KeyConfig::JOYPAD_NO::PAD1, controlType_)&& avoidCoolTime_ < 0.0f)
+		if(KeyConfig::GetInstance().IsTrgDown(KeyConfig::CONTROL_TYPE::PLAYER_AVOID, KeyConfig::JOYPAD_NO::PAD1, controlType_)&& avoidCoolTime_ < 0.0f)
 		{
 			ChangeState(STATE::AVOID,true);
 			return;

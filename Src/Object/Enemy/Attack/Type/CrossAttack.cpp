@@ -6,12 +6,11 @@
 #include "../SubObject/CrossLine.h"
 #include "CrossAttack.h"
 
-CrossAttack::CrossAttack(EnemyBase& enemy) : AttackBase(enemy)
+CrossAttack::CrossAttack(EnemyBase& enemy) : AttackBase(enemy) ,radian_ (0.0f)
 {
 	range_ = RANGE::SHORT;
 	geo_ = GEOMETORY::SPHERE;
 	time_ = 0.0f;
-	radian_ = 0.0f;
 	reverseTime_ = 0.0f;
 	myType_ = EnemyBase::ATTACK_TYPE::CROSS_LINE;
 	sign_ = 1;

@@ -13,9 +13,11 @@ public:
 	enum class TAG
 	{
 		PLAYER,			//プレイヤー
+		PLAYER_LAND,	//プレイヤーの地面
 		PLAYER_ATTACK,	//プレイヤーの攻撃
 		ENEMY,			//敵
 		ENEMY_ATTACK,	//敵の攻撃
+		GATE,			//ゲート
 	};
 
 	/// <summary>

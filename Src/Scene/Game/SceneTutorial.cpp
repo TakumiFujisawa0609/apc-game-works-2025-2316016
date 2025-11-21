@@ -156,7 +156,7 @@ void SceneTutorial::ChangeStepFinish(void)
 
 void SceneTutorial::UpdateStepMove(void)
 {
-
+	
 }
 
 void SceneTutorial::UpdateStepLockOn(void)

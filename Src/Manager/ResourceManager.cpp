@@ -110,6 +110,8 @@ void ResourceManager::Init(void)
 	resourcesMap_.emplace(SRC::SHOCK_WAVE1, std::move(res));
 	res = Resource(Resource::TYPE::IMG, Application::PATH_MODEL + "Stage/ShockWave/Noise2.png");
 	resourcesMap_.emplace(SRC::NOISE, std::move(res));
+	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "Gate/Gate.mv1");
+	resourcesMap_.emplace(SRC::GATE, std::move(res));
 
 	//UI
 	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "UI/EnemyHP.png");

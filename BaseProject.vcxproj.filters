@@ -75,6 +75,8 @@
     <ClCompile Include="Src\Object\Common\Geometry\Cylinder.cpp" />
     <ClCompile Include="Src\Object\Light\PointLight.cpp" />
     <ClCompile Include="Src\Object\Common\Geometry\Circumference.cpp" />
+    <ClCompile Include="Src\Object\Gate\Gate.cpp" />
+    <ClCompile Include="Src\Scene\Game\Tutorial\TutorialBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Common\IntVector3.h" />
@@ -151,6 +153,8 @@
     <ClInclude Include="Src\Object\Common\Geometry\Cylinder.h" />
     <ClInclude Include="Src\Object\Light\PointLight.h" />
     <ClInclude Include="Src\Object\Common\Geometry\Circumference.h" />
+    <ClInclude Include="Src\Object\Gate\Gate.h" />
+    <ClInclude Include="Src\Scene\Game\Tutorial\TutorialBase.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shader\Common\VertexToPixelHeader.hlsli" />
@@ -187,5 +191,7 @@
     <FxCompile Include="Src\Shader\Model\SkyDomePS.hlsl" />
     <FxCompile Include="Src\Shader\Model\SkyDomeVS.hlsl" />
     <FxCompile Include="Src\Shader\Image\EnemyHPUI.hlsl" />
+    <FxCompile Include="Src\Shader\Model\GateVS.hlsl" />
+    <FxCompile Include="Src\Shader\Model\GatePS.hlsl" />
   </ItemGroup>
 </Project>

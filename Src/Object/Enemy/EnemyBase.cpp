@@ -122,6 +122,7 @@ void EnemyBase::OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos)
 		Damage(2.0f);
 		break;
 	case Collider::TAG::PLAYER:
+	case Collider::TAG::PLAYER_LAND:
 	case Collider::TAG::ENEMY:
 	case Collider::TAG::ENEMY_ATTACK:
 		return;
@@ -269,6 +270,7 @@ void EnemyBase::AddAttack(ATTACK_TYPE type)
 		break;
 	case EnemyBase::ATTACK_TYPE::CROSS_LINE:
 		attack = std::make_unique<CrossAttack>(*this);
+		attack->SetTarget(&target_);
 		break;
 	case EnemyBase::ATTACK_TYPE::THUNDER_AROUND:
 		attack = std::make_unique<ThunderAroundAttack>(*this);

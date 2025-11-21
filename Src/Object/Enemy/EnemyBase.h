@@ -178,9 +178,6 @@ protected:
 	void MoveLimit(void); //移動制限
 	void AplayGravity(void);	//重力適用
 
-
-	//飛行時の座標
-	//VECTOR flyLocalPos_;
 	//状態変更用
 	std::map<STATE, std::function<void(void)>> changeState_; //状態変更時の関数格納用
 	virtual void ChangeStateIdle(void);	//待機

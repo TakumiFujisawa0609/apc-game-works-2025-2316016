@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Object\Gate\Gate.cpp" />
     <ClCompile Include="Src\Object\Common\Geometry\Circumference.cpp" />
     <ClCompile Include="Src\Object\Light\PointLight.cpp" />
     <ClCompile Include="Src\Object\Common\Geometry\Cylinder.cpp" />
@@ -93,8 +94,10 @@
     <ClCompile Include="Src\Object\Enemy\Attack\SubObject\WaterSprit.cpp" />
     <ClCompile Include="Src\Object\Stage\Stage.cpp" />
     <ClCompile Include="Src\Object\Common\Geometry\Triangle3D.cpp" />
+    <ClCompile Include="Src\Scene\Game\Tutorial\TutorialBase.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Object\Gate\Gate.h" />
     <ClInclude Include="Src\Object\Common\Geometry\Circumference.h" />
     <ClInclude Include="Src\Object\Light\PointLight.h" />
     <ClInclude Include="Src\Object\Common\Geometry\Cylinder.h" />
@@ -169,6 +172,7 @@
     <ClInclude Include="Src\Object\Enemy\Attack\SubObject\WaterSprit.h" />
     <ClInclude Include="Src\Object\Stage\Stage.h" />
     <ClInclude Include="Src\Object\Common\Geometry\Triangle3D.h" />
+    <ClInclude Include="Src\Scene\Game\Tutorial\TutorialBase.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shader\Common\Pixel\PixelShader2DHeader.hlsli" />
@@ -215,6 +219,18 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="Src\Shader\Model\FloorVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Src\Shader\Model\GatePS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Src\Shader\Model\GateVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>

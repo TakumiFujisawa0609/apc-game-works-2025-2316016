@@ -57,6 +57,8 @@ public:
 		SHOCK_WAVE,	//ショックウェーブ
 		SHOCK_WAVE1,	//ショックウェーブ
 		NOISE,		//ノイズ
+		GATE,		//ゲート
+
 
 		//UI
 		ENEMY_HP_UI_IMG,	//敵HPのUI

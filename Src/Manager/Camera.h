@@ -49,7 +49,7 @@ public:
 
 	// ÉJÉÅÉâÇÃXâÒì]è„å¿ìxäp
 	static constexpr float LIMIT_X_UP_RAD = 90.0f * (DX_PI_F / 180.0f);
-	static constexpr float LIMIT_X_DW_RAD = 0.0f * (DX_PI_F / 180.0f);
+	static constexpr float LIMIT_X_DW_RAD = 15.0f * (DX_PI_F / 180.0f);
 
 	//FPSÇÃè„å¿äp
 	static constexpr float FPS_LIMIT_X_UP_RAD = -80.0f * (DX_PI_F / 180.0f);

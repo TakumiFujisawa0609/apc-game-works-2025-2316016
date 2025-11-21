@@ -54,7 +54,6 @@ void Application::Init(void)
 		isInitFail_ = true;
 		return;
 	}
-
 	// Effekseer‚Ì‰Šú‰»
 	InitEffekseer();
 	// ƒL[§Œä‰Šú‰»
