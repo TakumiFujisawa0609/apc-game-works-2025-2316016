@@ -40,13 +40,6 @@ void JumpAttackConstant::Draw(void)
 	}
 }
 
-void JumpAttackConstant::GetWaveState(float& radius, VECTOR& centerPos, int waveNum)
-{
-	radius = wave_[waveNum]->GetRadius();
-	centerPos = wave_[waveNum]->GetPos();
-}
-
-
 void JumpAttackConstant::ChangeStateNone(void)
 {
 	AttackBase::ChangeStateNone();
@@ -61,14 +54,14 @@ void JumpAttackConstant::ChangeStateReady(void)
 	enemy_.GetGravity().SetInitPower(JUMP_POW);
 	auto& animCtr = enemy_.GetAnimController();
 
-	animCtr.Play((int)EnemyBase::ANIM_TYPE_DRAGON::LAND, true, 0.0f, -1.0f);
+	enemy_.GetAnimController().Play(enemy_.GetAnimNumber(EnemyBase::ATTACK_STATE::READY, myType_));
 }
 
 void JumpAttackConstant::ChangeStateStart(void)
 {
 	//ウェーブの作成
 	AttackBase::ChangeStateStart();
-	std::unique_ptr<Wave> fast = std::make_unique<Wave>(enemy_.GetTransform().pos, Wave::SPEED_TYPE::FAST, Utility::RED);
+	std::unique_ptr<Wave> fast = std::make_unique<Wave>(enemy_.GetTransform().lock()->pos, Wave::SPEED_TYPE::FAST, Utility::RED);
 	wave_.push_back(std::move(fast));
 	time_ = TIME;
 	intervalTime_ = INTERVAL_TIME;
@@ -83,7 +76,6 @@ void JumpAttackConstant::ChangeStateFinish(void)
 {
 	AttackBase::ChangeStateFinish();
 	auto& animCtr = enemy_.GetAnimController();
-	animCtr.Play((int)EnemyBase::ANIM_TYPE_DRAGON::IDLE_1);
 	deleyTime_ = COOL_DOWN;
 }
 
@@ -95,15 +87,10 @@ void JumpAttackConstant::UpdateStateReady(void)
 {
 	auto& animCtr = enemy_.GetAnimController();
 	auto& gravity = enemy_.GetGravity();
-	if (gravity.GetPower() > 0.0f && isDown_ == false)
-	{
-		isDown_ = true;
-		animCtr.Play((int)EnemyBase::ANIM_TYPE_DRAGON::TAKE_OFF, true, 0.0f, -1.0f, 0.01f, false, true, false);
-	}
 	if (enemy_.GetGravity().GetState() != Gravity::STATE::JUMP)
 	{
 		ChangeState(STATE::START);
-		animCtr.Play((int)EnemyBase::ANIM_TYPE_DRAGON::SCREAM);
+		enemy_.GetAnimController().Play(enemy_.GetAnimNumber(EnemyBase::ATTACK_STATE::PLAY, myType_));
 	}
 }
 
@@ -129,7 +116,7 @@ void JumpAttackConstant::UpdateStateUpdate(void)
 
 	if (intervalTime_ <= 0.0f && time_ > 0.0f)
 	{
-		std::unique_ptr<Wave> wave = std::make_unique<Wave>(enemy_.GetTransform().pos, Wave::SPEED_TYPE::FAST, Utility::RED);
+		std::unique_ptr<Wave> wave = std::make_unique<Wave>(enemy_.GetTransform().lock()->pos, Wave::SPEED_TYPE::FAST, Utility::RED);
 		wave_.push_back(std::move(wave));
 		intervalTime_ = INTERVAL_TIME;
 	}

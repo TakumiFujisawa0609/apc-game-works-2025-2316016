@@ -77,6 +77,11 @@
     <ClCompile Include="Src\Object\Common\Geometry\Circumference.cpp" />
     <ClCompile Include="Src\Object\Gate\Gate.cpp" />
     <ClCompile Include="Src\Scene\Game\Tutorial\TutorialBase.cpp" />
+    <ClCompile Include="Src\Scene\Game\Tutorial\TutorialMove.cpp" />
+    <ClCompile Include="Src\Object\Player\GamePlayer.cpp" />
+    <ClCompile Include="Src\Object\Player\TitlePlayer.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Type\Dragon.cpp" />
+    <ClCompile Include="Src\Object\Enemy\EnemyTitle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Common\IntVector3.h" />
@@ -155,6 +160,11 @@
     <ClInclude Include="Src\Object\Common\Geometry\Circumference.h" />
     <ClInclude Include="Src\Object\Gate\Gate.h" />
     <ClInclude Include="Src\Scene\Game\Tutorial\TutorialBase.h" />
+    <ClInclude Include="Src\Scene\Game\Tutorial\TutorialMove.h" />
+    <ClInclude Include="Src\Object\Player\GamePlayer.h" />
+    <ClInclude Include="Src\Object\Player\TitlePlayer.h" />
+    <ClInclude Include="Src\Object\Enemy\Type\Dragon.h" />
+    <ClInclude Include="Src\Object\Enemy\EnemyTitle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shader\Common\VertexToPixelHeader.hlsli" />

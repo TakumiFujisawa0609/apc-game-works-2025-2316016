@@ -38,11 +38,6 @@ void ThunderAroundAttack::Draw(void)
 	}
 }
 
-Transform& ThunderAroundAttack::GetThunderTransform(int thunderNum)
-{
-	return thunders_[thunderNum]->GetTransform();
-}
-
 void ThunderAroundAttack::ChangeStateNone(void)
 {
 	AttackBase::ChangeStateNone();
@@ -50,13 +45,13 @@ void ThunderAroundAttack::ChangeStateNone(void)
 
 void ThunderAroundAttack::ChangeStateReady(void)
 {
-	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::TAKE_OFF,false);
+	enemy_.GetAnimController().Play(enemy_.GetAnimNumber(EnemyBase::ATTACK_STATE::READY, myType_),false);
 	AttackBase::ChangeStateReady();
 }
 
 void ThunderAroundAttack::ChangeStateStart(void)
 {
-	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::FLY_FLAME);
+	enemy_.GetAnimController().Play(enemy_.GetAnimNumber(EnemyBase::ATTACK_STATE::PLAY, myType_));
 	CreateThunder();
 	time_ = TIME;
 	intervalTime_ = INTERVAL_TIME;
@@ -74,7 +69,6 @@ void ThunderAroundAttack::ChangeStateFinish(void)
 	AttackBase::ChangeStateFinish();
 	SoundManager::GetInstance().Stop(SoundManager::SRC::THUNDER);
 	deleyTime_ = COOL_DOWN;
-	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::IDLE_1);
 }
 
 void ThunderAroundAttack::UpdateStateNone(void)
@@ -143,7 +137,7 @@ void ThunderAroundAttack::CreateThunder(void)
 	{
 		rad = Utility::Deg2RadF((360.0f / THUNDER_NUM) * i);
 		std::unique_ptr<ThunderAround> thunder;
-		VECTOR targetPos = target_->pos;
+		VECTOR targetPos = target_.lock()->pos;
 		VECTOR initPos = VAdd(targetPos, VGet(cosf(rad) * DISTANCE, 0.0f, sinf(rad) * DISTANCE));
 		thunder = std::make_unique<ThunderAround>(targetPos, initPos, rad);
 		thunders_.push_back(std::move(thunder));

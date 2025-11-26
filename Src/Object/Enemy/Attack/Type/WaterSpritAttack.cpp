@@ -37,16 +37,6 @@ void WaterSpritAttack::Draw(void)
 	}
 }
 
-Transform& WaterSpritAttack::GetWaterTransform(int index)
-{
-	return waterSprit_[index]->GetTransform();
-}
-
-float WaterSpritAttack::GetWaterRadius(int index) const
-{
-	return waterSprit_[index]->GetRadius();
-}
-
 void WaterSpritAttack::ChangeStateNone(void)
 {
 	AttackBase::ChangeStateNone();
@@ -54,7 +44,7 @@ void WaterSpritAttack::ChangeStateNone(void)
 
 void WaterSpritAttack::ChangeStateReady(void)
 {
-	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::FLY_FLAME, false,0.0f,-0.1f,-1.0f);
+	enemy_.GetAnimController().Play(enemy_.GetAnimNumber(EnemyBase::ATTACK_STATE::READY, myType_),false);
 	AttackBase::ChangeStateReady();
 }
 
@@ -62,7 +52,7 @@ void WaterSpritAttack::ChangeStateStart(void)
 {
 	CreateWaterSpritWave();
 	intervalTime_ = INTERVAL_TIME;
-	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::FLAME_ATTACK);
+	enemy_.GetAnimController().Play(enemy_.GetAnimNumber(EnemyBase::ATTACK_STATE::PLAY, myType_));
 	AttackBase::ChangeStateStart();
 }
 
@@ -76,7 +66,6 @@ void WaterSpritAttack::ChangeStateFinish(void)
 	AttackBase::ChangeStateFinish();
 	deleyTime_ = COOL_DOWN;
 	waveNum_ = 0;
-	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::IDLE_1, true);
 }
 
 void WaterSpritAttack::UpdateStateNone(void)
@@ -133,7 +122,7 @@ void WaterSpritAttack::CreateWaterSpritWave(void)
 {
 	waveNum_++;
 	float speed = GetRand(static_cast<int>(MAX_SPEED - MIN_SPEED)) + MIN_SPEED;
-	VECTOR startPos = enemy_.GetTransform().pos;
+	VECTOR startPos = enemy_.GetTransform().lock()->pos;
 	float randomDeg = static_cast<float>(GetRand(static_cast<int>(Utility::ONE_TRACK_DEG)));
 	for (int i = 0; i < ONE_WATER_SPRIT_NUM; i++)
 	{

@@ -7,7 +7,7 @@
 #include "../../Manager/KeyConfig.h"
 #include "SceneBase.h"
 
-class PlayerBase;
+class GamePlayer;
 class SkyDome;
 class Stage;
 class Gate;
@@ -36,7 +36,7 @@ public:
 private:
 
 	std::unique_ptr<SkyDome> skyDome_;
-	std::unique_ptr<PlayerBase> player_;
+	std::unique_ptr<GamePlayer> player_;
 	std::unique_ptr<Stage> stage_;
 	std::unique_ptr<Gate> gate_[GATE_NUM];
 

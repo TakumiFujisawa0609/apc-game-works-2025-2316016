@@ -45,6 +45,7 @@ public:
 		//タイトル
 		TITLE_IMAGE_1,
 		TITLE_IMAGE_2,
+		TITLE_IMAGE_3,
 
 		//オブジェクト
 		SKY_DOME,	//スカイドーム

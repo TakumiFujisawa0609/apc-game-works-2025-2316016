@@ -8,7 +8,7 @@
 #include "../../../Common/Geometry/Sphere.h"
 #include "FollowShot.h"
 
-FollowShot::FollowShot(Transform& target, SPEED_TYPE speed, VECTOR startPos) : target_(target)
+FollowShot::FollowShot(std::weak_ptr<Transform> target, SPEED_TYPE speed, VECTOR startPos) : target_(target)
 {
 	transform_ = std::make_shared<Transform>();
 	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::CHICKIN));
@@ -32,7 +32,7 @@ void FollowShot::Init(void)
 void FollowShot::Update(void)
 {
 	time_ -= SceneManager::GetInstance().GetDeltaTime();
-	auto dir = VSub(target_.pos, transform_->pos);
+	auto dir = VSub(target_.lock()->pos, transform_->pos);
 	dir.y = 0.0f;
 	transform_->pos = VAdd(transform_->pos, VScale(VNorm(dir), speed_));
 	transform_->Update();

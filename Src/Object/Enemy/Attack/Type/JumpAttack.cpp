@@ -12,7 +12,6 @@ JumpAttack::JumpAttack(EnemyBase& enemy) : AttackBase(enemy)
 	range_ = RANGE::SHORT;
 	geo_ = GEOMETORY::CIRCUMFERENCE;
 	myType_ = EnemyBase::ATTACK_TYPE::JUMP;
-	isDown_ = false;
 }
 
 JumpAttack::~JumpAttack(void)
@@ -37,16 +36,9 @@ void JumpAttack::Draw(void)
 	}
 }
 
-void JumpAttack::GetWaveState(float& radius, VECTOR& centerPos,int waveNum)
-{
-	radius = wave_[waveNum]->GetRadius();
-	centerPos = wave_[waveNum]->GetPos();
-}
-
 void JumpAttack::ChangeStateNone(void)
 {
 	AttackBase::ChangeStateNone();
-	isDown_ = false;
 }
 
 void JumpAttack::ChangeStateReady(void)
@@ -57,23 +49,23 @@ void JumpAttack::ChangeStateReady(void)
 	enemy_.GetGravity().SetDir(Utility::DIR_D);
 	enemy_.GetGravity().SetInitPower(JUMP_POW);
 	auto& animCtr = enemy_.GetAnimController();
-	
-	animCtr.Play((int)EnemyBase::ANIM_TYPE_DRAGON::TAKE_OFF, true, 0.0f, -1.0f);
+
+	enemy_.GetAnimController().Play(enemy_.GetAnimNumber(EnemyBase::ATTACK_STATE::READY, myType_));
 }
 
 void JumpAttack::ChangeStateStart(void)
 {
 	//ウェーブの作成
 	AttackBase::ChangeStateStart();
-	std::unique_ptr<Wave> slow = std::make_unique<Wave>(enemy_.GetTransform().pos, Wave::SPEED_TYPE::SLOW,Utility::RED);
-	std::unique_ptr<Wave> midium = std::make_unique<Wave>(enemy_.GetTransform().pos, Wave::SPEED_TYPE::MIDIUM, Utility::RED);
-	std::unique_ptr<Wave> fast = std::make_unique<Wave>(enemy_.GetTransform().pos, Wave::SPEED_TYPE::FAST, Utility::RED);
+	std::unique_ptr<Wave> slow = std::make_unique<Wave>(enemy_.GetTransform().lock()->pos, Wave::SPEED_TYPE::SLOW,Utility::RED);
+	std::unique_ptr<Wave> midium = std::make_unique<Wave>(enemy_.GetTransform().lock()->pos, Wave::SPEED_TYPE::MIDIUM, Utility::RED);
+	std::unique_ptr<Wave> fast = std::make_unique<Wave>(enemy_.GetTransform().lock()->pos, Wave::SPEED_TYPE::FAST, Utility::RED);
 	wave_.push_back(std::move(slow));
 	wave_.push_back(std::move(midium));
 	wave_.push_back(std::move(fast));
 	for (int i = 0; i < RANDOM_WAVE_NUM; i++)
 	{
-		std::unique_ptr<Wave> random = std::make_unique<Wave>(enemy_.GetTransform().pos, Wave::SPEED_TYPE::RANDOM, Utility::RED);
+		std::unique_ptr<Wave> random = std::make_unique<Wave>(enemy_.GetTransform().lock()->pos, Wave::SPEED_TYPE::RANDOM, Utility::RED);
 		wave_.push_back(std::move(random));
 	}
 }
@@ -88,7 +80,6 @@ void JumpAttack::ChangeStateFinish(void)
 	AttackBase::ChangeStateFinish();
 	deleyTime_ = COOL_DOWN;
 	auto& animCtr = enemy_.GetAnimController();
-	animCtr.Play((int)EnemyBase::ANIM_TYPE_DRAGON::IDLE_1);
 }
 
 void JumpAttack::UpdateStateNone(void)
@@ -99,15 +90,10 @@ void JumpAttack::UpdateStateReady(void)
 {
 	auto& animCtr = enemy_.GetAnimController();
 	auto& gravity = enemy_.GetGravity();
-	if (gravity.GetPower() > 0.0f && isDown_ == false)
-	{
-		isDown_ = true;
-		animCtr.Play((int)EnemyBase::ANIM_TYPE_DRAGON::LAND, true, 0.0f, -1.0f,0.01f ,false, true, false);
-	}
 	if (enemy_.GetGravity().GetState() != Gravity::STATE::JUMP)
 	{
 		ChangeState(STATE::START);
-		animCtr.Play((int)EnemyBase::ANIM_TYPE_DRAGON::SCREAM);
+		enemy_.GetAnimController().Play(enemy_.GetAnimNumber(EnemyBase::ATTACK_STATE::PLAY, myType_));
 	}
 }
 

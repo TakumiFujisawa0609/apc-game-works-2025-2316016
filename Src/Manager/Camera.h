@@ -113,20 +113,21 @@ public:
 	MODE GetMode(void) { return mode_; }
 
 	// 追従対象の設定
-	void SetFollow(const Transform* follow);
-	void SetFollow(const Transform* follow1, const Transform* follow2);
+	void SetFollow( std::shared_ptr<Transform> follow);
+	void SetFollow( std::shared_ptr<Transform> follow1,  std::shared_ptr<Transform> follow2);
 
 	void SetPos(VECTOR pos) { pos_ = pos; }
 	void SetAngles(VECTOR angles) { angles_ = angles; }
 	void SetTargetPos(VECTOR pos) { targetPos_ = pos; }
+	void SetCameraUp(VECTOR up) { cameraUp_ = up; }
 private:
 
 	// カメラのローカル座標
 	VECTOR localPos_;
 
 	// カメラが追従対象とするTransform
-	const Transform* followTransform1_;
-	const Transform* followTransform2_;
+	std::shared_ptr<Transform> followTransform1_;
+	std::shared_ptr<Transform> followTransform2_;
 
 	//PADの番号
 	KeyConfig::JOYPAD_NO padNo_;

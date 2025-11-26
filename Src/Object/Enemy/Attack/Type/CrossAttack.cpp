@@ -19,6 +19,7 @@ CrossAttack::CrossAttack(EnemyBase& enemy) : AttackBase(enemy) ,radian_ (0.0f)
 }
 CrossAttack::~CrossAttack(void)
 {
+	SoundManager::GetInstance().Stop(SoundManager::SRC::FIRE);
 }
 
 void CrossAttack::Init(void)
@@ -42,11 +43,6 @@ void CrossAttack::Draw(void)
 	} 
 }
 
-Transform& CrossAttack::GetLineTransform(int lineNum)
-{
-	 return crossLines_[lineNum]->GetTransform();
-}
-
 void CrossAttack::ChangeStateNone(void)
 {
 	AttackBase::ChangeStateNone();
@@ -56,7 +52,7 @@ void CrossAttack::ChangeStateReady(void)
 {
 	AttackBase::ChangeStateReady();
 	SoundManager::GetInstance().Play(SoundManager::SRC::FIRE, Sound::TIMES::LOOP);
-	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::FLY_GLIDE);
+	enemy_.GetAnimController().Play(enemy_.GetAnimNumber(EnemyBase::ATTACK_STATE::READY, myType_));
 }
 
 void CrossAttack::ChangeStateStart(void)
@@ -67,13 +63,12 @@ void CrossAttack::ChangeStateStart(void)
 void CrossAttack::ChangeStateUpdate(void)
 {
 	AttackBase::ChangeStateUpdate();
-	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::SCREAM);
+	enemy_.GetAnimController().Play(enemy_.GetAnimNumber(EnemyBase::ATTACK_STATE::PLAY, myType_));
 }
 
 void CrossAttack::ChangeStateFinish(void)
 {
 	deleyTime_ = COOL_DOWN;
-	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::IDLE_1);
 	SoundManager::GetInstance().Stop(SoundManager::SRC::FIRE);
 	AttackBase::ChangeStateFinish();
 }
@@ -96,7 +91,7 @@ void CrossAttack::UpdateStateStart(void)
 		for (int i = 0; i < LINE_NUM; i++)
 		{
 			std::unique_ptr<CrossLine> line;
-			line = std::make_unique<CrossLine>(enemy_.GetTransform().pos, radian_, Utility::Deg2RadF(360.0f / LINE_NUM * i), createPointNum_);
+			line = std::make_unique<CrossLine>(enemy_.GetTransform().lock()->pos, radian_, Utility::Deg2RadF(360.0f / LINE_NUM * i), createPointNum_);
 			crossLines_.push_back(std::move(line));
 		}
 		createPointNum_++;

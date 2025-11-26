@@ -48,7 +48,7 @@ public:
 	virtual void Draw(void)override;
 	virtual int GetSubObjectNum(void);
 
-	void SetTarget(Transform* target) { target_ = target; }
+	void SetTarget(std::weak_ptr<Transform> target) { target_ = target; }
 
 	RANGE GetRange(void) const { return range_; }
 
@@ -65,7 +65,7 @@ protected:
 	EnemyBase::ATTACK_TYPE myType_;
 	RANGE range_; //UŒ‚”ÍˆÍ
 	STATE state_; //ó‘Ô
-	Transform* target_; //‘Šè‚ÌTransform
+	std::weak_ptr<Transform> target_; //‘Šè‚ÌTransform
 	float deleyTime_; //UŒ‚‚ÌƒfƒBƒŒƒCŠÔ
 	GEOMETORY geo_;
 

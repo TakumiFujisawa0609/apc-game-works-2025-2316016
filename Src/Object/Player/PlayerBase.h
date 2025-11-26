@@ -102,125 +102,33 @@ public:
 	/// <param name=""></param>
 	virtual void Draw(void)override;
 
-	void UIDraw(void)override;
+	virtual void UIDraw(void)override;
 
-	void OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos)override;
-
-	const VECTOR& GetPrePos(void)const { return prePos_; }
-	void SetPos(const VECTOR& pos);
+	virtual void OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos)override;
 	/// <summary>
 	/// 状態変更
 	/// </summary>
 	/// <param name="state">次の状態</param>
 	/// <param name="isAbsolute">同じやつでももう１度呼ぶならtrue</param>
 	/// <returns>成功(true)か失敗(false)か</returns>
-	bool ChangeState(STATE state,bool isAbsolute = false); //状態変更
+	virtual bool ChangeState(STATE state,bool isAbsolute = false) = 0; //状態変更
 
-	void Damage(float damage,VECTOR dir);
-	/// <summary>
-	/// ダメージを食らう状態か
-	/// </summary>
-	/// <param name=""></param>
-	/// <returns>食らう状態ならtrue</returns>
-	bool IsDamageHit(void);
-
+	void SetPos(const VECTOR& pos);
+	void SetRot(const VECTOR& rot);
 	STATE GetState(void) const { return state_; }
-	float GetHP(void) const { return hp_; }
-
-	int GetPlayerShotNum(void) { return static_cast<int>(shots_.size()); }
-	PlayerShot& GetPlayerShot(int num) { return *shots_[num]; }
-	Gravity& GetGravity(void) { return *gravity_; }
-	std::vector<VECTOR> GetCollisionSpherePositions(void);	//当たり判定用の球の位置を取得
-
-	PointLight& GetPointLight(void) { return *pointLight_; }
-
-	void SetEnemyTransform(Transform* enemyTrans) { enemyTrans_ = enemyTrans; }
 protected:
 
-	Transform* enemyTrans_; //敵の座標
-	VECTOR headPos_;	//頭座標
-	VECTOR prePos_;
-	VECTOR landPos_; //着地座標
-	bool isDeath_;
-	KeyConfig::TYPE controlType_;
 	int playerNum_; //プレイヤー番号
-	//基本情報
+	//状態
+	STATE state_;
 	KeyConfig& keyIns_;
-	std::unique_ptr<Gravity> gravity_;
 	std::unique_ptr<AnimationController> animCtrl_;
-	//弾
-	std::vector<std::unique_ptr<PlayerShot>> shots_;
 
 	std::unique_ptr<PointLight> pointLight_; //ポイントライト
 
-	//状態
-	STATE state_; 
-
-	//回避
-	VECTOR avoidDir_; //回避方向
-	float avoidTime_; //回避時間
-	float avoidCoolTime_; //回避クールタイム
-	bool isAvoidSaccess_; //回避成功したか
-	float avoidSaccessTime_; //回避成功した時間
 	float rimPow_;
 
-	//攻撃
-	float attackDeley_; //攻撃ディレイ
-
-	//ダメージ
-	float damageTime_;	//ダメージ硬直時間
-	float damageInvincibleTime_;	//ダメージ後の無敵時間
-	VECTOR damageDir_;	//ダメージ後の吹っ飛び方向
-
-	//体力
-	float hp_;
-	
-	//回復ディレイ
-	float healDeray_;
-
-
-	//状態変更
-	std::map<STATE, std::function<void(void)>> stateChanges_;
-	void StateChangeIdle(void);   //待機
-	void StateChangeMove(void);   //移動
-	void StateChangeJump(void);   //ジャンプ
-	void StateChangeAvoid(void);  //回避
-	//void StateChangeCharge(void); //チャージ
-	void StateChangeAttack(void); //攻撃
-	void StateChangeDamage(void); //ダメージ
-	void StateChangeDead(void);   //死亡
-
-	std::function<void(void)> stateUpdate_; //状態更新関数
-	void StateUpdateIdle(void);   //待機
-	void StateUpdateMove(void);   //移動
-	void StateUpdateJump(void);   //ジャンプ
-	void StateUpdateAvoid(void);  //回避
-	//void StateUpdateCharge(void); //チャージ
-	void StateUpdateAttack(void); //攻撃
-	void StateUpdateDamage(void); //ダメージ
-	void StateUpdateDead(void);   //死亡
-
-
-
-	void PlayerMove(void); //移動処理
-
-	void MoveLimit(void); //移動制限
-	void AplayGravity(void);	//重力適用
-
-	void SetupStateChange(void); //状態変更関数の設定
-
-	bool IsPushMoveKey(void); //移動キーが押されているか
-
-	void CreateShot(void); //弾の生成
-
-	void Rotation(void); //プレイヤーの向き調整
-
 	void InitAnimationController(void); //アニメーションコントローラーの初期化
-
-	void Heal(void);
-
-	void SaccessAvoid(void); //回避成功時の処理
-	void SaccessJumpAvoid(void); //ジャンプ成功時の処理
 private:
 
 };

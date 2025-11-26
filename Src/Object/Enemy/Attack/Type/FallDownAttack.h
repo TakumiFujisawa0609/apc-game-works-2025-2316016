@@ -6,7 +6,7 @@ class FallDownAttack :    public AttackBase
 {
 public:
 	static constexpr float COOL_DOWN = 60.0f;	//クールダウン
-	static constexpr int MAX_FALL_NUM = 30; //落下弾の同時に出せる最大数
+	static constexpr int MAX_FALL_NUM = 120; //落下弾の同時に出せる最大数
 	static constexpr float TIME = 30.0f; //落下弾が落ち続ける時間
 
 	FallDownAttack(EnemyBase& enemy);
@@ -15,7 +15,6 @@ public:
 	void Update(void)override;
 	void Draw(void)override;
 	int GetSubObjectNum(void)override { return static_cast<int>(fallDownShots_.size()); }
-	Transform& GetShotTransform(int shotNum);
 	FallDownShot::STATE GetShotState(int shotNum);
 	float GetShotRadius(int shotNum);
 private:

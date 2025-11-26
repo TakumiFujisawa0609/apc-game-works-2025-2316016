@@ -17,8 +17,6 @@ public:
 	void Update(void) override;
 	void Draw(void) override;
 	int GetSubObjectNum(void)override { return static_cast<int>(waterSprit_.size()); }
-	Transform& GetWaterTransform(int index);
-	float GetWaterRadius(int index) const;
 
 private:
 

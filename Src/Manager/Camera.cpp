@@ -13,8 +13,6 @@ Camera::Camera(int _playerNum)
 	mode_ = MODE::NONE;
 	pos_ = Utility::VECTOR_ZERO;
 	targetPos_ = Utility::VECTOR_ZERO;
-	followTransform1_ = nullptr;
-	followTransform2_ = nullptr;
 	padNo_ = static_cast<KeyConfig::JOYPAD_NO>(_playerNum + 1);
 	localPos_ = Utility::VECTOR_ZERO;
 }
@@ -97,12 +95,12 @@ void Camera::Draw(void)
 {
 }
 
-void Camera::SetFollow(const Transform* follow)
+void Camera::SetFollow( std::shared_ptr<Transform> follow)
 {
 	followTransform1_ = follow;
 }
 
-void Camera::SetFollow(const Transform* follow1, const Transform* follow2)
+void Camera::SetFollow( std::shared_ptr<Transform> follow1,  std::shared_ptr<Transform> follow2)
 {
 	followTransform1_ = follow1;
 	followTransform2_ = follow2;

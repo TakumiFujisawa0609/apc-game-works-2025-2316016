@@ -30,7 +30,7 @@ public:
 	static constexpr float ATTACK_TIME = 10.0f;	//çUåÇéûä‘
 	static constexpr float RADIUS = 20.0f;		//îºåa
 
-	FollowShot(Transform& target, SPEED_TYPE speed,VECTOR startPos);
+	FollowShot(std::weak_ptr<Transform> target, SPEED_TYPE speed,VECTOR startPos);
 	~FollowShot(void)override;
 	void Init(void)override;
 	void Update(void)override;
@@ -39,7 +39,7 @@ public:
 	void Hit(void);
 private:
 	//ëäéËÇÃ
-	Transform& target_;
+	std::weak_ptr<Transform> target_;
 
 	STATE state_;
 	float speed_;

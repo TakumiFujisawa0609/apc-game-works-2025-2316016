@@ -1,34 +1,16 @@
 #include "../../Application.h"
-#include "../../Manager/DataBank.h"
 #include "../../Manager/SceneManager.h"
 #include "../../Manager/SoundManager.h"
 #include "../../Manager/ResourceManager.h"
 #include "../../Manager/Camera.h"
-#include "../../Renderer/ModelMaterial.h"
-#include "../../Renderer/ModelRenderer.h"
-#include "../Common/Gravity.h"
-#include "../Common/Transform.h"
-#include "../Common/EffectController.h"
 #include "../Common/AnimationController.h"
-#include "../Common/Geometry/Sphere.h"
-#include "../Common/Geometry/Cylinder.h"
 #include "../Light/PointLight.h"
-#include "../Enemy/EnemyBase.h"
-#include "../Enemy/Attack/SubObject/SubObjectBase.h"
-#include "../Enemy/Attack/Type/AttackBase.h"
-#include "../Enemy/Attack/Type/CrossAttack.h"
-#include "PlayerShot.h"
 #include "PlayerBase.h"
 
 PlayerBase::PlayerBase(int playerNum) :keyIns_(KeyConfig::GetInstance())
 {
-	playerNum_ = playerNum;
-	hp_ = MAX_HP;
-	avoidCoolTime_ = 0.0f;
-	attackDeley_ = 0.0f;
-	damageInvincibleTime_ = 0.0f;
-	damageTime_ = 0.0f;
 	rimPow_ = RIM_MIN_POW;
+	playerNum_ = playerNum;
 	transform_ = std::make_shared<Transform>();
 	transform_->pos = MOVE_LIMIT_MIN;
 	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::PLAYER));
@@ -47,28 +29,8 @@ PlayerBase::PlayerBase(int playerNum) :keyIns_(KeyConfig::GetInstance())
 	renderer_ = std::make_shared<ModelRenderer>(
 		transform_->modelId, *material_
 	);
-
-	gravity_ = std::make_unique<Gravity>();
-	gravity_->ChengeState(Gravity::STATE::NONE);
-	gravity_->SetDir(Utility::DIR_D);
-	gravity_->ChengeState(Gravity::STATE::JUMP);
-	controlType_ = DataBank::GetInstance().GetControlType();
-	isDeath_ = false;
-	healDeray_ = 0.0f;
-	headPos_ = Utility::VECTOR_ZERO;
-	landPos_ = Utility::VECTOR_ZERO;
-	std::unique_ptr<Geometry>geo = std::make_unique<Sphere>(transform_->pos, RADIUS);
-	MakeCollider(Collider::TAG::PLAYER, std::move(geo), { Collider::TAG::PLAYER,Collider::TAG::PLAYER_ATTACK ,Collider::TAG::PLAYER_LAND});
-	geo = std::make_unique<Sphere>(headPos_, RADIUS);
-	MakeCollider(Collider::TAG::PLAYER, std::move(geo), { Collider::TAG::PLAYER,Collider::TAG::PLAYER_ATTACK ,Collider::TAG::PLAYER_LAND });
-	geo = std::make_unique<Sphere>(landPos_, RADIUS);
-	MakeCollider(Collider::TAG::PLAYER_LAND, std::move(geo), { Collider::TAG::PLAYER,Collider::TAG::PLAYER_ATTACK ,Collider::TAG::PLAYER_LAND });
-	isAvoidSaccess_ = false;
 	InitAnimationController();
-	SetupStateChange();
-	avoidSaccessTime_ = -1.0f;
 	pointLight_ = std::make_unique<PointLight>(*transform_);
-	ChangeState(STATE::IDLE,true);
 }
 
 PlayerBase::~PlayerBase(void)
@@ -81,79 +43,16 @@ void PlayerBase::Init(void)
 
 void PlayerBase::Update(void)
 {
-	if (playerNum_ != 0)
-	{
-		return;
-	}
-	if (state_ != STATE::DAMAGE)
-	{
-		if (hp_ < 0.0f)
-		{
-			isDeath_ = true;
-		}
-		else
-		{
-			isDeath_ = false;
-		}
-	}
-	prePos_ = transform_->pos;
-	//デルタタイムを取得し各種時間関係を更新する
-	float deltaTime = SceneManager::GetInstance().GetDeltaTime();
-	avoidCoolTime_ -= deltaTime;
-	attackDeley_ -= deltaTime;
-	damageTime_ -= deltaTime;
-	damageInvincibleTime_ -= deltaTime;
-	healDeray_ -= deltaTime;
-	//状態ごとの更新
-	stateUpdate_();
-	//重力の更新
-	gravity_->Update();
-	//重力の適用
-	AplayGravity();
-	//移動制限
-	MoveLimit();
-	Rotation();
-	Heal();
-	transform_->Update();
-	headPos_ = MV1GetFramePosition(transform_->modelId, HEAD_BONE_NO);
-	landPos_ = transform_->pos;
-	landPos_.y = MOVE_LIMIT_MIN.y;
-	//攻撃のクールタイム中ではなく攻撃ボタンを押したら攻撃する
-	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK, KeyConfig::JOYPAD_NO::PAD1, controlType_) && attackDeley_ < 0.0f )
-	{
-		if (state_ == STATE::IDLE ||state_ == STATE::MOVE)
-		{
-			ChangeState(STATE::ATTACK);
-		}
-	}
-	//球の更新
-	for (auto& shot : shots_)
-	{
-		shot->Update();
-		if (shot->IsDead())shot = nullptr;
-	}
-	Utility::EraseVectorAllay(shots_);
-	animCtrl_->Update();
-	auto cameraPos = SceneManager::GetInstance().GetCamera().GetPos();
-	material_->SetConstBufPS(1,{ cameraPos.x,cameraPos.y,cameraPos.z,rimPow_ });
 }
 
 void PlayerBase::Draw(void)
 {
 	int color = (state_ == STATE::DAMAGE) ? GetColor(255, 0, 0) : GetColor(0, 255, 0);
-	for (auto& pos : GetCollisionSpherePositions())
-	{
-		//DrawSphere3D(pos, RADIUS, 16, color, GetColor(255, 0, 0), true);
-	}
 	VECTOR landPos = transform_->pos;
 	landPos.y = MOVE_LIMIT_MIN.y;
 	Utility::DrawCircle3DXZ(landPos, RADIUS, 16, GetColor(0, 0, 0), true);
 	//MV1DrawModel(transform_->modelId);
 	renderer_->Draw();
-	for (auto& shot : shots_)
-	{
-		shot->Draw();
-	}
 }
 
 void PlayerBase::UIDraw(void)
@@ -163,68 +62,6 @@ void PlayerBase::UIDraw(void)
 
 void PlayerBase::OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos)
 {
-	std::shared_ptr<Collider> hitCol = _hitCol.lock();
-	if (!IsDamageHit())
-	{
-		if (state_ == STATE::AVOID && avoidSaccessTime_ < 0.0f)
-		{
-			SaccessAvoid();
-		}
-		return;
-	}
-	if (hitCol->GetGeometry().GetType() == Geometry::GEOMETRY_TYPE::CIRCUMFERENCE && state_ == STATE::JUMP)
-	{
-		SaccessJumpAvoid();
-		return;
-	}
-	Collider::TAG tag = hitCol->GetTag();
-	auto& hit = hitCol->GetParent();
-	float damage = 0.0f;
-	VECTOR dir = Utility::VECTOR_ZERO;
-	for (auto& colParam : colParam_)
-	{
-		auto& geo = colParam.geometry_;
-		auto& collider = colParam.collider_;
-		if (!collider->IsHit())
-		{
-			continue;
-		}
-		if (collider->GetTag() == Collider::TAG::PLAYER_LAND)
-		{
-			if (tag != Collider::TAG::ENEMY_ATTACK)
-			{
-				return;
-			}
-			auto& attack = dynamic_cast<SubObjectBase&>(hit);
-			return;
-
-		}
-		auto& sph = dynamic_cast<Sphere&>(*geo);
-		VECTOR pos = sph.GetPos();
-		dir = VSub(pos, hitPos);
-	}
-	switch (tag)
-	{
-	case Collider::TAG::PLAYER:
-	case Collider::TAG::PLAYER_ATTACK:
-	case Collider::TAG::PLAYER_LAND:
-	case Collider::TAG::GATE:
-		return;
-		break;
-	case Collider::TAG::ENEMY:
-		damage = ENEMY_HIT_DAMAGE;
-		break;
-	case Collider::TAG::ENEMY_ATTACK:
-	{
-		auto& subObject =dynamic_cast<SubObjectBase&>(hit);
-		damage = subObject.GetDamage();
-	}
-	break;
-	default:
-		break;
-	}
-
-	Damage(damage, dir);
 }
 
 void PlayerBase::SetPos(const VECTOR& pos)
@@ -233,190 +70,11 @@ void PlayerBase::SetPos(const VECTOR& pos)
 	transform_->Update();
 }
 
-bool PlayerBase::ChangeState(STATE state, bool isAbsolute )
+void PlayerBase::SetRot(const VECTOR& rot)
 {
-	if (state_ != state || isAbsolute == true)
-	{
-		state_ = state;
-		stateChanges_[state_]();
-		return true;
-	}
-	return false;
-}
-
-void PlayerBase::Damage(float damage, VECTOR dir)
-{
-	if (ChangeState(STATE::DAMAGE))
-	{
-		material_->SetConstBufPS(0,Utility::COLOR_F2FLOAT4(DAMAGE_COLOR_TIMES));
-		hp_ -= damage;
-		healDeray_ = DAMAGE_HEAL_DERAY;
-		damageDir_ = dir;
-		damageDir_.y = 0.0f;
-		damageDir_ = VNorm(damageDir_);
-		if (gravity_->GetState() == Gravity::STATE::NONE)
-		{
-			gravity_->SetInitPower(DAMAGE_POW);
-			gravity_->ChengeState(Gravity::STATE::JUMP);
-		}
-	}
-}
-
-bool PlayerBase::IsDamageHit(void)
-{
-	//回避状態じゃなく無敵状態じゃなかったらダメージを食らう
-	return state_ != STATE::AVOID && damageInvincibleTime_ <0.0f;
-}
-
-std::vector<VECTOR> PlayerBase::GetCollisionSpherePositions(void)
-{
-	std::vector<VECTOR> positions;
-	positions.push_back(transform_->pos);
-	positions.push_back(MV1GetFramePosition(transform_->modelId, HEAD_BONE_NO));
-	return positions;
-}
-
-void PlayerBase::PlayerMove(void)
-{
-	SceneManager& sceneIns = SceneManager::GetInstance();
-	Camera& cam = sceneIns.GetCamera();
-	//カメラの前方向を取得
-	VECTOR front = VSub(cam.GetTargetPos(), cam.GetPos());
-	front.y = 0.0f;
-	front = VNorm(front);
-	//カメラの左方向を取得
-	VECTOR left = front;
-	std::swap(left.x, left.z);
-	left.x = -left.x;
-
-	VECTOR dir = Utility::VECTOR_ZERO;
-	//キーボードでの移動処理
-	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_UP, KeyConfig::JOYPAD_NO::PAD1, controlType_))
-	{
-		dir = VAdd(dir, front);
-	}
-	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_DOWN, KeyConfig::JOYPAD_NO::PAD1, controlType_))
-	{
-		dir = VAdd(dir, VScale(front, -1));
-	}
-	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_RIGHT, KeyConfig::JOYPAD_NO::PAD1, controlType_))
-	{
-		dir = VAdd(dir, VScale(left, -1));
-	}
-	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_LEFT, KeyConfig::JOYPAD_NO::PAD1, controlType_))
-	{
-		dir = VAdd(dir, left);
-	}
-	if (dir.x != 0.0f || dir.z != 0.0f)
-	{
-		dir = VNorm(dir);
-		transform_->pos = VAdd(transform_->pos, VScale(dir, MOVE_SPEED));
-	}
-
-	if (controlType_ == KeyConfig::TYPE::KEYBORD_MOUSE)
-	{
-		return;
-	}
-	//PADのスティック情報を取得
-	auto stick2D = (keyIns_.GetKnockLStickSize(KeyConfig::JOYPAD_NO::PAD1));
-	if (stick2D.x == 0.0f && stick2D.y == 0.0f)
-	{
-		return;
-	}
-	//スティック情報を3D情報に変更
-	auto stick3D = Utility::Normalize(stick2D);
-	//座標を更新する
-	transform_->pos = VAdd(transform_->pos, VScale(front, stick3D.y * MOVE_SPEED * -1));
-	transform_->pos = VAdd(transform_->pos, VScale(left, stick3D.x * MOVE_SPEED * -1));
-}
-
-void PlayerBase::MoveLimit(void)
-{
-	auto& pos = transform_->pos;
-	VECTOR prePos = pos;
-	pos.y = std::max(std::min(MOVE_LIMIT_MAX.y, pos.y), MOVE_LIMIT_MIN.y);
-	if (prePos.y < pos.y && state_ != STATE::DAMAGE)
-	{
-		gravity_->ChengeState(Gravity::STATE::NONE);
-		SoundManager& ins = SoundManager::GetInstance();
-		ins.Play(SoundManager::SRC::LAND, Sound::TIMES::ONCE);
-	}
-}
-
-void PlayerBase::AplayGravity(void)
-{
-	transform_->pos = VAdd(transform_->pos,VScale(gravity_->GetDir(),gravity_->GetPower()));
-}
-
-void PlayerBase::SetupStateChange(void)
-{
-	stateChanges_[(STATE::IDLE)] = std::bind(&PlayerBase::StateChangeIdle, this);
-	stateChanges_[(STATE::MOVE)] = std::bind(&PlayerBase::StateChangeMove, this);
-	stateChanges_[(STATE::JUMP)] = std::bind(&PlayerBase::StateChangeJump, this);
-	stateChanges_[(STATE::AVOID)] = std::bind(&PlayerBase::StateChangeAvoid, this);
-	//stateChanges_[(STATE::CHARGE)] = std::bind(&PlayerBase::StateChangeCharge, this);
-	stateChanges_[(STATE::ATTACK)] = std::bind(&PlayerBase::StateChangeAttack, this);
-	stateChanges_[(STATE::DAMAGE)] = std::bind(&PlayerBase::StateChangeDamage, this);
-	stateChanges_[(STATE::DEAD)] = std::bind(&PlayerBase::StateChangeDead, this);
-}
-
-bool PlayerBase::IsPushMoveKey(void)
-{
-	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_DOWN, KeyConfig::JOYPAD_NO::PAD1, controlType_)
-		|| keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_UP, KeyConfig::JOYPAD_NO::PAD1, controlType_)
-		|| keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_LEFT, KeyConfig::JOYPAD_NO::PAD1, controlType_)
-		|| keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_RIGHT, KeyConfig::JOYPAD_NO::PAD1, controlType_))
-	{
-		return true;
-	}
-	if (controlType_ == KeyConfig::TYPE::KEYBORD_MOUSE)
-	{
-		return false;
-	}
-	auto stick = keyIns_.GetKnockLStickSize(KeyConfig::JOYPAD_NO::PAD1);
-	if (stick.x != 0.0f || stick.y != 0.0f)
-	{
-		return true;
-	}
-	return false;
-}
-
-void PlayerBase::CreateShot(void)
-{
-	std::unique_ptr<PlayerShot> shot = std::make_unique<PlayerShot>(transform_->pos,SceneManager::GetInstance().GetCamera().GetTargetPos());
-	shots_.push_back(std::move(shot));
-	SoundManager::GetInstance().Play(SoundManager::SRC::PSHOT_THROW, Sound::TIMES::ONCE);
-}
-
-void PlayerBase::Rotation(void)
-{
-	VECTOR dir;
-	switch (state_)
-	{
-	case PlayerBase::STATE::IDLE:
-	case PlayerBase::STATE::DAMAGE:
-	case PlayerBase::STATE::DEAD:
-		return;
-		break;
-	case PlayerBase::STATE::MOVE:
-	case PlayerBase::STATE::JUMP:
-	case PlayerBase::STATE::AVOID:
-		dir = VSub(transform_->pos, prePos_);
-		break;
-	case PlayerBase::STATE::ATTACK:
-		dir = VSub(SceneManager::GetInstance().GetCamera().GetTargetPos(), transform_->pos);
-		break;
-	default:
-		break;
-	}
-	if (dir.x == 0.0f && dir.z == 0.0f)
-	{
-		return;
-	}
-	dir = VNorm(dir);
-	float angleY = atan2f(-dir.x, -dir.z);
-	transform_->rot.y = angleY;
-	transform_->quaRot = Quaternion(VGet(0.0f, angleY, 0.0f));
+	transform_->rot = rot;
+	transform_->quaRot = Quaternion(rot);
+	transform_->Update();
 }
 
 void PlayerBase::InitAnimationController(void)
@@ -432,230 +90,4 @@ void PlayerBase::InitAnimationController(void)
 	//animCtrl_->Add((int)STATE::DEAD, path + "Falling.mv1", 80.0f);
 
 	animCtrl_->Play((int)STATE::IDLE);
-}
-
-void PlayerBase::Heal(void)
-{
-	if (healDeray_ < 0.0f)
-	{
-		hp_ += HEAL_PER_SEC * SceneManager::GetInstance().GetDeltaTime();
-	}
-	if (hp_ > MAX_HP)
-	{
-		hp_ = MAX_HP;
-	}
-}
-
-void PlayerBase::SaccessAvoid(void)
-{
-	isAvoidSaccess_ = true;
-	avoidSaccessTime_ = avoidTime_;
-	rimPow_ = RIM_MAX_POW;
-}
-
-void PlayerBase::SaccessJumpAvoid(void)
-{
-	//ジャンプ回避成功時の処理
-}
-
-void PlayerBase::StateChangeIdle(void)
-{
-	stateUpdate_ = std::bind(&PlayerBase::StateUpdateIdle, this);
-	animCtrl_->Play((int)STATE::IDLE,0.0f,-1.0f,0.1f);
-}
-
-void PlayerBase::StateChangeMove(void)
-{
-	stateUpdate_ = std::bind(&PlayerBase::StateUpdateMove, this);
-	animCtrl_->Play((int)STATE::MOVE);
-}
-
-void PlayerBase::StateChangeJump(void)
-{
-	SoundManager& ins = SoundManager::GetInstance();
-	ins.Play(SoundManager::SRC::JAMP, Sound::TIMES::ONCE);
-	gravity_->ChengeState(Gravity::STATE::JUMP);
-	gravity_->SetInitPower(JUMP_POW);
-	stateUpdate_ = std::bind(&PlayerBase::StateUpdateJump, this);
-	animCtrl_->Play((int)STATE::JUMP,false,30.0f,90.0f,0.1f,false,true);
-
-};
-
-void PlayerBase::StateChangeAvoid(void)
-{
-	stateUpdate_ = std::bind(&PlayerBase::StateUpdateAvoid, this);
-	avoidTime_ = AVOID_TIME;
-	SceneManager& sceneIns = SceneManager::GetInstance();
-	Camera& cam = sceneIns.GetCamera();
-	if (IsPushMoveKey())
-	{
-		VECTOR front = VSub(cam.GetTargetPos(), cam.GetPos());
-		front.y = 0.0f;
-		front = VNorm(front);
-		VECTOR left = front;
-		std::swap(left.x, left.z);
-		left.x = -left.x;
-		animCtrl_->Play((int)STATE::AVOID,false,0.0f,-1.0f,0.001f);
-		avoidDir_ = Utility::VECTOR_ZERO;
-		if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_UP, KeyConfig::JOYPAD_NO::PAD1, controlType_))
-		{
-			avoidDir_ = VAdd(avoidDir_,front);
-		}
-		if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_DOWN, KeyConfig::JOYPAD_NO::PAD1, controlType_))
-		{
-			avoidDir_ = VAdd(avoidDir_,VScale(front, -1));
-		}
-		if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_RIGHT, KeyConfig::JOYPAD_NO::PAD1, controlType_))
-		{
-			avoidDir_ = VAdd(avoidDir_, VScale(left, -1));
-		}
-		if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_MOVE_LEFT, KeyConfig::JOYPAD_NO::PAD1, controlType_))
-		{
-			avoidDir_ =VAdd(avoidDir_, left);
-		}
-
-		if (controlType_ == KeyConfig::TYPE::KEYBORD_MOUSE)
-		{
-			avoidDir_ = VNorm(avoidDir_);
-			return;
-		}
-		auto stick2D = (keyIns_.GetKnockLStickSize(KeyConfig::JOYPAD_NO::PAD1));
-		if (stick2D.x != 0.0f || stick2D.y != 0.0f)
-		{
-			auto stick3D = Utility::Normalize(stick2D);
-			avoidDir_ = VAdd(VScale(front, stick3D.y * -1), VScale(left, stick3D.x * -1));
-		}
-	}
-	else
-	{
-		avoidDir_ =  VSub(cam.GetTargetPos(),cam.GetPos());
-		avoidDir_.y = 0.0f;
-		avoidDir_ = VNorm(avoidDir_);
-	}
-	animCtrl_->Play((int)STATE::AVOID, false, 0.0f, -1.0f, 0.1f, false, true);
-}
-
-
-void PlayerBase::StateChangeAttack(void)
-{
-	CreateShot();
-	attackDeley_ = ATTACK_DELEY;
-	animCtrl_->Play((int)STATE::ATTACK,false,0.0f,-1.0f,0.1f,false,true);
-	stateUpdate_ = std::bind(&PlayerBase::StateUpdateAttack, this);
-}
-
-void PlayerBase::StateChangeDamage(void)
-{
-	damageTime_ = DAMAGE_TIME;
-	damageInvincibleTime_ = DAMAGE_INVINCIBLE_TIME;
-	animCtrl_->Play((int)STATE::DAMAGE,true,0.0f,-1.0f,0.1f);
-	stateUpdate_ = std::bind(&PlayerBase::StateUpdateDamage, this);
-}
-
-void PlayerBase::StateChangeDead(void)
-{
-	stateUpdate_ = std::bind(&PlayerBase::StateUpdateDead, this);
-}
-
-void PlayerBase::StateUpdateIdle(void)
-{
-	if (IsPushMoveKey())
-	{
-		ChangeState(STATE::MOVE);
-	}
-	else if (keyIns_.IsTrgDown(KeyConfig::CONTROL_TYPE::PLAYER_AVOID, KeyConfig::JOYPAD_NO::PAD1, controlType_) && avoidCoolTime_ < 0.0f)
-	{
-		ChangeState(STATE::AVOID);
-	}
-	else if (keyIns_.IsTrgDown(KeyConfig::CONTROL_TYPE::PLAYER_JUMP, KeyConfig::JOYPAD_NO::PAD1, controlType_))
-	{
-		ChangeState(STATE::JUMP);
-	}
-}
-
-void PlayerBase::StateUpdateMove(void)
-{
-	PlayerMove();
-	if (keyIns_.IsTrgDown(KeyConfig::CONTROL_TYPE::PLAYER_AVOID, KeyConfig::JOYPAD_NO::PAD1, controlType_) && avoidCoolTime_ < 0.0f)
-	{
-		ChangeState(STATE::AVOID);
-	}
-	else if (keyIns_.IsTrgDown(KeyConfig::CONTROL_TYPE::PLAYER_JUMP, KeyConfig::JOYPAD_NO::PAD1, controlType_))
-	{
-		ChangeState(STATE::JUMP);
-	}
-	else if (!IsPushMoveKey())
-	{
-		ChangeState(STATE::IDLE);
-	}
-}
-
-void PlayerBase::StateUpdateJump(void)
-{
-	PlayerMove();
-	if (gravity_->GetState() == Gravity::STATE::NONE)
-	{
-		ChangeState(STATE::IDLE);
-	}
-}
-
-void PlayerBase::StateUpdateAvoid(void)
-{
-	float deltaTime = SceneManager::GetInstance().GetDeltaTime();
-	avoidTime_ -= deltaTime;
-	rimPow_ = Utility::Lerp(RIM_MAX_POW, RIM_MIN_POW, 1.0f - (avoidTime_ / avoidSaccessTime_));
-	pointLight_->SetRadiusPercent((avoidTime_ / avoidSaccessTime_));
-	transform_->pos = VAdd(transform_->pos, VScale(avoidDir_, AVOID_DISTANCE / ((1.0f /deltaTime) * AVOID_TIME) ));
-	if (avoidTime_ <= 0.0f)
-	{
-		if (!isAvoidSaccess_)
-		{
-			avoidCoolTime_ = AVOID_COOL_TIME;
-		}
-		isAvoidSaccess_ = false;
-		avoidSaccessTime_ = -1.0f;
-		rimPow_ = RIM_MIN_POW;
-		if(KeyConfig::GetInstance().IsTrgDown(KeyConfig::CONTROL_TYPE::PLAYER_AVOID, KeyConfig::JOYPAD_NO::PAD1, controlType_)&& avoidCoolTime_ < 0.0f)
-		{
-			ChangeState(STATE::AVOID,true);
-			return;
-		}
-		animCtrl_->Play((int)STATE::IDLE, true, 0.0f, -1.0f, 0.01f);
-		ChangeState(STATE::IDLE);
-		return;
-	}
-}
-
-void PlayerBase::StateUpdateAttack(void)
-{
-	PlayerMove();
-	if (animCtrl_->IsEnd())
-	{
-		animCtrl_->Play((int)STATE::IDLE, true, 0.0f, -1.0f, -1.0f);
-		ChangeState(STATE::IDLE);
-	}
-}
-
-void PlayerBase::StateUpdateDamage(void)
-{
-	if (damageTime_ < 0.0f)
-	{
-		if (isDeath_)
-		{
-			ChangeState(STATE::DEAD);
-		}
-		else
-		{
-			material_->SetConstBufPS(0, Utility::COLOR_F2FLOAT4(DEFAULT_COLOR_TIMES));
-			ChangeState(STATE::IDLE);
-		}
-	}
-	else
-	{
-		transform_->pos = VAdd(transform_->pos, VScale(damageDir_, DAMAGE_SPEED));
-	}
-}
-
-void PlayerBase::StateUpdateDead(void)
-{
 }

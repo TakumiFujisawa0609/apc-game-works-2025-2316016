@@ -14,7 +14,7 @@
 #include "../../Renderer/PixelMaterial.h"
 #include "../../Renderer/PixelRenderer.h"
 #include "../../Object/Common/Gravity.h"
-#include "../../Object/Player/PlayerBase.h"
+#include "../../Object/Player/GamePlayer.h"
 #include "../../Object/SkyDome/SkyDome.h"
 #include "../../Object/Stage/Stage.h"
 #include "../../Object/Player/PlayerShot.h"
@@ -39,20 +39,20 @@ bool SceneGame::Init(void)
 {
 	SceneBase::Init();
 	//プレイヤー生成
-	player_ = std::make_unique<PlayerBase>(0);
+	player_ = std::make_unique<GamePlayer>(0);
 	player_->Init();
 	//敵生成
 	enemy_ = std::make_unique<EnemyBase>(player_->GetTransform());
 	enemy_->Init();
-	player_->SetEnemyTransform(&enemy_->GetTransform());
+	player_->SetEnemyTransform(enemy_->GetTransform());
 	//敵HPUI生成
 	enemyHPUI_ = std::make_unique<EnemyHPUI>(enemy_->GetMaxHP(), *enemy_);
 	enemyHPUI_->Init();
 	//カメラ設定
 	auto& cam = SceneManager::GetInstance().GetCamera();
-	cam.SetFollow(&player_->GetTransform(), &enemy_->GetTransform());
+	cam.SetFollow(player_->GetTransform().lock(), enemy_->GetTransform().lock());
 	cam.ChangeMode(Camera::MODE::TWO_TARGET_FOLLOW);
-	cam.SetPos(player_->GetTransform().pos);
+	cam.SetPos(player_->GetTransform().lock()->pos);
 	//スカイドーム
 	skyDome_ = std::make_unique<SkyDome>();
 	skyDome_->Init();
@@ -192,14 +192,14 @@ void SceneGame::ChangeCameraMode(void)
 
 void SceneGame::CheckCollision(void)
 {
-	VECTOR pPos = player_->GetTransform().pos;
+	VECTOR pPos = player_->GetTransform().lock()->pos;
 	pPos.y = 0.0f;
 	auto dis = Utility::Distance(pPos, Utility::VECTOR_ZERO);
 	if (dis > Stage::RADIUS)
 	{
 		VECTOR dir = VNorm(VSub(pPos,Utility::VECTOR_ZERO));
 		VECTOR pos = VScale(dir, Stage::RADIUS);
-		pos.y = player_->GetTransform().pos.y;
+		pos.y = player_->GetTransform().lock()->pos.y;
 		player_->SetPos(pos);
 	}
 }

@@ -88,6 +88,8 @@ void ResourceManager::Init(void)
 	resourcesMap_.emplace(SRC::TITLE_IMAGE_1, std::move(res));
 	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "Title/TitleName2.png");
 	resourcesMap_.emplace(SRC::TITLE_IMAGE_2, std::move(res));
+	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "Title/Title.png");
+	resourcesMap_.emplace(SRC::TITLE_IMAGE_3, std::move(res));
 
 	//オブジェクト
 	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "SkyDome/SkyDome.mv1");

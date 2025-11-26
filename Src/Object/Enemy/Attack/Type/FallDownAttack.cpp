@@ -36,11 +36,6 @@ void FallDownAttack::Draw(void)
 
 }
 
-Transform& FallDownAttack::GetShotTransform(int shotNum)
-{
-	return fallDownShots_[shotNum]->GetTransform();
-}
-
 FallDownShot::STATE FallDownAttack::GetShotState(int shotNum)
 {
 	return fallDownShots_[shotNum]->GetState();
@@ -58,13 +53,13 @@ void FallDownAttack::ChangeStateNone(void)
 
 void FallDownAttack::ChangeStateReady(void)
 {
-	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::TAKE_OFF,false);
+	enemy_.GetAnimController().Play(enemy_.GetAnimNumber(EnemyBase::ATTACK_STATE::READY, myType_),false);
 	AttackBase::ChangeStateReady();
 }
 
 void FallDownAttack::ChangeStateStart(void)
 {
-	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::FLAME_ATTACK);
+	enemy_.GetAnimController().Play(enemy_.GetAnimNumber(EnemyBase::ATTACK_STATE::PLAY, myType_));
 	time_ = TIME;
 	//óéâ∫íeÇÃê∂ê¨
 	for (int i = 0; i < MAX_FALL_NUM; i++)
@@ -82,7 +77,6 @@ void FallDownAttack::ChangeStateUpdate(void)
 
 void FallDownAttack::ChangeStateFinish(void)
 {
-	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::IDLE_1);
 	deleyTime_ = COOL_DOWN;
 	AttackBase::ChangeStateFinish();
 }

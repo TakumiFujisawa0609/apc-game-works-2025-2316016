@@ -4,7 +4,7 @@ class EnemyTutorial :
     public EnemyBase
 {
 public:
-	EnemyTutorial(Transform& target);
+	EnemyTutorial(std::weak_ptr<Transform> target);
 	~EnemyTutorial() override;
 	void Init(void) override;
 	void Update(void) override;

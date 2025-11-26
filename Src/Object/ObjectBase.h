@@ -24,7 +24,7 @@ public:
 	virtual void UIDraw(void);
 
 	virtual void OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos);
-	Transform& GetTransform(void) const{ return *transform_; }
+	std::weak_ptr<Transform> GetTransform(void) const{ return transform_; }
 protected:
 
 	//“–‚½‚è”»’èŠÖŒW

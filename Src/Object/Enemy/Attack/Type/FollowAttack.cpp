@@ -35,11 +35,6 @@ void FollowAttack::Draw(void)
 	}
 }
 
-Transform& FollowAttack::GetShotTransform(int shotNum)
-{
-	return shots_[shotNum]->GetTransform();
-}
-
 void FollowAttack::ChangeStateNone(void)
 {
 	AttackBase::ChangeStateNone();
@@ -47,23 +42,23 @@ void FollowAttack::ChangeStateNone(void)
 
 void FollowAttack::ChangeStateReady(void)
 {
-	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::DEFEND, false);
+	enemy_.GetAnimController().Play(enemy_.GetAnimNumber(EnemyBase::ATTACK_STATE::READY, myType_),false);
 	AttackBase::ChangeStateReady();
 }
 
 void FollowAttack::ChangeStateStart(void)
 {
-	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::FLY_FORWARD, true);
+	enemy_.GetAnimController().Play(enemy_.GetAnimNumber(EnemyBase::ATTACK_STATE::PLAY, myType_));
 	AttackBase::ChangeStateStart();
-	std::unique_ptr<FollowShot> slow = std::make_unique<FollowShot>(*target_,FollowShot::SPEED_TYPE::SLOW,enemy_.GetTransform().pos);
-	std::unique_ptr<FollowShot> midium = std::make_unique<FollowShot>(*target_, FollowShot::SPEED_TYPE::MIDIUM, enemy_.GetTransform().pos);
-	std::unique_ptr<FollowShot> fast = std::make_unique<FollowShot>(*target_, FollowShot::SPEED_TYPE::FAST, enemy_.GetTransform().pos);
+	std::unique_ptr<FollowShot> slow = std::make_unique<FollowShot>(target_,FollowShot::SPEED_TYPE::SLOW,enemy_.GetTransform().lock()->pos);
+	std::unique_ptr<FollowShot> midium = std::make_unique<FollowShot>(target_, FollowShot::SPEED_TYPE::MIDIUM, enemy_.GetTransform().lock()->pos);
+	std::unique_ptr<FollowShot> fast = std::make_unique<FollowShot>(target_, FollowShot::SPEED_TYPE::FAST, enemy_.GetTransform().lock()->pos);
 	shots_.push_back(std::move(slow));
 	shots_.push_back(std::move(midium));
 	shots_.push_back(std::move(fast));
 	for (int i = 0; i < RANDOM_SHOT_NUM; i++)
 	{
-		std::unique_ptr<FollowShot> random = std::make_unique<FollowShot>(*target_, FollowShot::SPEED_TYPE::RANDOM, enemy_.GetTransform().pos);
+		std::unique_ptr<FollowShot> random = std::make_unique<FollowShot>(target_, FollowShot::SPEED_TYPE::RANDOM, enemy_.GetTransform().lock()->pos);
 		shots_.push_back(std::move(random));
 	}
 }
@@ -77,7 +72,6 @@ void FollowAttack::ChangeStateFinish(void)
 {
 	AttackBase::ChangeStateFinish();
 	deleyTime_ = COOL_DOWN;
-	enemy_.GetAnimController().Play((int)EnemyBase::ANIM_TYPE_DRAGON::IDLE_1, true);
 }
 
 void FollowAttack::UpdateStateNone(void)

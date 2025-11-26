@@ -19,6 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Object\Enemy\EnemyTitle.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Type\Dragon.cpp" />
+    <ClCompile Include="Src\Object\Player\GamePlayer.cpp" />
     <ClCompile Include="Src\Object\Gate\Gate.cpp" />
     <ClCompile Include="Src\Object\Common\Geometry\Circumference.cpp" />
     <ClCompile Include="Src\Object\Light\PointLight.cpp" />
@@ -96,8 +99,12 @@
     <ClCompile Include="Src\Object\Common\Geometry\Triangle3D.cpp" />
     <ClCompile Include="Src\Scene\Game\Tutorial\TutorialBase.cpp" />
     <ClCompile Include="Src\Scene\Game\Tutorial\TutorialMove.cpp" />
+    <ClCompile Include="Src\Object\Player\TitlePlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Object\Enemy\EnemyTitle.h" />
+    <ClInclude Include="Src\Object\Enemy\Type\Dragon.h" />
+    <ClInclude Include="Src\Object\Player\GamePlayer.h" />
     <ClInclude Include="Src\Object\Gate\Gate.h" />
     <ClInclude Include="Src\Object\Common\Geometry\Circumference.h" />
     <ClInclude Include="Src\Object\Light\PointLight.h" />
@@ -175,6 +182,7 @@
     <ClInclude Include="Src\Object\Common\Geometry\Triangle3D.h" />
     <ClInclude Include="Src\Scene\Game\Tutorial\TutorialBase.h" />
     <ClInclude Include="Src\Scene\Game\Tutorial\TutorialMove.h" />
+    <ClInclude Include="Src\Object\Player\TitlePlayer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shader\Common\Pixel\PixelShader2DHeader.hlsli" />

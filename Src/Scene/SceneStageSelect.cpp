@@ -5,7 +5,7 @@
 #include "../../Manager/SceneManager.h"
 #include "../../Manager/ResourceManager.h"
 #include "../../Manager/CollisionManager.h"
-#include "../Object/Player/PlayerBase.h"
+#include "../Object/Player/GamePlayer.h"
 #include "../Object/Stage/Stage.h"
 #include "../Object/SkyDome/SkyDome.h"
 #include "../Object/Gate/Gate.h"
@@ -22,7 +22,7 @@ SceneStageSelect::~SceneStageSelect(void)
 
 bool SceneStageSelect::Init(void)
 {
-	player_ = std::make_unique<PlayerBase>(0);
+	player_ = std::make_unique<GamePlayer>(0);
 	player_->SetPos(Utility::VECTOR_ZERO);
 	stage_ = std::make_unique<Stage>(player_->GetPointLight());
 	skyDome_ = std::make_unique<SkyDome>();
@@ -36,9 +36,9 @@ bool SceneStageSelect::Init(void)
 	}
 	//カメラ設定
 	auto& cam = SceneManager::GetInstance().GetCamera();
-	cam.SetFollow(&player_->GetTransform());
+	cam.SetFollow(player_->GetTransform().lock());
 	cam.ChangeMode(Camera::MODE::FOLLOW);
-	cam.SetPos(player_->GetTransform().pos);
+	cam.SetPos(player_->GetTransform().lock()->pos);
 	return true;
 }
 
@@ -52,14 +52,14 @@ void SceneStageSelect::Update(void)
 		gate->Update();
 	}
 
-	VECTOR pPos = player_->GetTransform().pos;
+	VECTOR pPos = player_->GetTransform().lock()->pos;
 	pPos.y = 0.0f;
 	auto dis = Utility::Distance(pPos, Utility::VECTOR_ZERO);
 	if (dis > Stage::RADIUS)
 	{
 		VECTOR dir = VNorm(VSub(pPos, Utility::VECTOR_ZERO));
 		VECTOR pos = VScale(dir, Stage::RADIUS);
-		pos.y = player_->GetTransform().pos.y;
+		pos.y = player_->GetTransform().lock()->pos.y;
 		player_->SetPos(pos);
 	}
 	CollisionManager::GetInstance().Update();

@@ -2,7 +2,7 @@
 #include "../SceneBase.h"
 #include "../../Common/Vector2.h"
 
-class PlayerBase;
+class GamePlayer;
 class SkyDome;
 class Stage;
 class EnemyBase;
@@ -40,7 +40,7 @@ protected:
 	float vignetteTime_;
 
 	//プレイヤー
-	std::unique_ptr<PlayerBase> player_;
+	std::unique_ptr<GamePlayer> player_;
 	//敵
 	std::unique_ptr<EnemyBase> enemy_;
 	//スカイドーム
