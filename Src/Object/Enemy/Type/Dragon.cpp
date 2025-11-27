@@ -21,6 +21,8 @@ Dragon::Dragon(EnemyBase& parent):parent_(parent)
 
 Dragon::~Dragon(void)
 {
+	framePos_.clear();
+	animInfoMap_.clear();
 }
 
 void Dragon::Init(void)

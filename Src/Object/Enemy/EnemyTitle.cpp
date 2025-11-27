@@ -44,3 +44,7 @@ void EnemyTitle::SetScl(VECTOR scl)
 	transform_->scl = scl;
 	transform_->Update();
 }
+
+void EnemyTitle::InitAddAttack(void)
+{
+}

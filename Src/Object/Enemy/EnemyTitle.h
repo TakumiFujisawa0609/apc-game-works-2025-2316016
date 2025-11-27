@@ -15,5 +15,6 @@ public:
 	void SetRot(VECTOR rot);
 	void SetScl(VECTOR scl);
 private:
+	void InitAddAttack(void)override;
 };
 

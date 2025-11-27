@@ -48,6 +48,7 @@ EnemyBase::EnemyBase(std::weak_ptr<Transform> target) : target_(target)
 
 EnemyBase::~EnemyBase(void)
 {
+	attackList_.clear();
 }
 
 void EnemyBase::Init(void)
@@ -56,10 +57,6 @@ void EnemyBase::Init(void)
 
 void EnemyBase::Update(void)
 {
-	if (CheckHitKey(KEY_INPUT_Q))
-	{
-		hp_ -= 0.5f;
-	}
 	damageTime_ -= SceneManager::GetInstance().GetDeltaTime();
 	for (auto& attack : attackList_  )
 	{

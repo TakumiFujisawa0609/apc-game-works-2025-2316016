@@ -23,7 +23,21 @@ AnimationController::AnimationController(int modelId)
 // デストラクタ（外部アニメだけ破棄）
 // ------------------------------------------------------
 AnimationController::~AnimationController(void)
-{
+{	
+	// まず、モデルにアタッチされたアニメを確実にデタッチする
+	for (auto& kv : playAnimations_)
+	{
+		Animation& anim = kv.second;
+		if (anim.attachNo != -1)
+		{
+			// モデル側のアタッチ解除を行う
+			MV1DetachAnim(modelId_, anim.attachNo);
+			anim.attachNo = -1;
+		}
+	}
+	playAnimations_.clear();
+
+	// 続いて、外部ファイルからロードしたモデルを破棄する
 	for (auto& kv : animations_)
 	{
 		Animation& anim = kv.second;
@@ -165,6 +179,12 @@ void AnimationController::Play(
 	// anim.animIndex は Add() で正しく設定済み
 	anim.attachNo = MV1AttachAnim(modelId_, anim.animIndex, anim.model);
 
+	// attach に失敗したら登録せず戻る（安全策）
+	if (anim.attachNo == -1)
+	{
+		return;
+	}
+
 	// アタッチ後に総時間を取得（Add() 時には取得していないため）
 	if (anim.totalTime <= 0.0f)
 	{
@@ -176,7 +196,7 @@ void AnimationController::Play(
 	{
 		// 最初のアニメなら完全に表示
 		anim.blendRate = 1.0f;
-		MV1SetAttachAnimBlendRate(modelId_, anim.attachNo, anim.blendRate);
+		if (anim.attachNo != -1) MV1SetAttachAnimBlendRate(modelId_, anim.attachNo, anim.blendRate);
 	}
 	else
 	{
@@ -185,19 +205,22 @@ void AnimationController::Play(
 		if (immediateSwitchRequested)
 		{
 			anim.blendRate = 1.0f;
-			MV1SetAttachAnimBlendRate(modelId_, anim.attachNo, anim.blendRate);
+			if (anim.attachNo != -1) MV1SetAttachAnimBlendRate(modelId_, anim.attachNo, anim.blendRate);
 
 			// 他のアニメは即時デタッチ
 			for (auto it = playAnimations_.begin(); it != playAnimations_.end(); )
 			{
-				MV1DetachAnim(modelId_, it->second.attachNo);
+				if (it->second.attachNo != -1)
+				{
+					MV1DetachAnim(modelId_, it->second.attachNo);
+				}
 				it = playAnimations_.erase(it);
 			}
 		}
 		else
 		{
 			anim.blendRate = 0.0f;
-			MV1SetAttachAnimBlendRate(modelId_, anim.attachNo, anim.blendRate);
+			if (anim.attachNo != -1) MV1SetAttachAnimBlendRate(modelId_, anim.attachNo, anim.blendRate);
 			// 旧アニメは残してブレンドさせる
 		}
 	}
@@ -365,7 +388,10 @@ void AnimationController::UpdateMainAnimation()
 	}
 
 	// アニメ時間（秒）をセット
-	MV1SetAttachAnimTime(modelId_, anim.attachNo, anim.step);
+	if (anim.attachNo != -1)
+	{
+		MV1SetAttachAnimTime(modelId_, anim.attachNo, anim.step);
+	}
 }
 
 // ------------------------------------------------------
@@ -390,12 +416,18 @@ void AnimationController::UpdateBlendAnimation()
 			if (it->first == playType_)
 			{
 				it->second.blendRate = 1.0f;
-				MV1SetAttachAnimBlendRate(modelId_, it->second.attachNo, 1.0f);
+				if (it->second.attachNo != -1)
+				{
+					MV1SetAttachAnimBlendRate(modelId_, it->second.attachNo, 1.0f);
+				}
 				++it;
 			}
 			else
 			{
-				MV1DetachAnim(modelId_, it->second.attachNo);
+				if (it->second.attachNo != -1)
+				{
+					MV1DetachAnim(modelId_, it->second.attachNo);
+				}
 				it = playAnimations_.erase(it);
 			}
 		}
@@ -417,7 +449,10 @@ void AnimationController::UpdateBlendAnimation()
 		if (it->first == playType_)
 		{
 			it->second.blendRate = t;
-			MV1SetAttachAnimBlendRate(modelId_, it->second.attachNo, it->second.blendRate);
+			if (it->second.attachNo != -1)
+			{
+				MV1SetAttachAnimBlendRate(modelId_, it->second.attachNo, it->second.blendRate);
+			}
 			++it;
 		}
 		else
@@ -425,12 +460,18 @@ void AnimationController::UpdateBlendAnimation()
 			it->second.blendRate = 1.0f - t;
 			if (it->second.blendRate <= 0.001f)
 			{
-				MV1DetachAnim(modelId_, it->second.attachNo);
+				if (it->second.attachNo != -1)
+				{
+					MV1DetachAnim(modelId_, it->second.attachNo);
+				}
 				it = playAnimations_.erase(it);
 			}
 			else
 			{
-				MV1SetAttachAnimBlendRate(modelId_, it->second.attachNo, it->second.blendRate);
+				if (it->second.attachNo != -1)
+				{
+					MV1SetAttachAnimBlendRate(modelId_, it->second.attachNo, it->second.blendRate);
+				}
 				++it;
 			}
 		}

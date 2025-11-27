@@ -78,6 +78,19 @@ CollisionManager::CollisionManager(void)
 
 CollisionManager::~CollisionManager(void)
 {
+	colliders_.clear();
+}
+
+void CollisionManager::Destroy(void)
+{
+	if (instance_ != nullptr)
+	{
+		// 所持する shared_ptr を解放して参照カウントを下げる
+		instance_->colliders_.clear();
+
+		delete instance_;
+		instance_ = nullptr;
+	}
 }
 
 const bool CollisionManager::JudgeIsCollision(const int _col1Num, const int _col2Num) const

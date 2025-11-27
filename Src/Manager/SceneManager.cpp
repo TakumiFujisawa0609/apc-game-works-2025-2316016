@@ -29,6 +29,8 @@ SceneManager::SceneManager(void)
 	fader_ = nullptr;
 	deltaTime_ = 0.0f;
 	DrawTranslucentManager::CreateInstance();
+	//当たり判定管理の初期化(各シーンで追加の可能性があるため)
+	CollisionManager::CreateInstance();
 }
 
 SceneManager::~SceneManager(void)
@@ -89,8 +91,6 @@ bool SceneManager::Init(void)
 	mainScreen_ = MakeScreen(
 		Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y, true);
 
-	//当たり判定管理の初期化(各シーンで追加の可能性があるため)
-	CollisionManager::CreateInstance();
 	Init3D();
 
 	return true;
@@ -156,12 +156,15 @@ void SceneManager::Draw(void)
 //解放処理(終了時の１度のみ実行)
 void SceneManager::Destroy(void)
 {
+	// 明示的に子リソースを解放しておく（安全性向上）
+	scenes_.clear();
+	camera_ = nullptr;
 	fader_ = nullptr;
 
 	DrawTranslucentManager::GetInstance().Destroy();
-
-	delete instance_;               //インスタンスを削除
-	instance_ = nullptr;            //インスタンス格納領域を初期化
+	CollisionManager::GetInstance().Destroy();
+	delete instance_;
+	instance_ = nullptr;
 }
 
 float SceneManager::GetDeltaTime(void) const
@@ -248,7 +251,7 @@ void SceneManager::Fade(void)
 void SceneManager::JumpScene(SCENE_ID id)
 {
 	std::unique_ptr<SceneBase>scene = std::move(MakeScene(id));
-  	scenes_.clear();
+	scenes_.clear();
 	scenes_.push_back(std::move(scene));
 }
 

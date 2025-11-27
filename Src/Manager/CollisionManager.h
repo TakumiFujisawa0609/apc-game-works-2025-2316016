@@ -24,6 +24,11 @@ public:
 	static CollisionManager& GetInstance(void) { return *instance_; }
 
 	/// <summary>
+	/// インスタンス破棄（メモリ解放）
+	/// </summary>
+	static void Destroy(void);
+
+	/// <summary>
 	/// コライダの追加
 	/// </summary>
 	/// <param name="_collider">コライダ</param>

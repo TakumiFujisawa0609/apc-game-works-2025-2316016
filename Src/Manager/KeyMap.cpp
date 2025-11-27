@@ -128,6 +128,7 @@ void KeyMap::Init(void)
 void KeyMap::Destroy(void)
 {
 	keyMap_.clear();
+	delete instance_;
 	instance_ = nullptr;
 }
 
