@@ -4,14 +4,14 @@
 #include <functional>
 #include <vector>
 #include "../../Manager/KeyConfig.h"
-#include "../ObjectBase.h"
+#include "../ObjectModelBase.h"
 
 class PlayerShot;
 class Gravity;
 class AnimationController;
 class PointLight;
 
-class PlayerBase : public ObjectBase
+class PlayerBase : public ObjectModelBase
 {
 public:
 

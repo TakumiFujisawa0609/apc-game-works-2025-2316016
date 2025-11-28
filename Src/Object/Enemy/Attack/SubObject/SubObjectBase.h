@@ -1,9 +1,9 @@
 #pragma once
-#include "../../../ObjectBase.h"
+#include "../../../ObjectModelBase.h"
 
 class AttackBase;
 
-class SubObjectBase : public ObjectBase
+class SubObjectBase : public ObjectModelBase
 {
 public:
 	SubObjectBase(void) = default;

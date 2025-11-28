@@ -1,8 +1,10 @@
 #pragma once
 #include "../../Manager/SceneManager.h"
-#include "../ObjectBase.h"
+#include "../ObjectModelBase.h"
 
-class Gate : public ObjectBase
+class GateMist;
+
+class Gate : public ObjectModelBase
 {
 public:
 	static constexpr int PILLER_FRAME_NUM = 0;	//柱のフレーム番号
@@ -24,9 +26,9 @@ protected:
 
 private:
 
-	SceneManager::SCENE_ID nextSceneID_;
+	std::unique_ptr<GateMist> mist_;
 
-	float time_;
+	SceneManager::SCENE_ID nextSceneID_;
 
 	//当たり判定用頂点
 	VECTOR pos1_;
@@ -35,5 +37,6 @@ private:
 	VECTOR pos4_;
 	void InitCollider(void);
 	void UpdatePos(void);
+	void SetMistPos(void);
 };
 

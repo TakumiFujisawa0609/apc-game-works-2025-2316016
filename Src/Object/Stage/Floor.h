@@ -1,9 +1,9 @@
 #pragma once
-#include "../ObjectBase.h"
+#include "../ObjectModelBase.h"
 
 class PointLight;
 
-class Floor : public ObjectBase
+class Floor : public ObjectModelBase
 {
 public:
 

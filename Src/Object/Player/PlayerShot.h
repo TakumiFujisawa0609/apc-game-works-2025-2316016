@@ -1,11 +1,11 @@
 #pragma once
 #include <DxLib.h>
-#include "../ObjectBase.h"
+#include "../ObjectModelBase.h"
 
 class Gravity;
 class EffectController;
 
-class PlayerShot : public ObjectBase
+class PlayerShot : public ObjectModelBase
 {
 public:
 

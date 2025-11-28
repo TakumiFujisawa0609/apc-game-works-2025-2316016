@@ -195,7 +195,15 @@ Resource* ResourceManager::_Load(SRC src)
 		// 登録されていない
 		return nullptr;
 	}
-
+	//for (auto& pair : resourcesMap_)
+	//{
+	//	if (pair.first != src)
+	//	{
+	//		continue;
+	//	}
+	//	pair.second.Load();
+	//	break;
+	//}
 	rPair->second.Load();
 
 	// 念のためコピーコンストラクタ

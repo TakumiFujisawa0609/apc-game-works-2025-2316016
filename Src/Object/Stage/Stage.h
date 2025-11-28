@@ -1,12 +1,12 @@
 #pragma once
 #include <memory>
-#include "../ObjectBase.h"
+#include "../ObjectModelBase.h"
 #include "ShockWave.h"
 #include "Floor.h"
 
 class PointLight;
 
-class Stage : public ObjectBase
+class Stage : public ObjectModelBase
 {
 public:
 	static constexpr int WAVE_VERTEX_NUM = 60; //ショックウェーブの頂点数

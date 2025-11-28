@@ -3,7 +3,7 @@
 #include <map>
 #include <functional>
 #include <vector>
-#include "../ObjectBase.h"
+#include "../ObjectModelBase.h"
 
 class Gravity;
 class Geometry;
@@ -11,7 +11,7 @@ class AttackBase;
 class AnimationController;
 class Dragon;
 
-class EnemyBase : public ObjectBase
+class EnemyBase : public ObjectModelBase
 {
 public:
 

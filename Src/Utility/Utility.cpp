@@ -1367,3 +1367,28 @@ void Utility::GetModelMeshLocalBox(int modelId, VECTOR& minPos, VECTOR& maxPos)
         }
     }
 }
+
+VECTOR Utility::CalcNormal(const VECTOR& A, const VECTOR& B, const VECTOR& C)
+{
+    VECTOR AB;
+    AB.x = B.x - A.x;
+    AB.y = B.y - A.y;
+    AB.z = B.z - A.z;
+
+    VECTOR AC;
+    AC.x = C.x - A.x;
+    AC.y = C.y - A.y;
+    AC.z = C.z - A.z;
+
+    // äOêœ
+    VECTOR N;
+    N.x = AB.y * AC.z - AB.z * AC.y;
+    N.y = AB.z * AC.x - AB.x * AC.z;
+    N.z = AB.x * AC.y - AB.y * AC.x;
+
+    // ê≥ãKâª
+    float len = sqrtf(N.x * N.x + N.y * N.y + N.z * N.z);
+    if (len == 0.0f) return VGet(0, 0, 0);
+
+    return VGet(N.x / len, N.y / len, N.z / len);
+}

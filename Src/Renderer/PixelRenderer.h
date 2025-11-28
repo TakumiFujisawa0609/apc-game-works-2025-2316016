@@ -2,14 +2,12 @@
 #include <DxLib.h>
 #include "../Common/Vector2.h"
 #include "../Renderer/PixelMaterial.h"
+#include "../Renderer/BaseRenderer.h"
 
-class PixelRenderer
+class PixelRenderer : public BaseRenderer
 {
 
 public:
-
-	// ピクセルシェーダ用オリジナル定数バッファの使用開始スロット
-	static constexpr int CONSTANT_BUF_SLOT_BEGIN_PS = 4;
 
 	// 頂点数
 	static constexpr int NUM_VERTEX = 4;
@@ -24,7 +22,7 @@ public:
 	PixelRenderer(PixelMaterial& pixelMaterial);
 
 	// デストラクタ
-	~PixelRenderer(void);
+	~PixelRenderer(void)override;
 
 	// 描画矩形の生成
 	void MakeSquereVertex(Vector2 pos, Vector2 size);
@@ -37,7 +35,7 @@ public:
 	void SetSize(Vector2 size);
 
 	// 描画
-	void Draw(void);
+	void Draw(void)override;
 	void Draw(int x, int y);
 
 private:

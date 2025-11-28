@@ -1,12 +1,11 @@
 #pragma once
 #include "../../Common/Vector2.h"
 #include "../../Application.h"
+#include "../ObjectPixelBase.h"
 
 class EnemyBase;
-class PixelMaterial;
-class PixelRenderer;
 
-class EnemyHPUI
+class EnemyHPUI : public ObjectPixelBase
 {
 public:
 
@@ -30,9 +29,6 @@ public:
 	void Draw(void);
 	void InitMaskImageMinMax(void);
 private:
-	// ポストエフェクト用(ビネット)
-	std::unique_ptr<PixelMaterial> uiMaterial_;
-	std::unique_ptr<PixelRenderer> uiRenderer_;
 
 	//敵のクラス
 	EnemyBase& enemy_;

@@ -1,7 +1,7 @@
 #pragma once
-#include "../ObjectBase.h"
+#include "../ObjectModelBase.h"
 
-class SkyDome :public ObjectBase
+class SkyDome :public ObjectModelBase
 {
 public:
 	static constexpr float SCALE = 30.0f; //ÉXÉPÅ[Éã

@@ -2,8 +2,6 @@
 #include <memory>
 #include "Common/Collider.h"
 #include "Common/Transform.h"
-#include "../Renderer/ModelMaterial.h"
-#include "../Renderer/ModelRenderer.h"
 
 class ObjectBase
 {
@@ -32,8 +30,6 @@ protected:
 
 	//•`‰æŠÖ˜A
 	std::shared_ptr<Transform> transform_;
-	std::unique_ptr<ModelMaterial> material_;
-	std::shared_ptr<ModelRenderer> renderer_;
 
 
 	/// <summary>

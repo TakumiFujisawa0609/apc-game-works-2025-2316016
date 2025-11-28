@@ -495,6 +495,15 @@ public:
 	static void GetModelMeshLocalBox(int modelId, VECTOR& minPos, VECTOR& maxPos);
 
 	/// <summary>
+	/// 3“_‚©‚ç–@ü•ûŒü‚ğ‹‚ß‚é
+	/// </summary>
+	/// <param name="A"></param>
+	/// <param name="B"></param>
+	/// <param name="C"></param>
+	/// <returns></returns>
+	static VECTOR CalcNormal(const VECTOR& A, const VECTOR& B, const VECTOR& C);
+
+	/// <summary>
 	/// vector”z—ñ‚Ì’†‚Ìnullptr‚ğíœ‚·‚é
 	/// </summary>
 	/// <typeparam name="T">Œ^–¼</typeparam>

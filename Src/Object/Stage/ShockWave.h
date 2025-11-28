@@ -1,8 +1,8 @@
 #pragma once
 #include <memory>
-#include "../ObjectBase.h"
+#include "../ObjectModelBase.h"
 
-class ShockWave : public ObjectBase
+class ShockWave : public ObjectModelBase
 {
 public:
 

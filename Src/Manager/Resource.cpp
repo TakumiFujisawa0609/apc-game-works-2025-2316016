@@ -69,10 +69,8 @@ void Resource::Load(void)
 		break;
 
 	case Resource::TYPE::MODEL:
-		// ƒ‚ƒfƒ‹
 		handleId_ = MV1LoadModel(path_.c_str());
 		break;
-
 	case Resource::TYPE::EFFEKSEER:
 
 		handleId_ = LoadEffekseerEffect(path_.c_str());

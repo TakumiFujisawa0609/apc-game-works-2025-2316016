@@ -2,25 +2,21 @@
 #include <DxLib.h>
 #include "../Common/Vector2.h"
 #include "../Renderer/ModelMaterial.h"
+#include "../Renderer/BaseRenderer.h"
 
-class ModelRenderer
+class ModelRenderer : public BaseRenderer
 {
 
 public:
-
-	// 頂点シェーダ用オリジナル定数バッファの使用開始スロット
-	static constexpr int CONSTANT_BUF_SLOT_BEGIN_VS = 7;
-	// ピクセルシェーダ用オリジナル定数バッファの使用開始スロット
-	static constexpr int CONSTANT_BUF_SLOT_BEGIN_PS = 4;
 
 	// コンストラクタ
 	ModelRenderer(int modelId_, ModelMaterial& modelMaterial);
 
 	// デストラクタ
-	~ModelRenderer(void);
+	~ModelRenderer(void)override;
 
 	// 描画
-	void Draw(void);
+	void Draw(void)override;
 
 	//メッシュごとに描画
 	void DrawMeshes(void);

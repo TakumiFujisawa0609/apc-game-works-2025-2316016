@@ -37,6 +37,7 @@ Transform::Transform(int model)
 
 Transform::~Transform(void)
 {
+	MV1DeleteModel(modelId);
 }
 
 void Transform::Update(void)

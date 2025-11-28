@@ -3,12 +3,18 @@
 #include "../../Renderer/ModelRenderer.h"
 #include "../Common/Geometry/Triangle3D.h"
 #include "../Common/Collider.h"
+#include "GateMist.h"
 #include "Gate.h"
 
 Gate::Gate(SceneManager::SCENE_ID nextSceneID)
 {
+	VECTOR pos[GateMist::VERTEX_NUM];
+	pos[0] = pos1_;
+	pos[1] = pos2_;
+	pos[2] = pos3_;
+	pos[3] = pos4_;
+	mist_ = std::make_unique<GateMist>(pos);
 	nextSceneID_ = nextSceneID;
-	time_ = 0.0f;
 	transform_ = std::make_shared<Transform>();
 	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::GATE));
 	transform_->scl = SCALE;
@@ -34,14 +40,14 @@ void Gate::Init(void)
 
 void Gate::Update(void)
 {
-	float deltaTime = SceneManager::GetInstance().GetDeltaTime();
-	time_ += deltaTime;
+	mist_->Update();
 }
 
 void Gate::Draw(void)
 {
 	//MV1DrawModel(transform_->modelId);
 	renderer_->Draw();
+	mist_->Draw();
 }
 
 void Gate::UIDraw(void)
@@ -79,6 +85,8 @@ void Gate::SetPos(VECTOR pos)
 	pos2_ = VAdd(pos2_, distance);
 	pos3_ = VAdd(pos3_, distance);
 	pos4_ = VAdd(pos4_, distance);
+
+	SetMistPos();
 }
 
 void Gate::SetDegY(float degY)
@@ -106,4 +114,16 @@ void Gate::UpdatePos(void)
 	pos3_ = VAdd(pos2_, VScale(pos3_, -1.0f));	//‰E‰º
 	pos2_ = VGet(pos1_.x, pos2_.y, pos1_.z);//¶ã
 	pos4_ = VGet(pos3_.x, pos2_.y, pos3_.z);	//‰Eã
+
+	SetMistPos();
+}
+
+void Gate::SetMistPos(void)
+{
+	VECTOR pos[GateMist::VERTEX_NUM];
+	pos[0] = pos1_;
+	pos[1] = pos2_;
+	pos[2] = pos3_;
+	pos[3] = pos4_;
+	mist_->SetPos(pos);
 }

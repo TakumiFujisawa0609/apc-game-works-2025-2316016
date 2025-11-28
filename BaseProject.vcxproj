@@ -19,6 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Renderer\BaseRenderer.cpp" />
+    <ClCompile Include="Src\Object\ObjectPolygonBase.cpp" />
+    <ClCompile Include="Src\Renderer\Polygon3DRenderer.cpp" />
+    <ClCompile Include="Src\Renderer\Polygon3DMaterial.cpp" />
+    <ClCompile Include="Src\Object\ObjectPixelBase.cpp" />
+    <ClCompile Include="Src\Object\ObjectModelBase.cpp" />
+    <ClCompile Include="Src\Object\Gate\GateMist.cpp" />
     <ClCompile Include="Src\Object\Enemy\EnemyTitle.cpp" />
     <ClCompile Include="Src\Object\Enemy\Type\Dragon.cpp" />
     <ClCompile Include="Src\Object\Player\GamePlayer.cpp" />
@@ -102,6 +109,13 @@
     <ClCompile Include="Src\Object\Player\TitlePlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Renderer\BaseRenderer.h" />
+    <ClInclude Include="Src\Object\ObjectPolygonBase.h" />
+    <ClInclude Include="Src\Renderer\Polygon3DRenderer.h" />
+    <ClInclude Include="Src\Renderer\Polygon3DMaterial.h" />
+    <ClInclude Include="Src\Object\ObjectPixelBase.h" />
+    <ClInclude Include="Src\Object\ObjectModelBase.h" />
+    <ClInclude Include="Src\Object\Gate\GateMist.h" />
     <ClInclude Include="Src\Object\Enemy\EnemyTitle.h" />
     <ClInclude Include="Src\Object\Enemy\Type\Dragon.h" />
     <ClInclude Include="Src\Object\Player\GamePlayer.h" />
@@ -325,6 +339,18 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="Src\Shader\Model\WaterSplitVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Src\Shader\Polygon\MistPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Src\Shader\Polygon\MistVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>

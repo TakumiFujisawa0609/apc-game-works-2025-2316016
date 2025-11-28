@@ -1,8 +1,8 @@
 #pragma once
-
+#include "BaseRenderer.h"
 class VertexMaterial;
 
-class VertexRenderer
+class VertexRenderer : public BaseRenderer
 {
 public:
 
@@ -17,7 +17,7 @@ public:
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~VertexRenderer();
+	~VertexRenderer(void)override;
 
 	/// <summary>
 	/// 描画処理

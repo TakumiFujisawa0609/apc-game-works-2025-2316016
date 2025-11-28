@@ -82,6 +82,13 @@
     <ClCompile Include="Src\Object\Player\TitlePlayer.cpp" />
     <ClCompile Include="Src\Object\Enemy\Type\Dragon.cpp" />
     <ClCompile Include="Src\Object\Enemy\EnemyTitle.cpp" />
+    <ClCompile Include="Src\Object\Gate\GateMist.cpp" />
+    <ClCompile Include="Src\Object\ObjectModelBase.cpp" />
+    <ClCompile Include="Src\Object\ObjectPixelBase.cpp" />
+    <ClCompile Include="Src\Renderer\Polygon3DMaterial.cpp" />
+    <ClCompile Include="Src\Renderer\Polygon3DRenderer.cpp" />
+    <ClCompile Include="Src\Object\ObjectPolygonBase.cpp" />
+    <ClCompile Include="Src\Renderer\BaseRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Common\IntVector3.h" />
@@ -165,6 +172,13 @@
     <ClInclude Include="Src\Object\Player\TitlePlayer.h" />
     <ClInclude Include="Src\Object\Enemy\Type\Dragon.h" />
     <ClInclude Include="Src\Object\Enemy\EnemyTitle.h" />
+    <ClInclude Include="Src\Object\Gate\GateMist.h" />
+    <ClInclude Include="Src\Object\ObjectModelBase.h" />
+    <ClInclude Include="Src\Object\ObjectPixelBase.h" />
+    <ClInclude Include="Src\Renderer\Polygon3DMaterial.h" />
+    <ClInclude Include="Src\Renderer\Polygon3DRenderer.h" />
+    <ClInclude Include="Src\Object\ObjectPolygonBase.h" />
+    <ClInclude Include="Src\Renderer\BaseRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shader\Common\VertexToPixelHeader.hlsli" />
@@ -203,5 +217,7 @@
     <FxCompile Include="Src\Shader\Image\EnemyHPUI.hlsl" />
     <FxCompile Include="Src\Shader\Model\GateVS.hlsl" />
     <FxCompile Include="Src\Shader\Model\GatePS.hlsl" />
+    <FxCompile Include="Src\Shader\Polygon\MistPS.hlsl" />
+    <FxCompile Include="Src\Shader\Polygon\MistVS.hlsl" />
   </ItemGroup>
 </Project>
