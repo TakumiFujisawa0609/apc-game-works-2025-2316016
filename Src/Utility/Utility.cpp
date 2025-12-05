@@ -1368,17 +1368,17 @@ void Utility::GetModelMeshLocalBox(int modelId, VECTOR& minPos, VECTOR& maxPos)
     }
 }
 
-VECTOR Utility::CalcNormal(const VECTOR& A, const VECTOR& B, const VECTOR& C)
+VECTOR Utility::CalcNormal(const VECTOR& a, const VECTOR& b, const VECTOR& c)
 {
     VECTOR AB;
-    AB.x = B.x - A.x;
-    AB.y = B.y - A.y;
-    AB.z = B.z - A.z;
+    AB.x = b.x - a.x;
+    AB.y = b.y - a.y;
+    AB.z = b.z - a.z;
 
     VECTOR AC;
-    AC.x = C.x - A.x;
-    AC.y = C.y - A.y;
-    AC.z = C.z - A.z;
+    AC.x = c.x - a.x;
+    AC.y = c.y - a.y;
+    AC.z = c.z - a.z;
 
     // äOêœ
     VECTOR N;
@@ -1391,4 +1391,13 @@ VECTOR Utility::CalcNormal(const VECTOR& A, const VECTOR& B, const VECTOR& C)
     if (len == 0.0f) return VGet(0, 0, 0);
 
     return VGet(N.x / len, N.y / len, N.z / len);
+}
+
+VECTOR Utility::CalcCenter(const VECTOR& a, const VECTOR& b, const VECTOR& c, const VECTOR& d)
+{
+    VECTOR center;
+    center.x = (a.x + b.x + c.x + d.x) * 0.25f;
+    center.y = (a.y + b.y + c.y + d.y) * 0.25f;
+    center.z = (a.z + b.z + c.z + d.z) * 0.25f;
+    return center;
 }

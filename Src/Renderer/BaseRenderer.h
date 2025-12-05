@@ -12,6 +12,8 @@ public:
 
 	virtual void Draw(void);
 
+	void SetBuckCull(bool isCull) { isBuckCull_ = isCull; }
 protected:
+	bool isBuckCull_ = false;
 };
 

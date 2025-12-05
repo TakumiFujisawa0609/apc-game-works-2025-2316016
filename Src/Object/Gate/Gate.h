@@ -3,6 +3,7 @@
 #include "../ObjectModelBase.h"
 
 class GateMist;
+class GateManager;
 
 class Gate : public ObjectModelBase
 {
@@ -12,7 +13,7 @@ public:
 
 	static constexpr VECTOR SCALE = { 0.3f,0.3f,0.3f };
 	static constexpr float TEXTURE_SCALE = 3.0f;
-	Gate(SceneManager::SCENE_ID nextSceneID);
+	Gate(SceneManager::SCENE_ID nextSceneID,GateManager& parent);
 	~Gate(void) override;
 	void Init(void) override;
 	void Update(void) override;
@@ -25,16 +26,16 @@ public:
 protected:
 
 private:
-
+	GateManager& parent_;
 	std::unique_ptr<GateMist> mist_;
 
 	SceneManager::SCENE_ID nextSceneID_;
 
 	//当たり判定用頂点
-	VECTOR pos1_;
-	VECTOR pos2_;
-	VECTOR pos3_;
-	VECTOR pos4_;
+	VECTOR pos1_;//左上
+	VECTOR pos2_;//右上
+	VECTOR pos3_;//左下
+	VECTOR pos4_;//右下
 	void InitCollider(void);
 	void UpdatePos(void);
 	void SetMistPos(void);

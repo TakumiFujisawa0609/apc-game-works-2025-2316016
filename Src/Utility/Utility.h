@@ -497,11 +497,21 @@ public:
 	/// <summary>
 	/// 3点から法線方向を求める
 	/// </summary>
-	/// <param name="A"></param>
-	/// <param name="B"></param>
-	/// <param name="C"></param>
+	/// <param name="a"></param>
+	/// <param name="b"></param>
+	/// <param name="c"></param>
 	/// <returns></returns>
-	static VECTOR CalcNormal(const VECTOR& A, const VECTOR& B, const VECTOR& C);
+	static VECTOR CalcNormal(const VECTOR& a, const VECTOR& b, const VECTOR& c);
+
+	/// <summary>
+	/// 4天の中心を求める
+	/// </summary>
+	/// <param name="a"></param>
+	/// <param name="b"></param>
+	/// <param name="c"></param>
+	/// <param name="d"></param>
+	/// <returns></returns>
+	static VECTOR CalcCenter(const VECTOR& a, const VECTOR& b, const VECTOR& c ,const VECTOR& d);
 
 	/// <summary>
 	/// vector配列の中のnullptrを削除する

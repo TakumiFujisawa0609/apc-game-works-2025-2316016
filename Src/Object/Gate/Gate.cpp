@@ -3,17 +3,18 @@
 #include "../../Renderer/ModelRenderer.h"
 #include "../Common/Geometry/Triangle3D.h"
 #include "../Common/Collider.h"
+#include "GateManager.h"
 #include "GateMist.h"
 #include "Gate.h"
 
-Gate::Gate(SceneManager::SCENE_ID nextSceneID)
+Gate::Gate(SceneManager::SCENE_ID nextSceneID, GateManager& parent): parent_(parent)
 {
-	VECTOR pos[GateMist::VERTEX_NUM];
+	VECTOR pos[GateMist::VERTEX_NUM]{};
 	pos[0] = pos1_;
 	pos[1] = pos2_;
 	pos[2] = pos3_;
 	pos[3] = pos4_;
-	mist_ = std::make_unique<GateMist>(pos);
+	mist_ = std::make_unique<GateMist>(pos,parent_);
 	nextSceneID_ = nextSceneID;
 	transform_ = std::make_shared<Transform>();
 	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::GATE));
@@ -107,20 +108,20 @@ void Gate::InitCollider(void)
 
 void Gate::UpdatePos(void)
 {
-	pos1_ = MV1GetFramePosition(transform_->modelId, 0);	//左下
-	pos2_ = MV1GetFramePosition(transform_->modelId, 1);
-	pos3_ = VSub(pos1_, pos2_);
-	pos3_.y *= -1.0f;
-	pos3_ = VAdd(pos2_, VScale(pos3_, -1.0f));	//右下
-	pos2_ = VGet(pos1_.x, pos2_.y, pos1_.z);//左上
-	pos4_ = VGet(pos3_.x, pos2_.y, pos3_.z);	//右上
+	pos3_ = MV1GetFramePosition(transform_->modelId, 0);	//左下
+	pos1_ = MV1GetFramePosition(transform_->modelId, 1);
+	pos4_ = VSub(pos3_, pos1_);
+	pos4_.y *= -1.0f;
+	pos4_ = VAdd(pos1_, VScale(pos4_, -1.0f));	//右下
+	pos1_ = VGet(pos3_.x, pos1_.y, pos3_.z);//左上
+	pos2_ = VGet(pos4_.x, pos1_.y, pos4_.z);	//右上
 
 	SetMistPos();
 }
 
 void Gate::SetMistPos(void)
 {
-	VECTOR pos[GateMist::VERTEX_NUM];
+	VECTOR pos[GateMist::VERTEX_NUM]{};
 	pos[0] = pos1_;
 	pos[1] = pos2_;
 	pos[2] = pos3_;

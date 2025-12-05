@@ -10,14 +10,12 @@
 class GamePlayer;
 class SkyDome;
 class Stage;
-class Gate;
+class GateManager;
 
 class SceneStageSelect : public SceneBase
 {
 public:
 
-	static constexpr int GATE_NUM = 4;
-	static constexpr float GATE_RADIUS = 1000.0f;
 
 	//ƒƒ“ƒo[ŠÖ”
 	SceneStageSelect(void);
@@ -38,6 +36,6 @@ private:
 	std::unique_ptr<SkyDome> skyDome_;
 	std::unique_ptr<GamePlayer> player_;
 	std::unique_ptr<Stage> stage_;
-	std::unique_ptr<Gate> gate_[GATE_NUM];
+	std::unique_ptr<GateManager> gateManager_;
 
 };

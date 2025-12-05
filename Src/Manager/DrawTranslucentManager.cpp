@@ -30,6 +30,8 @@ void DrawTranslucentManager::Init(void)
 
 void DrawTranslucentManager::Draw(void)
 {
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
+	SetWriteZBufferFlag(FALSE);
 	for (auto& obj : translucentObjects_)
 	{
 		VECTOR camPos = GetCameraPosition();
@@ -48,6 +50,8 @@ void DrawTranslucentManager::Draw(void)
 		}
 	}
 	translucentObjects_.clear();
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
+	SetWriteZBufferFlag(TRUE);
 }
 
 void DrawTranslucentManager::Destroy(void)
@@ -55,7 +59,7 @@ void DrawTranslucentManager::Destroy(void)
 	delete instance_;
 }
 
-void DrawTranslucentManager::Add(std::shared_ptr<Transform> transform, std::shared_ptr<ModelRenderer> renderer)
+void DrawTranslucentManager::Add(std::shared_ptr<Transform> transform, std::shared_ptr<BaseRenderer> renderer)
 {
 	TranslucentObject obj;
 	obj.transform = transform;

@@ -5,7 +5,8 @@
 //PS
 #include "../Common/Pixel/PixelShader3DHeader.hlsli"
 
-Texture2D Noise : register(t3);
+Texture2D Noise : register(t1);
+SamplerState noiseSampler : register(s1); //サンプラー
 
 // 定数バッファ：スロット4番目(b4と書く)
 cbuffer cbParam : register(b4)
@@ -18,25 +19,21 @@ cbuffer cbParam : register(b4)
 float4 main(PS_INPUT PSInput) : SV_TARGET
 {
     float2 uv = PSInput.uv;
-    //uv.y = saturate(uv.y + abs(sin(g_time) / 2.0f + uv.x) * ( /*1.0f - */(uv.y * uv.y)) /* + 0.3f*/);
-    //uv.y = saturate( uv.y - abs(sin(g_time) )/* * (1.0f - (uv.y * uv.y)) + 0.3f*/);
-    //uv.y = 1.0 - uv.y;
-    //uv.y = 1.0 - (uv.y / 2);
-    ////uv.x = frac(uv.x * uv.y + ((g_time)));
-    //float4 color = diffuseMapTexture.Sample(diffuseMapSampler, uv);
-    //if (color.r < 0.1f)
+    //uv.y += g_time;
+    uv.x = uv.x + (sin(g_time));
+    uv.y = uv.y + (cos(g_time));
+    uv.y += g_time * 2;
+    uv = frac(uv);
+    //return float4(uv.x, uv.y, 1.0f, 1.0f);
+    float4 noiseCol = Noise.Sample(noiseSampler, uv);
+    //if(noiseCol.r < 0.1f)
     //{
     //    discard;
     //}
-    //if (PSInput.worldPos.y < 0.001f)
-    //{
-    //    return float4(1.0f, 0, 1.0f, 1.0f);
-    //}
-    uv.y = frac(uv.y + g_time) * 4;
-    uv.x *= 5.0f;
-    float4 noiseCol = Noise.Sample(diffuseMapSampler, uv);
     noiseCol.a = noiseCol.r;
-    //color = float4(1.0f, frac(sin(g_time) + color.r + noiseCol.r/* * PSInput.worldPos.x*/), 1.0f, color.r * noiseCol.r);
-
+    noiseCol.rgb = 1.0f;
+    //noiseCol.gb = 0.0f;
+    //noiseCol.a = 0.0f;
+    //return float4(noiseCol.xyz, 0.0f);
     return noiseCol;
 }

@@ -2,7 +2,7 @@
 #include "../Common/VertexToPixelHeader.hlsli"
 // IN
 #include "../Common/Vertex/VertexInputType.hlsli"
-#define VERTEX_INPUT DX_MV1_VERTEX_TYPE_NMAP_1FRAME
+#define VERTEX_INPUT DX_VERTEX3DSHADER
 // OUT
 #define VS_OUTPUT VertexToPixelLit
 #include "../Common/Vertex/VertexShader3DHeader.hlsli"
@@ -13,6 +13,18 @@ cbuffer cbParam : register(b7)
     //float g_uv_scale;
     //float3 dummy;
 }
+
+//float4 uint2float4(uint num)
+//{
+//    //return float4(
+//    //    ((num >> 16) & 0xFF) / 255.0f, // R
+//    //    ((num >> 8) & 0xFF) / 255.0f, // G
+//    //    (num & 0xFF) / 255.0f, // B
+//    //    ((num >> 24) & 0xFF) / 255.0f // A
+//    //);
+//    return float4(0.0f,0.0f,0.0f,0.0f);
+//}
+
 
 VS_OUTPUT main(VS_INPUT VSInput)
 {
@@ -39,15 +51,15 @@ VS_OUTPUT ret;
     
     // その他、ピクセルシェーダへ引継&初期化 ++++++++++++( 開始 )
 // UV座標
-    ret.uv.x = VSInput.uv0.x;
-    ret.uv.y = VSInput.uv0.y;
+    ret.uv.x = VSInput.TexCoords0.x;
+    ret.uv.y = VSInput.TexCoords0.y;
     //ret.uv.y += sin(ret.uv.x + time) * waveScale;
 // 法線
-    ret.normal = VSInput.norm; // 法線をローカル空間からワールド空間へ変換
-    ret.normal = normalize(mul(VSInput.norm, (float3x3) g_base.localWorldMatrix));
+    ret.normal = VSInput.Normal; // 法線をローカル空間からワールド空間へ変換
+    ret.normal = normalize(mul(VSInput.Normal, (float3x3) g_base.localWorldMatrix));
 
 // ディフューズカラー
-    ret.diffuse = VSInput.diffuse;
+    ret.diffuse = (VSInput.diffuse);
 // ライト方向(ローカル)
     ret.lightDir = float3(0.0f, 0.0f, 0.0f);
 // ライトから見た座標

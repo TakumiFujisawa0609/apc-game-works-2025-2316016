@@ -38,7 +38,7 @@ PlayerShot::PlayerShot(VECTOR pPos, VECTOR tPos)
 	isDead_ = false;
 	state_ = STATE::SHOT;
 	std::unique_ptr<Geometry> geo = std::make_unique<Line3D>(prePos_, transform_->pos);
-	MakeCollider(Collider::TAG::PLAYER_ATTACK, std::move(geo), { Collider::TAG::PLAYER,Collider::TAG::PLAYER_ATTACK,Collider::TAG::ENEMY_ATTACK });
+	MakeCollider(Collider::TAG::PLAYER_ATTACK, std::move(geo), { Collider::TAG::PLAYER,Collider::TAG::PLAYER_ATTACK,Collider::TAG::ENEMY_ATTACK ,Collider::TAG::GATE});
 }
 
 PlayerShot::~PlayerShot()

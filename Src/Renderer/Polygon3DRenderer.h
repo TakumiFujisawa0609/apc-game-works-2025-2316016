@@ -10,14 +10,17 @@ public:
 	//描画情報
 	struct PolygonInfo
 	{
-		VERTEX3D* vertex;
-		int vertexNum;
-		unsigned short* Indices;
-		int polygonNum;
+		std::vector<VERTEX3DSHADER> vertex = {};
+		std::vector<unsigned short> Indices = {};
+		void clear(void)
+		{
+			vertex.clear();
+			Indices.clear();
+		}
 	};
 
 	// コンストラクタ
-	Polygon3DRenderer(Polygon3DMaterial& polygon3DMaterial);
+	Polygon3DRenderer(Polygon3DMaterial& polygon3DMaterial,PolygonInfo& info);
 
 	// デストラクタ
 	~Polygon3DRenderer(void)override;
@@ -26,11 +29,11 @@ public:
 	void Draw(void)override;
 
 	//描画情報の設定
-	void SetInfo(PolygonInfo info) { info_ = info; }
+	//void SetInfo(const PolygonInfo& info) { info_ = info; }
 private:
 
 	//描画に必要な情報
-	PolygonInfo info_;
+	PolygonInfo& info_;
 
 	// ピクセルマテリアル
 	Polygon3DMaterial& polygon3DMaterial_;

@@ -8,7 +8,7 @@
 #include "../Object/Player/GamePlayer.h"
 #include "../Object/Stage/Stage.h"
 #include "../Object/SkyDome/SkyDome.h"
-#include "../Object/Gate/Gate.h"
+#include "../Object/Gate/GateManager.h"
 #include "SceneStageSelect.h"
 
 SceneStageSelect::SceneStageSelect(void)
@@ -26,14 +26,16 @@ bool SceneStageSelect::Init(void)
 	player_->SetPos(Utility::VECTOR_ZERO);
 	stage_ = std::make_unique<Stage>(player_->GetPointLight());
 	skyDome_ = std::make_unique<SkyDome>();
-	float degInterval = Utility::ONE_TRACK_DEG / static_cast<float>(GATE_NUM);
-	for (int i = 0; i < GATE_NUM; i++)
-	{
-		gate_[i] = std::make_unique<Gate>(SceneManager::SCENE_ID::GAME);
-		gate_[i]->SetPos({sinf(Utility::Deg2RadF(degInterval) * i) * GATE_RADIUS,0.0f,cosf(Utility::Deg2RadF(degInterval) * i) * GATE_RADIUS });
-		gate_[i]->SetDegY(degInterval * i);
-
-	}
+	//float degInterval = Utility::ONE_TRACK_DEG / static_cast<float>(GATE_NUM);
+	//for (int i = 0; i < GATE_NUM; i++)
+	//{
+	//	gate_[i] = std::make_unique<Gate>(SceneManager::SCENE_ID::GAME);
+	//	gate_[i]->SetPos({sinf(Utility::Deg2RadF(degInterval) * i) * GATE_RADIUS,0.0f,cosf(Utility::Deg2RadF(degInterval) * i) * GATE_RADIUS });
+	//	gate_[i]->SetDegY(degInterval * i);
+	//}
+	std::vector<SceneManager::SCENE_ID> nextId = {};
+	nextId.push_back(SceneManager::SCENE_ID::GAME);
+	gateManager_ = std::make_unique<GateManager>(nextId);
 	//カメラ設定
 	auto& cam = SceneManager::GetInstance().GetCamera();
 	cam.SetFollow(player_->GetTransform().lock());
@@ -47,10 +49,7 @@ void SceneStageSelect::Update(void)
 	skyDome_->Update();
 	stage_->Update();
 	player_->Update();
-	for (auto& gate : gate_)
-	{
-		gate->Update();
-	}
+	gateManager_->Update();
 
 	VECTOR pPos = player_->GetTransform().lock()->pos;
 	pPos.y = 0.0f;
@@ -70,9 +69,6 @@ void SceneStageSelect::Draw(void)
 	skyDome_->Draw();
 	stage_->Draw();
 	player_->Draw();
-	for (auto& gate : gate_)
-	{
-		gate->Draw();
-	}
+	gateManager_->Draw();
 	DrawTranslucentManager::GetInstance().Draw();
 }

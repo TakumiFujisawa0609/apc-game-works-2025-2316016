@@ -89,6 +89,7 @@
     <ClCompile Include="Src\Renderer\Polygon3DRenderer.cpp" />
     <ClCompile Include="Src\Object\ObjectPolygonBase.cpp" />
     <ClCompile Include="Src\Renderer\BaseRenderer.cpp" />
+    <ClCompile Include="Src\Object\Gate\GateManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Common\IntVector3.h" />
@@ -179,6 +180,7 @@
     <ClInclude Include="Src\Renderer\Polygon3DRenderer.h" />
     <ClInclude Include="Src\Object\ObjectPolygonBase.h" />
     <ClInclude Include="Src\Renderer\BaseRenderer.h" />
+    <ClInclude Include="Src\Object\Gate\GateManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shader\Common\VertexToPixelHeader.hlsli" />

@@ -41,8 +41,10 @@ public:
 	void SetConstBufVS(int idx, const FLOAT4& contBuf);
 	void SetConstBufPS(int idx, const FLOAT4& contBuf);
 
+	// テクスチャバッファを追加
+	void AddTextureBuf(int texDiffuse);
 	// テクスチャを更新
-	void SetTextureBuf(int slot, int texDiffuse);
+	void SetTextureBuf(int idx, int texDiffuse);
 
 	// シェーダ
 	int GetShaderVS(void) const;
@@ -57,7 +59,9 @@ public:
 	const std::vector<FLOAT4>& GetConstBufsPS(void) const;
 
 	// 画像
-	const std::map<int, int>& GetTextures(void) const;
+	//const std::map<int, int>& GetTextures(void) const;
+	// 画像
+	const std::vector<int>& GetTextures(void) const;
 
 	// テクスチャアドレスを取得
 	TEXADDRESS GetTextureAddress(void) const;
@@ -97,7 +101,7 @@ private:
 	std::vector<FLOAT4> constBufsPS_;
 
 	// 画像
-	std::map<int, int> textures_;
+	std::vector<int> textures_;
 
 };
 

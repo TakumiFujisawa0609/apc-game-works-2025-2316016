@@ -1942,8 +1942,8 @@ typedef struct tagIPDATA_IPv6
 #endif // __ANDROID__
 
 #ifdef __APPLE__
-    #include "TargetConditionals.h"
-    #if TARGET_OS_IPHONE
+	#include "TargetConditionals.h"
+	#if TARGET_OS_IPHONE
 		#include "DxFunctioniOS.h"
 	#endif
 #endif // __APPLE__
@@ -4474,21 +4474,21 @@ extern	double		VRadD( VECTOR_D In1, VECTOR_D In2 ) ;
 // 2つのクォータニオンの乗算の結果を返す
 __inline FLOAT4 QTCross( const FLOAT4 &A, const FLOAT4 &B )
 {
-    FLOAT4 Result ;
-    Result.w = A.w * B.w - ( A.x * B.x + A.y * B.y + A.z * B.z ) ;
+	FLOAT4 Result ;
+	Result.w = A.w * B.w - ( A.x * B.x + A.y * B.y + A.z * B.z ) ;
 	Result.x = B.x * A.w + A.x * B.w + ( A.y * B.z - A.z * B.y ) ;
 	Result.y = B.y * A.w + A.y * B.w + ( A.z * B.x - A.x * B.z ) ;
 	Result.z = B.z * A.w + A.z * B.w + ( A.x * B.y - A.y * B.x ) ;
-    return Result ;
+	return Result ;
 }
 __inline DOUBLE4 QTCrossD( const DOUBLE4 &A, const DOUBLE4 &B )
 {
-    DOUBLE4 Result ;
-    Result.w = A.w * B.w - ( A.x * B.x + A.y * B.y + A.z * B.z ) ;
+	DOUBLE4 Result ;
+	Result.w = A.w * B.w - ( A.x * B.x + A.y * B.y + A.z * B.z ) ;
 	Result.x = B.x * A.w + A.x * B.w + ( A.y * B.z - A.z * B.y ) ;
 	Result.y = B.y * A.w + A.y * B.w + ( A.z * B.x - A.x * B.z ) ;
 	Result.z = B.z * A.w + A.z * B.w + ( A.x * B.y - A.y * B.x ) ;
-    return Result ;
+	return Result ;
 }
 
 // 共役クォータニオンを返す
@@ -4684,7 +4684,7 @@ extern	int				CreateFullColorData(     COLORDATA *ColorDataBuf ) ;														
 extern	int				CreateGrayColorData(     COLORDATA *ColorDataBuf ) ;																			// グレースケールのカラーフォーマットを構築する
 extern	int				CreatePal8ColorData(     COLORDATA *ColorDataBuf, int UseAlpha DEFAULTPARAM( = FALSE ) ) ;										// パレット２５６色のカラーフォーマットを構築する
 extern	int				CreateColorData(         COLORDATA *ColorDataBuf, int ColorBitDepth,
-										         DWORD RedMask, DWORD GreenMask, DWORD BlueMask, DWORD AlphaMask,
+												 DWORD RedMask, DWORD GreenMask, DWORD BlueMask, DWORD AlphaMask,
 												 int ChannelNum DEFAULTPARAM( = 0 ), int ChannelBitDepth DEFAULTPARAM( = 0 ), int FloatTypeFlag DEFAULTPARAM( = FALSE ) ) ;				// カラーフォーマットを作成する
 extern	void			SetColorDataNoneMask(    COLORDATA *ColorData ) ;																				// NoneMask 以外の要素を埋めた COLORDATA 構造体の情報を元に NoneMask をセットする
 extern	int				CmpColorData(            const COLORDATA *ColorData1, const COLORDATA *ColorData2 ) ;											// 二つのカラーフォーマットが等しいかどうか調べる( 戻り値　TRUE:等しい  FALSE:等しくない )

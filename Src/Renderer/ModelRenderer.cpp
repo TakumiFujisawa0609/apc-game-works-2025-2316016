@@ -11,7 +11,10 @@ ModelRenderer::~ModelRenderer(void)
 
 void ModelRenderer::Draw(void)
 {
-
+	if (isBuckCull_)
+	{
+		SetUseBackCulling(true);
+	}
 	// オリジナルシェーダ設定(ON)
 	MV1SetUseOrigShader(true);
 
@@ -62,7 +65,10 @@ void ModelRenderer::Draw(void)
 	// オリジナルシェーダ設定(OFF)
 	MV1SetUseOrigShader(false);
 	//-----------------------------------------
-
+	if (isBuckCull_)
+	{
+		SetUseBackCulling(false);
+	}
 }
 
 void ModelRenderer::DrawMeshes(void)

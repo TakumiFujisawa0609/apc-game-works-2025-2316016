@@ -1,6 +1,6 @@
 #include "Polygon3DRenderer.h"
 
-Polygon3DRenderer::Polygon3DRenderer(Polygon3DMaterial& polygon3DMaterial) : polygon3DMaterial_(polygon3DMaterial)
+Polygon3DRenderer::Polygon3DRenderer(Polygon3DMaterial& polygon3DMaterial, PolygonInfo& info) : polygon3DMaterial_(polygon3DMaterial),info_(info)
 {
 }
 
@@ -10,14 +10,17 @@ Polygon3DRenderer::~Polygon3DRenderer(void)
 
 void Polygon3DRenderer::Draw(void)
 {
-
+	if (isBuckCull_)
+	{
+		SetUseBackCulling(false);
+	}
 	// オリジナルシェーダ設定(ON)
 	MV1SetUseOrigShader(true);
 
-	// シェーダ設定(頂点)
+	//// シェーダ設定(頂点)
 	SetReserveVS();
 
-	// シェーダ設定(ピクセル)
+	//// シェーダ設定(ピクセル)
 	SetReservePS();
 
 	// テクスチャアドレスタイプの取得
@@ -27,7 +30,7 @@ void Polygon3DRenderer::Draw(void)
 	// テクスチャアドレスタイプを変更
 	SetTextureAddressModeUV(texAType, texAType);
 
-	DrawPolygonIndexed3D(info_.vertex, info_.vertexNum, info_.Indices, info_.polygonNum, DX_NONE_GRAPH, true);
+	DrawPolygonIndexed3DToShader(info_.vertex.data(), static_cast<int>(info_.vertex.size()), info_.Indices.data(),static_cast<int>(info_.Indices.size() / 3));
 
 	// テクスチャアドレスタイプを元に戻す
 	SetTextureAddressModeUV(DX_TEXADDRESS_CLAMP, DX_TEXADDRESS_CLAMP);
@@ -38,18 +41,22 @@ void Polygon3DRenderer::Draw(void)
 	// テクスチャ解除
 	const auto& textures = polygon3DMaterial_.GetTextures();
 	size_t size = textures.size();
-	if (size == 0)
+	for (int i = 0; i < size; i++)
 	{
-		// 前回使用分のテクスチャを引き継がないように
-		SetUseTextureToShader(0, -1);
+		SetUseTextureToShader(i, -1);
 	}
-	else
-	{
-		for (const auto& pair : textures)
-		{
-			SetUseTextureToShader(pair.first, -1);
-		}
-	}
+	//if (size == 0)
+	//{
+	//	// 前回使用分のテクスチャを引き継がないように
+	//	SetUseTextureToShader(0, -1);
+	//}
+	//else
+	//{
+	//	for (const auto& pair : textures)
+	//	{
+	//		SetUseTextureToShader(pair.first, -1);
+	//	}
+	//}
 
 	// 頂点シェーダ解除
 	SetUseVertexShader(-1);
@@ -60,7 +67,10 @@ void Polygon3DRenderer::Draw(void)
 	// オリジナルシェーダ設定(OFF)
 	MV1SetUseOrigShader(false);
 	//-----------------------------------------
-
+	if (isBuckCull_)
+	{
+		SetUseBackCulling(true);
+	}
 }
 
 void Polygon3DRenderer::SetReserveVS(void)
@@ -103,19 +113,22 @@ void Polygon3DRenderer::SetReservePS(void)
 	// ピクセルシェーダーにテクスチャを転送
 	const auto& textures = polygon3DMaterial_.GetTextures();
 	size_t size = textures.size();
-	if (size == 0)
+	//if (size == 0)
+	//{
+	//	// 前回使用分のテクスチャを引き継がないように
+	//	SetUseTextureToShader(0, -1);
+	//}
+	//else
+	//{
+	//	for (const auto& pair : textures)
+	//	{
+	//		SetUseTextureToShader(pair.first, pair.second);
+	//	}
+	//}
+	for (int i = 0; i < size; i++)
 	{
-		// 前回使用分のテクスチャを引き継がないように
-		SetUseTextureToShader(0, -1);
+		SetUseTextureToShader(i, textures[i]);
 	}
-	else
-	{
-		for (const auto& pair : textures)
-		{
-			SetUseTextureToShader(pair.first, pair.second);
-		}
-	}
-
 	// 定数バッファハンドル
 	int constBuf = polygon3DMaterial_.GetConstBufPS();
 

@@ -79,17 +79,23 @@ void Polygon3DMaterial::SetConstBufPS(int idx, const FLOAT4& contBuf)
 
 }
 
-void Polygon3DMaterial::SetTextureBuf(int slot, int texDiffuse)
+void Polygon3DMaterial::AddTextureBuf(int texDiffuse)
+{
+	if (MAX_TEXTURES > textures_.size())
+	{
+		textures_.emplace_back(texDiffuse);
+	}
+}
+
+void Polygon3DMaterial::SetTextureBuf(int idx, int texDiffuse)
 {
 
-	if (textures_.count(slot) == 0)
+	if (idx >= textures_.size())
 	{
-		textures_.emplace(slot, texDiffuse);
+		return;
 	}
-	else
-	{
-		textures_[slot] = texDiffuse;
-	}
+
+	textures_[idx] = texDiffuse;
 
 }
 
@@ -103,7 +109,7 @@ const std::vector<FLOAT4>& Polygon3DMaterial::GetConstBufsPS(void) const
 	return constBufsPS_;
 }
 
-const std::map<int, int>& Polygon3DMaterial::GetTextures(void) const
+const std::vector<int>& Polygon3DMaterial::GetTextures(void) const
 {
 	return textures_;
 }

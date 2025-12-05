@@ -4,7 +4,7 @@
 #include <vector>
 
 class Transform;
-class ModelRenderer;
+class BaseRenderer;
 
 class DrawTranslucentManager	//”¼“§–¾‚Ì•`‰æ‡ŠÇ—
 {
@@ -17,7 +17,7 @@ public:
 	void Draw(void);
 	void Destroy(void);
 
-	void Add(std::shared_ptr<Transform> transform, std::shared_ptr<ModelRenderer> renderer = nullptr);
+	void Add(std::shared_ptr<Transform> transform, std::shared_ptr<BaseRenderer> renderer = nullptr);
 
 
 private:
@@ -25,7 +25,7 @@ private:
 	struct TranslucentObject
 	{
 		std::shared_ptr<Transform> transform;		
-		std::shared_ptr<ModelRenderer> renderer;
+		std::shared_ptr<BaseRenderer> renderer;
 		float distance = 0.0f;
 	};
 
