@@ -64,7 +64,7 @@ void TutorialMove::DrawStateNone(void)
 
 void TutorialMove::DrawStatePlay(void)
 {
-
+	
 }
 
 void TutorialMove::DrawStateEnd(void)

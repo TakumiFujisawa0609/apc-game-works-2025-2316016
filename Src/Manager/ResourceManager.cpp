@@ -106,12 +106,6 @@ void ResourceManager::Init(void)
 	resourcesMap_.emplace(SRC::DRAGON, std::move(res));
 	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "Stage/Floor/Floor.mv1");
 	resourcesMap_.emplace(SRC::FLOOR, std::move(res));
-	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "Stage/ShockWave/ShockWave.mv1");
-	resourcesMap_.emplace(SRC::SHOCK_WAVE, std::move(res));
-	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "Stage/ShockWave/ShockWave1.mv1");
-	resourcesMap_.emplace(SRC::SHOCK_WAVE1, std::move(res));
-	res = Resource(Resource::TYPE::IMG, Application::PATH_MODEL + "Stage/ShockWave/Noise2.png");
-	resourcesMap_.emplace(SRC::NOISE, std::move(res));
 	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "Gate/Gate.mv1");
 	resourcesMap_.emplace(SRC::GATE, std::move(res));
 
@@ -123,15 +117,17 @@ void ResourceManager::Init(void)
 	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "UI/EnemyHPNormal.png");
 	resourcesMap_.emplace(SRC::ENEMY_HP_UI_NORMAL_IMG, std::move(res));
 
+	//テクスチャ
+	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "Texture/Wave.png");
+	resourcesMap_.emplace(SRC::WAVE_TEXTURE, std::move(res));
+	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "Texture/Noise.png");
+	resourcesMap_.emplace(SRC::NOISE, std::move(res));
+
 	//エフェクト
 	res = Resource(Resource::TYPE::EFFEKSEER, Application::PATH_EFFECT + "Hit.efkefc");
 	resourcesMap_.emplace(SRC::HIT_EFFECT, std::move(res));
-	res = Resource(Resource::TYPE::EFFEKSEER, Application::PATH_EFFECT + "WaterSprit.efkefc");
-	resourcesMap_.emplace(SRC::WATER_SPLIT, std::move(res));
 	res = Resource(Resource::TYPE::MODEL, Application::PATH_EFFECT + "WaterSprit_Thunder.mv1");
 	resourcesMap_.emplace(SRC::WATER_SPRIT_THUNDER_MODEL, std::move(res));
-	res = Resource(Resource::TYPE::MODEL, Application::PATH_EFFECT + "Fire.mv1");
-	resourcesMap_.emplace(SRC::FIRE_MODEL, std::move(res));
 }
 
 void ResourceManager::Release(void)

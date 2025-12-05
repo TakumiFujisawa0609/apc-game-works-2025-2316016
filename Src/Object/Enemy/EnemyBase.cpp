@@ -305,13 +305,13 @@ void EnemyBase::AplayChangeStateFunc(void)
 
 void EnemyBase::InitAddAttack(void)
 {
-	AddAttack(ATTACK_TYPE::JUMP);
-	AddAttack(ATTACK_TYPE::JUMP_CONSTANT);
-	AddAttack(ATTACK_TYPE::FOLLOW);
-	AddAttack(ATTACK_TYPE::FALL_DOWN);
+	//AddAttack(ATTACK_TYPE::JUMP);
+	//AddAttack(ATTACK_TYPE::JUMP_CONSTANT);
+	//AddAttack(ATTACK_TYPE::FOLLOW);
+	//AddAttack(ATTACK_TYPE::FALL_DOWN);
 	AddAttack(ATTACK_TYPE::CROSS_LINE);
-	AddAttack(ATTACK_TYPE::THUNDER_AROUND);
-	AddAttack(ATTACK_TYPE::WATER_SPRIT);
+	//AddAttack(ATTACK_TYPE::THUNDER_AROUND);
+	//AddAttack(ATTACK_TYPE::WATER_SPRIT);
 }
 
 AnimationController& EnemyBase::GetAnimController(void)

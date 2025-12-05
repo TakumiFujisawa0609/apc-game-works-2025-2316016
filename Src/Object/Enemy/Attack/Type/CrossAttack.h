@@ -19,11 +19,12 @@ public:
 	void Update(void)override;
 	void Draw(void)override;
 	int GetSubObjectNum(void)override { return static_cast<int>(crossLines_.size()); }
-	Transform& GetLineTransform(int lineNum);
+	void AddVertexs(Polygon3DRenderer::PolygonInfo info);
 private:
 
 	std::vector<std::unique_ptr<CrossLine>> crossLines_; //クロスライン
 	float time_;
+	float sumTime_;
 	float reverseTime_; //ラインの向きが逆になるまでの時間
 	float createInterval_;	//生成間隔管理用
 	float createPointNum_;	//生成したラインの数

@@ -3,11 +3,9 @@
 #include <map>
 #include <functional>
 #include "../../EnemyBase.h"
-#include "../../../ObjectBase.h"
+#include "../../../ObjectPolygonBase.h"
 
-class Transform;
-
-class AttackBase : public ObjectBase
+class AttackBase : public ObjectPolygonBase
 {
 public:
 

@@ -9,7 +9,6 @@ class PointLight;
 class Stage : public ObjectModelBase
 {
 public:
-	static constexpr int WAVE_VERTEX_NUM = 60; //ショックウェーブの頂点数
 	static constexpr float RADIUS = 1500.0f;
 
 	Stage(void) = default;
@@ -20,6 +19,6 @@ public:
 	void Draw(void)override;
 private:
 	std::unique_ptr<Floor> floor_;
-	std::unique_ptr<ShockWave> shockWave_[WAVE_VERTEX_NUM];
+	std::unique_ptr<ShockWave> shockWave_;
 };
 

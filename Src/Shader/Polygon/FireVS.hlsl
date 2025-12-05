@@ -2,7 +2,7 @@
 #include "../Common/VertexToPixelHeader.hlsli"
 // IN
 #include "../Common/Vertex/VertexInputType.hlsli"
-#define VERTEX_INPUT DX_MV1_VERTEX_TYPE_NMAP_1FRAME
+#define VERTEX_INPUT DX_VERTEX3DSHADER
 // OUT
 #define VS_OUTPUT VertexToPixelLit
 #include "../Common/Vertex/VertexShader3DHeader.hlsli"
@@ -10,9 +10,11 @@
 // 定数バッファ：スロット4番目(b4と書く)
 cbuffer cbParam : register(b7)
 {
-    float time;
-    float waveScale;
-    float2 dummy;
+    //float time;
+    //float3 centerPos;
+    //float radius;
+    //float3 dummy;
+    //float3 dummy;
 }
 
 VS_OUTPUT main(VS_INPUT VSInput)
@@ -28,6 +30,17 @@ VS_OUTPUT ret;
 // ローカル座標をワールド座標に変換(剛体)
     lWorldPosition.w = 1.0f;
     lWorldPosition.xyz = mul(lLocalPosition, g_base.localWorldMatrix);
+    //float3 dir = centerPos - lWorldPosition.xyz;
+    //dir.y = 0.0f;
+    //dir = normalize(dir);
+    //float per = ((lWorldPosition.y - centerPos.y) / radius);
+    //if(per > 1.0f)
+    //{
+    //    per = 1.0f;
+    //    lWorldPosition.y = radius;
+    //}
+    //lWorldPosition.x += dir.x * (per);
+    //lWorldPosition.z += dir.z * (per);
     //lWorldPosition.y += sin(atan2(lWorldPosition.x,lWorldPosition.z) + time) * waveScale;
     ret.worldPos = lWorldPosition.xyz; // ワールド座標をピクセルシェーダへ引き継ぐ
 // ワールド座標をビュー座標に変換
@@ -40,14 +53,14 @@ VS_OUTPUT ret;
     
     // その他、ピクセルシェーダへ引継&初期化 ++++++++++++( 開始 )
 // UV座標
-    ret.uv.x = VSInput.uv0.x;
-    ret.uv.y = VSInput.uv0.y;
+    ret.uv.x = VSInput.TexCoords0.x;
+    ret.uv.y = VSInput.TexCoords0.y;
     //ret.uv.x = VSInput.uv0.x * g_uv_scale.x;
     //ret.uv.y = VSInput.uv0.y * g_uv_scale.y;
     //ret.uv.y = saturate(ret.uv.y * abs(sin(time * 3.0f + atan2(ret.worldPos.x, ret.worldPos.z))));
 // 法線
-    ret.normal = VSInput.norm; // 法線をローカル空間からワールド空間へ変換
-    ret.normal = normalize(mul(VSInput.norm, (float3x3) g_base.localWorldMatrix));
+    ret.normal = VSInput.Normal; // 法線をローカル空間からワールド空間へ変換
+    ret.normal = normalize(mul(VSInput.Normal, (float3x3) g_base.localWorldMatrix));
 
 // ディフューズカラー
     ret.diffuse = VSInput.diffuse;

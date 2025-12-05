@@ -5,7 +5,8 @@
 //PS
 #include "../Common/Pixel/PixelShader3DHeader.hlsli"
 
-Texture2D Noise : register(t3);
+Texture2D Noise : register(t1);
+SamplerState noiseSampler : register(s1); //サンプラー
 
 // 定数バッファ：スロット4番目(b4と書く)
 cbuffer cbParam : register(b4)
@@ -32,9 +33,9 @@ float4 main(PS_INPUT PSInput) : SV_TARGET
     //{
     //    return float4(1.0f, 0, 1.0f, 1.0f);
     //}
-    uv.y = frac(uv.y + g_time) * 4;
-    uv.x *= 5.0f;
-    float4 noiseCol = Noise.Sample(diffuseMapSampler, uv);
+    uv.y = frac(uv.y + g_time * 3);
+    //uv.x *= 5.0f;
+    float4 noiseCol = Noise.Sample(noiseSampler, uv);
     color = float4(1.0f, frac(sin(g_time) + color.r + noiseCol.r/* * PSInput.worldPos.x*/), 1.0f, color.r * noiseCol.r );
 
     return color;

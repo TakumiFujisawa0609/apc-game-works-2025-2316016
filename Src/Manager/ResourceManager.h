@@ -55,8 +55,6 @@ public:
 		SNOW_MAN,	//スノーマン
 		DRAGON,		//ドラゴン
 		FLOOR,		//ステージ
-		SHOCK_WAVE,	//ショックウェーブ
-		SHOCK_WAVE1,	//ショックウェーブ
 		NOISE,		//ノイズ
 		GATE,		//ゲート
 
@@ -66,11 +64,12 @@ public:
 		ENEMY_HP_UI_MASK_IMG,	//敵HPのUIマスク
 		ENEMY_HP_UI_NORMAL_IMG,	//敵HPのUI法線
 
+		//テクスチャ
+		WAVE_TEXTURE,	//炎テクスチャ
+
 		//エフェクト
 		HIT_EFFECT,		//ヒットエフェクト
-		WATER_SPLIT,	//渦巻
 		WATER_SPRIT_THUNDER_MODEL, //ウォータースプリットと雷モデル
-		FIRE_MODEL,		//炎のモデル
 	};
 
 	// 明示的にインステンスを生成する
