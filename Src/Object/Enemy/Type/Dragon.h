@@ -1,7 +1,10 @@
 #pragma once
-#include "../EnemyBase.h"
+#include <map>
+#include "../../ObjectBase.h"
+#include "../EnemyAttackManager.h"
 
 class AnimationController;
+class EnemyBase;
 
 class Dragon : public ObjectBase
 {
@@ -74,8 +77,8 @@ public:
 
 	struct ANIM_INFO
 	{
-		EnemyBase::ATTACK_STATE attackState; //攻撃状態
-		EnemyBase::ATTACK_TYPE attackType; //攻撃の種類
+		EnemyAttackManager::ATTACK_STATE attackState; //攻撃状態
+		EnemyAttackManager::ATTACK_TYPE attackType; //攻撃の種類
 		//bool operator>(const ANIM_INFO& info);
 		//const bool operator<(const ANIM_INFO& info);
 		//const bool operator<=(const ANIM_INFO& info);
@@ -118,7 +121,7 @@ public:
 
 	void SetAnim(ANIM_TYPE type);	//アニメーションを適用する
 	AnimationController& GetAnimController(void) { return *animCtrl_; }
-	int GetAnimType(EnemyBase::ATTACK_STATE attackState, EnemyBase::ATTACK_TYPE attackType);
+	int GetAnimType(EnemyAttackManager::ATTACK_STATE attackState, EnemyAttackManager::ATTACK_TYPE attackType);
 	int GetIdleAnim(void) { return static_cast<int>(ANIM_TYPE::IDLE_1); }
 private:
 	EnemyBase& parent_; //親EnemyBase
@@ -128,7 +131,7 @@ private:
 	void InitGeometry(void);
 	void InitAnimationController(void); //アニメーションコントローラー初期化
 	void InitAnimMap(void); //アニメーション情報マップ初期化
-	void AddAnimInfoMap(EnemyBase::ATTACK_STATE attackState, EnemyBase::ATTACK_TYPE attackType,ANIM_TYPE animType );
+	void AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE attackState, EnemyAttackManager::ATTACK_TYPE attackType,ANIM_TYPE animType );
 	void UpdateFramePos(void);	//framePos_を更新する
 };
 

@@ -2,7 +2,7 @@
 #include <DxLib.h>
 #include <map>
 #include <functional>
-#include "../../EnemyBase.h"
+#include "../../EnemyAttackManager.h"
 #include "../../../ObjectPolygonBase.h"
 
 class AttackBase : public ObjectPolygonBase
@@ -39,7 +39,7 @@ public:
 		MODEL,	//ƒ‚ƒfƒ‹
 	};
 
-	AttackBase(EnemyBase& enemy);
+	AttackBase(EnemyAttackManager& parent);
 	virtual ~AttackBase(void)override;
 	virtual void Init(void)override;
 	virtual void Update(void)override;
@@ -56,11 +56,11 @@ public:
 
 	GEOMETORY GetGeometory(void) const { return geo_; }
 
-	EnemyBase::ATTACK_TYPE GetMyType(void)const { return myType_; }
+	EnemyAttackManager::ATTACK_TYPE GetMyType(void)const { return myType_; }
 protected:
-	EnemyBase& enemy_; //e‚ÌEnemyBase
+	EnemyAttackManager& parent_; //e‚ÌEnemyBase
 
-	EnemyBase::ATTACK_TYPE myType_;
+	EnemyAttackManager::ATTACK_TYPE myType_;
 	RANGE range_; //UŒ‚”ÍˆÍ
 	STATE state_; //ó‘Ô
 	std::weak_ptr<Transform> target_; //‘Šè‚ÌTransform

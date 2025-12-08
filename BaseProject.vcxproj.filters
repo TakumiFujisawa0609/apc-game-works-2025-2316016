@@ -90,6 +90,7 @@
     <ClCompile Include="Src\Object\ObjectPolygonBase.cpp" />
     <ClCompile Include="Src\Renderer\BaseRenderer.cpp" />
     <ClCompile Include="Src\Object\Gate\GateManager.cpp" />
+    <ClCompile Include="Src\Object\Enemy\EnemyAttackManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Common\IntVector3.h" />
@@ -181,6 +182,7 @@
     <ClInclude Include="Src\Object\ObjectPolygonBase.h" />
     <ClInclude Include="Src\Renderer\BaseRenderer.h" />
     <ClInclude Include="Src\Object\Gate\GateManager.h" />
+    <ClInclude Include="Src\Object\Enemy\EnemyAttackManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shader\Common\VertexToPixelHeader.hlsli" />
@@ -221,5 +223,6 @@
     <FxCompile Include="Src\Shader\Model\GatePS.hlsl" />
     <FxCompile Include="Src\Shader\Polygon\MistPS.hlsl" />
     <FxCompile Include="Src\Shader\Polygon\MistVS.hlsl" />
+    <FxCompile Include="Src\Shader\Polygon\BasePolygonVS.hlsl" />
   </ItemGroup>
 </Project>

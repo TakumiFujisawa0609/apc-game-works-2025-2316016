@@ -5,7 +5,7 @@
 #include "../../../Common/Transform.h"
 #include "AttackBase.h"
 
-AttackBase::AttackBase(EnemyBase& enemy) : enemy_(enemy)
+AttackBase::AttackBase(EnemyAttackManager& parent) : parent_(parent)
 {
 	//チェンジステートをステートごとに格納
 	changeState_[STATE::NONE] = std::bind(&AttackBase::ChangeStateNone, this);

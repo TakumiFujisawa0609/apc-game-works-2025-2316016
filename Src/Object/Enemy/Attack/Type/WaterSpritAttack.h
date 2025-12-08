@@ -11,7 +11,7 @@ public:
 	static constexpr float MIN_SPEED = 3.0f;	//最遅速度
 	static constexpr float INTERVAL_TIME = 0.5f; //波の間隔時間
 	static constexpr float COOL_DOWN = 3.0f; //クールダウン時間
-	WaterSpritAttack(EnemyBase& enemy);
+	WaterSpritAttack(EnemyAttackManager& parent);
 	~WaterSpritAttack() override;
 	void Init(void) override;
 	void Update(void) override;

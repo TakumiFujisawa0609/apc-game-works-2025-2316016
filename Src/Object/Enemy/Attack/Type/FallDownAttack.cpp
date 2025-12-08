@@ -4,12 +4,12 @@
 #include "../../../Common/AnimationController.h"
 #include "FallDownAttack.h"
 
-FallDownAttack::FallDownAttack(EnemyBase& enemy) : AttackBase(enemy)
+FallDownAttack::FallDownAttack(EnemyAttackManager& parent) : AttackBase(parent)
 {
 	range_ = RANGE::ALL;
 	geo_ = GEOMETORY::SPHERE;
 	time_ = 0.0f;
-	myType_ = EnemyBase::ATTACK_TYPE::FALL_DOWN;
+	myType_ = EnemyAttackManager::ATTACK_TYPE::FALL_DOWN;
 }
 
 FallDownAttack::~FallDownAttack(void)
@@ -53,13 +53,13 @@ void FallDownAttack::ChangeStateNone(void)
 
 void FallDownAttack::ChangeStateReady(void)
 {
-	enemy_.GetAnimController().Play(enemy_.GetAnimNumber(EnemyBase::ATTACK_STATE::READY, myType_),false);
+	parent_.GetAnimController().Play(parent_.GetAnimNumber(EnemyAttackManager::ATTACK_STATE::READY, myType_),false);
 	AttackBase::ChangeStateReady();
 }
 
 void FallDownAttack::ChangeStateStart(void)
 {
-	enemy_.GetAnimController().Play(enemy_.GetAnimNumber(EnemyBase::ATTACK_STATE::PLAY, myType_));
+	parent_.GetAnimController().Play(parent_.GetAnimNumber(EnemyAttackManager::ATTACK_STATE::PLAY, myType_));
 	time_ = TIME;
 	//óéâ∫íeÇÃê∂ê¨
 	for (int i = 0; i < MAX_FALL_NUM; i++)
@@ -88,7 +88,7 @@ void FallDownAttack::UpdateStateNone(void)
 
 void FallDownAttack::UpdateStateReady(void)
 {
-	if (enemy_.GetAnimController().IsEnd())
+	if (parent_.GetAnimController().IsEnd())
 	{
 		ChangeState(STATE::START);
 	}

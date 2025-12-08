@@ -6,13 +6,13 @@
 #include "../SubObject/Wave.h"
 #include "JumpAttackConstant.h"
 
-JumpAttackConstant::JumpAttackConstant(EnemyBase& enemy) : AttackBase(enemy)
+JumpAttackConstant::JumpAttackConstant(EnemyAttackManager& parent) : AttackBase(parent)
 {
 	range_ = RANGE::MIDDLE;
 	geo_ = GEOMETORY::CIRCUMFERENCE;
 	time_ = 0.0f;
 	intervalTime_ = 0.0f;
-	myType_ = EnemyBase::ATTACK_TYPE::JUMP_CONSTANT;
+	myType_ = EnemyAttackManager::ATTACK_TYPE::JUMP_CONSTANT;
 }
 
 JumpAttackConstant::~JumpAttackConstant(void)
@@ -49,19 +49,19 @@ void JumpAttackConstant::ChangeStateReady(void)
 {
 	//ジャンプさせる
 	AttackBase::ChangeStateReady();
-	enemy_.GetGravity().ChengeState(Gravity::STATE::JUMP);
-	enemy_.GetGravity().SetDir(Utility::DIR_D);
-	enemy_.GetGravity().SetInitPower(JUMP_POW);
-	auto& animCtr = enemy_.GetAnimController();
+	parent_.GetGravity().ChengeState(Gravity::STATE::JUMP);
+	parent_.GetGravity().SetDir(Utility::DIR_D);
+	parent_.GetGravity().SetInitPower(JUMP_POW);
+	auto& animCtr = parent_.GetAnimController();
 
-	enemy_.GetAnimController().Play(enemy_.GetAnimNumber(EnemyBase::ATTACK_STATE::READY, myType_));
+	parent_.GetAnimController().Play(parent_.GetAnimNumber(EnemyAttackManager::ATTACK_STATE::READY, myType_));
 }
 
 void JumpAttackConstant::ChangeStateStart(void)
 {
 	//ウェーブの作成
 	AttackBase::ChangeStateStart();
-	std::unique_ptr<Wave> fast = std::make_unique<Wave>(enemy_.GetTransform().lock()->pos, Wave::SPEED_TYPE::FAST, Utility::RED);
+	std::unique_ptr<Wave> fast = std::make_unique<Wave>(parent_.GetTransform().lock()->pos, Wave::SPEED_TYPE::FAST, Utility::RED);
 	wave_.push_back(std::move(fast));
 	time_ = TIME;
 	intervalTime_ = INTERVAL_TIME;
@@ -75,7 +75,7 @@ void JumpAttackConstant::ChangeStateUpdate(void)
 void JumpAttackConstant::ChangeStateFinish(void)
 {
 	AttackBase::ChangeStateFinish();
-	auto& animCtr = enemy_.GetAnimController();
+	auto& animCtr = parent_.GetAnimController();
 	deleyTime_ = COOL_DOWN;
 }
 
@@ -85,12 +85,12 @@ void JumpAttackConstant::UpdateStateNone(void)
 
 void JumpAttackConstant::UpdateStateReady(void)
 {
-	auto& animCtr = enemy_.GetAnimController();
-	auto& gravity = enemy_.GetGravity();
-	if (enemy_.GetGravity().GetState() != Gravity::STATE::JUMP)
+	auto& animCtr = parent_.GetAnimController();
+	auto& gravity = parent_.GetGravity();
+	if (parent_.GetGravity().GetState() != Gravity::STATE::JUMP)
 	{
 		ChangeState(STATE::START);
-		enemy_.GetAnimController().Play(enemy_.GetAnimNumber(EnemyBase::ATTACK_STATE::PLAY, myType_));
+		parent_.GetAnimController().Play(parent_.GetAnimNumber(EnemyAttackManager::ATTACK_STATE::PLAY, myType_));
 	}
 }
 
@@ -116,7 +116,7 @@ void JumpAttackConstant::UpdateStateUpdate(void)
 
 	if (intervalTime_ <= 0.0f && time_ > 0.0f)
 	{
-		std::unique_ptr<Wave> wave = std::make_unique<Wave>(enemy_.GetTransform().lock()->pos, Wave::SPEED_TYPE::FAST, Utility::RED);
+		std::unique_ptr<Wave> wave = std::make_unique<Wave>(parent_.GetTransform().lock()->pos, Wave::SPEED_TYPE::FAST, Utility::RED);
 		wave_.push_back(std::move(wave));
 		intervalTime_ = INTERVAL_TIME;
 	}

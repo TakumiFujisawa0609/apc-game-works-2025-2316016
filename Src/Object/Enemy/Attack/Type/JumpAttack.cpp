@@ -7,11 +7,11 @@
 #include "../../EnemyBase.h"
 #include "JumpAttack.h"
 
-JumpAttack::JumpAttack(EnemyBase& enemy) : AttackBase(enemy)
+JumpAttack::JumpAttack(EnemyAttackManager& parent) : AttackBase(parent)
 {
 	range_ = RANGE::SHORT;
 	geo_ = GEOMETORY::CIRCUMFERENCE;
-	myType_ = EnemyBase::ATTACK_TYPE::JUMP;
+	myType_ = EnemyAttackManager::ATTACK_TYPE::JUMP;
 }
 
 JumpAttack::~JumpAttack(void)
@@ -45,27 +45,27 @@ void JumpAttack::ChangeStateReady(void)
 {
 	//ジャンプさせる
 	AttackBase::ChangeStateReady();
-	enemy_.GetGravity().ChengeState(Gravity::STATE::JUMP);
-	enemy_.GetGravity().SetDir(Utility::DIR_D);
-	enemy_.GetGravity().SetInitPower(JUMP_POW);
-	auto& animCtr = enemy_.GetAnimController();
+	parent_.GetGravity().ChengeState(Gravity::STATE::JUMP);
+	parent_.GetGravity().SetDir(Utility::DIR_D);
+	parent_.GetGravity().SetInitPower(JUMP_POW);
+	auto& animCtr = parent_.GetAnimController();
 
-	enemy_.GetAnimController().Play(enemy_.GetAnimNumber(EnemyBase::ATTACK_STATE::READY, myType_));
+	parent_.GetAnimController().Play(parent_.GetAnimNumber(EnemyAttackManager::ATTACK_STATE::READY, myType_));
 }
 
 void JumpAttack::ChangeStateStart(void)
 {
 	//ウェーブの作成
 	AttackBase::ChangeStateStart();
-	std::unique_ptr<Wave> slow = std::make_unique<Wave>(enemy_.GetTransform().lock()->pos, Wave::SPEED_TYPE::SLOW,Utility::RED);
-	std::unique_ptr<Wave> midium = std::make_unique<Wave>(enemy_.GetTransform().lock()->pos, Wave::SPEED_TYPE::MIDIUM, Utility::RED);
-	std::unique_ptr<Wave> fast = std::make_unique<Wave>(enemy_.GetTransform().lock()->pos, Wave::SPEED_TYPE::FAST, Utility::RED);
+	std::unique_ptr<Wave> slow = std::make_unique<Wave>(parent_.GetTransform().lock()->pos, Wave::SPEED_TYPE::SLOW,Utility::RED);
+	std::unique_ptr<Wave> midium = std::make_unique<Wave>(parent_.GetTransform().lock()->pos, Wave::SPEED_TYPE::MIDIUM, Utility::RED);
+	std::unique_ptr<Wave> fast = std::make_unique<Wave>(parent_.GetTransform().lock()->pos, Wave::SPEED_TYPE::FAST, Utility::RED);
 	wave_.push_back(std::move(slow));
 	wave_.push_back(std::move(midium));
 	wave_.push_back(std::move(fast));
 	for (int i = 0; i < RANDOM_WAVE_NUM; i++)
 	{
-		std::unique_ptr<Wave> random = std::make_unique<Wave>(enemy_.GetTransform().lock()->pos, Wave::SPEED_TYPE::RANDOM, Utility::RED);
+		std::unique_ptr<Wave> random = std::make_unique<Wave>(parent_.GetTransform().lock()->pos, Wave::SPEED_TYPE::RANDOM, Utility::RED);
 		wave_.push_back(std::move(random));
 	}
 }
@@ -79,7 +79,7 @@ void JumpAttack::ChangeStateFinish(void)
 {
 	AttackBase::ChangeStateFinish();
 	deleyTime_ = COOL_DOWN;
-	auto& animCtr = enemy_.GetAnimController();
+	auto& animCtr = parent_.GetAnimController();
 }
 
 void JumpAttack::UpdateStateNone(void)
@@ -88,12 +88,12 @@ void JumpAttack::UpdateStateNone(void)
 
 void JumpAttack::UpdateStateReady(void)
 {
-	auto& animCtr = enemy_.GetAnimController();
-	auto& gravity = enemy_.GetGravity();
-	if (enemy_.GetGravity().GetState() != Gravity::STATE::JUMP)
+	auto& animCtr = parent_.GetAnimController();
+	auto& gravity = parent_.GetGravity();
+	if (parent_.GetGravity().GetState() != Gravity::STATE::JUMP)
 	{
 		ChangeState(STATE::START);
-		enemy_.GetAnimController().Play(enemy_.GetAnimNumber(EnemyBase::ATTACK_STATE::PLAY, myType_));
+		parent_.GetAnimController().Play(parent_.GetAnimNumber(EnemyAttackManager::ATTACK_STATE::PLAY, myType_));
 	}
 }
 

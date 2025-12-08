@@ -13,7 +13,7 @@ public:
 	static constexpr float INTERVAL_TIME = 0.4f; //波紋を出す間隔時間
 	static constexpr float TIME = 10.0f; //ジャンプしてから波紋を出し終わるまでの時間
 
-	JumpAttackConstant(EnemyBase& enemy);
+	JumpAttackConstant(EnemyAttackManager& parent);
 	~JumpAttackConstant(void) override;
 	void Init(void) override;
 	void Update(void) override;
@@ -23,7 +23,6 @@ public:
 private:
 	float time_;
 	float intervalTime_;
-	bool isDown_;	//下りに入ったか
 	std::vector<std::unique_ptr<Wave>> wave_;
 	void ChangeStateNone(void) override;		//実行されていない
 	void ChangeStateReady(void) override;	//実行準備

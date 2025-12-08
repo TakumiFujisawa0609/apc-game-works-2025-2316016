@@ -7,13 +7,13 @@
 #include "../SubObject/ThunderAround.h"
 #include "ThunderAroundAttack.h"
 
-ThunderAroundAttack::ThunderAroundAttack(EnemyBase& enemy) : AttackBase(enemy)
+ThunderAroundAttack::ThunderAroundAttack(EnemyAttackManager& parent) : AttackBase(parent)
 {
 	range_ = RANGE::ALL;
 	geo_ = GEOMETORY::CIRCLE;
 	time_ = 0.0f;
 	intervalTime_ = 0.0f;
-	myType_ = EnemyBase::ATTACK_TYPE::THUNDER_AROUND;
+	myType_ = EnemyAttackManager::ATTACK_TYPE::THUNDER_AROUND;
 }
 
 ThunderAroundAttack::~ThunderAroundAttack(void)
@@ -45,13 +45,13 @@ void ThunderAroundAttack::ChangeStateNone(void)
 
 void ThunderAroundAttack::ChangeStateReady(void)
 {
-	enemy_.GetAnimController().Play(enemy_.GetAnimNumber(EnemyBase::ATTACK_STATE::READY, myType_),false);
+	parent_.GetAnimController().Play(parent_.GetAnimNumber(EnemyAttackManager::ATTACK_STATE::READY, myType_),false);
 	AttackBase::ChangeStateReady();
 }
 
 void ThunderAroundAttack::ChangeStateStart(void)
 {
-	enemy_.GetAnimController().Play(enemy_.GetAnimNumber(EnemyBase::ATTACK_STATE::PLAY, myType_));
+	parent_.GetAnimController().Play(parent_.GetAnimNumber(EnemyAttackManager::ATTACK_STATE::PLAY, myType_));
 	CreateThunder();
 	time_ = TIME;
 	intervalTime_ = INTERVAL_TIME;
@@ -77,7 +77,7 @@ void ThunderAroundAttack::UpdateStateNone(void)
 
 void ThunderAroundAttack::UpdateStateReady(void)
 {
-	if (enemy_.GetAnimController().IsEnd())
+	if (parent_.GetAnimController().IsEnd())
 	{
 		ChangeState(STATE::START);
 	}

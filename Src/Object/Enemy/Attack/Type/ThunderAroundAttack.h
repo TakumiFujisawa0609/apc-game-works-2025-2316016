@@ -14,7 +14,7 @@ public:
 	static constexpr float TIME = 30.0f; //攻撃が続く時間
 	static constexpr float INTERVAL_TIME = 1.0f; //サンダーが出現する間隔時間
 
-	ThunderAroundAttack(EnemyBase& enemy);
+	ThunderAroundAttack(EnemyAttackManager& parent);
 	~ThunderAroundAttack(void)override;
 	void Init(void)override;
 	void Update(void)override;

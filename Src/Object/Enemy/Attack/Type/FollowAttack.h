@@ -10,14 +10,12 @@ public:
 	static constexpr float COOL_DOWN = 3.0f;	//クールダウン
 	static constexpr int RANDOM_SHOT_NUM = 5;	//ランダムスピードの数
 
-	FollowAttack(EnemyBase& enemy);
+	FollowAttack(EnemyAttackManager& parent);
 	~FollowAttack(void)override;
 	void Init(void)override;
 	void Update(void)override;
 	void Draw(void)override;
 	int GetSubObjectNum(void)override { return static_cast<int>(shots_.size()); }
-	Transform& GetShotTransform(int shotNum);
-	void HitShot(int shotNum) { shots_[shotNum]->Hit(); }
 
 private:
 	std::vector<std::unique_ptr<FollowShot>> shots_;

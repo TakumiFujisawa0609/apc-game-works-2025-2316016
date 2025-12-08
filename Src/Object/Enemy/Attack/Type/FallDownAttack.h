@@ -9,7 +9,7 @@ public:
 	static constexpr int MAX_FALL_NUM = 120; //—‰º’e‚Ì“¯‚Éo‚¹‚éÅ‘å”
 	static constexpr float TIME = 30.0f; //—‰º’e‚ª—‚¿‘±‚¯‚éŠÔ
 
-	FallDownAttack(EnemyBase& enemy);
+	FallDownAttack(EnemyAttackManager& parent);
 	~FallDownAttack(void)override;
 	void Init(void)override;
 	void Update(void)override;

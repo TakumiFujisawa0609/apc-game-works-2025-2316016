@@ -8,14 +8,14 @@
 #include "../SubObject/CrossLine.h"
 #include "CrossAttack.h"
 
-CrossAttack::CrossAttack(EnemyBase& enemy) : AttackBase(enemy) ,radian_ (0.0f)
+CrossAttack::CrossAttack(EnemyAttackManager& parent) : AttackBase(parent) ,radian_ (0.0f)
 {
 	range_ = RANGE::SHORT;
 	geo_ = GEOMETORY::SPHERE;
 	time_ = 0.0f;
 	sumTime_ = 0.0f;
 	reverseTime_ = 0.0f;
-	myType_ = EnemyBase::ATTACK_TYPE::CROSS_LINE;
+	myType_ = EnemyAttackManager::ATTACK_TYPE::CROSS_LINE;
 	sign_ = 1;
 	createInterval_ = 0.0f;
 	createPointNum_ = 0;
@@ -85,7 +85,7 @@ void CrossAttack::ChangeStateReady(void)
 {
 	AttackBase::ChangeStateReady();
 	SoundManager::GetInstance().Play(SoundManager::SRC::FIRE, Sound::TIMES::LOOP);
-	enemy_.GetAnimController().Play(enemy_.GetAnimNumber(EnemyBase::ATTACK_STATE::READY, myType_));
+	parent_.GetAnimController().Play(parent_.GetAnimNumber(EnemyAttackManager::ATTACK_STATE::READY, myType_));
 }
 
 void CrossAttack::ChangeStateStart(void)
@@ -96,7 +96,7 @@ void CrossAttack::ChangeStateStart(void)
 void CrossAttack::ChangeStateUpdate(void)
 {
 	AttackBase::ChangeStateUpdate();
-	enemy_.GetAnimController().Play(enemy_.GetAnimNumber(EnemyBase::ATTACK_STATE::PLAY, myType_));
+	parent_.GetAnimController().Play(parent_.GetAnimNumber(EnemyAttackManager::ATTACK_STATE::PLAY, myType_));
 }
 
 void CrossAttack::ChangeStateFinish(void)
@@ -124,7 +124,7 @@ void CrossAttack::UpdateStateStart(void)
 		for (int i = 0; i < LINE_NUM; i++)
 		{
 			std::unique_ptr<CrossLine> line;
-			line = std::make_unique<CrossLine>(enemy_.GetTransform().lock()->pos, radian_, Utility::Deg2RadF(360.0f / LINE_NUM * i), createPointNum_,*this);
+			line = std::make_unique<CrossLine>(parent_.GetTransform().lock()->pos, radian_, Utility::Deg2RadF(360.0f / LINE_NUM * i), createPointNum_,*this);
 			crossLines_.push_back(std::move(line));
 		}
 		createPointNum_++;

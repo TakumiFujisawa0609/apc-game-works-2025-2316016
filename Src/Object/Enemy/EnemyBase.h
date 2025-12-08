@@ -7,9 +7,9 @@
 
 class Gravity;
 class Geometry;
-class AttackBase;
 class AnimationController;
 class Dragon;
+class EnemyAttackManager;
 
 class EnemyBase : public ObjectModelBase
 {
@@ -31,23 +31,6 @@ public:
 		DEAD,   //€–S
 	};
 
-	enum class ATTACK_TYPE	//UŒ‚‚Ìí—Ş
-	{
-		JUMP,		//jampUŒ‚(”g “¯)
-		JUMP_CONSTANT, //jampUŒ‚(”g ˜A‘±)
-		FOLLOW,		//’Ç”öUŒ‚(’Ç]’e)
-		FALL_DOWN,	//—‰ºUŒ‚(—‰º’e)
-		CROSS_LINE,	//\š	
-		THUNDER_AROUND, //üˆÍ—‹
-		WATER_SPRIT,	//…‚µ‚Ô‚«
-		MAX
-	};
-
-	enum class ATTACK_STATE
-	{
-		READY,	//€”õ
-		PLAY,	//Às
-	};
 
 	/// <summary>
 	/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
@@ -92,13 +75,9 @@ public:
 
 	void ChangeState(STATE state);
 
-	int GetAttackNum(void) { return static_cast<int>(attackList_.size()); }
-
 	AnimationController& GetAnimController(void);
-	void AddAttack(ATTACK_TYPE type);	//UŒ‚‚ğ’Ç‰Á
-	void DeleteAttack(ATTACK_TYPE type); //UŒ‚‚ğíœ
-	void AllDeleteAttack(void); //‘S‚Ä‚ÌUŒ‚‚ğíœ
-	int GetAnimNumber(ATTACK_STATE state, ATTACK_TYPE type);
+
+	Dragon& GetModelType(void) { return *dragon_; }
 protected:
 
 	std::unique_ptr<Dragon> dragon_; //ƒhƒ‰ƒSƒ“
@@ -108,9 +87,10 @@ protected:
 
 	STATE state_; //ó‘Ô
 	std::unique_ptr<Gravity> gravity_; //d—Í
+	
+	std::unique_ptr<EnemyAttackManager>attackManager_;
 
 	std::weak_ptr<Transform> target_; //ƒ^[ƒQƒbƒg
-	std::vector<std::unique_ptr<AttackBase>> attackList_; //UŒ‚ƒŠƒXƒg
 
 	//‘Ì—Í
 	float maxHP_; //Å‘å‘Ì—Í

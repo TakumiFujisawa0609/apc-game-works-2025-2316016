@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Object\Enemy\EnemyAttackManager.cpp" />
     <ClCompile Include="Src\Object\Gate\GateManager.cpp" />
     <ClCompile Include="Src\Renderer\BaseRenderer.cpp" />
     <ClCompile Include="Src\Object\ObjectPolygonBase.cpp" />
@@ -110,6 +111,7 @@
     <ClCompile Include="Src\Object\Player\TitlePlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Object\Enemy\EnemyAttackManager.h" />
     <ClInclude Include="Src\Object\Gate\GateManager.h" />
     <ClInclude Include="Src\Renderer\BaseRenderer.h" />
     <ClInclude Include="Src\Object\ObjectPolygonBase.h" />
@@ -221,6 +223,12 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="Src\Shader\Model\EnemyVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Src\Shader\Polygon\BasePolygonVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>

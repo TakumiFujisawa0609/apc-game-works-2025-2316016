@@ -2,6 +2,7 @@
 #include "../../Common/AnimationController.h"
 #include "../../Common/Geometry/Triangle3D.h"
 #include "../../Common/Geometry/Capsule.h"
+#include "../EnemyBase.h"
 #include "Dragon.h"
 
 
@@ -53,7 +54,7 @@ void Dragon::SetAnim(ANIM_TYPE type)
 	animCtrl_->Play((int)type);
 }
 
-int Dragon::GetAnimType(EnemyBase::ATTACK_STATE attackState, EnemyBase::ATTACK_TYPE attackType)
+int Dragon::GetAnimType(EnemyAttackManager::ATTACK_STATE attackState, EnemyAttackManager::ATTACK_TYPE attackType)
 {
 	//ANIM_INFO info = {};
 	//info.attackState = attackState;
@@ -150,25 +151,25 @@ void Dragon::UpdateFramePos(void)
 
 void Dragon::InitAnimMap(void)
 {
-	AddAnimInfoMap(EnemyBase::ATTACK_STATE::READY, EnemyBase::ATTACK_TYPE::JUMP,ANIM_TYPE::TAKE_OFF);
-	AddAnimInfoMap(EnemyBase::ATTACK_STATE::READY, EnemyBase::ATTACK_TYPE::JUMP_CONSTANT, ANIM_TYPE::LAND);
-	AddAnimInfoMap(EnemyBase::ATTACK_STATE::READY, EnemyBase::ATTACK_TYPE::FOLLOW, ANIM_TYPE::DEFEND);
-	AddAnimInfoMap(EnemyBase::ATTACK_STATE::READY, EnemyBase::ATTACK_TYPE::FALL_DOWN, ANIM_TYPE::LAND);
-	AddAnimInfoMap(EnemyBase::ATTACK_STATE::READY, EnemyBase::ATTACK_TYPE::CROSS_LINE, ANIM_TYPE::FLY_GLIDE);
-	AddAnimInfoMap(EnemyBase::ATTACK_STATE::READY, EnemyBase::ATTACK_TYPE::THUNDER_AROUND, ANIM_TYPE::TAKE_OFF);
-	AddAnimInfoMap(EnemyBase::ATTACK_STATE::READY, EnemyBase::ATTACK_TYPE::WATER_SPRIT, ANIM_TYPE::FLY_FLAME);
+	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::READY, EnemyAttackManager::ATTACK_TYPE::JUMP,ANIM_TYPE::TAKE_OFF);
+	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::READY, EnemyAttackManager::ATTACK_TYPE::JUMP_CONSTANT, ANIM_TYPE::LAND);
+	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::READY, EnemyAttackManager::ATTACK_TYPE::FOLLOW, ANIM_TYPE::DEFEND);
+	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::READY, EnemyAttackManager::ATTACK_TYPE::FALL_DOWN, ANIM_TYPE::LAND);
+	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::READY, EnemyAttackManager::ATTACK_TYPE::CROSS_LINE, ANIM_TYPE::FLY_GLIDE);
+	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::READY, EnemyAttackManager::ATTACK_TYPE::THUNDER_AROUND, ANIM_TYPE::TAKE_OFF);
+	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::READY, EnemyAttackManager::ATTACK_TYPE::WATER_SPRIT, ANIM_TYPE::FLY_FLAME);
 
-	AddAnimInfoMap(EnemyBase::ATTACK_STATE::PLAY, EnemyBase::ATTACK_TYPE::JUMP, ANIM_TYPE::SCREAM);
-	AddAnimInfoMap(EnemyBase::ATTACK_STATE::PLAY, EnemyBase::ATTACK_TYPE::JUMP_CONSTANT, ANIM_TYPE::SCREAM);
-	AddAnimInfoMap(EnemyBase::ATTACK_STATE::PLAY, EnemyBase::ATTACK_TYPE::FOLLOW, ANIM_TYPE::FLY_FORWARD);
-	AddAnimInfoMap(EnemyBase::ATTACK_STATE::PLAY, EnemyBase::ATTACK_TYPE::FALL_DOWN, ANIM_TYPE::FLAME_ATTACK);
-	AddAnimInfoMap(EnemyBase::ATTACK_STATE::PLAY, EnemyBase::ATTACK_TYPE::CROSS_LINE, ANIM_TYPE::SCREAM);
-	AddAnimInfoMap(EnemyBase::ATTACK_STATE::PLAY, EnemyBase::ATTACK_TYPE::THUNDER_AROUND, ANIM_TYPE::FLY_FLAME);
-	AddAnimInfoMap(EnemyBase::ATTACK_STATE::PLAY, EnemyBase::ATTACK_TYPE::WATER_SPRIT, ANIM_TYPE::FLAME_ATTACK);
+	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::PLAY, EnemyAttackManager::ATTACK_TYPE::JUMP, ANIM_TYPE::SCREAM);
+	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::PLAY, EnemyAttackManager::ATTACK_TYPE::JUMP_CONSTANT, ANIM_TYPE::SCREAM);
+	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::PLAY, EnemyAttackManager::ATTACK_TYPE::FOLLOW, ANIM_TYPE::FLY_FORWARD);
+	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::PLAY, EnemyAttackManager::ATTACK_TYPE::FALL_DOWN, ANIM_TYPE::FLAME_ATTACK);
+	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::PLAY, EnemyAttackManager::ATTACK_TYPE::CROSS_LINE, ANIM_TYPE::SCREAM);
+	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::PLAY, EnemyAttackManager::ATTACK_TYPE::THUNDER_AROUND, ANIM_TYPE::FLY_FLAME);
+	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::PLAY, EnemyAttackManager::ATTACK_TYPE::WATER_SPRIT, ANIM_TYPE::FLAME_ATTACK);
 	
 }
 
-void Dragon::AddAnimInfoMap( EnemyBase::ATTACK_STATE attackState, EnemyBase::ATTACK_TYPE attackType,ANIM_TYPE animType)
+void Dragon::AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE attackState, EnemyAttackManager::ATTACK_TYPE attackType,ANIM_TYPE animType)
 {
 	ANIM_INFO animInfo;
 	animInfo.attackState = attackState;
