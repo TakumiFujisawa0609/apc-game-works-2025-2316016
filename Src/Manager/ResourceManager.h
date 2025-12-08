@@ -55,7 +55,6 @@ public:
 		SNOW_MAN,	//スノーマン
 		DRAGON,		//ドラゴン
 		FLOOR,		//ステージ
-		NOISE,		//ノイズ
 		GATE,		//ゲート
 
 
@@ -66,6 +65,8 @@ public:
 
 		//テクスチャ
 		WAVE_TEXTURE,	//炎テクスチャ
+		NOISE,		//ノイズ
+		TEXTURE_1,	//水や雷等のテクスチャ
 
 		//エフェクト
 		HIT_EFFECT,		//ヒットエフェクト

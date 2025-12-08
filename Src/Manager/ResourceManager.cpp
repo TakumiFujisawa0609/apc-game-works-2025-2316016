@@ -122,6 +122,8 @@ void ResourceManager::Init(void)
 	resourcesMap_.emplace(SRC::WAVE_TEXTURE, std::move(res));
 	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "Texture/Noise.png");
 	resourcesMap_.emplace(SRC::NOISE, std::move(res));
+	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "Texture/Texture1.png");
+	resourcesMap_.emplace(SRC::TEXTURE_1, std::move(res));
 
 	//エフェクト
 	res = Resource(Resource::TYPE::EFFEKSEER, Application::PATH_EFFECT + "Hit.efkefc");

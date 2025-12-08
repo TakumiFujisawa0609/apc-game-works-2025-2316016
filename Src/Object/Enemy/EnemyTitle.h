@@ -14,7 +14,7 @@ public:
 	void SetPos(VECTOR pos);
 	void SetRot(VECTOR rot);
 	void SetScl(VECTOR scl);
-private:
+protected:
 	void InitAddAttack(void)override;
 };
 

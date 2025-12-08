@@ -45,6 +45,7 @@ public:
 	AnimationController& GetAnimController(void);
 	std::weak_ptr<Transform> GetTransform(void);
 	Gravity& GetGravity(void);
+	void SetTarget(std::weak_ptr<Transform> target) { target_ = target; }
 protected:
 	EnemyBase& enemy_;
 	std::weak_ptr<Transform> target_; //ターゲット

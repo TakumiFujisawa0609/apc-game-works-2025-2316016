@@ -2,7 +2,7 @@
 #include "../Common/VertexToPixelHeader.hlsli"
 // IN
 #include "../Common/Vertex/VertexInputType.hlsli"
-#define VERTEX_INPUT DX_MV1_VERTEX_TYPE_NMAP_1FRAME
+#define VERTEX_INPUT DX_VERTEX3DSHADER
 // OUT
 #define VS_OUTPUT VertexToPixelLit
 #include "../Common/Vertex/VertexShader3DHeader.hlsli"
@@ -12,8 +12,8 @@ cbuffer cbParam : register(b7)
 {
     float2 g_uv_scale;
     float2 dummy0;
-    float3 pos;
-    float dummy1;
+    //float3 pos;
+    //float dummy1;
 }
 
 VS_OUTPUT main(VS_INPUT VSInput)
@@ -29,11 +29,11 @@ VS_OUTPUT ret;
 // ローカル座標をワールド座標に変換(剛体)
     lWorldPosition.w = 1.0f;
     lWorldPosition.xyz = mul(lLocalPosition, g_base.localWorldMatrix);
-    float3 dif = lWorldPosition.xyz - pos;
-    float y = dif.y;
-    dif.y = 0.0f;
-    dif = normalize(dif);
-    lWorldPosition.xyz += dif * (0.5f * y);
+    //float3 dif = lWorldPosition.xyz - pos;
+    //float y = dif.y;
+    //dif.y = 0.0f;
+    //dif = normalize(dif);
+    //lWorldPosition.xyz += dif * (0.5f * y);
     //lWorldPosition.y += sin(lWorldPosition.x + time) * waveScale;
     ret.worldPos = lWorldPosition.xyz; // ワールド座標をピクセルシェーダへ引き継ぐ
 // ワールド座標をビュー座標に変換
@@ -46,14 +46,14 @@ VS_OUTPUT ret;
     
     // その他、ピクセルシェーダへ引継&初期化 ++++++++++++( 開始 )
 // UV座標
-    ret.uv.x = VSInput.uv0.x;
-    ret.uv.y = VSInput.uv0.y;
-    ret.uv.x = VSInput.uv0.x * g_uv_scale.x;
-    ret.uv.y = VSInput.uv0.y * g_uv_scale.y;
+    ret.uv.x = VSInput.TexCoords0.x;
+    ret.uv.y = VSInput.TexCoords0.y;
+    ret.uv.x = VSInput.TexCoords0.x * g_uv_scale.x;
+    ret.uv.y = VSInput.TexCoords0.y * g_uv_scale.y;
     //ret.uv.y += sin(ret.uv.x + time) * waveScale;
 // 法線
-    ret.normal = VSInput.norm; // 法線をローカル空間からワールド空間へ変換
-    ret.normal = normalize(mul(VSInput.norm, (float3x3) g_base.localWorldMatrix));
+    ret.normal = VSInput.Normal; // 法線をローカル空間からワールド空間へ変換
+    ret.normal = normalize(mul(VSInput.Normal, (float3x3) g_base.localWorldMatrix));
 
 // ディフューズカラー
     ret.diffuse = VSInput.diffuse;

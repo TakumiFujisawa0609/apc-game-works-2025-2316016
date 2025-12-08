@@ -46,7 +46,7 @@ void CrossLine::Update(void)
 	transform_->pos.y = centerPos_.y;
 	transform_->pos.z = centerPos_.z + (num_ * RADIUS + DISTANCE) * sinf(radian_ + initRadian_ );
 	SetPolygonInfo();
-	VECTOR pos = transform_->pos;
+	//VECTOR pos = transform_->pos;
 	//material_->SetConstBufVS(0,{ time_, pos.x, pos.y, pos.z });
 	//material_->SetConstBufPS(0, { time_, 0.0f,0.0f, 0.0f });
 }

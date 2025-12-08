@@ -1,5 +1,7 @@
 #include "../../Utility/Utility.h"
 #include "../../Manager/SceneManager.h"
+#include "../../Manager/ResourceManager.h"
+#include "../../Manager/DrawTranslucentManager.h"
 #include "../../Renderer/ModelMaterial.h"
 #include "../../Renderer/ModelRenderer.h"
 #include "../../../Common/EffectController.h"
@@ -14,6 +16,17 @@ WaterSpritAttack::WaterSpritAttack(EnemyAttackManager& parent) : AttackBase(pare
 	geo_ = GEOMETORY::CIRCLE;
 	myType_ = EnemyAttackManager::ATTACK_TYPE::WATER_SPRIT;
 	intervalTime_ = 0.0f;
+	transform_ = std::make_shared<Transform>();
+	material_ = std::make_unique<Polygon3DMaterial>(
+		"WaterSpritVS.cso", 1,
+		"WaterSpritPS.cso", 1
+	);
+	material_->AddConstBufVS({ TEXTURE_SCALE_X, TEXTURE_SCALE_Y, 1.0f, 1.0f });
+	material_->AddConstBufPS({ sumTime_, TIME_SCALE, 1.0f, 1.0f });
+	material_->AddTextureBuf(ResourceManager::GetInstance().Load(ResourceManager::SRC::TEXTURE_1).handleId_);
+	//material_->AddTextureBuf(ResourceManager::GetInstance().Load(ResourceManager::SRC::NOISE).handleId_);
+	renderer_ = std::make_shared<Polygon3DRenderer>(*material_, polygonInfo_);
+	renderer_->SetBuckCull(true);
 }
 
 WaterSpritAttack::~WaterSpritAttack()
@@ -26,7 +39,10 @@ void WaterSpritAttack::Init(void)
 
 void WaterSpritAttack::Update(void)
 {
+	polygonInfo_.clear();
+	sumTime_ += SceneManager::GetInstance().GetDeltaTime();
 	updateState_();
+	material_->SetConstBufPS(0,{ sumTime_, TIME_SCALE, 1.0f, 1.0f });
 }
 
 void WaterSpritAttack::Draw(void)
@@ -35,6 +51,11 @@ void WaterSpritAttack::Draw(void)
 	{
 		waterSprit->Draw();
 	}
+	if (polygonInfo_.vertex.size() == 0)
+	{
+		return;
+	}
+	DrawTranslucentManager::GetInstance().Add(transform_, renderer_);
 }
 
 void WaterSpritAttack::ChangeStateNone(void)
@@ -128,7 +149,20 @@ void WaterSpritAttack::CreateWaterSpritWave(void)
 	{
 		float rad = Utility::Deg2RadF(Utility::ONE_TRACK_DEG / ONE_WATER_SPRIT_NUM * i + randomDeg);
 		VECTOR dir = { cosf(rad),0.0f,sinf(rad) };
-		auto water = std::make_unique<WaterSprit>(dir, startPos, speed);
+		auto water = std::make_unique<WaterSprit>(dir, startPos, speed,*this);
 		waterSprit_.push_back(std::move(water));
+	}
+}
+
+void WaterSpritAttack::AddVertexs(Polygon3DRenderer::PolygonInfo info)
+{
+	int vertexSize = static_cast<int>(polygonInfo_.vertex.size());
+	for (auto& vertex : info.vertex)
+	{
+		polygonInfo_.vertex.push_back(vertex);
+	}
+	for (auto& indices : info.Indices)
+	{
+		polygonInfo_.Indices.push_back(static_cast<unsigned short>(indices + vertexSize));
 	}
 }

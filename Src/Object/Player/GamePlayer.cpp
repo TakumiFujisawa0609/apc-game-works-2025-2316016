@@ -33,11 +33,11 @@ GamePlayer::GamePlayer(int playerNum) : PlayerBase(playerNum)//, keyIns_(KeyConf
 	landPos_ = Utility::VECTOR_ZERO;
 
 	std::unique_ptr<Geometry>geo = std::make_unique<Sphere>(transform_->pos, RADIUS);
-	MakeCollider(Collider::TAG::PLAYER_LAND, std::move(geo), { Collider::TAG::PLAYER,Collider::TAG::PLAYER_ATTACK ,Collider::TAG::PLAYER_LAND });
+	MakeCollider(Collider::TAG::PLAYER, std::move(geo), { Collider::TAG::PLAYER,Collider::TAG::PLAYER_ATTACK ,Collider::TAG::PLAYER_LAND });
 	geo = std::make_unique<Sphere>(headPos_, RADIUS);
 	MakeCollider(Collider::TAG::PLAYER, std::move(geo), { Collider::TAG::PLAYER,Collider::TAG::PLAYER_ATTACK ,Collider::TAG::PLAYER_LAND });
 	geo = std::make_unique<Sphere>(landPos_, RADIUS);
-	MakeCollider(Collider::TAG::PLAYER, std::move(geo), { Collider::TAG::PLAYER,Collider::TAG::PLAYER_ATTACK ,Collider::TAG::PLAYER_LAND });
+	MakeCollider(Collider::TAG::PLAYER_LAND, std::move(geo), { Collider::TAG::PLAYER,Collider::TAG::PLAYER_ATTACK ,Collider::TAG::PLAYER_LAND });
 	isAvoidSaccess_ = false;
 	SetupStateChange();
 	avoidSaccessTime_ = -1.0f;

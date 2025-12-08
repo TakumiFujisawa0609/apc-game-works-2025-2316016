@@ -13,6 +13,7 @@ EnemyBase::EnemyBase(std::weak_ptr<Transform> target) : target_(target)
 {
 	damageTime_ = 0.0f;
 	attackManager_ = std::make_unique<EnemyAttackManager>(*this);
+	attackManager_->SetTarget(target_);
 	hitPos_ = Utility::VECTOR_ZERO;
 	transform_ = std::make_shared<Transform>();
 	dragon_ = std::make_unique<Dragon>(*this);
@@ -183,13 +184,13 @@ void EnemyBase::AplayChangeStateFunc(void)
 
 void EnemyBase::InitAddAttack(void)
 {
-	//AddAttack(ATTACK_TYPE::JUMP);
-	//AddAttack(ATTACK_TYPE::JUMP_CONSTANT);
-	//AddAttack(ATTACK_TYPE::FOLLOW);
-	//AddAttack(ATTACK_TYPE::FALL_DOWN);
-	attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::CROSS_LINE);
-	//AddAttack(ATTACK_TYPE::THUNDER_AROUND);
-	//AddAttack(ATTACK_TYPE::WATER_SPRIT);
+	//attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::JUMP);
+	//attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::JUMP_CONSTANT);
+	//attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::FOLLOW);
+	//attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::FALL_DOWN);
+	//attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::CROSS_LINE);
+	//attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::THUNDER_AROUND);
+	attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::WATER_SPRIT);
 }
 
 AnimationController& EnemyBase::GetAnimController(void)

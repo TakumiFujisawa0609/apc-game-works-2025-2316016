@@ -11,16 +11,22 @@ public:
 	static constexpr float MIN_SPEED = 3.0f;	//最遅速度
 	static constexpr float INTERVAL_TIME = 0.5f; //波の間隔時間
 	static constexpr float COOL_DOWN = 3.0f; //クールダウン時間
+	static constexpr float TEXTURE_SCALE_X = 1.0f;
+	static constexpr float TEXTURE_SCALE_Y = 10.0f;
+	static constexpr float TIME_SCALE = 1.0f;		//時間スケール
+
 	WaterSpritAttack(EnemyAttackManager& parent);
 	~WaterSpritAttack() override;
 	void Init(void) override;
 	void Update(void) override;
 	void Draw(void) override;
 	int GetSubObjectNum(void)override { return static_cast<int>(waterSprit_.size()); }
+	void AddVertexs(Polygon3DRenderer::PolygonInfo info);
 
 private:
 
 	std::vector<std::unique_ptr<WaterSprit>> waterSprit_;
+	float sumTime_;
 	int waveNum_;
 	float intervalTime_;
 	void ChangeStateNone(void) override;	//実行されていない

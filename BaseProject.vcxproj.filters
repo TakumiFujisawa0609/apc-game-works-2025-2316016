@@ -202,8 +202,8 @@
     <FxCompile Include="Src\Shader\Polygon\ShockWavePS.hlsl" />
     <FxCompile Include="Src\Shader\Model\FloorVS.hlsl" />
     <FxCompile Include="Src\Shader\Model\FloorPS.hlsl" />
-    <FxCompile Include="Src\Shader\Model\WaterSplitPS.hlsl" />
-    <FxCompile Include="Src\Shader\Model\WaterSplitVS.hlsl" />
+    <FxCompile Include="Src\Shader\Polygon\WaterSpritPS.hlsl" />
+    <FxCompile Include="Src\Shader\Polygon\WaterSpritVS.hlsl" />
     <FxCompile Include="Src\Shader\Model\NoChangePS.hlsl" />
     <FxCompile Include="Src\Shader\Model\NoChangeVS.hlsl" />
     <FxCompile Include="Src\Shader\Model\PlayerVS.hlsl" />
