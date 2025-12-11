@@ -13,6 +13,10 @@ public:
 	static constexpr float DISTANCE = 500.0f; //サンダーの出現距離
 	static constexpr float TIME = 30.0f; //攻撃が続く時間
 	static constexpr float INTERVAL_TIME = 1.0f; //サンダーが出現する間隔時間
+	static constexpr float TEXTURE_SCALE_X = 1.0f;
+	static constexpr float TEXTURE_SCALE_Y = 5.0f;
+	static constexpr float TIME_SCALE = 3.0f;
+	static constexpr float THRESHOLD = 1.5f;
 
 	ThunderAroundAttack(EnemyAttackManager& parent);
 	~ThunderAroundAttack(void)override;
@@ -20,9 +24,11 @@ public:
 	void Update(void)override;
 	void Draw(void)override;
 	int GetSubObjectNum(void)override { return static_cast<int>(thunders_.size()); }
+	void AddVertexs(Polygon3DRenderer::PolygonInfo info);
 private:
 
 	std::vector<std::unique_ptr<ThunderAround>> thunders_;
+	float sumTime_;
 	float time_;
 	float intervalTime_;
 	void ChangeStateNone(void) override;	//実行されていない

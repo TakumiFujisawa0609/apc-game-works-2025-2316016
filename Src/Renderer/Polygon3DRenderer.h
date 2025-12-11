@@ -7,6 +7,8 @@ class Polygon3DRenderer : public BaseRenderer
 {
 public:
 
+	static constexpr int POLYGON_VERTEX_NUM = 3;	//１ポリゴン当たりの頂点数
+
 	//描画情報
 	struct PolygonInfo
 	{
@@ -34,7 +36,7 @@ private:
 
 	//描画に必要な情報
 	PolygonInfo& info_;
-
+	PolygonInfo drawInfo_;
 	// ピクセルマテリアル
 	Polygon3DMaterial& polygon3DMaterial_;
 
@@ -43,4 +45,7 @@ private:
 
 	// シェーダ設定(ピクセル)
 	void SetReservePS(void);
+
+	//自分のinfo_をカメラ外のポリゴンの場合描画しない
+	void Cull2PolygonInfo(void);
 };

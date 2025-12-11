@@ -15,7 +15,7 @@ public:
 	static constexpr float DAMAGE = 17.5f;	//ダメージ
 	static constexpr int VERTEX_NUM = 16;	//描画時の頂点数
 	static constexpr float HEIGHT = 750;	//高さ
-	static constexpr float TIMES_TOP_SIZE = 2.0f;
+	static constexpr float TIMES_TOP_SIZE = 3.0f;
 
 	WaterSprit(VECTOR direction, VECTOR startPos , float speed, WaterSpritAttack& parent);
 	~WaterSprit(void)override;

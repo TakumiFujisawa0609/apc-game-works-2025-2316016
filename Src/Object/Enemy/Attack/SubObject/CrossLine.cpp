@@ -60,7 +60,6 @@ void CrossLine::Draw(void)
 
 void CrossLine::SetPolygonInfo(void)
 {
-
 	auto& vertexes = polInfo_.vertex;
 	vertexes.clear();
 	float radper = Utility::Deg2RadF(Utility::ONE_TRACK_DEG / VERTEX_NUM);

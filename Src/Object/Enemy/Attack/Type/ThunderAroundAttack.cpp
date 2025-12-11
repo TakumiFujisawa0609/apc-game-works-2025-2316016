@@ -1,7 +1,9 @@
 #include <cmath>
 #include "../../Utility/Utility.h"
 #include "../../Manager/SceneManager.h"
+#include "../../Manager/ResourceManager.h"
 #include "../../Manager/SoundManager.h"
+#include "../../Manager/DrawTranslucentManager.h"
 #include "../../../Common/AnimationController.h"
 #include "../../EnemyBase.h"
 #include "../SubObject/ThunderAround.h"
@@ -12,8 +14,20 @@ ThunderAroundAttack::ThunderAroundAttack(EnemyAttackManager& parent) : AttackBas
 	range_ = RANGE::ALL;
 	geo_ = GEOMETORY::CIRCLE;
 	time_ = 0.0f;
+	sumTime_ = 0.0f;
 	intervalTime_ = 0.0f;
 	myType_ = EnemyAttackManager::ATTACK_TYPE::THUNDER_AROUND;
+	transform_ = std::make_shared<Transform>();
+	material_ = std::make_unique<Polygon3DMaterial>(
+		"ThunderVS.cso", 1,
+		"ThunderPS.cso", 1
+	);
+	material_->AddConstBufVS({ TEXTURE_SCALE_X, TEXTURE_SCALE_Y, 1.0f, 1.0f });
+	material_->AddConstBufPS({ sumTime_, TIME_SCALE, THRESHOLD, 1.0f });
+	material_->AddTextureBuf(ResourceManager::GetInstance().Load(ResourceManager::SRC::TEXTURE_1).handleId_);
+	//material_->AddTextureBuf(ResourceManager::GetInstance().Load(ResourceManager::SRC::NOISE).handleId_);
+	renderer_ = std::make_shared<Polygon3DRenderer>(*material_, polygonInfo_);
+	renderer_->SetBuckCull(true);
 }
 
 ThunderAroundAttack::~ThunderAroundAttack(void)
@@ -26,7 +40,10 @@ void ThunderAroundAttack::Init(void)
 
 void ThunderAroundAttack::Update(void)
 {
+	sumTime_ += SceneManager::GetInstance().GetDeltaTime();
+	polygonInfo_.clear();
 	updateState_();
+	material_->SetConstBufPS(0, { sumTime_, TIME_SCALE, THRESHOLD, 1.0f });
 }
 
 void ThunderAroundAttack::Draw(void)
@@ -36,6 +53,11 @@ void ThunderAroundAttack::Draw(void)
 		if (thunder->IsDead())continue;
 		thunder->Draw();
 	}
+	if (polygonInfo_.vertex.size() == 0)
+	{
+		return;
+	}
+	DrawTranslucentManager::GetInstance().Add(transform_, renderer_);
 }
 
 void ThunderAroundAttack::ChangeStateNone(void)
@@ -139,7 +161,20 @@ void ThunderAroundAttack::CreateThunder(void)
 		std::unique_ptr<ThunderAround> thunder;
 		VECTOR targetPos = target_.lock()->pos;
 		VECTOR initPos = VAdd(targetPos, VGet(cosf(rad) * DISTANCE, 0.0f, sinf(rad) * DISTANCE));
-		thunder = std::make_unique<ThunderAround>(targetPos, initPos, rad);
+		thunder = std::make_unique<ThunderAround>(targetPos, initPos, rad,*this);
 		thunders_.push_back(std::move(thunder));
+	}
+}
+
+void ThunderAroundAttack::AddVertexs(Polygon3DRenderer::PolygonInfo info)
+{
+	int vertexSize = static_cast<int>(polygonInfo_.vertex.size());
+	for (auto& vertex : info.vertex)
+	{
+		polygonInfo_.vertex.push_back(vertex);
+	}
+	for (auto& indices : info.Indices)
+	{
+		polygonInfo_.Indices.push_back(static_cast<unsigned short>(indices + vertexSize));
 	}
 }

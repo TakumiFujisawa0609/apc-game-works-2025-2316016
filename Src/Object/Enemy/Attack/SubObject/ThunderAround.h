@@ -4,7 +4,9 @@
 #include <DxLib.h>
 #include <functional>
 #include "SubObjectBase.h"
-class Transform;
+#include "../../Renderer/Polygon3DRenderer.h"
+
+class ThunderAroundAttack;
 
 class ThunderAround : public SubObjectBase
 {
@@ -12,18 +14,17 @@ public:
 
 	static constexpr float DAMAGE = 7.5f;
 	static constexpr float RADIUS = 40.0f;
-	static constexpr int VERTEX_NUM = 32;
+	static constexpr float HEIGHT = 750;	//çÇÇ≥
+	static constexpr int HEIGHT_VERTEX_NUM = 4;	//çÇÇ≥
+	static constexpr int VERTEX_NUM = 16;
 	static constexpr float MOVE_ADD_DISTANCE = 150.0f; //à⁄ìÆãóó£ÇÃâ¡éZíl
 	static constexpr float REDUCTION_TIME = 1.5f; //èkè¨éûä‘
 	static constexpr float ROTATION_TIME = 5.0f; //âÒì]éûä‘
 	static constexpr float EXPANSION_TIME = 1.5f; //ägëÂéûä‘
 	static constexpr float ROTATION_SPEED = 360.0f; //1ïbÇÃâÒì]ë¨ìx
-	static constexpr float MODEL_SIZE_XZ = 100.0f;
-	static constexpr float MODEL_SCALE_XZ = RADIUS / MODEL_SIZE_XZ;
-	static constexpr float TEXTURE_SCALE_X = 2.0f;
-	static constexpr float TEXTURE_SCALE_Y = 5.0f;
-	static constexpr float TIME_SCALE = 3.0f;
-	static constexpr float THRESHOLD = 1.5f;
+	//static constexpr float MODEL_SIZE_XZ = 100.0f;
+	//static constexpr float MODEL_SCALE_XZ = RADIUS / MODEL_SIZE_XZ;
+
 
 	enum class STATE
 	{
@@ -33,14 +34,15 @@ public:
 		DEAD,
 	};
 
-	ThunderAround(VECTOR targetPos,VECTOR initPos, float initRad);
+	ThunderAround(VECTOR targetPos,VECTOR initPos, float initRad, ThunderAroundAttack& parent);
 	~ThunderAround(void)override;
 	void Init(void)override;
 	void Update(void)override;
 	void Draw(void)override;
 	bool IsDead(void) const { return state_ == STATE::DEAD; }
 private:
-
+	ThunderAroundAttack& parent_;
+	Polygon3DRenderer::PolygonInfo polInfo_;
 	//ëäéËÇÃ
 	VECTOR targetPos_;
 	float rad_; //íÜêSÇ©ÇÁÇÃäpìx
@@ -63,5 +65,7 @@ private:
 	void UpdateStateRotation(void);
 	void UpdateStateExpansion(void);
 	void UpdateStateDead(void);
+
+	void SetPolygonInfo(void);
 };
 

@@ -214,8 +214,8 @@
     <FxCompile Include="Src\Shader\Model\NoTextureVS.hlsl" />
     <FxCompile Include="Src\Shader\Polygon\FirePS.hlsl" />
     <FxCompile Include="Src\Shader\Polygon\FireVS.hlsl" />
-    <FxCompile Include="Src\Shader\Model\ThunderPS.hlsl" />
-    <FxCompile Include="Src\Shader\Model\ThunderVS.hlsl" />
+    <FxCompile Include="Src\Shader\Polygon\ThunderPS.hlsl" />
+    <FxCompile Include="Src\Shader\Polygon\ThunderVS.hlsl" />
     <FxCompile Include="Src\Shader\Model\SkyDomePS.hlsl" />
     <FxCompile Include="Src\Shader\Model\SkyDomeVS.hlsl" />
     <FxCompile Include="Src\Shader\Image\EnemyHPUI.hlsl" />
