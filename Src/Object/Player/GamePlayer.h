@@ -35,6 +35,14 @@ public:
 	PointLight& GetPointLight(void) { return *pointLight_; }
 
 	void SetEnemyTransform(std::weak_ptr<Transform> enemyTrans) { enemyTrans_ = enemyTrans; }
+
+	const float GetSumDamage(void)const { return sumDamage_; }	//総ダメージ量取得
+	const int GetDamageNum(void)const { return damageNum_; }	//ダメージ回数
+	const int GetAvoidNum(void)const { return avoidNum_; }	//回避回数
+	const int GetAvoidSaccessNum(void)const { return avoidSaccessNum_; }	//回避成功回数
+	const int GetJumpNum(void)const { return jumpNum_; }	//ジャンプ回数
+	const int GetJumpSaccessNum(void)const { return jumpSaccessNum_; }	//ジャンプ回避成功回数
+
 protected:
 	std::weak_ptr<Transform> enemyTrans_; //敵の座標
 
@@ -54,6 +62,10 @@ protected:
 	float avoidCoolTime_; //回避クールタイム
 	bool isAvoidSaccess_; //回避成功したか
 	float avoidSaccessTime_; //回避成功した時間
+	int avoidNum_;	//ロール回避回数
+	int avoidSaccessNum_;	//ロール回避成功数
+	int jumpNum_;	//ジャンプ回避回数
+	int jumpSaccessNum_;	//ジャンプ回避成功回数
 
 	//攻撃
 	float attackDeley_; //攻撃ディレイ
@@ -62,6 +74,8 @@ protected:
 	float damageTime_;	//ダメージ硬直時間
 	float damageInvincibleTime_;	//ダメージ後の無敵時間
 	VECTOR damageDir_;	//ダメージ後の吹っ飛び方向
+	float sumDamage_;	//合計ダメージ
+	float damageNum_;	//ダメージを受けた回数
 
 	//体力
 	float hp_;

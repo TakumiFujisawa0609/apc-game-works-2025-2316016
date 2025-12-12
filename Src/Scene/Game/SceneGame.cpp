@@ -20,6 +20,7 @@
 #include "../../Object/Player/PlayerShot.h"
 #include "../../Object/Enemy/EnemyBase.h"
 #include "../../Object/UI/EnemyHPUI.h"
+#include "../../Object/Log/GameLog.h"
 #include "SceneGame.h"
 
 SceneGame::SceneGame(void)
@@ -31,6 +32,17 @@ SceneGame::~SceneGame(void)
 	DeleteGraph(postEffectScreen_);
 	SoundManager& ins = SoundManager::GetInstance();
 	ins.Stop(SoundManager::SRC::GAME_BGM);
+	GameLog::Propaty propaty;
+	propaty.time_ = time_;
+	propaty.damage_ = player_->GetSumDamage();
+	propaty.damageNum_ = player_->GetDamageNum();
+	propaty.rollAvoidNum_ = player_->GetAvoidNum();
+	propaty.rollAvoidSaccessNum_ = player_->GetAvoidSaccessNum();
+	propaty.jumpAvoidNum_ = player_->GetJumpNum();
+	propaty.jumpAvoidSaccessNum_ = player_->GetJumpSaccessNum();
+	propaty.lastEnemyHP_ = enemy_->GetHP();
+	propaty.lastPlayerHP_ = player_->GetHP();
+	GameLog::OutPut(propaty);
 }
 
 
@@ -38,6 +50,7 @@ SceneGame::~SceneGame(void)
 bool SceneGame::Init(void)
 {
 	SceneBase::Init();
+	time_ = 0.0f;
 	//プレイヤー生成
 	player_ = std::make_unique<GamePlayer>(0);
 	player_->Init();
@@ -96,7 +109,9 @@ void SceneGame::Update(void)
 	//全ての更新が終わったら当たり判定をする
 	CheckCollision();
 	CollisionManager::GetInstance().Update();
-	vignetteTime_ += SceneManager::GetInstance().GetDeltaTime();
+	float deltaTime = SceneManager::GetInstance().GetDeltaTime();
+	vignetteTime_ += deltaTime;
+	time_ = deltaTime;
 	enemyHPUI_->Update();
 	ChangeScene();
 

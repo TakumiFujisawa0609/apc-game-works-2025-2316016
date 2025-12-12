@@ -39,6 +39,9 @@ protected:
 	//ヴィネットの点滅用じかん
 	float vignetteTime_;
 
+	//総時間
+	float time_;
+
 	//プレイヤー
 	std::unique_ptr<GamePlayer> player_;
 	//敵

@@ -21,6 +21,12 @@ GamePlayer::GamePlayer(int playerNum) : PlayerBase(playerNum)//, keyIns_(KeyConf
 	damageInvincibleTime_ = 0.0f;
 	damageTime_ = 0.0f;
 	rimPow_ = RIM_MIN_POW;
+	sumDamage_ = 0.0f;
+	damageNum_ = 0;
+	avoidNum_ = 0;
+	avoidSaccessNum_ = 0;
+	jumpNum_ = 0;
+	jumpSaccessNum_ = 0;
 
 	gravity_ = std::make_unique<Gravity>();
 	gravity_->ChengeState(Gravity::STATE::NONE);
@@ -208,6 +214,8 @@ void GamePlayer::Damage(float damage, VECTOR dir)
 	{
 		material_->SetConstBufPS(0, Utility::COLOR_F2FLOAT4(DAMAGE_COLOR_TIMES));
 		hp_ -= damage;
+		sumDamage_ += damage;
+		damageNum_++;
 		healDeray_ = DAMAGE_HEAL_DERAY;
 		damageDir_ = dir;
 		damageDir_.y = 0.0f;
@@ -394,11 +402,13 @@ void GamePlayer::SaccessAvoid(void)
 	isAvoidSaccess_ = true;
 	avoidSaccessTime_ = avoidTime_;
 	rimPow_ = RIM_MAX_POW;
+	avoidSaccessNum_++;
 }
 
 void GamePlayer::SaccessJumpAvoid(void)
 {
 	//ƒWƒƒƒ“ƒv‰ñ”ð¬Œ÷Žž‚Ìˆ—
+	jumpSaccessNum_++;
 }
 
 void GamePlayer::StateChangeIdle(void)
@@ -419,6 +429,7 @@ void GamePlayer::StateChangeJump(void)
 	ins.Play(SoundManager::SRC::JAMP, Sound::TIMES::ONCE);
 	gravity_->ChengeState(Gravity::STATE::JUMP);
 	gravity_->SetInitPower(JUMP_POW);
+	jumpNum_++;
 	stateUpdate_ = std::bind(&GamePlayer::StateUpdateJump, this);
 	animCtrl_->Play((int)STATE::JUMP, false, 30.0f, 90.0f, 0.1f, false, true);
 
@@ -428,6 +439,7 @@ void GamePlayer::StateChangeAvoid(void)
 {
 	stateUpdate_ = std::bind(&GamePlayer::StateUpdateAvoid, this);
 	avoidTime_ = AVOID_TIME;
+	avoidNum_++;
 	SceneManager& sceneIns = SceneManager::GetInstance();
 	Camera& cam = sceneIns.GetCamera();
 	if (IsPushMoveKey())

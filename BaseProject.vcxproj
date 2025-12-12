@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Object\Log\GameLog.cpp" />
     <ClCompile Include="Src\Object\Enemy\EnemyAttackManager.cpp" />
     <ClCompile Include="Src\Object\Gate\GateManager.cpp" />
     <ClCompile Include="Src\Renderer\BaseRenderer.cpp" />
@@ -111,6 +112,7 @@
     <ClCompile Include="Src\Object\Player\TitlePlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Object\Log\GameLog.h" />
     <ClInclude Include="Src\Object\Enemy\EnemyAttackManager.h" />
     <ClInclude Include="Src\Object\Gate\GateManager.h" />
     <ClInclude Include="Src\Renderer\BaseRenderer.h" />
