@@ -15,8 +15,8 @@ void Polygon3DRenderer::Draw(void)
 	{
 		SetUseBackCulling(false);
 	}
-	drawInfo_ = info_;
-	Cull2PolygonInfo();
+	//drawInfo_ = info_;
+	//Cull2PolygonInfo();
 	// オリジナルシェーダ設定(ON)
 	MV1SetUseOrigShader(true);
 
@@ -33,7 +33,7 @@ void Polygon3DRenderer::Draw(void)
 	// テクスチャアドレスタイプを変更
 	SetTextureAddressModeUV(texAType, texAType);
 
-	DrawPolygonIndexed3DToShader(drawInfo_.vertex.data(), static_cast<int>(drawInfo_.vertex.size()), drawInfo_.Indices.data(),static_cast<int>(drawInfo_.Indices.size() / POLYGON_VERTEX_NUM));
+	DrawPolygonIndexed3DToShader(info_.vertex.data(), static_cast<int>(info_.vertex.size()), info_.Indices.data(),static_cast<int>(info_.Indices.size() / POLYGON_VERTEX_NUM));
 
 	// テクスチャアドレスタイプを元に戻す
 	SetTextureAddressModeUV(DX_TEXADDRESS_CLAMP, DX_TEXADDRESS_CLAMP);
@@ -163,58 +163,58 @@ void Polygon3DRenderer::SetReservePS(void)
 
 }
 
-void Polygon3DRenderer::Cull2PolygonInfo(void)
-{
-	int polygonNum = static_cast<int>(drawInfo_.Indices.size()) / POLYGON_VERTEX_NUM;
-	//std::vector<int> eraseIndexes; //消去するindicesの添え字
-	std::vector<int> erasePolygon; //消去するindicesの添え字
-	for (int i = 0; i < polygonNum; i++)
-	{
-		VECTOR pos1 = drawInfo_.vertex[drawInfo_.Indices[i * POLYGON_VERTEX_NUM]].pos;
-		VECTOR pos2 = drawInfo_.vertex[drawInfo_.Indices[i * POLYGON_VERTEX_NUM + 1]].pos;
-		VECTOR pos3 = drawInfo_.vertex[drawInfo_.Indices[i * POLYGON_VERTEX_NUM + 2]].pos;
-		VECTOR minV = VGet(
-			std::min(pos1.x, std::min(pos2.x, pos3.x)),
-			std::min(pos1.y, std::min(pos2.y, pos3.y)),
-			std::min(pos1.z, std::min(pos2.z, pos3.z))
-		);
-		VECTOR maxV = VGet(
-			std::max(pos1.x, std::max(pos2.x, pos3.x)),
-			std::max(pos1.y, std::max(pos2.y, pos3.y)),
-			std::max(pos1.z, std::max(pos2.z, pos3.z))
-		);
-
-		if (CheckCameraViewClip_Box(minV, maxV))
-		{
-			//eraseIndexes.push_back(i * POLYGON_VERTEX_NUM);
-			//eraseIndexes.push_back(i * POLYGON_VERTEX_NUM + 1);
-			//eraseIndexes.push_back(i * POLYGON_VERTEX_NUM + 2);
-			erasePolygon.push_back(i);
-		}
-	}
-	std::vector<unsigned short> newIndices;
-	//newIndices.reserve(drawInfo_.Indices.size()); // 必要容量確保
-
-	//for (int i = 0; i < drawInfo_.Indices.size(); i++)
-	//{
-	//	if (std::find(eraseIndexes.begin(), eraseIndexes.end(), i) != eraseIndexes.end())
-	//	{
-	//		continue;
-	//	}
-	//	newIndices.push_back(drawInfo_.Indices[i]);
-	//}
-	//eraseIndexes.clear();
-	for (int i = 0; i < polygonNum; i++)
-	{
-		if (std::find(erasePolygon.begin(), erasePolygon.end(), i) != erasePolygon.end())
-		{
-			continue;
-		}
-		newIndices.push_back(drawInfo_.Indices[i * POLYGON_VERTEX_NUM]);
-		newIndices.push_back(drawInfo_.Indices[i * POLYGON_VERTEX_NUM + 1]);
-		newIndices.push_back(drawInfo_.Indices[i * POLYGON_VERTEX_NUM + 2]);
-	}
-	// 差し替え
-	drawInfo_.Indices = std::move(newIndices);
-	newIndices.clear();
-}
+//void Polygon3DRenderer::Cull2PolygonInfo(void)
+//{
+//	int polygonNum = static_cast<int>(drawInfo_.Indices.size()) / POLYGON_VERTEX_NUM;
+//	//std::vector<int> eraseIndexes; //消去するindicesの添え字
+//	std::vector<int> erasePolygon; //消去するindicesの添え字
+//	for (int i = 0; i < polygonNum; i++)
+//	{
+//		VECTOR pos1 = drawInfo_.vertex[drawInfo_.Indices[i * POLYGON_VERTEX_NUM]].pos;
+//		VECTOR pos2 = drawInfo_.vertex[drawInfo_.Indices[i * POLYGON_VERTEX_NUM + 1]].pos;
+//		VECTOR pos3 = drawInfo_.vertex[drawInfo_.Indices[i * POLYGON_VERTEX_NUM + 2]].pos;
+//		VECTOR minV = VGet(
+//			std::min(pos1.x, std::min(pos2.x, pos3.x)),
+//			std::min(pos1.y, std::min(pos2.y, pos3.y)),
+//			std::min(pos1.z, std::min(pos2.z, pos3.z))
+//		);
+//		VECTOR maxV = VGet(
+//			std::max(pos1.x, std::max(pos2.x, pos3.x)),
+//			std::max(pos1.y, std::max(pos2.y, pos3.y)),
+//			std::max(pos1.z, std::max(pos2.z, pos3.z))
+//		);
+//
+//		if (CheckCameraViewClip_Box(minV, maxV))
+//		{
+//			//eraseIndexes.push_back(i * POLYGON_VERTEX_NUM);
+//			//eraseIndexes.push_back(i * POLYGON_VERTEX_NUM + 1);
+//			//eraseIndexes.push_back(i * POLYGON_VERTEX_NUM + 2);
+//			erasePolygon.push_back(i);
+//		}
+//	}
+//	std::vector<unsigned short> newIndices;
+//	//newIndices.reserve(drawInfo_.Indices.size()); // 必要容量確保
+//
+//	//for (int i = 0; i < drawInfo_.Indices.size(); i++)
+//	//{
+//	//	if (std::find(eraseIndexes.begin(), eraseIndexes.end(), i) != eraseIndexes.end())
+//	//	{
+//	//		continue;
+//	//	}
+//	//	newIndices.push_back(drawInfo_.Indices[i]);
+//	//}
+//	//eraseIndexes.clear();
+//	for (int i = 0; i < polygonNum; i++)
+//	{
+//		if (std::find(erasePolygon.begin(), erasePolygon.end(), i) != erasePolygon.end())
+//		{
+//			continue;
+//		}
+//		newIndices.push_back(drawInfo_.Indices[i * POLYGON_VERTEX_NUM]);
+//		newIndices.push_back(drawInfo_.Indices[i * POLYGON_VERTEX_NUM + 1]);
+//		newIndices.push_back(drawInfo_.Indices[i * POLYGON_VERTEX_NUM + 2]);
+//	}
+//	// 差し替え
+//	drawInfo_.Indices = std::move(newIndices);
+//	newIndices.clear();
+//}

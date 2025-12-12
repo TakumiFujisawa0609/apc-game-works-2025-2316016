@@ -36,7 +36,7 @@ private:
 
 	//描画に必要な情報
 	PolygonInfo& info_;
-	PolygonInfo drawInfo_;
+	//PolygonInfo drawInfo_;
 	// ピクセルマテリアル
 	Polygon3DMaterial& polygon3DMaterial_;
 
