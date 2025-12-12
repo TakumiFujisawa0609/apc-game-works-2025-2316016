@@ -111,7 +111,7 @@ void SceneGame::Update(void)
 	CollisionManager::GetInstance().Update();
 	float deltaTime = SceneManager::GetInstance().GetDeltaTime();
 	vignetteTime_ += deltaTime;
-	time_ = deltaTime;
+	time_ += deltaTime;
 	enemyHPUI_->Update();
 	ChangeScene();
 
