@@ -10,7 +10,7 @@ class GateManager : public ObjectPolygonBase
 public:
 
 	static constexpr float GATE_RADIUS = 1000.0f;
-	static constexpr int GATE_NUM = 4;
+	static constexpr int GATE_NUM = 1;
 
 	GateManager(std::vector<SceneManager::SCENE_ID> scenes);
 	~GateManager(void)override;

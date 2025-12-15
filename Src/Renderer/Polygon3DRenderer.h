@@ -47,5 +47,5 @@ private:
 	void SetReservePS(void);
 
 	//©•ª‚Ìinfo_‚ğƒJƒƒ‰ŠO‚Ìƒ|ƒŠƒSƒ“‚Ìê‡•`‰æ‚µ‚È‚¢
-	void Cull2PolygonInfo(void);
+	//void Cull2PolygonInfo(void);
 };

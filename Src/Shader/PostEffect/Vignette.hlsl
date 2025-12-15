@@ -51,15 +51,8 @@ float4 main(PS_INPUT PSInput) : SV_TARGET
     {
         vignette = 1.0f - saturate(dis * g_max_vine_pow * time);
     }
-    //if (vignette > 0.7f)
-    //{
-    //    return ret;
-    //}
     //ヴィネットの強さを0.2～1.0に補正する
     vignette = vignette * 0.8f + 0.2f;
-
-
-
     if (g_player_hp < 0.0f)
     {
         ret.gb *= vignette;

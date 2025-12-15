@@ -1,5 +1,6 @@
 #include <DxLib.h>
 #include "../../Manager/ResourceManager.h"
+#include "../../Manager/SceneManager.h"
 #include "../../Renderer/ModelMaterial.h"
 #include "../../Renderer/ModelRenderer.h"
 #include "../Common/Transform.h"
@@ -44,6 +45,9 @@ void SkyDome::Init(void)
 
 void SkyDome::Update(void)
 {
+	time_ += SceneManager::GetInstance().GetDeltaTime();
+	transform_->quaRot = Quaternion(VECTOR(0.0f, Utility::Deg2RadF(ROTAT_DEG_SEC * time_), 0.0f));
+	transform_->Update();
 }
 
 void SkyDome::Draw(void)

@@ -45,6 +45,7 @@ bool SceneTitle::Init(void)
 //更新処理
 void SceneTitle::Update(void)
 {
+	skyDome_->Update();
 	player_->Update();
 	enemy_->Update();
 	//ゲームシーンへ

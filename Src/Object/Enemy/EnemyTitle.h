@@ -3,6 +3,7 @@
 class EnemyTitle :  public EnemyBase
 {
 public:
+	static constexpr int ANIM_POP = 180;
 
 	EnemyTitle(std::weak_ptr<Transform> trans);
 	~EnemyTitle(void)override;

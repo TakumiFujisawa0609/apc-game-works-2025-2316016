@@ -1,3 +1,4 @@
+#include "../Common/AnimationController.h"
 #include "Type/Dragon.h"
 #include "EnemyTitle.h"
 
@@ -16,6 +17,15 @@ void EnemyTitle::Init(void)
 void EnemyTitle::Update(void)
 {
 	dragon_->Update();
+	auto& animCtrl = dragon_->GetAnimController();
+	if (GetRand(ANIM_POP) == 0)
+	{
+		animCtrl.Play((int)Dragon::ANIM_TYPE::SCREAM, false);
+	}
+	if (animCtrl.IsEnd())
+	{
+		animCtrl.Play((int)Dragon::ANIM_TYPE::IDLE_1);
+	}
 }
 
 void EnemyTitle::Draw(void)
