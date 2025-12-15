@@ -47,14 +47,14 @@ void SceneSetting::Draw(void)
 	int y = startY;
     if (type_ == TYPE::BGM_VOLUME)
     {
-		SetDrawBright(255, 255 , 255 - abs(sin(Utility::Deg2RadF(frameCount_))) * 255);
+		SetDrawBright(255, 255 , 255 - static_cast<int>(abs(sin(Utility::Deg2RadF(static_cast<float>(frameCount_)))) * 255));
     }
     DrawExtendGraph(x, y, x + IMAGE_SIZE_X, y + IMAGE_SIZE_Y, ResourceManager::GetInstance().Load(ResourceManager::SRC::BGM_STR).handleId_, true);
 	y += INTERVAL_Y;
     SetDrawBright(255, 255, 255);
     if (type_ == TYPE::SE_VOLUME)
     {
-        SetDrawBright(255, 255, 255 - abs(sin(Utility::Deg2RadF(frameCount_))) * 255);
+        SetDrawBright(255, 255, 255 - static_cast<int>(abs(sin(Utility::Deg2RadF(static_cast<float>(frameCount_)))) * 255));
     }
     DrawExtendGraph(x, y, x + IMAGE_SIZE_X, y + IMAGE_SIZE_Y, ResourceManager::GetInstance().Load(ResourceManager::SRC::SE_STR).handleId_, true);
     y += INTERVAL_Y;

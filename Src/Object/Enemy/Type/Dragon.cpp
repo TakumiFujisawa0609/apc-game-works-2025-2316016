@@ -68,6 +68,7 @@ int Dragon::GetAnimType(EnemyAttackManager::ATTACK_STATE attackState, EnemyAttac
 		}
 		return static_cast<int>(map.second);
 	}
+	return -1;
 }
 
 void Dragon::InitAnimationController(void)

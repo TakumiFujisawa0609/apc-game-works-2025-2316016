@@ -58,7 +58,7 @@ void ShockWave::Draw(void)
 
 void ShockWave::SetPolInfo(void)
 {
-	const int RADIUS = Stage::RADIUS;
+	const float RADIUS = Stage::RADIUS;
 	auto& vertexes = polygonInfo_.vertex;
 	vertexes.clear();
 	float radper = Utility::Deg2RadF(Utility::ONE_TRACK_DEG / WAVE_VERTEX_NUM);

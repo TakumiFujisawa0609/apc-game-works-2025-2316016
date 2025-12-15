@@ -242,6 +242,7 @@ LONGLONG SoundManager::GetTotalTime(SRC src)
 			return sound->GetTotalTime();
 		}
 	}
+	return -1;
 }
 
 void SoundManager::Load(SRC src)

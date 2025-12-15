@@ -567,7 +567,7 @@ bool Utility::IsTimeOver(float& totalTime, const float& waitTime)
 void Utility::DrawStringPlace(std::string _str, int _line, int _posY, int _color, STRING_PLACE _place)
 {
     //文字列の長さを取得
-    int width = GetDrawStringWidth(_str.c_str(), strlen(_str.c_str()));
+    int width = GetDrawStringWidth(_str.c_str(), static_cast<int>(strlen(_str.c_str())));
 
     //表示するX座標を求める
     int posX = _line;
@@ -672,20 +672,20 @@ bool Utility::IsPointInRectCircle(const Vector2 _pos, const Vector2 _circlePos, 
     return Distance(_pos, _circlePos) <= _radius;
 }
 
-VECTOR Utility::GetWorldPosAtScreen(const Vector2 screenPos, const float distance, const VECTOR cameraPos, const VECTOR cameraDir)
-{
-    // スクリーン中心の方向ベクトルを取得 (depth = 0.5で中間点)
-    VECTOR sPos = VGet(screenPos.x, screenPos.y, 0.5f);
-    VECTOR screenDir = ConvScreenPosToWorldPos(sPos);
-
-    // カメラ位置から見たスクリーン中心方向へのベクトルを作成
-    VECTOR dir = VSub(screenDir, cameraPos);
-    dir = VNorm(dir); // 正規化して単位ベクトルにする
-
-    // 指定距離だけ進めた座標
-    VECTOR ret = VAdd(cameraPos, VScale(dir, distance));
-    return ret;
-}
+//VECTOR Utility::GetWorldPosAtScreen(const Vector2 screenPos, const float distance, const VECTOR cameraPos, const VECTOR cameraDir)
+//{
+//    // スクリーン中心の方向ベクトルを取得 (depth = 0.5で中間点)
+//    VECTOR sPos = VGet(screenPos.x, screenPos.y, 0.5f);
+//    VECTOR screenDir = ConvScreenPosToWorldPos(sPos);
+//
+//    // カメラ位置から見たスクリーン中心方向へのベクトルを作成
+//    VECTOR dir = VSub(screenDir, cameraPos);
+//    dir = VNorm(dir); // 正規化して単位ベクトルにする
+//
+//    // 指定距離だけ進めた座標
+//    VECTOR ret = VAdd(cameraPos, VScale(dir, distance));
+//    return ret;
+//}
 
 int Utility::GetSign(float f)
 {
@@ -732,7 +732,7 @@ float Utility::ReverseValue(float _f)
 
 IntVector3 Utility::ReverseValue(IntVector3 _iv)
 {
-    return _iv * REVERSE_SCALE;
+    return _iv * static_cast<int>(REVERSE_SCALE);
 }
 
 
@@ -971,26 +971,26 @@ bool Utility::IsColCapsule2Line(VECTOR cPos1, VECTOR cPos2, float cRadius, VECTO
     VECTOR w = VSub(lPos1, cPos1);
 
     // a = u・u → 線分Aの長さの二乗
-    double a = VDot(u, u);
+    float a = VDot(u, u);
 
     // b = u・v → AとBの方向の平行度（角度の関係）
-    double b = VDot(u, v);
+    float b = VDot(u, v);
 
     // c = v・v → カプセル中心線の長さの二乗
-    double c = VDot(v, v);
+    float c = VDot(v, v);
 
     // d = u・w → A方向におけるBの始点の位置関係
-    double d = VDot(u, w);
+    float d = VDot(u, w);
 
     // e = v・w → B方向におけるAの始点の位置関係
-    double e = VDot(v, w);
+    float e = VDot(v, w);
 
     // D = a*c - b*b → 連立方程式の判別式（平行かどうかの指標）
-    double D = a * c - b * b;
+    float D = a * c - b * b;
 
     // s, t → 各線分上の最近点パラメータ (0～1)
-    double s = (b * e - c * d);
-    double t = (a * e - b * d);
+    float s = (b * e - c * d);
+    float t = (a * e - b * d);
 
     if (D != 0) 
     {
@@ -1114,7 +1114,7 @@ bool Utility::IsColSphere2Triangle(VECTOR sPos, float radius, VECTOR tPos1, VECT
 bool Utility::IsColSphere2Sphere(VECTOR s1Pos, float radius1, VECTOR s2Pos, float radius2, VECTOR& hitPos)
 {
     VECTOR dir = VNorm(VSub(s1Pos, s2Pos));
-    float distance = Distance(s1Pos, s2Pos);
+    float distance =static_cast<float>( Distance(s1Pos, s2Pos));
     if (distance > radius1 + radius2)
     {
         return false;
@@ -1128,7 +1128,7 @@ bool Utility::IsColCylinder2Cylinder(VECTOR c1Pos, float radius1, VECTOR c2Pos, 
     VECTOR dir = VNorm(VSub(c1Pos, c2Pos));
     c1Pos.y = 0.0f;
     c2Pos.y = 0.0f;
-    float distance = Distance(c1Pos, c2Pos);
+    float distance = static_cast<float>(Distance(c1Pos, c2Pos));
     if (distance > radius1 + radius2)
     {
         return false;

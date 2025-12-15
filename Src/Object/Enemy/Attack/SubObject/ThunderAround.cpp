@@ -39,7 +39,7 @@ ThunderAround::ThunderAround(VECTOR targetPos, VECTOR initPos,  float initRad, T
 	damage_ = DAMAGE;
 	rad_ = 0.0f;
 	dir_ = VNorm(VSub(targetPos, initPos));
-	distance_ = Utility::Distance(targetPos,initPos);
+	distance_ = static_cast<float>(Utility::Distance(targetPos,initPos));
 	distance_ += MOVE_ADD_DISTANCE;
 	changeState_[STATE::REDUCTION] = std::bind(&ThunderAround::ChangeStateReduction, this);
 	changeState_[STATE::ROTATION] = std::bind(&ThunderAround::ChangeStateRotation, this);
@@ -120,7 +120,7 @@ void ThunderAround::UpdateStateReduction(void)
 void ThunderAround::UpdateStateRotation(void)
 {
 	rad_ += Utility::Deg2RadF(ROTATION_SPEED  * SceneManager::GetInstance().GetDeltaTime());
-	auto distance = Utility::Distance(targetPos_, transform_->pos);
+	float distance =static_cast<float>(Utility::Distance(targetPos_, transform_->pos));
 	transform_->pos.x = targetPos_.x + distance * cosf(rad_ + initRad_);
 	transform_->pos.y = targetPos_.y;
 	transform_->pos.z = targetPos_.z + distance * sinf(rad_ + initRad_);

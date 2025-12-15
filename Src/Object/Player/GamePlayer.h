@@ -75,7 +75,7 @@ protected:
 	float damageInvincibleTime_;	//ダメージ後の無敵時間
 	VECTOR damageDir_;	//ダメージ後の吹っ飛び方向
 	float sumDamage_;	//合計ダメージ
-	float damageNum_;	//ダメージを受けた回数
+	int damageNum_;	//ダメージを受けた回数
 
 	//体力
 	float hp_;

@@ -525,6 +525,6 @@ public:
 template<typename T>
 inline int Utility::EraseVectorAllay(std::vector<T>& allay)
 {
-	int ret = std::erase_if(allay, [](auto& a) {return a == nullptr;});
+	int ret = static_cast<int>(std::erase_if(allay, [](auto& a) {return a == nullptr;}));
 	return ret;
 }

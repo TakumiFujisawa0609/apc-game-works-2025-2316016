@@ -199,12 +199,12 @@ void Sound::ChengeVolume(float per)
 	{
 		per = 0.0f;
 	}
-	ChangeVolumeSoundMem(per * maxVolume_, handleId_);
+	ChangeVolumeSoundMem(static_cast<int>(per * maxVolume_), handleId_);
 }
 
 void Sound::ChengeMaxVolume(float per)
 {
-	maxVolume_ = 255 * per;
+	maxVolume_ =static_cast<int>(255 * per);
 }
 
 void Sound::DuplicateSound(void)

@@ -65,7 +65,7 @@ void FallDownShot::Draw(void)
 	VECTOR pos = transform_->pos;
 	pos.y = 0.0f;
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, ALPHA);
-	Utility::DrawCircle3DXZ(pos,radius_, VERTEX_NUM, GetColor(color_.r * 255,color_.g * 255,color_.b*255), true);
+	Utility::DrawCircle3DXZ(pos,radius_, VERTEX_NUM, GetColor(static_cast<int>(color_.r * 255),static_cast<int>(color_.g * 255),static_cast<int>(color_.b*255)), true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	if (state_ == STATE::BLAST)
 	{
