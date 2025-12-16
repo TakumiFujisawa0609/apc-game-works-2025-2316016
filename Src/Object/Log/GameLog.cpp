@@ -41,6 +41,7 @@ std::string GameLog::GetDateTimeString()
 // ======================================================
 void GameLog::OutPut(Propaty propaty)
 {
+    //txt‚É’Ç‰Á
     std::ofstream txt("Data/Log/GameStats.txt", std::ios::app);
     if (!txt.is_open()) return;
 
@@ -60,6 +61,8 @@ void GameLog::OutPut(Propaty propaty)
         << "\n";
 
     txt.close();
+
+    //csv‚É’Ç‰Á
     std::ofstream csv("Data/Log/GameStats.csv", std::ios::app);
     if (!csv.is_open()) return;
 
