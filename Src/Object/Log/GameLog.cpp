@@ -60,5 +60,28 @@ void GameLog::OutPut(Propaty propaty)
         << "\n";
 
     ofs.close();
+    std::ofstream ofs2("Data/Log/GameStats.csv", std::ios::app);
+    if (!ofs2.is_open()) return;
+
+    // 現在時刻付き
+    //ofs2 << "[" << GetDateTimeString() << "] ";
+
+    //std::string win = propaty.lastEnemyHP_ <= 0.0f ? "○" : propaty.lastPlayerHP_ < 0.0f ? "×" : "△";
+    int win = propaty.lastEnemyHP_ <= 0.0f ? 1 : propaty.lastPlayerHP_ < 0.0f ? 0 : -1;
+
+    // 各種データ
+    ofs2 << win << ","
+        << propaty.time_ << ", "
+        << propaty.rollAvoidNum_ << ", "
+        << propaty.rollAvoidSaccessNum_ << ", "
+        << propaty.jumpAvoidNum_ << ", "
+        << propaty.jumpAvoidSaccessNum_ << ", "
+        << propaty.damage_ << ", "
+        << propaty.damageNum_ << ", "
+        << propaty.lastPlayerHP_ << ", "
+        << propaty.lastEnemyHP_
+        << "\n";
+
+    ofs2.close();
 }
 
