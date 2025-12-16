@@ -41,14 +41,14 @@ std::string GameLog::GetDateTimeString()
 // ======================================================
 void GameLog::OutPut(Propaty propaty)
 {
-    std::ofstream ofs("Data/Log/GameStats.txt", std::ios::app);
-    if (!ofs.is_open()) return;
+    std::ofstream txt("Data/Log/GameStats.txt", std::ios::app);
+    if (!txt.is_open()) return;
 
     // 現在時刻付き
-    ofs << "[" << GetDateTimeString() << "] ";
+    txt << "[" << GetDateTimeString() << "] ";
 
     // 各種データ
-    ofs << "Time=" << propaty.time_ << ", "
+    txt << "Time=" << propaty.time_ << ", "
         << "RollNum=" << propaty.rollAvoidNum_ << ", "
         << "RollSuccess=" << propaty.rollAvoidSaccessNum_ << ", "
         << "JumpNum=" << propaty.jumpAvoidNum_ << ", "
@@ -59,14 +59,14 @@ void GameLog::OutPut(Propaty propaty)
         << "EnemyHP=" << propaty.lastEnemyHP_
         << "\n";
 
-    ofs.close();
-    std::ofstream ofs2("Data/Log/GameStats.csv", std::ios::app);
-    if (!ofs2.is_open()) return;
+    txt.close();
+    std::ofstream csv("Data/Log/GameStats.csv", std::ios::app);
+    if (!csv.is_open()) return;
 
     int win = propaty.lastEnemyHP_ <= 0.0f ? 1 : propaty.lastPlayerHP_ < 0.0f ? 0 : -1;
 
     // 各種データ
-    ofs2 << win << ","
+    csv << win << ","
         << propaty.time_ << ", "
         << propaty.rollAvoidNum_ << ", "
         << propaty.rollAvoidSaccessNum_ << ", "
@@ -78,6 +78,6 @@ void GameLog::OutPut(Propaty propaty)
         << propaty.lastEnemyHP_
         << "\n";
 
-    ofs2.close();
+    csv.close();
 }
 
