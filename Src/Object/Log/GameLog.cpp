@@ -63,10 +63,6 @@ void GameLog::OutPut(Propaty propaty)
     std::ofstream ofs2("Data/Log/GameStats.csv", std::ios::app);
     if (!ofs2.is_open()) return;
 
-    // 現在時刻付き
-    //ofs2 << "[" << GetDateTimeString() << "] ";
-
-    //std::string win = propaty.lastEnemyHP_ <= 0.0f ? "○" : propaty.lastPlayerHP_ < 0.0f ? "×" : "△";
     int win = propaty.lastEnemyHP_ <= 0.0f ? 1 : propaty.lastPlayerHP_ < 0.0f ? 0 : -1;
 
     // 各種データ
