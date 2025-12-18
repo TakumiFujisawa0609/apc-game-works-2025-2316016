@@ -24,7 +24,7 @@ CrossAttack::CrossAttack(EnemyAttackManager& parent) : AttackBase(parent) ,radia
 		"FireVS.cso", 0,
 		"FirePS.cso", 1
 	);
-	material_->AddConstBufPS({ time_, 0.0f, 1.0f, 1.0f });
+	material_->AddConstBufPS({ time_, NOISE_POW, 1.0f, 1.0f });
 	material_->AddTextureBuf(ResourceManager::GetInstance().Load(ResourceManager::SRC::WAVE_TEXTURE).handleId_);
 	material_->AddTextureBuf(ResourceManager::GetInstance().Load(ResourceManager::SRC::NOISE).handleId_);
 	renderer_ = std::make_shared<Polygon3DRenderer>(*material_, polygonInfo_);
@@ -48,7 +48,7 @@ void CrossAttack::Update(void)
 	{
 		line->Update();
 	}
-	material_->SetConstBufPS(0, { sumTime_, 0.0f, 0.0f, 0.0f });
+	material_->SetConstBufPS(0, { sumTime_, NOISE_POW, 0.0f, 0.0f });
 }
 
 void CrossAttack::Draw(void)

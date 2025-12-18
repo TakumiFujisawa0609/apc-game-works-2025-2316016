@@ -24,6 +24,7 @@ public:
 	static constexpr float DAMAGE_EFECT_RADIUS = 20.0f;	//ダメージ状態のエフェクト範囲
 	static constexpr float DAMAGE_EFECT_TIME = 0.5f;	//ダメージエフェクトの時間
 
+	static constexpr float INIT_DISOLVE = -0.01f;
 	enum class STATE
 	{
 		IDLE,	//待機

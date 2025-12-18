@@ -14,6 +14,8 @@ class SceneGame :public SceneBase
 {
 public:
 
+	static constexpr FLOAT4 SKY_COL = { 1.0f,0.1f,1.0f,1.0f };
+
 	//メンバー関数
 	//初期化処理(初回の1度のみ実行される)
 	SceneGame(void) ;

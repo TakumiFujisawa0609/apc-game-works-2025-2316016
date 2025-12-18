@@ -13,6 +13,7 @@ public:
 	static constexpr int LINE_POINT_NUM = 12; //クロスラインの点の数
 	static constexpr float LINE_DIR_REVERSE_TIME = 10.0f; //ラインの向きが逆になる時間
 	static constexpr float CREATE_INTERVAL = 0.5f;
+	static constexpr float NOISE_POW = 4.0f;
 	CrossAttack(EnemyAttackManager& parent);
 	~CrossAttack(void)override;
 	void Init(void)override;

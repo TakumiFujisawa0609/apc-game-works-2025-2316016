@@ -33,12 +33,10 @@ bool SceneTitle::Init(void)
 	SoundManager::GetInstance().Load(SoundManager::SRC::GAME_BGM);
 	SetUseASyncLoadFlag(false);
 
-	//ÉÇÉfÉãì«Ç›çûÇ›
-	auto& ins = ResourceManager::GetInstance();
 	player_ = std::make_unique<TitlePlayer>(0);
 	enemy_ = std::make_unique<EnemyTitle>(player_->GetTransform());
 	skyDome_ = std::make_unique<SkyDome>();
-
+	skyDome_->SetColor(SKY_COL);
 	return true;
 }
 
@@ -52,7 +50,7 @@ void SceneTitle::Update(void)
 	if (KeyConfig::GetInstance().IsTrgDown(KeyConfig::CONTROL_TYPE::ENTER,KeyConfig::JOYPAD_NO::PAD1))
 	{
 		SoundManager::GetInstance().Play(SoundManager::SRC::ENTER_SOUND, Sound::TIMES::ONCE);
-		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::SELECT, true);
+		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::GAMECLEAR, true);
 	}
 	
 }

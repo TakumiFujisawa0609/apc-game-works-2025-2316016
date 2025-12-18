@@ -17,8 +17,9 @@ SkyDome::SkyDome(void)
 
 	material_ = std::make_unique<ModelMaterial>(
 		"SkyDomeVS.cso", 0,
-		"SkyDomePS.cso", 0
+		"SkyDomePS.cso", 1
 	);
+	material_->AddConstBufPS(DEFAULT_COLOR);
 	renderer_ = std::make_shared<ModelRenderer>(transform_->modelId, *material_	);
 }
 
@@ -54,4 +55,9 @@ void SkyDome::Draw(void)
 {
 	//MV1DrawModel(transform_->modelId);
 	renderer_->Draw();
+}
+
+void SkyDome::SetColor(FLOAT4 color)
+{
+	material_->SetConstBufPS(0, color);
 }

@@ -68,6 +68,7 @@ bool SceneGame::Init(void)
 	cam.SetPos(player_->GetTransform().lock()->pos);
 	//スカイドーム
 	skyDome_ = std::make_unique<SkyDome>();
+	skyDome_->SetColor(SKY_COL);
 	skyDome_->Init();
 
 	//ステージ

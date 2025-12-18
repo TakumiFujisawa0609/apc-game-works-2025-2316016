@@ -20,14 +20,15 @@ EnemyBase::EnemyBase(std::weak_ptr<Transform> target) : target_(target)
 
 	material_ = std::make_unique<ModelMaterial>(
 		"EnemyVS.cso", 0,
-		"EnemyPS.cso", 4
+		"EnemyPS.cso", 5
 	);
 	//material_->AddConstBufVS({ TEXTURE_SCALE, 0.0f, 1.0f, 1.0f });
 	material_->AddConstBufPS(static_cast<FLOAT4>(Utility::COLOR_F2FLOAT4(DEFAULT_COLOR)));
 	material_->AddConstBufPS(static_cast<FLOAT4>(Utility::COLOR_F2FLOAT4(DAMAGE_COLOR_ADD)));
 	material_->AddConstBufPS({damageTime_, hitPos_.x, hitPos_.y, hitPos_.z});
 	material_->AddConstBufPS({DAMAGE_EFECT_RADIUS,0.0f, 0.0f, 0.0f});
-	//material_->SetTextureBuf(3, ResourceManager::GetInstance().Load(ResourceManager::SRC::NOISE).handleId_);
+	material_->AddConstBufPS({INIT_DISOLVE,0.0f, 0.0f, 0.0f});
+	material_->SetTextureBuf(3, ResourceManager::GetInstance().Load(ResourceManager::SRC::NOISE).handleId_);
 	renderer_ = std::make_shared<ModelRenderer>(
 		transform_->modelId, *material_
 	);

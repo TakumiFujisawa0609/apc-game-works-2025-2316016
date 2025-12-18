@@ -19,6 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Object\Player\OverPlayer.cpp" />
+    <ClCompile Include="Src\Object\Player\ClearPlayer.cpp" />
+    <ClCompile Include="Src\Object\Enemy\EnemyClear.cpp" />
     <ClCompile Include="Src\Object\Log\GameLog.cpp" />
     <ClCompile Include="Src\Object\Enemy\EnemyAttackManager.cpp" />
     <ClCompile Include="Src\Object\Gate\GateManager.cpp" />
@@ -112,6 +115,9 @@
     <ClCompile Include="Src\Object\Player\TitlePlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Object\Player\OverPlayer.h" />
+    <ClInclude Include="Src\Object\Player\ClearPlayer.h" />
+    <ClInclude Include="Src\Object\Enemy\EnemyClear.h" />
     <ClInclude Include="Src\Object\Log\GameLog.h" />
     <ClInclude Include="Src\Object\Enemy\EnemyAttackManager.h" />
     <ClInclude Include="Src\Object\Gate\GateManager.h" />

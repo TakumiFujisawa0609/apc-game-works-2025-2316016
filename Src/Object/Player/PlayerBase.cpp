@@ -87,7 +87,7 @@ void PlayerBase::InitAnimationController(void)
 	animCtrl_->Add((int)STATE::AVOID, path + "Avoid2.mv1", 100.0f);
 	animCtrl_->Add((int)STATE::ATTACK, path + "Throw.mv1", 210.0f);
 	animCtrl_->Add((int)STATE::DAMAGE, path + "Damage.mv1", 120.0f);
-	//animCtrl_->Add((int)STATE::DEAD, path + "Falling.mv1", 80.0f);
+	animCtrl_->Add((int)STATE::DEAD, path + "Death.mv1", 60.0f);
 
 	animCtrl_->Play((int)STATE::IDLE);
 }
