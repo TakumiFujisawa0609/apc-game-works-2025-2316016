@@ -27,7 +27,7 @@ EnemyBase::EnemyBase(std::weak_ptr<Transform> target) : target_(target)
 	material_->AddConstBufPS(static_cast<FLOAT4>(Utility::COLOR_F2FLOAT4(DAMAGE_COLOR_ADD)));
 	material_->AddConstBufPS({damageTime_, hitPos_.x, hitPos_.y, hitPos_.z});
 	material_->AddConstBufPS({DAMAGE_EFECT_RADIUS,0.0f, 0.0f, 0.0f});
-	material_->AddConstBufPS({INIT_DISOLVE,0.0f, 0.0f, 0.0f});
+	material_->AddConstBufPS({INIT_DISOLVE,NOISE_SCALE, 0.0f, 0.0f});
 	material_->SetTextureBuf(3, ResourceManager::GetInstance().Load(ResourceManager::SRC::NOISE).handleId_);
 	renderer_ = std::make_shared<ModelRenderer>(
 		transform_->modelId, *material_
@@ -185,13 +185,13 @@ void EnemyBase::AplayChangeStateFunc(void)
 
 void EnemyBase::InitAddAttack(void)
 {
-	attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::JUMP);
-	attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::JUMP_CONSTANT);
-	attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::FOLLOW);
+	//attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::JUMP);
+	//attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::JUMP_CONSTANT);
+	//attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::FOLLOW);
 	attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::FALL_DOWN);
-	attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::CROSS_LINE);
-	attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::THUNDER_AROUND);
-	attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::WATER_SPRIT);
+	//attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::CROSS_LINE);
+	//attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::THUNDER_AROUND);
+	//attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::WATER_SPRIT);
 }
 
 AnimationController& EnemyBase::GetAnimController(void)

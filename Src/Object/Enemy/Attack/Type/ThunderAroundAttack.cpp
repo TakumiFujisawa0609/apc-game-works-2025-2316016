@@ -165,16 +165,3 @@ void ThunderAroundAttack::CreateThunder(void)
 		thunders_.push_back(std::move(thunder));
 	}
 }
-
-void ThunderAroundAttack::AddVertexs(Polygon3DRenderer::PolygonInfo info)
-{
-	int vertexSize = static_cast<int>(polygonInfo_.vertex.size());
-	for (auto& vertex : info.vertex)
-	{
-		polygonInfo_.vertex.push_back(vertex);
-	}
-	for (auto& indices : info.Indices)
-	{
-		polygonInfo_.Indices.push_back(static_cast<unsigned short>(indices + vertexSize));
-	}
-}

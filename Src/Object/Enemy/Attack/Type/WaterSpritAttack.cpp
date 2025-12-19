@@ -153,16 +153,3 @@ void WaterSpritAttack::CreateWaterSpritWave(void)
 		waterSprit_.push_back(std::move(water));
 	}
 }
-
-void WaterSpritAttack::AddVertexs(Polygon3DRenderer::PolygonInfo info)
-{
-	int vertexSize = static_cast<int>(polygonInfo_.vertex.size());
-	for (auto& vertex : info.vertex)
-	{
-		polygonInfo_.vertex.push_back(vertex);
-	}
-	for (auto& indices : info.Indices)
-	{
-		polygonInfo_.Indices.push_back(static_cast<unsigned short>(indices + vertexSize));
-	}
-}

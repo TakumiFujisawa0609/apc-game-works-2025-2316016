@@ -1,7 +1,9 @@
 #include "../../Utility/Utility.h"
 #include "../../Manager/SceneManager.h"
-#include "../SubObject/FallDownShot.h"
+#include "../../Manager/ResourceManager.h"
+#include "../../Manager/DrawTranslucentManager.h"
 #include "../../../Common/AnimationController.h"
+#include "../SubObject/FallDownShot.h"
 #include "FallDownAttack.h"
 
 FallDownAttack::FallDownAttack(EnemyAttackManager& parent) : AttackBase(parent)
@@ -10,6 +12,16 @@ FallDownAttack::FallDownAttack(EnemyAttackManager& parent) : AttackBase(parent)
 	geo_ = GEOMETORY::SPHERE;
 	time_ = 0.0f;
 	myType_ = EnemyAttackManager::ATTACK_TYPE::FALL_DOWN;
+	transform_ = std::make_shared<Transform>();
+	material_ = std::make_unique<Polygon3DMaterial>(
+		"BlastVS.cso", 0,
+		"BlastPS.cso", 1
+	);
+	//material_->AddConstBufPS({ time_, NOISE_POW, 1.0f, 1.0f });
+	material_->AddTextureBuf(ResourceManager::GetInstance().Load(ResourceManager::SRC::WAVE_TEXTURE).handleId_);
+	material_->AddTextureBuf(ResourceManager::GetInstance().Load(ResourceManager::SRC::NOISE).handleId_);
+	renderer_ = std::make_shared<Polygon3DRenderer>(*material_, polygonInfo_);
+	renderer_->SetBuckCull(true);
 }
 
 FallDownAttack::~FallDownAttack(void)
@@ -24,6 +36,7 @@ void FallDownAttack::Update(void)
 {
 	time_ -= SceneManager::GetInstance().GetDeltaTime();
 	updateState_();
+	polygonInfo_.clear();
 }
 
 void FallDownAttack::Draw(void)
@@ -33,7 +46,10 @@ void FallDownAttack::Draw(void)
 		if (shot->GetState() == FallDownShot::STATE::DEAD)continue;
 		shot->Draw();
 	}
-
+	if (polygonInfo_.vertex.size() != 0)
+	{
+		DrawTranslucentManager::GetInstance().Add(transform_, renderer_);
+	}
 }
 
 FallDownShot::STATE FallDownAttack::GetShotState(int shotNum)
@@ -64,7 +80,7 @@ void FallDownAttack::ChangeStateStart(void)
 	//óéâ∫íeÇÃê∂ê¨
 	for (int i = 0; i < MAX_FALL_NUM; i++)
 	{
-		std::unique_ptr<FallDownShot> fallDownShot = std::make_unique<FallDownShot>();
+		std::unique_ptr<FallDownShot> fallDownShot = std::make_unique<FallDownShot>(*this);
 		fallDownShots_.push_back(std::move(fallDownShot));
 	}
 	AttackBase::ChangeStateStart();
@@ -119,7 +135,7 @@ void FallDownAttack::UpdateStateUpdate(void)
 		int createNum = MAX_FALL_NUM - aliveNum;
 		for (int i = 0; i < createNum; i++)
 		{
-			std::unique_ptr<FallDownShot> fallDownShot = std::make_unique<FallDownShot>();
+			std::unique_ptr<FallDownShot> fallDownShot = std::make_unique<FallDownShot>(*this);
 			fallDownShots_.push_back(std::move(fallDownShot));
 		}
 	}

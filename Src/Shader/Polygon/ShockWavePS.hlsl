@@ -12,31 +12,31 @@ SamplerState noiseSampler : register(s1); //サンプラー
 cbuffer cbParam : register(b4)
 {
     float g_time;
-    float3 dummy;
+    float time_scale;
+    float2 dummy;
 }
 
 
 float4 main(PS_INPUT PSInput) : SV_TARGET
 {
+    //uv座標取得
     float2 uv = PSInput.uv;
-    //uv.y = saturate(uv.y + abs(sin(g_time) / 2.0f + uv.x) * ( /*1.0f - */(uv.y * uv.y)) /* + 0.3f*/);
-    //uv.y = saturate( uv.y - abs(sin(g_time) )/* * (1.0f - (uv.y * uv.y)) + 0.3f*/);
-    //uv.y = 1.0 - uv.y;
-    //uv.y = 1.0 - (uv.y / 2);
-    //uv.x = frac(uv.x * uv.y + ((g_time)));
+    //uvをもとにテクスチャカラー取得
     float4 color = diffuseMapTexture.Sample(diffuseMapSampler, uv);
     if(color.r < 0.1f)
     {
+        //黒に近い色を消す
         discard;
     }
-    //if (PSInput.worldPos.y < 0.001f)
-    //{
-    //    return float4(1.0f, 0, 1.0f, 1.0f);
-    //}
-    uv.y = frac(uv.y + g_time * 3);
-    //uv.x *= 5.0f;
+    //ノイズテクスチャのuv座標を時間で動かす
+    uv.y = frac(uv.y + g_time * time_scale);
+    //ノイズテクスチャの色取得
     float4 noiseCol = Noise.Sample(noiseSampler, uv);
-    color = float4(1.0f, frac(sin(g_time) + color.r + noiseCol.r/* * PSInput.worldPos.x*/), 1.0f, color.r * noiseCol.r );
-
+    //紫にしたいからRとBを1.0fに固定、Gをノイズと時間で変化させる
+    color = float4(
+        1.0f,  
+        frac(sin(g_time) + color.r + noiseCol.r),
+        1.0f,
+        color.r * noiseCol.r );
     return color;
 }

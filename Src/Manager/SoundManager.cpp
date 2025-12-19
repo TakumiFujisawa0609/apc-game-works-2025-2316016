@@ -23,12 +23,15 @@ void SoundManager::Init(void)
 	//BGMÇ©SEÇ…ï™ÇØÇÈ
 	soundType_[SOUND_TYPE::BGM].push_back(SRC::TITLE_BGM);
 	soundType_[SOUND_TYPE::BGM].push_back(SRC::GAME_BGM);
+	soundType_[SOUND_TYPE::BGM].push_back(SRC::CLEAR_BGM);
 	soundType_[SOUND_TYPE::SE].push_back(SRC::ENTER_SOUND);
 	soundType_[SOUND_TYPE::SE].push_back(SRC::PSHOT_HIT);
 	soundType_[SOUND_TYPE::SE].push_back(SRC::PSHOT_THROW);
 	soundType_[SOUND_TYPE::SE].push_back(SRC::FIRE);
 	soundType_[SOUND_TYPE::SE].push_back(SRC::JAMP);
 	soundType_[SOUND_TYPE::SE].push_back(SRC::LAND);
+	soundType_[SOUND_TYPE::SE].push_back(SRC::FOOT_STEP1);
+	soundType_[SOUND_TYPE::SE].push_back(SRC::FOOT_STEP2);
 	//ç≈ëÂçƒê∂êîÇèâä˙âªÇ∑ÇÈ
 	for (int i = 0; i < static_cast<int>(SRC::MAX);i++)
 	{
@@ -41,13 +44,17 @@ void SoundManager::Init(void)
 	std::shared_ptr<Sound> res;
 
 	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_BGM + "TitleBGM.mp3");
-	res->ChengeMaxVolume(1.0f);
+	res->ChengeMaxVolume(0.7f);
 	loadMap_.emplace(SRC::TITLE_BGM, std::move(res));
 	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_BGM + "GameBGM.mp3");
-	res->ChengeMaxVolume(1.0f);
+	res->ChengeMaxVolume(0.7f);
 	loadMap_.emplace(SRC::GAME_BGM, std::move(res));
+	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_BGM + "GameClear.mp3");
+	res->ChengeMaxVolume(1.0f);
+	loadMap_.emplace(SRC::CLEAR_BGM, std::move(res));
 	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_SE + "PShotHit.mp3");
 	res->ChengeMaxVolume(1.0f);
+	maxPlayNum[SRC::PSHOT_HIT] = 2;
 	loadMap_.emplace(SRC::PSHOT_HIT, std::move(res));
 	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_SE + "PShotThrow.mp3");
 	res->ChengeMaxVolume(1.0f);
@@ -66,6 +73,18 @@ void SoundManager::Init(void)
 	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_SE + "Thunder.mp3");
 	res->ChengeMaxVolume(1.0f);
 	loadMap_.emplace(SRC::THUNDER, std::move(res));
+	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_SE + "Foot1.mp3");
+	res->ChengeMaxVolume(1.0f);
+	loadMap_.emplace(SRC::FOOT_STEP1, std::move(res));
+	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_SE + "Foot2.mp3");
+	res->ChengeMaxVolume(1.0f);
+	loadMap_.emplace(SRC::FOOT_STEP2, std::move(res));
+	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_SE + "Blast.mp3");
+	res->ChengeMaxVolume(1.0f);
+	loadMap_.emplace(SRC::BLAST, std::move(res));
+	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_SE + "Damage.mp3");
+	res->ChengeMaxVolume(1.0f);
+	loadMap_.emplace(SRC::DAMAGE, std::move(res));
 	ChangeVolume(SOUND_TYPE::BGM, 0.8f);
 	ChangeVolume(SOUND_TYPE::SE, 0.8f);
 }

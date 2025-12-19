@@ -84,12 +84,8 @@ void ResourceManager::Init(void)
 
 
 	//タイトル
-	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "Title/TitleName.png");
-	resourcesMap_.emplace(SRC::TITLE_IMAGE_1, std::move(res));
-	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "Title/TitleName2.png");
-	resourcesMap_.emplace(SRC::TITLE_IMAGE_2, std::move(res));
 	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "Title/Title.png");
-	resourcesMap_.emplace(SRC::TITLE_IMAGE_3, std::move(res));
+	resourcesMap_.emplace(SRC::TITLE_IMAGE, std::move(res));
 
 	//オブジェクト
 	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "SkyDome/SkyDome.mv1");
@@ -128,8 +124,6 @@ void ResourceManager::Init(void)
 	//エフェクト
 	res = Resource(Resource::TYPE::EFFEKSEER, Application::PATH_EFFECT + "Hit.efkefc");
 	resourcesMap_.emplace(SRC::HIT_EFFECT, std::move(res));
-	res = Resource(Resource::TYPE::MODEL, Application::PATH_EFFECT + "WaterSprit_Thunder.mv1");
-	resourcesMap_.emplace(SRC::WATER_SPRIT_THUNDER_MODEL, std::move(res));
 }
 
 void ResourceManager::Release(void)

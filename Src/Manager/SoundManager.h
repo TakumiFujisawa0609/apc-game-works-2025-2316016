@@ -12,6 +12,7 @@ public:
 	{
 		TITLE_BGM,		//タイトルシーンのBGM
 		GAME_BGM,	//げーむのBGM	
+		CLEAR_BGM,	//クリアシーンのBGM
 
 		ENTER_SOUND,	//決定音
 
@@ -21,6 +22,10 @@ public:
 		JAMP,	//ジャンプ
 		LAND,	//着地
 		THUNDER,	//雷
+		FOOT_STEP1,	//足音1
+		FOOT_STEP2,	//足音2
+		BLAST,	//爆発音
+		DAMAGE,	//ダメージ音
 		MAX
 
 	};

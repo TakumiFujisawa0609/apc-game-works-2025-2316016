@@ -57,6 +57,7 @@ public:
 	GEOMETORY GetGeometory(void) const { return geo_; }
 
 	EnemyAttackManager::ATTACK_TYPE GetMyType(void)const { return myType_; }
+	void AddVertexs(Polygon3DRenderer::PolygonInfo info);
 protected:
 	EnemyAttackManager& parent_; //êeÇÃEnemyBase
 

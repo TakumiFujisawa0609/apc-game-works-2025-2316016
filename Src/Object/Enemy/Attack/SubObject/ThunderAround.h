@@ -4,7 +4,6 @@
 #include <DxLib.h>
 #include <functional>
 #include "SubObjectBase.h"
-#include "../../Renderer/Polygon3DRenderer.h"
 
 class ThunderAroundAttack;
 
@@ -42,7 +41,6 @@ public:
 	bool IsDead(void) const { return state_ == STATE::DEAD; }
 private:
 	ThunderAroundAttack& parent_;
-	Polygon3DRenderer::PolygonInfo polInfo_;
 	//‘Šè‚Ì
 	VECTOR targetPos_;
 	float rad_; //’†S‚©‚ç‚ÌŠp“x
@@ -66,6 +64,6 @@ private:
 	void UpdateStateExpansion(void);
 	void UpdateStateDead(void);
 
-	void SetPolygonInfo(void);
+	void SetPolygonInfo(void)override;
 };
 

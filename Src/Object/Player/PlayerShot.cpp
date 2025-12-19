@@ -1,5 +1,6 @@
 #include "../../Utility/Utility.h"
 #include "../../Manager/ResourceManager.h"
+#include "../../Manager/SoundManager.h"
 #include "../../Renderer/ModelMaterial.h"
 #include "../../Renderer/ModelRenderer.h"
 #include "../Common/Gravity.h"
@@ -124,6 +125,7 @@ void PlayerShot::OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos)
 	VECTOR rot = Utility::VECTOR_ZERO;
 	rot.y = atan2f(dir.x, dir.z);
 	effectNum_ = effect_->Play(EffectController::EFF_TYPE::HIT, hitPos, Quaternion(rot), VGet(10.0f, 10.0f, 10.0f), false, 1.0f);
+	SoundManager::GetInstance().Play(SoundManager::SRC::PSHOT_HIT, Sound::TIMES::ONCE);
 	for (auto& colParam : colParam_)
 	{
 		colParam.collider_->Kill();

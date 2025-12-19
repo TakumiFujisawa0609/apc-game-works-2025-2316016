@@ -1,7 +1,6 @@
 #pragma once
 #include <DxLib.h>
 #include "SubObjectBase.h"
-#include "../../Renderer/Polygon3DRenderer.h"
 
 class WaterSpritAttack;
 
@@ -25,7 +24,6 @@ public:
 	bool IsEnd(void)const { return isEnd_; }
 	float GetRadius(void)const { return size_; }
 private:
-	Polygon3DRenderer::PolygonInfo polInfo_;
 	WaterSpritAttack& parent_;
 	VECTOR startPos_;
 	VECTOR dir_;

@@ -43,9 +43,7 @@ public:
 		WINDOW_SCREEN_STR,	// ウィンドウスクリーン
 
 		//タイトル
-		TITLE_IMAGE_1,
-		TITLE_IMAGE_2,
-		TITLE_IMAGE_3,
+		TITLE_IMAGE,
 
 		//オブジェクト
 		SKY_DOME,	//スカイドーム
@@ -64,13 +62,12 @@ public:
 		ENEMY_HP_UI_NORMAL_IMG,	//敵HPのUI法線
 
 		//テクスチャ
-		WAVE_TEXTURE,	//炎テクスチャ
+		WAVE_TEXTURE,	//ギザギザテクスチャ
 		NOISE,		//ノイズ
 		TEXTURE_1,	//水や雷等のテクスチャ
 
 		//エフェクト
 		HIT_EFFECT,		//ヒットエフェクト
-		WATER_SPRIT_THUNDER_MODEL, //ウォータースプリットと雷モデル
 	};
 
 	// 明示的にインステンスを生成する

@@ -27,7 +27,7 @@ void EnemyClear::Update(void)
 	{
 		float delta = SceneManager::GetInstance().GetDeltaTime();
 		disolve_ += DISOLVE_MAX * delta / DISOLVE_TIME;
-		material_->SetConstBufPS(4, { disolve_, 0.0f, 0.0f, 0.0f });
+		material_->SetConstBufPS(4, { disolve_, NOISE_SCALE, 0.0f, 0.0f });
 	}
 }
 

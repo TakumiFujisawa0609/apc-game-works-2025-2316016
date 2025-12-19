@@ -11,3 +11,7 @@ void SubObjectBase::Update(void)
 void SubObjectBase::Draw(void)
 {
 }
+
+void SubObjectBase::SetPolygonInfo(void)
+{
+}

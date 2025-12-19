@@ -95,6 +95,7 @@
     <ClCompile Include="Src\Object\Enemy\EnemyClear.cpp" />
     <ClCompile Include="Src\Object\Player\ClearPlayer.cpp" />
     <ClCompile Include="Src\Object\Player\OverPlayer.cpp" />
+    <ClCompile Include="Src\Object\Enemy\EnemyOver.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Common\IntVector3.h" />
@@ -191,6 +192,7 @@
     <ClInclude Include="Src\Object\Enemy\EnemyClear.h" />
     <ClInclude Include="Src\Object\Player\ClearPlayer.h" />
     <ClInclude Include="Src\Object\Player\OverPlayer.h" />
+    <ClInclude Include="Src\Object\Enemy\EnemyOver.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shader\Common\VertexToPixelHeader.hlsli" />
@@ -232,5 +234,7 @@
     <FxCompile Include="Src\Shader\Polygon\MistPS.hlsl" />
     <FxCompile Include="Src\Shader\Polygon\MistVS.hlsl" />
     <FxCompile Include="Src\Shader\Polygon\BasePolygonVS.hlsl" />
+    <FxCompile Include="Src\Shader\Polygon\BlastVS.hlsl" />
+    <FxCompile Include="Src\Shader\Polygon\BlastPS.hlsl" />
   </ItemGroup>
 </Project>

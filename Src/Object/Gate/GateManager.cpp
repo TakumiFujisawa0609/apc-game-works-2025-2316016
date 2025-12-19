@@ -25,7 +25,7 @@ GateManager::GateManager(std::vector<SceneManager::SCENE_ID> scenes)
 		"MistPS.cso", 1
 	);
 	material_->AddConstBufPS({ time_,0.0f,0.0f,0.0f });
-	material_->AddTextureBuf(ResourceManager::GetInstance().Load(ResourceManager::SRC::TITLE_IMAGE_3).handleId_);
+	material_->AddTextureBuf(ResourceManager::GetInstance().Load(ResourceManager::SRC::TITLE_IMAGE).handleId_);
 	material_->AddTextureBuf(ResourceManager::GetInstance().Load(ResourceManager::SRC::NOISE).handleId_);
 	renderer_ = std::make_shared<Polygon3DRenderer>(*material_, polygonInfo_);
 	renderer_->SetBuckCull(true);

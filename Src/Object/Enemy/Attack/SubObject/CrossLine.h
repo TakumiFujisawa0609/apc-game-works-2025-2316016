@@ -1,7 +1,6 @@
 #pragma once
 #include <DxLib.h>
 #include "SubObjectBase.h"
-#include "../../Renderer/Polygon3DRenderer.h"
 
 class CrossAttack;
 
@@ -25,13 +24,12 @@ public:
 	void Update(void)override;
 	void Draw(void)override;
 private:
-	Polygon3DRenderer::PolygonInfo polInfo_;
 	CrossAttack& parent_;
 	float& radian_;
 	VECTOR centerPos_;
 	float initRadian_;
 	int num_; //‰½‘Ì–Ú‚Ì‚à‚Ì‚©
 
-	void SetPolygonInfo(void);
+	void SetPolygonInfo(void)override;
 };
 

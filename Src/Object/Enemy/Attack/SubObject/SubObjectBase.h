@@ -1,4 +1,5 @@
 #pragma once
+#include "../../Renderer/Polygon3DRenderer.h"
 #include "../../../ObjectModelBase.h"
 
 class AttackBase;
@@ -14,6 +15,9 @@ public:
 	float GetDamage(void) const { return damage_; }
 
 protected:
+	Polygon3DRenderer::PolygonInfo polInfo_;
 	float damage_ = 0.0f;
+
+	virtual void SetPolygonInfo(void);
 };
 

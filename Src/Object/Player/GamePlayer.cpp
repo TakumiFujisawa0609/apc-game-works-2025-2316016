@@ -47,6 +47,7 @@ GamePlayer::GamePlayer(int playerNum) : PlayerBase(playerNum)//, keyIns_(KeyConf
 	isAvoidSaccess_ = false;
 	SetupStateChange();
 	avoidSaccessTime_ = -1.0f;
+	footNum_ = 0;
 	ChangeState(STATE::IDLE, true);
 }
 
@@ -193,7 +194,7 @@ void GamePlayer::OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos)
 	default:
 		break;
 	}
-
+	SoundManager::GetInstance().Play(SoundManager::SRC::DAMAGE, Sound::TIMES::ONCE);
 	Damage(damage, dir);
 }
 
@@ -397,6 +398,33 @@ void GamePlayer::Heal(void)
 	}
 }
 
+void GamePlayer::PlayFootSound(void)
+{
+	SoundManager& ins = SoundManager::GetInstance();
+	if (footNum_ % 2 == 0)
+	{
+		ins.Play(SoundManager::SRC::FOOT_STEP1, Sound::TIMES::ONCE);
+	}
+	else
+	{
+		ins.Play(SoundManager::SRC::FOOT_STEP2, Sound::TIMES::ONCE);
+	}
+	footNum_++;
+}
+
+void GamePlayer::StopFootSound(void)
+{
+	SoundManager& ins = SoundManager::GetInstance();
+	ins.Stop(SoundManager::SRC::FOOT_STEP1);
+	ins.Stop(SoundManager::SRC::FOOT_STEP2);
+}
+
+bool GamePlayer::IsPlayFootSound(void)
+{
+	SoundManager& ins = SoundManager::GetInstance();
+	return ins.CheckMove(SoundManager::SRC::FOOT_STEP1) || ins.CheckMove(SoundManager::SRC::FOOT_STEP2);
+}
+
 void GamePlayer::SaccessAvoid(void)
 {
 	isAvoidSaccess_ = true;
@@ -420,6 +448,7 @@ void GamePlayer::StateChangeIdle(void)
 void GamePlayer::StateChangeMove(void)
 {
 	stateUpdate_ = std::bind(&GamePlayer::StateUpdateMove, this);
+	PlayFootSound();
 	animCtrl_->Play((int)STATE::MOVE);
 }
 
@@ -533,16 +562,24 @@ void GamePlayer::StateUpdateMove(void)
 	PlayerMove();
 	if (keyIns_.IsTrgDown(KeyConfig::CONTROL_TYPE::PLAYER_AVOID, KeyConfig::JOYPAD_NO::PAD1, controlType_) && avoidCoolTime_ < 0.0f)
 	{
+		StopFootSound();
 		ChangeState(STATE::AVOID);
 	}
 	else if (keyIns_.IsTrgDown(KeyConfig::CONTROL_TYPE::PLAYER_JUMP, KeyConfig::JOYPAD_NO::PAD1, controlType_))
 	{
+		StopFootSound();
 		ChangeState(STATE::JUMP);
 	}
 	else if (!IsPushMoveKey())
 	{
+		StopFootSound();
 		ChangeState(STATE::IDLE);
 	}
+	if (IsPlayFootSound())
+	{
+		return;
+	}
+	PlayFootSound();
 }
 
 void GamePlayer::StateUpdateJump(void)

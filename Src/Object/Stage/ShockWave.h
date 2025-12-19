@@ -15,7 +15,7 @@ public:
 	void Draw(void)override;
 private:
 
-	static constexpr float WAVE_SCALE = 2.0f;
+	static constexpr float TIME_SCALE = 5.0f;
 
 	float time_;
 	void SetPolInfo(void);

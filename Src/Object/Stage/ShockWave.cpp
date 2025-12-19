@@ -23,7 +23,7 @@ ShockWave::ShockWave(void)
 		"ShockWavePS.cso", 1
 	);
 	//material_->AddConstBufVS({ time_, WAVE_SCALE, 1.0f, 1.0f });
-	material_->AddConstBufPS({ time_, WAVE_SCALE, 1.0f, 1.0f });
+	material_->AddConstBufPS({ time_, TIME_SCALE, 1.0f, 1.0f });
 	material_->AddTextureBuf(ResourceManager::GetInstance().Load(ResourceManager::SRC::WAVE_TEXTURE).handleId_);
 	material_->AddTextureBuf(ResourceManager::GetInstance().Load(ResourceManager::SRC::NOISE).handleId_);
 	renderer_ = std::make_shared<Polygon3DRenderer>(
@@ -45,7 +45,7 @@ void ShockWave::Update(void)
 {
 	time_ += SceneManager::GetInstance().GetDeltaTime();
 	//material_->SetConstBufVS(0, { time_, WAVE_SCALE, 1.0f, 1.0f });
-	material_->SetConstBufPS(0, { time_, WAVE_SCALE, 1.0f, 1.0f });
+	material_->SetConstBufPS(0, { time_, TIME_SCALE, 1.0f, 1.0f });
 }
 
 void ShockWave::Draw(void)
@@ -84,12 +84,6 @@ void ShockWave::SetPolInfo(void)
 	}
 	auto& indices = polygonInfo_.Indices;
 	indices.clear();
-	//indices.push_back(0);
-	//indices.push_back(1);
-	//indices.push_back(2);
-	//indices.push_back(1);
-	//indices.push_back(3);
-	//indices.push_back(2);
 	for (int i = 0; i < WAVE_VERTEX_NUM; i++)
 	{
 		int curTop = i * 2;

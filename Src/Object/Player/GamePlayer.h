@@ -44,6 +44,7 @@ public:
 	const int GetJumpSaccessNum(void)const { return jumpSaccessNum_; }	//ジャンプ回避成功回数
 
 protected:
+	int footNum_; //足音の数
 	std::weak_ptr<Transform> enemyTrans_; //敵の座標
 
 	VECTOR headPos_;	//頭座標
@@ -121,6 +122,10 @@ protected:
 	void Rotation(void); //プレイヤーの向き調整
 
 	void Heal(void);
+
+	void PlayFootSound(void); //足音再生
+	void StopFootSound(void); //足音停止
+	bool IsPlayFootSound(void); //足音再生中か
 
 	void SaccessAvoid(void); //回避成功時の処理
 	void SaccessJumpAvoid(void); //ジャンプ成功時の処理

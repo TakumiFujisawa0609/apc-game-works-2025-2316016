@@ -24,7 +24,6 @@ public:
 	void Update(void)override;
 	void Draw(void)override;
 	int GetSubObjectNum(void)override { return static_cast<int>(thunders_.size()); }
-	void AddVertexs(Polygon3DRenderer::PolygonInfo info);
 private:
 
 	std::vector<std::unique_ptr<ThunderAround>> thunders_;

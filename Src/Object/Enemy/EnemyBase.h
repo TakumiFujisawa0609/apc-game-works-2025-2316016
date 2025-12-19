@@ -25,6 +25,7 @@ public:
 	static constexpr float DAMAGE_EFECT_TIME = 0.5f;	//ダメージエフェクトの時間
 
 	static constexpr float INIT_DISOLVE = -0.01f;
+	static constexpr float NOISE_SCALE = 5.0f;
 	enum class STATE
 	{
 		IDLE,	//待機

@@ -18,7 +18,8 @@ cbuffer cbParam : register(b4)
     float damage_radius;    //ƒ_ƒ[ƒW‚Ì”¼Œa
     float3 dummy;
     float disolve_rate;
-    float3 dummy2;
+    float noise_scale;
+    float2 dummy2;
     //float g_time;
     //float3 dummy;
 }
@@ -27,6 +28,8 @@ cbuffer cbParam : register(b4)
 float4 main(PS_INPUT PSInput) : SV_TARGET
 {
     float2 uv = PSInput.uv;
+    float4 color = diffuseMapTexture.Sample(diffuseMapSampler, uv);
+    uv = frac(uv * noise_scale);
     float4 noiseCol = Noise.Sample(noiseSampler, uv);
     if(disolve_rate > noiseCol.r)
     {
@@ -36,7 +39,6 @@ float4 main(PS_INPUT PSInput) : SV_TARGET
     {
         return float4(1.0f, 1.0f, 1.0f, 1.0f);
     }
-    float4 color = diffuseMapTexture.Sample(diffuseMapSampler, uv);
     color *= color_times;
     if(damage_time < 0.0f)
     {
