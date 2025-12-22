@@ -24,6 +24,7 @@ void SoundManager::Init(void)
 	soundType_[SOUND_TYPE::BGM].push_back(SRC::TITLE_BGM);
 	soundType_[SOUND_TYPE::BGM].push_back(SRC::GAME_BGM);
 	soundType_[SOUND_TYPE::BGM].push_back(SRC::CLEAR_BGM);
+	soundType_[SOUND_TYPE::BGM].push_back(SRC::OVER_BGM);
 	soundType_[SOUND_TYPE::SE].push_back(SRC::ENTER_SOUND);
 	soundType_[SOUND_TYPE::SE].push_back(SRC::PSHOT_HIT);
 	soundType_[SOUND_TYPE::SE].push_back(SRC::PSHOT_THROW);
@@ -52,6 +53,9 @@ void SoundManager::Init(void)
 	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_BGM + "GameClear.mp3");
 	res->ChengeMaxVolume(1.0f);
 	loadMap_.emplace(SRC::CLEAR_BGM, std::move(res));
+	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_BGM + "GameOver.mp3");
+	res->ChengeMaxVolume(1.0f);
+	loadMap_.emplace(SRC::OVER_BGM, std::move(res));
 	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_SE + "PShotHit.mp3");
 	res->ChengeMaxVolume(1.0f);
 	maxPlayNum[SRC::PSHOT_HIT] = 2;

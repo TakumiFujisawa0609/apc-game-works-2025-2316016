@@ -32,6 +32,7 @@ ThunderAroundAttack::ThunderAroundAttack(EnemyAttackManager& parent) : AttackBas
 
 ThunderAroundAttack::~ThunderAroundAttack(void)
 {
+	SoundManager::GetInstance().Stop(SoundManager::SRC::THUNDER);
 }
 
 void ThunderAroundAttack::Init(void)

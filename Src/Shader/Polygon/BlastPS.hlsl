@@ -21,14 +21,14 @@ float4 main(PS_INPUT PSInput) : SV_TARGET
 {
     //uv値を取得する
     float2 uv = PSInput.uv;
-    return float4(uv.x, uv.y, 0.0f, 1.0f);
+    //return float4(uv.x, uv.y, 0.0f, 1.0f);
     //uv値をもとにディフーズテクスチャから色を取得する
     float4 color = diffuseMapTexture.Sample(diffuseMapSampler, uv);
-    if (color.r < 0.1f)
-    {
-        //グレースケール画像で黒に近いところは描画しない
-        discard;
-    }
+    //if (color.r < 0.1f)
+    //{
+    //    //グレースケール画像で黒に近いところは描画しない
+    //    discard;
+    //}
     //ノイズ用uv値を設定(y値を動かすことによって炎が動いているように見える)
     uv.y = frac(uv.y + g_time) * noise_pow;
     //ノイズテクスチャからノイズの色を取得
@@ -40,5 +40,7 @@ float4 main(PS_INPUT PSInput) : SV_TARGET
         0.0f,
         color.r * noiseCol.r);
 
-    return color;
+    noiseCol.r = 1.0f;
+    noiseCol.a = 0.5f;
+    return noiseCol;
 }

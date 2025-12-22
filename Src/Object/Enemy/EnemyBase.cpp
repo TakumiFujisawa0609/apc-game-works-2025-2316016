@@ -185,13 +185,13 @@ void EnemyBase::AplayChangeStateFunc(void)
 
 void EnemyBase::InitAddAttack(void)
 {
-	//attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::JUMP);
-	//attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::JUMP_CONSTANT);
-	//attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::FOLLOW);
+	attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::JUMP);
+	attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::JUMP_CONSTANT);
+	attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::FOLLOW);
 	attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::FALL_DOWN);
-	//attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::CROSS_LINE);
-	//attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::THUNDER_AROUND);
-	//attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::WATER_SPRIT);
+	attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::CROSS_LINE);
+	attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::THUNDER_AROUND);
+	attackManager_->AddAttack(EnemyAttackManager::ATTACK_TYPE::WATER_SPRIT);
 }
 
 AnimationController& EnemyBase::GetAnimController(void)

@@ -17,6 +17,7 @@ SceneGameOver::SceneGameOver(void)
 
 SceneGameOver::~SceneGameOver(void)
 {
+	SoundManager::GetInstance().Stop(SoundManager::SRC::OVER_BGM);
 }
 
 bool SceneGameOver::Init(void)
@@ -31,6 +32,7 @@ bool SceneGameOver::Init(void)
     enemy_ = std::make_unique<EnemyOver>(player_->GetTransform());
     skyDome_ = std::make_unique<SkyDome>();
     skyDome_->SetColor(SKY_COL);
+	SoundManager::GetInstance().Play(SoundManager::SRC::OVER_BGM, Sound::TIMES::LOOP);
     return false;
 }
 

@@ -7,6 +7,7 @@
 #include "Manager/SoundManager.h"
 #include "Manager/DataBank.h"
 #include "Manager/KeyMap.h"
+#include "Common/FpsController.h"
 #include "Application.h"
 
 Application* Application::instance_ = nullptr;
@@ -44,7 +45,8 @@ void Application::Init(void)
 
 	// ウィンドウサイズ
 	SetGraphMode(SCREEN_SIZE_X, SCREEN_SIZE_Y, 32);
-	ChangeWindowMode(true);
+	ChangeWindowMode(false);
+	fpsController_ = std::make_unique<FpsController>(60.0f);
 
 	// DxLibの初期化
 	SetUseDirect3DVersion(DX_DIRECT3D_11);
@@ -93,6 +95,8 @@ void Application::Run(void)
 		sceneManager.Draw();
 
 		ScreenFlip();
+
+		fpsController_->Wait();
 	}
 
 }

@@ -17,8 +17,8 @@ FallDownAttack::FallDownAttack(EnemyAttackManager& parent) : AttackBase(parent)
 		"BlastVS.cso", 0,
 		"BlastPS.cso", 1
 	);
-	//material_->AddConstBufPS({ time_, NOISE_POW, 1.0f, 1.0f });
-	material_->AddTextureBuf(ResourceManager::GetInstance().Load(ResourceManager::SRC::WAVE_TEXTURE).handleId_);
+	material_->AddConstBufPS({ time_, NOISE_POW, 1.0f, 1.0f });
+	material_->AddTextureBuf(ResourceManager::GetInstance().Load(ResourceManager::SRC::TEXTURE_1).handleId_);
 	material_->AddTextureBuf(ResourceManager::GetInstance().Load(ResourceManager::SRC::NOISE).handleId_);
 	renderer_ = std::make_shared<Polygon3DRenderer>(*material_, polygonInfo_);
 	renderer_->SetBuckCull(true);
@@ -37,6 +37,7 @@ void FallDownAttack::Update(void)
 	time_ -= SceneManager::GetInstance().GetDeltaTime();
 	updateState_();
 	polygonInfo_.clear();
+	material_->SetConstBufPS(0, { time_,NOISE_POW,0.0f,0.0f });
 }
 
 void FallDownAttack::Draw(void)

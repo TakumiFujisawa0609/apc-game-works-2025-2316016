@@ -2,6 +2,8 @@
 #include <string>
 #include <memory>
 
+class FpsController;
+
 class Application
 {
 
@@ -54,6 +56,8 @@ private:
 
 	// 静的インスタンス
 	static Application* instance_;
+
+	std::unique_ptr<FpsController> fpsController_;
 
 	// 初期化失敗
 	bool isInitFail_;

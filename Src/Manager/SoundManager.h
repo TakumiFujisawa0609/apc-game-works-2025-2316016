@@ -13,6 +13,7 @@ public:
 		TITLE_BGM,		//タイトルシーンのBGM
 		GAME_BGM,	//げーむのBGM	
 		CLEAR_BGM,	//クリアシーンのBGM
+		OVER_BGM,	//ゲームオーバーのBGM
 
 		ENTER_SOUND,	//決定音
 
