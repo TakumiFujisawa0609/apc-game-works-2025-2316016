@@ -42,7 +42,6 @@ void CrossAttack::Init(void)
 void CrossAttack::Update(void)
 {
 	sumTime_ += SceneManager::GetInstance().GetDeltaTime();
-	polygonInfo_.clear();
 	updateState_();
 	for (auto& line : crossLines_)
 	{
@@ -53,6 +52,7 @@ void CrossAttack::Update(void)
 
 void CrossAttack::Draw(void)
 {
+	polygonInfo_.clear();
 	for (auto& line : crossLines_)
 	{
 		line->Draw();

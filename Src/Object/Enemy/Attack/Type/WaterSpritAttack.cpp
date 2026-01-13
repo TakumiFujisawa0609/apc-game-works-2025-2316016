@@ -40,7 +40,6 @@ void WaterSpritAttack::Init(void)
 
 void WaterSpritAttack::Update(void)
 {
-	polygonInfo_.clear();
 	sumTime_ += SceneManager::GetInstance().GetDeltaTime();
 	updateState_();
 	material_->SetConstBufPS(0,{ sumTime_, TIME_SCALE, 1.0f, 1.0f });
@@ -48,6 +47,7 @@ void WaterSpritAttack::Update(void)
 
 void WaterSpritAttack::Draw(void)
 {
+	polygonInfo_.clear();
 	for (auto& waterSprit : waterSprit_)
 	{
 		waterSprit->Draw();

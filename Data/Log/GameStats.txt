@@ -1,0 +1,2 @@
+[2026/01/13 14:46:58] Time=6.00002, RollNum=0, RollSuccess=0, JumpNum=0, JumpSuccess=0, Damage=0, DamageNum=0, LastHP=100, EnemyHP=100
+[2026/01/13 14:47:18] Time=15.6833, RollNum=8, RollSuccess=3, JumpNum=0, JumpSuccess=0, Damage=15, DamageNum=2, LastHP=85, EnemyHP=96

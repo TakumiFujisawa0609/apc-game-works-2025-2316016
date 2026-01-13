@@ -42,13 +42,13 @@ void ThunderAroundAttack::Init(void)
 void ThunderAroundAttack::Update(void)
 {
 	sumTime_ += SceneManager::GetInstance().GetDeltaTime();
-	polygonInfo_.clear();
 	updateState_();
 	material_->SetConstBufPS(0, { sumTime_, TIME_SCALE, THRESHOLD, 1.0f });
 }
 
 void ThunderAroundAttack::Draw(void)
 {
+	polygonInfo_.clear();
 	for (auto& thunder : thunders_)
 	{
 		if (thunder->IsDead())continue;

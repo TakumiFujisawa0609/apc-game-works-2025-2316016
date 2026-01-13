@@ -35,12 +35,12 @@ void FallDownAttack::Update(void)
 {
 	time_ -= SceneManager::GetInstance().GetDeltaTime();
 	updateState_();
-	polygonInfo_.clear();
 	material_->SetConstBufPS(0, { time_,NOISE_POW,0.0f,0.0f });
 }
 
 void FallDownAttack::Draw(void)
 {
+	polygonInfo_.clear();
 	for (auto& shot : fallDownShots_)
 	{
 		if (shot->GetState() == FallDownShot::STATE::DEAD)continue;
