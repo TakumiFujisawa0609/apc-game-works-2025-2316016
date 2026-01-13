@@ -12,6 +12,7 @@
 
 WaterSpritAttack::WaterSpritAttack(EnemyAttackManager& parent) : AttackBase(parent)
 {
+	waveNum_ = 0;
 	range_ = RANGE::MIDDLE;
 	geo_ = GEOMETORY::CIRCLE;
 	myType_ = EnemyAttackManager::ATTACK_TYPE::WATER_SPRIT;

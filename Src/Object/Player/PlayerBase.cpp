@@ -9,6 +9,7 @@
 
 PlayerBase::PlayerBase(int playerNum) :keyIns_(KeyConfig::GetInstance())
 {
+	state_ = STATE::IDLE;
 	rimPow_ = RIM_MIN_POW;
 	playerNum_ = playerNum;
 	transform_ = std::make_shared<Transform>();

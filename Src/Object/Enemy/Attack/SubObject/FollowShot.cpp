@@ -19,6 +19,7 @@ FollowShot::FollowShot(std::weak_ptr<Transform> target, SPEED_TYPE speed, VECTOR
 	MakeCollider(Collider::TAG::ENEMY_ATTACK, std::move(geo), { Collider::TAG::ENEMY,Collider::TAG::ENEMY_ATTACK });
 	speed_ = InitSpeed(speed);
 	damage_ = DAMAGE;
+	state_ = STATE::SHOT;
 }
 
 FollowShot::~FollowShot(void)

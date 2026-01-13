@@ -21,6 +21,7 @@ SceneManager* SceneManager::instance_ = nullptr;
 //‰Šú‰»ˆ—(‰‰ñ‚Ì1“x‚Ì‚İÀs‚³‚ê‚é)
 SceneManager::SceneManager(void)
 {
+	mainScreen_ = -1;
 	sceneID_ = SCENE_ID::NONE;
 	nextSceneID_ = SCENE_ID::NONE;
 	nowPushSpace = 0;

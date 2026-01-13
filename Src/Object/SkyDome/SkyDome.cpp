@@ -21,6 +21,7 @@ SkyDome::SkyDome(void)
 	);
 	material_->AddConstBufPS(DEFAULT_COLOR);
 	renderer_ = std::make_shared<ModelRenderer>(transform_->modelId, *material_	);
+	time_ = 0.0f;
 }
 
 SkyDome::~SkyDome(void)

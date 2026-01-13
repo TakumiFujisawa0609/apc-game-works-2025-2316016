@@ -35,6 +35,3 @@ void DataBank::Destroy(void)
 	delete instance_;
 }
 
-DataBank::DataBank(void)
-{
-}

@@ -43,6 +43,9 @@ SceneGame::~SceneGame(void)
 	propaty.lastEnemyHP_ = enemy_->GetHP();
 	propaty.lastPlayerHP_ = player_->GetHP();
 	GameLog::OutPut(propaty);
+	vignetteTime_ = 0.0f;
+	time_ = 0.0f;
+	postEffectScreen_ = -1;
 }
 
 

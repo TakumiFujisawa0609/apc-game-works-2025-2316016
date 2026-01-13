@@ -31,7 +31,7 @@ private:
 
 	static DataBank* instance_;
 
-	DataBank(void);
+	DataBank(void) = default;
 	~DataBank(void) = default;
 
 };

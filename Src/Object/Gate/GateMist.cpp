@@ -8,6 +8,7 @@
 GateMist::GateMist(VECTOR pos[VERTEX_NUM], GateManager& manager):manager_(manager)
 {
 	SetPos(pos);
+	time_ = 0.0f;
 }
 
 GateMist::~GateMist(void)
