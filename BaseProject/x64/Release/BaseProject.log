@@ -1,0 +1,202 @@
+﻿  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\EnemyHPUI.cso
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\EnemyPS.cso
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Model\EnemyVS.hlsl(79,20-49): warning X3206: 'dot': implicit truncation of vector type
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Model\EnemyVS.hlsl(80,20-49): warning X3206: 'dot': implicit truncation of vector type
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Model\EnemyVS.hlsl(81,20-49): warning X3206: 'dot': implicit truncation of vector type
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Model\EnemyVS.hlsl(14,14-32): warning X3578: 'main': Top-level return value is not completely initialized
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Model\EnemyVS.hlsl(14,14-32): warning X3578: Output value 'main' is not completely initialized
+  
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\EnemyVS.cso
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Polygon\BasePolygonVS.hlsl(15,14-32): warning X3578: 'main': Top-level return value is not completely initialized
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Polygon\BasePolygonVS.hlsl(15,14-32): warning X3578: Output value 'main' is not completely initialized
+  
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\BasePolygonVS.cso
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\BlastPS.cso
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Polygon\BlastVS.hlsl(15,14-32): warning X3578: 'main': Top-level return value is not completely initialized
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Polygon\BlastVS.hlsl(15,14-32): warning X3578: Output value 'main' is not completely initialized
+  
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\BlastVS.cso
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\FirePS.cso
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Polygon\FireVS.hlsl(20,14-32): warning X3578: 'main': Top-level return value is not completely initialized
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Polygon\FireVS.hlsl(20,14-32): warning X3578: Output value 'main' is not completely initialized
+  
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\FireVS.cso
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\FloorPS.cso
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Model\FloorVS.hlsl(17,14-32): warning X3578: 'main': Top-level return value is not completely initialized
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Model\FloorVS.hlsl(17,14-32): warning X3578: Output value 'main' is not completely initialized
+  
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\FloorVS.cso
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\GatePS.cso
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Model\GateVS.hlsl(17,14-32): warning X3578: 'main': Top-level return value is not completely initialized
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Model\GateVS.hlsl(17,14-32): warning X3578: Output value 'main' is not completely initialized
+  
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\GateVS.cso
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\NoChangePS.cso
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Model\NoChangeVS.hlsl(17,14-32): warning X3578: 'main': Top-level return value is not completely initialized
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Model\NoChangeVS.hlsl(17,14-32): warning X3578: Output value 'main' is not completely initialized
+  
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\NoChangeVS.cso
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\NoTexturePS.cso
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Model\NoTextureVS.hlsl(17,14-32): warning X3578: 'main': Top-level return value is not completely initialized
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Model\NoTextureVS.hlsl(17,14-32): warning X3578: Output value 'main' is not completely initialized
+  
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\NoTextureVS.cso
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Model\PlayerPS.hlsl(29,20-39): warning X3571: pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Model\PlayerPS.hlsl(29,20-39): warning X3571: pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
+  
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\PlayerPS.cso
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Model\PlayerVS.hlsl(79,20-49): warning X3206: 'dot': implicit truncation of vector type
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Model\PlayerVS.hlsl(80,20-49): warning X3206: 'dot': implicit truncation of vector type
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Model\PlayerVS.hlsl(81,20-49): warning X3206: 'dot': implicit truncation of vector type
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Model\PlayerVS.hlsl(14,14-32): warning X3578: 'main': Top-level return value is not completely initialized
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Model\PlayerVS.hlsl(14,14-32): warning X3578: Output value 'main' is not completely initialized
+  
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\PlayerVS.cso
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\ShockWavePS.cso
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Polygon\ShockWaveVS.hlsl(18,14-32): warning X3578: 'main': Top-level return value is not completely initialized
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Polygon\ShockWaveVS.hlsl(18,14-32): warning X3578: Output value 'main' is not completely initialized
+  
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\ShockWaveVS.cso
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\SkyDomePS.cso
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Model\SkyDomeVS.hlsl(17,14-32): warning X3578: 'main': Top-level return value is not completely initialized
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Model\SkyDomeVS.hlsl(17,14-32): warning X3578: Output value 'main' is not completely initialized
+  
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\SkyDomeVS.cso
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\ThunderPS.cso
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Polygon\ThunderVS.hlsl(20,14-32): warning X3578: 'main': Top-level return value is not completely initialized
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Polygon\ThunderVS.hlsl(20,14-32): warning X3578: Output value 'main' is not completely initialized
+  
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\ThunderVS.cso
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\WaterSpritPS.cso
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Polygon\WaterSpritVS.hlsl(19,14-32): warning X3578: 'main': Top-level return value is not completely initialized
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Polygon\WaterSpritVS.hlsl(19,14-32): warning X3578: Output value 'main' is not completely initialized
+  
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\WaterSpritVS.cso
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\MistPS.cso
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Polygon\MistVS.hlsl(29,14-32): warning X3578: 'main': Top-level return value is not completely initialized
+C:\Users\2316016\Desktop\AGS_Winter\Src\Shader\Polygon\MistVS.hlsl(29,14-32): warning X3578: Output value 'main' is not completely initialized
+  
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\MistVS.cso
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\LensDistortion.cso
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\Monotone.cso
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\ScanLine.cso
+  compilation object save succeeded; see C:\Users\2316016\Desktop\AGS_Winter\Data\Shader\Vignette.cso
+  EnemyOver.cpp
+  OverPlayer.cpp
+  ClearPlayer.cpp
+  EnemyClear.cpp
+  GameLog.cpp
+  EnemyAttackManager.cpp
+  GateManager.cpp
+  BaseRenderer.cpp
+  ObjectPolygonBase.cpp
+  Polygon3DRenderer.cpp
+  Polygon3DMaterial.cpp
+  ObjectPixelBase.cpp
+  ObjectModelBase.cpp
+  GateMist.cpp
+  EnemyTitle.cpp
+  Dragon.cpp
+  GamePlayer.cpp
+  Gate.cpp
+  Circumference.cpp
+  PointLight.cpp
+  Cylinder.cpp
+  CollisionManager.cpp
+  Collider.cpp
+  Line3D.cpp
+  Capsule.cpp
+  Sphere.cpp
+  Geometry.cpp
+  DrawTranslucentManager.cpp
+  FpsController.cpp
+  EffectController.cpp
+  ObjectBase.cpp
+  AnimationController.cpp
+  SceneTutorial.cpp
+  Floor.cpp
+  SceneSetting.cpp
+  ModelMaterial.cpp
+  ModelRenderer.cpp
+  PixelMaterial.cpp
+  PixelRenderer.cpp
+  VertexMaterial.cpp
+  VertexRenderer.cpp
+  SceneMenu.cpp
+  SceneGameClear.cpp
+  SceneGameOver.cpp
+  KeyMap.cpp
+  DataBank.cpp
+  Control.cpp
+  SceneStageSelect.cpp
+  JumpAttackConstant.cpp
+  CrossLine.cpp
+  CrossAttack.cpp
+  FallDownShot.cpp
+  FallDownAttack.cpp
+  FollowShot.cpp
+  FollowAttack.cpp
+  JumpAttack.cpp
+  Wave.cpp
+  EnemyHPUI.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory(3630,56): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
+  (ソース ファイル 'Src/Object/Enemy/Attack/Type/CrossAttack.cpp' をコンパイルしています)
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory(3630,56):
+      テンプレートインスタンス化コンテキスト (最初に最も古いもの) は
+          C:\Users\2316016\Desktop\AGS_Winter\Src\Object\Enemy\Attack\Type\CrossAttack.cpp(114,16):
+          コンパイル対象の関数 テンプレート インスタンス化 'std::unique_ptr<CrossLine,std::default_delete<CrossLine>> std::make_unique<CrossLine,DxLib::VECTOR&,float&,float,float&,CrossAttack&,0>(DxLib::VECTOR &,float &,float &&,float &,CrossAttack &)' のリファレンスを確認してください
+  
+  PlayerShot.cpp
+  EnemyTutorial.cpp
+  AttackBase.cpp
+  EnemyBase.cpp
+  SkyDome.cpp
+  Gravity.cpp
+  PlayerBase.cpp
+  IntVector3.cpp
+  Camera.cpp
+  InputManager.cpp
+  KeyConfig.cpp
+  Resource.cpp
+  ResourceManager.cpp
+  SceneManager.cpp
+  Sound.cpp
+  SoundManager.cpp
+  Application.cpp
+  Fader.cpp
+  Quaternion.cpp
+  Vector2.cpp
+  main.cpp
+  Transform.cpp
+  SceneBase.cpp
+  SceneGame.cpp
+  SceneTitle.cpp
+  Utility.cpp
+  ShockWave.cpp
+  ThunderAroundAttack.cpp
+  ThunderAround.cpp
+  SubObjectBase.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory(3630,56): warning C4244: '引数': '_Ty' から 'int' への変換です。データが失われる可能性があります。
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory(3630,56): warning C4244:         with
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory(3630,56): warning C4244:         [
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory(3630,56): warning C4244:             _Ty=float
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory(3630,56): warning C4244:         ]
+  (ソース ファイル 'Src/Application.cpp' をコンパイルしています)
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory(3630,56):
+      テンプレートインスタンス化コンテキスト (最初に最も古いもの) は
+          C:\Users\2316016\Desktop\AGS_Winter\Src\Application.cpp(49,24):
+          コンパイル対象の関数 テンプレート インスタンス化 'std::unique_ptr<FpsController,std::default_delete<FpsController>> std::make_unique<FpsController,float,0>(float &&)' のリファレンスを確認してください
+  
+  WaterSpritAttack.cpp
+  WaterSprit.cpp
+  Stage.cpp
+  Triangle3D.cpp
+  TutorialBase.cpp
+  TutorialMove.cpp
+  TitlePlayer.cpp
+  コード生成しています。
+  Previous IPDB not found, fall back to full compilation.
+  All 7786 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  コード生成が終了しました。
+EffekseerForDXLib_vs2019_x64.lib(EffekseerForDXLib.obj) : warning LNK4099: PDB 'EffekseerForDXLib_vs2019_x64.pdb' が 'EffekseerForDXLib_vs2019_x64.lib(EffekseerForDXLib.obj)' で、または 'C:\Users\2316016\Desktop\AGS_Winter\x64\Release\EffekseerForDXLib_vs2019_x64.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+  BaseProject.vcxproj -> C:\Users\2316016\Desktop\AGS_Winter\x64\Release\BaseProject.exe

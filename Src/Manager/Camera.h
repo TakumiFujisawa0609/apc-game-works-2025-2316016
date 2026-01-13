@@ -33,10 +33,10 @@ public:
 	//static constexpr VECTOR LOCAL_F2C_POS = { 0.0f, -1000.0f, -200.0f };
 
 	//FPSの時の相対座標
-	static constexpr VECTOR FPS_LOCAL_F2C_POS = { 0.0f, 130.0f, 20.0f };
+	//static constexpr VECTOR FPS_LOCAL_F2C_POS = { 0.0f, 130.0f, 20.0f };
 
 	//FPS用
-	static constexpr VECTOR FPS_LOCAL_F2T_POS = { 0.0f, 0.0f, 2000.0f };
+	//static constexpr VECTOR FPS_LOCAL_F2T_POS = { 0.0f, 0.0f, 2000.0f };
 
 	//固定上用
 	static constexpr VECTOR FIXED_LOCAL_P2T_POS = { 0.0f, -1500.0f, 0.0f };
@@ -52,8 +52,8 @@ public:
 	static constexpr float LIMIT_X_DW_RAD = 15.0f * (DX_PI_F / 180.0f);
 
 	//FPSの上限角
-	static constexpr float FPS_LIMIT_X_UP_RAD = -80.0f * (DX_PI_F / 180.0f);
-	static constexpr float FPS_LIMIT_X_DW_RAD = 70.0f * (DX_PI_F / 180.0f);
+	//static constexpr float FPS_LIMIT_X_UP_RAD = -80.0f * (DX_PI_F / 180.0f);
+	//static constexpr float FPS_LIMIT_X_DW_RAD = 70.0f * (DX_PI_F / 180.0f);
 
 	//カメラの２人同時追従時の最低距離
 	static constexpr float TWO_TARGET_MIN_DISTANCE = 100.0f;
@@ -122,6 +122,9 @@ public:
 	void SetCameraUp(VECTOR up) { cameraUp_ = up; }
 private:
 
+	static constexpr float POSITION_LERP_POWER = 0.2f;	// カメラ位置補間力
+	static constexpr VECTOR DEFAULT_ANGLE = { 30.0f,0.0f,0.0f }; // カメラの初期角度(度)
+
 	// カメラのローカル座標
 	VECTOR localPos_;
 
@@ -166,7 +169,7 @@ private:
 	void ProcessRot(void);
 	void ProcessZoom(void);
 	//マウスでのカメラ操作
-	void ProcessRotMause(float* x_m, float* y_m, const float fov_per = 1.0f);
+	//void ProcessRotMause(float* x_m, float* y_m, const float fov_per = 1.0f);
 	// モード別更新ステップ
 	void SetBeforeDrawFixedPoint(void);
 	void SetBeforeDrawFollow(void);

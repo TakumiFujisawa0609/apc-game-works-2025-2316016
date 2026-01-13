@@ -72,7 +72,7 @@ void Camera::SetBeforeDraw(void)
 		break;
 	}
 
-	pos_ = VAdd(prePos, VScale(VSub(pos_, prePos), 0.2f));
+	pos_ = VAdd(prePos, VScale(VSub(pos_, prePos), POSITION_LERP_POWER));
 	//カメラの設定
 	CameraSetting();
 
@@ -170,9 +170,9 @@ void Camera::SetDefault(void)
 	// カメラの上方向
 	cameraUp_ = Utility::DIR_U;
 
-	angles_.x = Utility::Deg2RadF(30.0f);
-	angles_.y = 0.0f;
-	angles_.z = 0.0f;
+	angles_.x = Utility::Deg2RadF(DEFAULT_ANGLE.x);
+	angles_.y = Utility::Deg2RadF(DEFAULT_ANGLE.y);
+	angles_.z = Utility::Deg2RadF(DEFAULT_ANGLE.z);
 
 	rot_ = Quaternion();
 
@@ -290,26 +290,26 @@ void Camera::ProcessZoom(void)
 	}
 }
 
-void Camera::ProcessRotMause(float* x_m, float* y_m, const float fov_per)
-{
-	int x_t, y_t;
-	GetMousePoint(&x_t, &y_t);
-	*x_m += float(std::clamp(x_t - Application::SCREEN_SIZE_X / 2, -120, 120)) * fov_per / GetFPS();
-	*y_m += float(std::clamp(y_t - Application::SCREEN_SIZE_Y / 2, -120, 120)) * fov_per / GetFPS();
-	SetMousePoint(Application::SCREEN_SIZE_X / 2, Application::SCREEN_SIZE_Y / 2);
-
-	// マウスを表示状態にする
-	SetMouseDispFlag(FALSE);
-
-	if (angles_.x <= FPS_LIMIT_X_UP_RAD)
-	{
-		angles_.x = FPS_LIMIT_X_UP_RAD;
-	}
-	if (angles_.x >= FPS_LIMIT_X_DW_RAD)
-	{
-		angles_.x = FPS_LIMIT_X_DW_RAD;
-	}
-}
+//void Camera::ProcessRotMause(float* x_m, float* y_m, const float fov_per)
+//{
+//	int x_t, y_t;
+//	GetMousePoint(&x_t, &y_t);
+//	*x_m += float(std::clamp(x_t - Application::SCREEN_SIZE_X / 2, -120, 120)) * fov_per / GetFPS();
+//	*y_m += float(std::clamp(y_t - Application::SCREEN_SIZE_Y / 2, -120, 120)) * fov_per / GetFPS();
+//	SetMousePoint(Application::SCREEN_SIZE_X / 2, Application::SCREEN_SIZE_Y / 2);
+//
+//	// マウスを表示状態にする
+//	SetMouseDispFlag(FALSE);
+//
+//	if (angles_.x <= FPS_LIMIT_X_UP_RAD)
+//	{
+//		angles_.x = FPS_LIMIT_X_UP_RAD;
+//	}
+//	if (angles_.x >= FPS_LIMIT_X_DW_RAD)
+//	{
+//		angles_.x = FPS_LIMIT_X_DW_RAD;
+//	}
+//}
 
 void Camera::SetBeforeDrawFixedPoint(void)
 {
@@ -469,7 +469,7 @@ void Camera::SetBeforeDrawTwoTarget(void)
 	//vec.z = -vec.z;
 	vec = VNorm(vec);
 	pos_ = VAdd(targetPos_, VScale(VNorm(vec), std::max((Utility::EqualsVZero(dis) ? 1.0f : std::sqrt(dis.x * dis.x + dis.y * dis.y + dis.z * dis.z)), TWO_TARGET_MIN_DISTANCE)));
-	pos_ = VAdd(prePos, VScale(VSub(pos_, prePos), 0.2f));
+	pos_ = VAdd(prePos, VScale(VSub(pos_, prePos), POSITION_LERP_POWER));
 }
 void Camera::SetBeforeDrawTwoTargetFollow(void)
 {
