@@ -16,6 +16,10 @@ public:
 	static constexpr VECTOR INIT_LIGHT_DIR = { 0.0f,-0.3f,1.0f };
 	static constexpr float ROT_DEG_SEC = 90.0f;	//1秒に回る量
 	static constexpr float LIGHT_TIME = 2.0f;
+	static constexpr float SHAKE_TIME_MAX = 0.5f;
+	static constexpr float SHAKE_POWER_PER_SEC = 300.0f;
+	static constexpr float ANGLE_MAX = 10.0f;
+	static constexpr float ANGLE_MIN = -10.0f;
 
 	/// <summary>
 	/// コンストラクタ
@@ -36,8 +40,6 @@ private:
 	VECTOR lightDir_;
 	//最大体力
 	float maxHP_;
-	//左上座標
-	Vector2 pos_;
 	//大きさ
 	Vector2 size_;
 	//体力パーセント
@@ -54,5 +56,9 @@ private:
 
 	float gageMin_;
 	float gageMax_;
+
+	float angle_;
+	int shakeSign_;
+	float shakeTime_;
 };
 

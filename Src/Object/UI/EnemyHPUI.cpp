@@ -10,7 +10,6 @@ EnemyHPUI::EnemyHPUI(float maxHP, EnemyBase& enemy) :enemy_(enemy)
 {
 	maxHP_ = maxHP;
 	lightDir_ = INIT_LIGHT_DIR;
-	pos_ = { MARGIN_X,MARGIN_Y };
 	size_ = { Application::SCREEN_SIZE_X - (MARGIN_X * 2),SIZE_Y };
 	screenHandle_ = MakeScreen(size_.x, size_.y,true);
 	ResourceManager& ins = ResourceManager::GetInstance();
@@ -20,7 +19,7 @@ EnemyHPUI::EnemyHPUI(float maxHP, EnemyBase& enemy) :enemy_(enemy)
 	InitMaskImageMinMax();
 	rate_ = enemy_.GetHP() / maxHP_;
 	rate_ = (rate_ < 0.0f) ? 0.0f : rate_;
-	// ポストエフェクト用(ビネット)
+	//HPUI用のマテリアルとレンダラー作成
 	uiMaterial_ = std::make_unique<PixelMaterial>("EnemyHPUI.cso", 3);
 	uiMaterial_->AddConstBuf({ rate_, GAGE_COL.x, GAGE_COL.y, GAGE_COL.z });
 	uiMaterial_->AddConstBuf({ gageMin_,gageMax_,0.0f,0.0f});
@@ -47,11 +46,39 @@ void EnemyHPUI::Init(void)
 
 void EnemyHPUI::Update(void)
 {
-	//体力の割合を取得
-	rate_ = enemy_.GetHP() / maxHP_;
-	rate_ = (rate_ < 0.0f) ? 0.0f : rate_;
 	auto& inc = SceneManager::GetInstance();
 	float deltaTime = inc.GetDeltaTime();
+	//揺れ時間の更新
+	shakeTime_ -= deltaTime;
+	//体力の割合を取得
+	float rate = enemy_.GetHP() / maxHP_;
+	rate = (rate < 0.0f) ? 0.0f : rate;
+	//揺れ処理
+	if (rate_ != rate)
+	{
+		shakeTime_ = SHAKE_TIME_MAX;
+		rate_ = rate;
+		shakeSign_ = 1;
+	}
+	if(shakeTime_ > 0.0f)
+	{
+		float shakePower = SHAKE_POWER_PER_SEC * deltaTime;
+		angle_ += shakePower * shakeSign_;
+		if (angle_ > ANGLE_MAX)
+		{
+			angle_ = ANGLE_MAX;
+			shakeSign_ = -1;
+		}
+		else if (angle_ < ANGLE_MIN)
+		{
+			angle_ = ANGLE_MIN;
+			shakeSign_ = 1;
+		}
+	}
+	else
+	{
+		angle_ = 0.0f;
+	}
 	float rad = atan2(lightDir_.x, lightDir_.z);
 	rad += Utility::Deg2RadF(ROT_DEG_SEC * deltaTime);
 	lightDir_.x = sinf(rad);
@@ -63,17 +90,12 @@ void EnemyHPUI::Update(void)
 void EnemyHPUI::Draw(void)
 {
 	//描画
-	//SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
-	//DrawBox(pos_.x, pos_.y, pos_.x + size_.x, pos_.y + size_.y, GetColor(0, 0, 0), true);
-	//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	//DrawBox(pos_.x + 2.0f, pos_.y + 2.0f, pos_.x + (size_.x - 2.0f) * rate, pos_.y + size_.y - 2.0f, GetColor(255, 0, 0), true);
 	int mainScreen = SceneManager::GetInstance().GetMainScreen();
 	SetDrawScreen(screenHandle_);
 	ClearDrawScreen();
 	uiRenderer_->Draw();
 	SetDrawScreen(mainScreen);
-	DrawGraph(MARGIN_X, MARGIN_Y, screenHandle_, true);
-	//DrawExtendGraph(MARGIN_X, MARGIN_Y, MARGIN_X + size_.x, MARGIN_Y + size_.y, uiHandle_, true);
+	DrawRotaGraph(Application::SCREEN_HALF_X, MARGIN_Y + SIZE_Y / 2,1.0f,Utility::Deg2RadF(angle_), screenHandle_, true);
 }
 
 void EnemyHPUI::InitMaskImageMinMax(void)

@@ -10,16 +10,14 @@ public:
 	static constexpr int BOX_MARGIN = 50;	//背景の余白
 	static constexpr int STRING_MARGIN = 30;	//文字の余白
 	static constexpr int GAGE_WIDTH = 300;	//ゲージの幅
-	static constexpr int GAGE_HEIGHT = 20;	//ゲージの高さ
-	static constexpr int IMAGE_SIZE_X = 48;	//画像のサイズX
-	static constexpr int IMAGE_SIZE_Y = IMAGE_SIZE_X / 2;	//画像のサイズY
-	static constexpr int INTERVAL_Y = 40;	//選択肢の間隔
+	static constexpr int IMAGE_SIZE_Y = 64;	//画像のサイズY
+	static constexpr int INTERVAL_Y = 20;	//選択肢の間隔
 
 	enum class TYPE
 	{
 		BGM_VOLUME,		//BGMの音量調整
 		SE_VOLUME,		//SEの音量調整
-		FULL_SCREEN,	//フルスクリーンにするか
+		SCREEN_MODE,	//フルスクリーンにするか
 		END,		//設定を終わる
 		MAX,
 	};
@@ -28,6 +26,12 @@ public:
 	{
 		CHOOSE,	//選ぶ状態
 		OTHER,	//それぞれの処理を行う状態
+	};
+
+	enum class SCREEN_MODE_TYPE
+	{
+		FULL_SCREEN,	//フルスクリーン
+		WINDOW_SCREEN,	//ウィンドウ
 	};
 
 	SceneSetting(void);
@@ -41,6 +45,8 @@ private:
 	STATE state_;
 	float seVolume_;
 	float bgmVolume_;
+	SCREEN_MODE_TYPE screenType_;	//現在のスクリーンモードの種類
+	SCREEN_MODE_TYPE selectScreenType_;	//選択中のスクリーンモードの種類
 	int frameCount_;
 	void ChangeState(STATE state);
 	std::map < STATE, std::function<void(void)>>stateChange_;
@@ -49,5 +55,7 @@ private:
 	std::function<void(void)>stateUpdate_;
 	void ChooseUpdate(void);
 	void OtherUpdate(void);
+
+	void DrawBackBox(void);
 };
 

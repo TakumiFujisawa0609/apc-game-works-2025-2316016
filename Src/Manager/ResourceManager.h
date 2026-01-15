@@ -36,11 +36,15 @@ public:
 		LOCKON_STR,	// ロックオン
 
 		//メニュー用
+		SETTING_STR,		// 設定
+		GO_TITLE_STR,		// タイトルに戻る
+		RETURN_GAME_STR,	// ゲームに戻る
 		BGM_STR,			// BGM
 		SE_STR,				// SE
 		SCREEN_MODE_STR,	// 画面モード
 		FULL_SCREEN_STR,	// フルスクリーン
 		WINDOW_SCREEN_STR,	// ウィンドウスクリーン
+		RETURN_MENU_STR,		// メニューに戻る
 
 		//タイトル
 		TITLE_IMAGE,

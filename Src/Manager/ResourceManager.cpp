@@ -71,6 +71,12 @@ void ResourceManager::Init(void)
 
 	//メニュー用
 	std::string menuPath = Application::PATH_IMAGE + "Menu/";
+	res = Resource(Resource::TYPE::IMG, menuPath + "Setting.png");
+	resourcesMap_.emplace(SRC::SETTING_STR, std::move(res));
+	res = Resource(Resource::TYPE::IMG, menuPath + "GoTitle.png");
+	resourcesMap_.emplace(SRC::GO_TITLE_STR, std::move(res));
+	res = Resource(Resource::TYPE::IMG, menuPath + "ReturnGame.png");
+	resourcesMap_.emplace(SRC::RETURN_GAME_STR, std::move(res));
 	res = Resource(Resource::TYPE::IMG, menuPath + "BGM.png");
 	resourcesMap_.emplace(SRC::BGM_STR, std::move(res));
 	res = Resource(Resource::TYPE::IMG, menuPath + "SE.png");
@@ -81,6 +87,8 @@ void ResourceManager::Init(void)
 	resourcesMap_.emplace(SRC::FULL_SCREEN_STR, std::move(res));
 	res = Resource(Resource::TYPE::IMG, menuPath + "WindowScreen.png");
 	resourcesMap_.emplace(SRC::WINDOW_SCREEN_STR, std::move(res));
+	res = Resource(Resource::TYPE::IMG, menuPath + "ReturnMenu.png");
+	resourcesMap_.emplace(SRC::RETURN_MENU_STR, std::move(res));
 
 
 	//タイトル

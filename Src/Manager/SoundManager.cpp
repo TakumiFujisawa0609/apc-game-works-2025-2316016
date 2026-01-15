@@ -40,7 +40,8 @@ void SoundManager::Init(void)
 		maxPlayNum.emplace(static_cast<SRC>(i), 1);
 		playMap_.emplace(static_cast<SRC>(i), std::vector<std::shared_ptr<Sound>>{});
 	}
-
+	volume_[SOUND_TYPE::BGM] = 0.8f;
+	volume_[SOUND_TYPE::SE] = 0.8f;
 
 	std::shared_ptr<Sound> res;
 
@@ -89,8 +90,8 @@ void SoundManager::Init(void)
 	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_SE + "Damage.mp3");
 	res->ChengeMaxVolume(1.0f);
 	loadMap_.emplace(SRC::DAMAGE, std::move(res));
-	ChangeVolume(SOUND_TYPE::BGM, 0.8f);
-	ChangeVolume(SOUND_TYPE::SE, 0.8f);
+	ChangeVolume(SOUND_TYPE::BGM, volume_[SOUND_TYPE::BGM]);
+	ChangeVolume(SOUND_TYPE::SE, volume_[SOUND_TYPE::SE]);
 }
 
 void SoundManager::Release(void)
@@ -129,6 +130,18 @@ bool SoundManager::Play(SRC src, Sound::TIMES times)
 			//sound = lPair->second;
 			sound->DuplicateSound();
 			bool isPlay = sound->Play(times);
+			for(auto& typePair : soundType_)
+			{
+				for (auto typeSrc : typePair.second)
+				{
+					if (typeSrc != src)
+					{
+						continue;
+					}
+					sound->ChengeVolume(volume_[typePair.first]);
+					break;
+				}
+			}
 			playMap_[src].push_back(sound);
 
 			return isPlay;
@@ -143,6 +156,18 @@ bool SoundManager::Play(SRC src, Sound::TIMES times)
 				}
 				if (plays->Play(times))
 				{
+					for (auto& typePair : soundType_)
+					{
+						for (auto typeSrc : typePair.second)
+						{
+							if (typeSrc != src)
+							{
+								continue;
+							}
+							plays->ChengeVolume(volume_[typePair.first]);
+							break;
+						}
+					}
 					return true;
 				}
 			}
