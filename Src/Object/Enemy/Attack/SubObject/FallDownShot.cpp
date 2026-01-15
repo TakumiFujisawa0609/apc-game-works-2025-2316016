@@ -23,7 +23,7 @@ FallDownShot::FallDownShot(FallDownAttack& parent) :parent_(parent)
 	initY = transform_->pos.y;
 	state_ = STATE::FALL;
 	blastTime_ = 0.0f;
-	color_ = { 1.0f,0.0f,0.0f };
+	color_ = { 1.0f,1.0f,0.0f };
 	damage_ = DAMAGE;
 	radius_ = RADIUS_MAX;
 }

@@ -7,11 +7,11 @@
 class ThunderAroundAttack :    public AttackBase
 {
 public:
-	static constexpr float COOL_DOWN = 50.0f;
+	static constexpr float COOL_DOWN = 60.0f;
 	static constexpr float RADIUS = 50.0f;
 	static constexpr int THUNDER_NUM = 8;
-	static constexpr float DISTANCE = 500.0f; //サンダーの出現距離
-	static constexpr float TIME = 30.0f; //攻撃が続く時間
+	static constexpr float DISTANCE = 600.0f; //サンダーの出現距離
+	static constexpr float TIME = 20.0f; //攻撃が続く時間
 	static constexpr float INTERVAL_TIME = 1.0f; //サンダーが出現する間隔時間
 	static constexpr float TEXTURE_SCALE_X = 1.0f;
 	static constexpr float TEXTURE_SCALE_Y = 5.0f;
