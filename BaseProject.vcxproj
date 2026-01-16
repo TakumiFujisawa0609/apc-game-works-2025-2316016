@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Scene\SceneChackPad.cpp" />
+    <ClCompile Include="Src\Object\UI\PadUI.cpp" />
     <ClCompile Include="Src\Object\Enemy\EnemyOver.cpp" />
     <ClCompile Include="Src\Object\Player\OverPlayer.cpp" />
     <ClCompile Include="Src\Object\Player\ClearPlayer.cpp" />
@@ -116,6 +118,8 @@
     <ClCompile Include="Src\Object\Player\TitlePlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Scene\SceneChackPad.h" />
+    <ClInclude Include="Src\Object\UI\PadUI.h" />
     <ClInclude Include="Src\Object\Enemy\EnemyOver.h" />
     <ClInclude Include="Src\Object\Player\OverPlayer.h" />
     <ClInclude Include="Src\Object\Player\ClearPlayer.h" />

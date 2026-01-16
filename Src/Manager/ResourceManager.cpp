@@ -89,6 +89,8 @@ void ResourceManager::Init(void)
 	resourcesMap_.emplace(SRC::WINDOW_SCREEN_STR, std::move(res));
 	res = Resource(Resource::TYPE::IMG, menuPath + "ReturnMenu.png");
 	resourcesMap_.emplace(SRC::RETURN_MENU_STR, std::move(res));
+	res = Resource(Resource::TYPE::IMG, menuPath + "ChackControl.png");
+	resourcesMap_.emplace(SRC::CHACK_CONTROL_STR, std::move(res));
 
 
 	//タイトル
@@ -120,6 +122,8 @@ void ResourceManager::Init(void)
 	resourcesMap_.emplace(SRC::ENEMY_HP_UI_MASK_IMG, std::move(res));
 	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "UI/EnemyHPNormal.png");
 	resourcesMap_.emplace(SRC::ENEMY_HP_UI_NORMAL_IMG, std::move(res));
+	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "UI/Pad.png");
+	resourcesMap_.emplace(SRC::PAD_UI_IMG, std::move(res));
 
 	//テクスチャ
 	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "Texture/Wave.png");

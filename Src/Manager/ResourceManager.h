@@ -45,6 +45,7 @@ public:
 		FULL_SCREEN_STR,	// フルスクリーン
 		WINDOW_SCREEN_STR,	// ウィンドウスクリーン
 		RETURN_MENU_STR,		// メニューに戻る
+		CHACK_CONTROL_STR,	// 操作確認
 
 		//タイトル
 		TITLE_IMAGE,
@@ -64,6 +65,7 @@ public:
 		ENEMY_HP_UI_IMG,	//敵HPのUI
 		ENEMY_HP_UI_MASK_IMG,	//敵HPのUIマスク
 		ENEMY_HP_UI_NORMAL_IMG,	//敵HPのUI法線
+		PAD_UI_IMG,		//パッドUI
 
 		//テクスチャ
 		WAVE_TEXTURE,	//ギザギザテクスチャ

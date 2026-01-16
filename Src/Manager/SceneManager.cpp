@@ -14,6 +14,7 @@
 #include"../Scene/SceneMenu.h"
 #include"../Scene/SceneSetting.h"
 #include"../Scene/SceneStageSelect.h"
+#include"../Scene/SceneChackPad.h"
 
 SceneManager* SceneManager::instance_ = nullptr;
 
@@ -64,6 +65,9 @@ std::unique_ptr<SceneBase> SceneManager::MakeScene(SCENE_ID id)
 		break;
 	case SCENE_ID::SETTING:
 		scene = std::make_unique<SceneSetting>();
+		break;
+	case SCENE_ID::CHACK_PAD:
+		scene = std::make_unique<SceneChackPad>();
 		break;
 	}
 	SetUseASyncLoadFlag(true);

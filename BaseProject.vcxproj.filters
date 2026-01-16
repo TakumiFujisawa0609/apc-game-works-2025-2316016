@@ -96,6 +96,8 @@
     <ClCompile Include="Src\Object\Player\ClearPlayer.cpp" />
     <ClCompile Include="Src\Object\Player\OverPlayer.cpp" />
     <ClCompile Include="Src\Object\Enemy\EnemyOver.cpp" />
+    <ClCompile Include="Src\Object\UI\PadUI.cpp" />
+    <ClCompile Include="Src\Scene\SceneChackPad.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Common\IntVector3.h" />
@@ -193,6 +195,8 @@
     <ClInclude Include="Src\Object\Player\ClearPlayer.h" />
     <ClInclude Include="Src\Object\Player\OverPlayer.h" />
     <ClInclude Include="Src\Object\Enemy\EnemyOver.h" />
+    <ClInclude Include="Src\Object\UI\PadUI.h" />
+    <ClInclude Include="Src\Scene\SceneChackPad.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shader\Common\VertexToPixelHeader.hlsli" />

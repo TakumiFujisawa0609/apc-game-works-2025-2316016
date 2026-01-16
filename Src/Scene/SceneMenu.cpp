@@ -39,6 +39,9 @@ void SceneMenu::Update(void)
 		{
 		//case SceneMenu::TYPE::KEY_CONFIG:
 		//	break;
+		case SceneMenu::TYPE::CHACK_CONTROL:
+			SceneManager::GetInstance().PushScene(SceneManager::SCENE_ID::CHACK_PAD);
+			break;
 		case SceneMenu::TYPE::OPTION:
 			SceneManager::GetInstance().PushScene(SceneManager::SCENE_ID::SETTING);
 			break;
@@ -87,11 +90,13 @@ void SceneMenu::Draw(void)
 	//Utility::DrawStringPlace(str, Application::SCREEN_HALF_X / 2, Application::SCREEN_HALF_Y / 2, 0, Utility::STRING_PLACE::LEFT);
 	
 	//‘I‘ðŽˆ‚ð‰æ‘œ‚Å•`‰æ
+	SetDrawBright(255, 255, type_ == TYPE::CHACK_CONTROL ? 0: 255);
+	DrawGraph(START_POS_X + (type_ == TYPE::CHACK_CONTROL ? abs(sinf(time_ * SELECT_SHAKE_POWER) * SELECT_SHAKE_WIDTH) : 0), START_POS_Y + INTERVAL_Y * static_cast<int>(TYPE::CHACK_CONTROL) + IMAGE_SIZE_Y * DrawScale * static_cast<int>(TYPE::CHACK_CONTROL), ins.Load(ResourceManager::SRC::CHACK_CONTROL_STR).handleId_, true);
 	SetDrawBright(255, 255, type_ == TYPE::OPTION ? 0: 255);
-	DrawGraph(START_POS_X + (type_ == TYPE::OPTION ? abs(sinf(time_ * SELECT_SHAKE_POWER) * SELECT_SHAKE_WIDTH) : 0), START_POS_Y + INTERVAL_Y * 0 + IMAGE_SIZE_Y * DrawScale * 0, ins.Load(ResourceManager::SRC::SETTING_STR).handleId_, true);
+	DrawGraph(START_POS_X + (type_ == TYPE::OPTION ? abs(sinf(time_ * SELECT_SHAKE_POWER) * SELECT_SHAKE_WIDTH) : 0), START_POS_Y + INTERVAL_Y * static_cast<int>(TYPE::OPTION) + IMAGE_SIZE_Y * DrawScale * static_cast<int>(TYPE::OPTION), ins.Load(ResourceManager::SRC::SETTING_STR).handleId_, true);
 	SetDrawBright(255, 255, type_ == TYPE::BACK_GAME ? 0: 255);
-	DrawGraph(START_POS_X + (type_ == TYPE::BACK_GAME ? abs(sinf(time_ * SELECT_SHAKE_POWER) * SELECT_SHAKE_WIDTH) : 0), START_POS_Y + INTERVAL_Y * 1 + IMAGE_SIZE_Y * DrawScale * 1, ins.Load(ResourceManager::SRC::RETURN_GAME_STR).handleId_, true);
+	DrawGraph(START_POS_X + (type_ == TYPE::BACK_GAME ? abs(sinf(time_ * SELECT_SHAKE_POWER) * SELECT_SHAKE_WIDTH) : 0), START_POS_Y + INTERVAL_Y * static_cast<int>(TYPE::BACK_GAME) + IMAGE_SIZE_Y * DrawScale * static_cast<int>(TYPE::BACK_GAME), ins.Load(ResourceManager::SRC::RETURN_GAME_STR).handleId_, true);
 	SetDrawBright(255, 255, type_ == TYPE::GO_TITLE ? 0: 255);
-	DrawGraph(START_POS_X + (type_ == TYPE::GO_TITLE ? abs(sinf(time_ * SELECT_SHAKE_POWER) * SELECT_SHAKE_WIDTH) : 0), START_POS_Y + INTERVAL_Y * 2 + IMAGE_SIZE_Y * DrawScale * 2, ins.Load(ResourceManager::SRC::GO_TITLE_STR).handleId_, true);
+	DrawGraph(START_POS_X + (type_ == TYPE::GO_TITLE ? abs(sinf(time_ * SELECT_SHAKE_POWER) * SELECT_SHAKE_WIDTH) : 0), START_POS_Y + INTERVAL_Y * static_cast<int>(TYPE::GO_TITLE) + IMAGE_SIZE_Y * DrawScale * static_cast<int>(TYPE::GO_TITLE), ins.Load(ResourceManager::SRC::GO_TITLE_STR).handleId_, true);
 	SetDrawBright(255, 255, 255);
 }

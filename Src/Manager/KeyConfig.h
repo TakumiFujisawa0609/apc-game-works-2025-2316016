@@ -84,6 +84,7 @@ public:
 		CANCEL,					//キャンセル
 
 		OPEN_MENU,				//メニューを開く
+		PAD_SHOW_HIDE,		//パッド表示非表示切り替え
 
 		CHENGE_CAMERA_MODE,	//カメラモード変更
 

@@ -5,6 +5,7 @@
 class GamePlayer;
 class SkyDome;
 class Stage;
+class PadUI;
 class EnemyBase;
 class EnemyHPUI;
 class PixelMaterial;
@@ -15,6 +16,8 @@ class SceneGame :public SceneBase
 public:
 
 	static constexpr FLOAT4 SKY_COL = { 1.0f,0.1f,1.0f,1.0f };
+	static constexpr int PAD_IMAGE_SIZE_X = 465;
+	static constexpr int PAD_IMAGE_SIZE_Y = 256;
 
 	//メンバー関数
 	//初期化処理(初回の1度のみ実行される)
@@ -50,6 +53,8 @@ protected:
 	std::unique_ptr<EnemyBase> enemy_;
 	//スカイドーム
 	std::unique_ptr<SkyDome> skyDome_;
+	//PadUI
+	std::unique_ptr<PadUI> padUI_;
 	//敵HPUI
 	std::unique_ptr<EnemyHPUI> enemyHPUI_;
 	//ステージ

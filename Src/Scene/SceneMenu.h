@@ -25,6 +25,7 @@ public:
 	enum class TYPE
 	{
 		//KEY_CONFIG,	//キーコンフィグ
+		CHACK_CONTROL, //操作確認
 		OPTION,		//設定
 		BACK_GAME,	//ゲームに戻る
 		GO_TITLE,	//タイトルに戻る

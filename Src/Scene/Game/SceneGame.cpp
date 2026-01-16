@@ -20,11 +20,15 @@
 #include "../../Object/Player/PlayerShot.h"
 #include "../../Object/Enemy/EnemyBase.h"
 #include "../../Object/UI/EnemyHPUI.h"
+#include "../../Object/UI/PadUI.h"
 #include "../../Object/Log/GameLog.h"
 #include "SceneGame.h"
 
 SceneGame::SceneGame(void)
 {
+	vignetteTime_ = 0.0f;
+	time_ = 0.0f;
+	postEffectScreen_ = -1;
 }
 
 SceneGame::~SceneGame(void)
@@ -43,9 +47,6 @@ SceneGame::~SceneGame(void)
 	propaty.lastEnemyHP_ = enemy_->GetHP();
 	propaty.lastPlayerHP_ = player_->GetHP();
 	GameLog::OutPut(propaty);
-	vignetteTime_ = 0.0f;
-	time_ = 0.0f;
-	postEffectScreen_ = -1;
 }
 
 
@@ -74,6 +75,9 @@ bool SceneGame::Init(void)
 	skyDome_->SetColor(SKY_COL);
 	skyDome_->Init();
 
+	padUI_ = std::make_unique<PadUI>();
+	padUI_->Init();
+
 	//ステージ
 	stage_ = std::make_unique<Stage>(player_->GetPointLight());
 
@@ -99,6 +103,7 @@ bool SceneGame::Init(void)
 //更新処理
 void SceneGame::Update(void)
 {
+	//padUI_->Update();
 	//スカイドーム
 	skyDome_->Update();
 	//ステージ
@@ -126,6 +131,7 @@ void SceneGame::Update(void)
 	}
 	//ヴィネットの定数バッファを更新する
 	vineMaterial_->SetConstBuf(0,{ VIGNETTE_MAX_POW, player_->GetHP(), PlayerBase::MAX_HP, vignetteTime_ });
+
 }
 
 
@@ -162,6 +168,7 @@ void SceneGame::Draw(void)
 	//DrawFormatString(0, 20, 0, "%d", GetDrawCallCount());
 	//player_->UIDraw();
 	enemy_->UIDraw();
+	//padUI_->Draw();
 }
 
 void SceneGame::Load(void)
