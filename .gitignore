@@ -39,6 +39,7 @@
 
 # debug information files
 *.dwo
-/.vs/BaseProject
-/BaseProject/x64/Debug
+/.vs
+/BaseProject
+/x64
 /Log.txt
