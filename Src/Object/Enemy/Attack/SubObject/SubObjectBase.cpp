@@ -1,5 +1,9 @@
 #include "SubObjectBase.h"
 
+SubObjectBase::SubObjectBase(AttackBase& parent) : parent_(parent)
+{
+}
+
 void SubObjectBase::Init(void)
 {
 }

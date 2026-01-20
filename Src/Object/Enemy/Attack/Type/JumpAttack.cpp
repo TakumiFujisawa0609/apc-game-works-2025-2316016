@@ -3,6 +3,8 @@
 #include "../../../Common/AnimationController.h"
 #include "../../Utility/Utility.h"
 #include "../../Manager/SceneManager.h"
+#include "../../Manager/ResourceManager.h"
+#include "../../Manager/DrawTranslucentManager.h"
 #include "../SubObject/Wave.h"
 #include "../../EnemyBase.h"
 #include "JumpAttack.h"
@@ -12,6 +14,17 @@ JumpAttack::JumpAttack(EnemyAttackManager& parent) : AttackBase(parent)
 	range_ = RANGE::SHORT;
 	geo_ = GEOMETORY::CIRCUMFERENCE;
 	myType_ = EnemyAttackManager::ATTACK_TYPE::JUMP;
+	transform_ = std::make_shared<Transform>();
+	material_ = std::make_unique<Polygon3DMaterial>(
+		"WaveVS.cso", 0,
+		"WavePS.cso", 2
+	);
+	material_->AddConstBufPS(COLOR);
+	material_->AddConstBufPS({ time_, TIME_SCALE, 1.0f, 1.0f });
+	material_->AddTextureBuf(ResourceManager::GetInstance().Load(ResourceManager::SRC::WAVE_TEXTURE).handleId_);
+	material_->AddTextureBuf(ResourceManager::GetInstance().Load(ResourceManager::SRC::NOISE).handleId_);
+	renderer_ = std::make_shared<Polygon3DRenderer>(*material_, polygonInfo_);
+	renderer_->SetBuckCull(true);
 }
 
 JumpAttack::~JumpAttack(void)
@@ -24,16 +37,24 @@ void JumpAttack::Init(void)
 
 void JumpAttack::Update(void)
 {
+	time_ += SceneManager::GetInstance().GetDeltaTime();
 	updateState_();
+	material_->SetConstBufPS(1, {time_, TIME_SCALE, 1.0f, 1.0f });
 }
 
 void JumpAttack::Draw(void)
 {
+	polygonInfo_.clear();
 	for (auto& wave : wave_)
 	{
 		if (wave->IsEnd())continue;
 		wave->Draw();
 	}
+	if (polygonInfo_.vertex.size() == 0)
+	{
+		return;
+	}
+	DrawTranslucentManager::GetInstance().Add(transform_, renderer_);
 }
 
 void JumpAttack::ChangeStateNone(void)
@@ -57,15 +78,15 @@ void JumpAttack::ChangeStateStart(void)
 {
 	//ウェーブの作成
 	AttackBase::ChangeStateStart();
-	std::unique_ptr<Wave> slow = std::make_unique<Wave>(parent_.GetTransform().lock()->pos, Wave::SPEED_TYPE::SLOW,Utility::RED);
-	std::unique_ptr<Wave> midium = std::make_unique<Wave>(parent_.GetTransform().lock()->pos, Wave::SPEED_TYPE::MIDIUM, Utility::RED);
-	std::unique_ptr<Wave> fast = std::make_unique<Wave>(parent_.GetTransform().lock()->pos, Wave::SPEED_TYPE::FAST, Utility::RED);
+	std::unique_ptr<Wave> slow = std::make_unique<Wave>(parent_.GetTransform().lock()->pos, Wave::SPEED_TYPE::SLOW,*this);
+	std::unique_ptr<Wave> midium = std::make_unique<Wave>(parent_.GetTransform().lock()->pos, Wave::SPEED_TYPE::MIDIUM, *this);
+	std::unique_ptr<Wave> fast = std::make_unique<Wave>(parent_.GetTransform().lock()->pos, Wave::SPEED_TYPE::FAST,*this);
 	wave_.push_back(std::move(slow));
 	wave_.push_back(std::move(midium));
 	wave_.push_back(std::move(fast));
 	for (int i = 0; i < RANDOM_WAVE_NUM; i++)
 	{
-		std::unique_ptr<Wave> random = std::make_unique<Wave>(parent_.GetTransform().lock()->pos, Wave::SPEED_TYPE::RANDOM, Utility::RED);
+		std::unique_ptr<Wave> random = std::make_unique<Wave>(parent_.GetTransform().lock()->pos, Wave::SPEED_TYPE::RANDOM, *this);
 		wave_.push_back(std::move(random));
 	}
 }

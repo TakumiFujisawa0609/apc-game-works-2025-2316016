@@ -188,13 +188,17 @@ void SceneGame::ChangeCameraMode(void)
 {
 	auto& cam = SceneManager::GetInstance().GetCamera();
 	auto& ins = KeyConfig::GetInstance();
-	auto lockOnType = DataBank::GetInstance().GetLockOnType();
+	auto lockOnType = DataBank::GetInstance().GetLockOnMode();
 	auto controlType = DataBank::GetInstance().GetControlType();
 	switch (lockOnType)
 	{
-	case DataBank::LOCK_ON_TYPE::FIXED:
+	case DataBank::LOCKON_MODE::ALWAYS:
+		if(cam.GetMode() != Camera::MODE::TWO_TARGET_FOLLOW)
+		{
+			cam.ChangeMode(Camera::MODE::TWO_TARGET_FOLLOW);
+		}
 		break;
-	case DataBank::LOCK_ON_TYPE::PRESS:
+	case DataBank::LOCKON_MODE::HOLD:
 		if (ins.IsNew(KeyConfig::CONTROL_TYPE::CHENGE_CAMERA_MODE, KeyConfig::JOYPAD_NO::PAD1, controlType))
 		{
 			cam.ChangeMode(Camera::MODE::TWO_TARGET_FOLLOW);
@@ -204,7 +208,7 @@ void SceneGame::ChangeCameraMode(void)
 			cam.ChangeMode(Camera::MODE::FOLLOW);
 		}
 		break;
-	case DataBank::LOCK_ON_TYPE::SWITCH:
+	case DataBank::LOCKON_MODE::TOGGLE:
 		if (ins.IsTrgDown(KeyConfig::CONTROL_TYPE::CHENGE_CAMERA_MODE, KeyConfig::JOYPAD_NO::PAD1, controlType))
 		{
 			cam.ChangeMode(cam.GetMode() == Camera::MODE::FOLLOW ? Camera::MODE::TWO_TARGET_FOLLOW : Camera::MODE::FOLLOW);

@@ -3,6 +3,8 @@
 #include <DxLib.h>
 #include "SubObjectBase.h"
 
+class FollowAttack;
+
 class FollowShot : public SubObjectBase
 {
 public:
@@ -30,7 +32,7 @@ public:
 	static constexpr float ATTACK_TIME = 10.0f;	//çUåÇéûä‘
 	static constexpr float RADIUS = 20.0f;		//îºåa
 
-	FollowShot(std::weak_ptr<Transform> target, SPEED_TYPE speed,VECTOR startPos);
+	FollowShot(std::weak_ptr<Transform> target, SPEED_TYPE speed,VECTOR startPos ,FollowAttack& parent);
 	~FollowShot(void)override;
 	void Init(void)override;
 	void Update(void)override;

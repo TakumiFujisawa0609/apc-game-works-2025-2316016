@@ -23,7 +23,7 @@ DataBank& DataBank::GetInstance(void)
 void DataBank::Init(void)
 {
 	control_ = KeyConfig::TYPE::ALL;
-	lockOnType_ = LOCK_ON_TYPE::PRESS; //ロックオンの種類
+	lockOnType_ = LOCKON_MODE::TOGGLE; //ロックオンの種類
 }
 
 void DataBank::Update(void)

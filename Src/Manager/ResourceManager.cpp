@@ -91,6 +91,14 @@ void ResourceManager::Init(void)
 	resourcesMap_.emplace(SRC::RETURN_MENU_STR, std::move(res));
 	res = Resource(Resource::TYPE::IMG, menuPath + "ChackControl.png");
 	resourcesMap_.emplace(SRC::CHACK_CONTROL_STR, std::move(res));
+	res = Resource(Resource::TYPE::IMG, menuPath + "LockOnMode.png");
+	resourcesMap_.emplace(SRC::LOCKON_MODE_STR, std::move(res));
+	res = Resource(Resource::TYPE::IMG, menuPath + "Always.png");
+	resourcesMap_.emplace(SRC::ALWAYS_STR, std::move(res));
+	res = Resource(Resource::TYPE::IMG, menuPath + "Hold.png");
+	resourcesMap_.emplace(SRC::HOLD_STR, std::move(res));
+	res = Resource(Resource::TYPE::IMG, menuPath + "Toggle.png");
+	resourcesMap_.emplace(SRC::TOGGLE_STR, std::move(res));
 
 
 	//ƒ^ƒCƒgƒ‹

@@ -46,6 +46,10 @@ public:
 		WINDOW_SCREEN_STR,	// ウィンドウスクリーン
 		RETURN_MENU_STR,		// メニューに戻る
 		CHACK_CONTROL_STR,	// 操作確認
+		LOCKON_MODE_STR,	// ロックオンモード
+		ALWAYS_STR,			// 常にロックオン
+		TOGGLE_STR,			// トグル式
+		HOLD_STR,			// ホールド式
 
 		//タイトル
 		TITLE_IMAGE,

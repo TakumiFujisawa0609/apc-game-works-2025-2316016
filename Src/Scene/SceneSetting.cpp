@@ -16,6 +16,9 @@ SceneSetting::SceneSetting(void)
     seVolume_ = SoundManager::GetInstance().GetVolume(SoundManager::SOUND_TYPE::SE);
     bgmVolume_ = SoundManager::GetInstance().GetVolume(SoundManager::SOUND_TYPE::BGM);
 	screenType_ = GetWindowModeFlag() ? SCREEN_MODE_TYPE::WINDOW_SCREEN : SCREEN_MODE_TYPE::FULL_SCREEN;
+	lockonMode_ = DataBank::GetInstance().GetLockOnMode();
+	selectScreenType_ = screenType_;
+	selectLockonMode_ = lockonMode_;
     ChangeState(STATE::CHOOSE);
 }
 
@@ -37,7 +40,7 @@ void SceneSetting::Update(void)
 void SceneSetting::Draw(void)
 {
     ResourceManager& resIns = ResourceManager::GetInstance();
-	DrawBackBox();
+    DrawBackBox();
 
     std::string str = "";
     int x = BOX_MARGIN + STRING_MARGIN;
@@ -67,6 +70,27 @@ void SceneSetting::Draw(void)
         SetDrawBright(255, 255, b);
     }
     DrawGraph(x, y, resIns.Load(ResourceManager::SRC::SCREEN_MODE_STR).handleId_, true);
+    if (type_ == TYPE::SCREEN_MODE && state_ == STATE::OTHER)
+    {
+        for (int i = 0; i < static_cast<int>(SCREEN_MODE_TYPE::MAX) - 1; i++)
+        {
+            y += INTERVAL_Y + IMAGE_SIZE_Y;
+        }
+    }
+    y += INTERVAL_Y + IMAGE_SIZE_Y;
+    SetDrawBright(255, 255, 255);
+    if (type_ == TYPE::LOCKON_MODE)
+    {
+        SetDrawBright(255, 255, b);
+    }
+    DrawGraph(x, y, resIns.Load(ResourceManager::SRC::LOCKON_MODE_STR).handleId_, true);
+    if (type_ == TYPE::LOCKON_MODE && state_ == STATE::OTHER)
+    {
+        for (int i = 0; i < static_cast<int>(DataBank::LOCKON_MODE::MAX) - 1; i++)
+        {
+            y += INTERVAL_Y + IMAGE_SIZE_Y;
+        }
+    }
     y += INTERVAL_Y + IMAGE_SIZE_Y;
     SetDrawBright(255, 255, 255);
     if (type_ == TYPE::END)
@@ -115,6 +139,28 @@ void SceneSetting::Draw(void)
         DrawGraph(x, y, resIns.Load(screenType_ == SCREEN_MODE_TYPE::FULL_SCREEN ? ResourceManager::SRC::WINDOW_SCREEN_STR : ResourceManager::SRC::FULL_SCREEN_STR).handleId_, true);
         SetDrawBright(255, 255, 255);
     }
+    //ロックオンモードを描画
+    y += INTERVAL_Y + IMAGE_SIZE_Y;
+    int lockonModeNum = static_cast<int>(lockonMode_);
+    int selectLockonModeNum = static_cast<int>(selectLockonMode_);
+    if (type_ != TYPE::LOCKON_MODE || state_ != STATE::OTHER)
+    {
+		DrawGraph(x, y, GetLockOnModeHandle(lockonMode_), true);
+    }
+    else
+    {
+        for (int i = 0; i < static_cast<int>(DataBank::LOCKON_MODE::MAX); i++)
+        {
+			int drawModeNum = (lockonModeNum + i) % static_cast<int>(DataBank::LOCKON_MODE::MAX);
+            if (drawModeNum == selectLockonModeNum)
+            {
+                SetDrawBright(255, 255, 0);
+			}
+            DrawGraph(x, y, GetLockOnModeHandle(static_cast<DataBank::LOCKON_MODE>(drawModeNum)), true);
+            SetDrawBright(255, 255, 255);
+			y += INTERVAL_Y + IMAGE_SIZE_Y;
+        }
+    }
 }
 
 void SceneSetting::ChangeState(STATE state)
@@ -131,6 +177,7 @@ void SceneSetting::ChooseChange(void)
 void SceneSetting::OtherChange(void)
 {
 	selectScreenType_ = screenType_;
+	selectLockonMode_ = lockonMode_;
     stateUpdate_ = std::bind(&SceneSetting::OtherUpdate, this);
 }
 
@@ -196,6 +243,21 @@ void SceneSetting::OtherUpdate(void)
 			selectScreenType_ = (selectScreenType_ == SCREEN_MODE_TYPE::FULL_SCREEN) ? SCREEN_MODE_TYPE::WINDOW_SCREEN : SCREEN_MODE_TYPE::FULL_SCREEN;
         }
         break;
+    case SceneSetting::TYPE::LOCKON_MODE:
+    {
+		int modeNum = static_cast<int>(selectLockonMode_);
+        if (ins.IsTrgDown(KeyConfig::CONTROL_TYPE::SELECT_UP, KeyConfig::JOYPAD_NO::PAD1))
+        {
+            modeNum--;
+        }
+        if (ins.IsTrgDown(KeyConfig::CONTROL_TYPE::SELECT_DOWN, KeyConfig::JOYPAD_NO::PAD1))
+        {
+            modeNum++;
+		}
+		int modeMaxNum = static_cast<int>(DataBank::LOCKON_MODE::MAX);
+		selectLockonMode_ = static_cast<DataBank::LOCKON_MODE>((modeNum + modeMaxNum) % modeMaxNum);
+    }
+    break;
     case SceneSetting::TYPE::END:
         SceneManager::GetInstance().PopScene();
         return;
@@ -213,6 +275,11 @@ void SceneSetting::OtherUpdate(void)
             ChangeWindowMode(selectScreenType_ == SCREEN_MODE_TYPE::WINDOW_SCREEN);
 			screenType_ = selectScreenType_;
         }
+        if (type_ == TYPE::LOCKON_MODE && lockonMode_ != selectLockonMode_)
+        {
+            DataBank::GetInstance().SetLockOnMode(selectLockonMode_);
+			lockonMode_ = selectLockonMode_;
+        }
         ChangeState(STATE::CHOOSE);
     }
 }
@@ -224,4 +291,26 @@ void SceneSetting::DrawBackBox(void)
     DrawBox(BOX_MARGIN, BOX_MARGIN, Application::SCREEN_SIZE_X - BOX_MARGIN, Application::SCREEN_SIZE_Y - BOX_MARGIN, 0, true);
     DrawBoxAA(BOX_MARGIN, BOX_MARGIN, Application::SCREEN_SIZE_X - BOX_MARGIN, Application::SCREEN_SIZE_Y - BOX_MARGIN, 0xffffff, false, 3.0f);
     SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+}
+
+int SceneSetting::GetLockOnModeHandle(DataBank::LOCKON_MODE mode)
+{
+    ResourceManager& resIns = ResourceManager::GetInstance();
+    switch (mode)
+    {
+    case DataBank::LOCKON_MODE::ALWAYS:
+        return resIns.Load(ResourceManager::SRC::ALWAYS_STR).handleId_;
+        break;
+    case DataBank::LOCKON_MODE::HOLD:
+        return resIns.Load(ResourceManager::SRC::HOLD_STR).handleId_;
+        break;
+    case DataBank::LOCKON_MODE::TOGGLE:
+        return resIns.Load(ResourceManager::SRC::TOGGLE_STR).handleId_;
+        break;
+    case DataBank::LOCKON_MODE::MAX:
+        break;
+    default:
+        break;
+    }
+	return -1;
 }

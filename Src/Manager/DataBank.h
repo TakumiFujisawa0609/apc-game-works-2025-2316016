@@ -4,11 +4,12 @@
 class DataBank
 {
 public:
-	enum class LOCK_ON_TYPE
+	enum class LOCKON_MODE
 	{
-		FIXED,	//固定(ずっとロックオン状態)
-		PRESS,	//押している間だけロックオン
-		SWITCH, //押すたびにロックオンのON/OFF切り替え
+		ALWAYS,	//固定(ずっとロックオン状態)
+		HOLD,	//押している間だけロックオン
+		TOGGLE, //押すたびにロックオンのON/OFF切り替え
+		MAX,
 	};
 
 	// インスタンスを明示的に生成
@@ -21,13 +22,13 @@ public:
 	void Update(void);
 	void Destroy(void);
 	void SetControlType(KeyConfig::TYPE type) { control_ = type; };
-	void SetLockOnType(LOCK_ON_TYPE type) { lockOnType_ = type; }
+	void SetLockOnMode(LOCKON_MODE type) { lockOnType_ = type; }
 	KeyConfig::TYPE GetControlType(void) const { return control_; };
-	LOCK_ON_TYPE GetLockOnType(void) const { return lockOnType_; };
+	LOCKON_MODE GetLockOnMode(void) const { return lockOnType_; };
 private:
 	
 	KeyConfig::TYPE control_;
-	LOCK_ON_TYPE lockOnType_; //ロックオンの種類
+	LOCKON_MODE lockOnType_; //ロックオンの種類
 
 	static DataBank* instance_;
 

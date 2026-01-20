@@ -13,7 +13,7 @@
 #include "../Type/FallDownAttack.h"
 #include "FallDownShot.h"
 
-FallDownShot::FallDownShot(FallDownAttack& parent) :parent_(parent)
+FallDownShot::FallDownShot(FallDownAttack& parent) :SubObjectBase(parent)
 {
 	transform_ = std::make_shared<Transform>();
 	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::CHICKIN));

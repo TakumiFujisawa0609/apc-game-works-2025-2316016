@@ -5,7 +5,7 @@
 #include "../Type/CrossAttack.h"
 #include "CrossLine.h"
 
-CrossLine::CrossLine(VECTOR centerPos, float& rad, float initRad, int num, CrossAttack& parent) : centerPos_(centerPos), radian_(rad),parent_(parent)
+CrossLine::CrossLine(VECTOR centerPos, float& rad, float initRad, int num, CrossAttack& parent) : centerPos_(centerPos), radian_(rad),SubObjectBase(parent)
 {
 	transform_ = std::make_shared<Transform>();
 	//transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::FIRE_MODEL));

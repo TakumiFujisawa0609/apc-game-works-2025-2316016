@@ -50,15 +50,15 @@ void FollowAttack::ChangeStateStart(void)
 {
 	parent_.GetAnimController().Play(parent_.GetAnimNumber(EnemyAttackManager::ATTACK_STATE::PLAY, myType_));
 	AttackBase::ChangeStateStart();
-	std::unique_ptr<FollowShot> slow = std::make_unique<FollowShot>(target_,FollowShot::SPEED_TYPE::SLOW,parent_.GetTransform().lock()->pos);
-	std::unique_ptr<FollowShot> midium = std::make_unique<FollowShot>(target_, FollowShot::SPEED_TYPE::MIDIUM, parent_.GetTransform().lock()->pos);
-	std::unique_ptr<FollowShot> fast = std::make_unique<FollowShot>(target_, FollowShot::SPEED_TYPE::FAST, parent_.GetTransform().lock()->pos);
+	std::unique_ptr<FollowShot> slow = std::make_unique<FollowShot>(target_,FollowShot::SPEED_TYPE::SLOW,parent_.GetTransform().lock()->pos,*this);
+	std::unique_ptr<FollowShot> midium = std::make_unique<FollowShot>(target_, FollowShot::SPEED_TYPE::MIDIUM, parent_.GetTransform().lock()->pos, *this);
+	std::unique_ptr<FollowShot> fast = std::make_unique<FollowShot>(target_, FollowShot::SPEED_TYPE::FAST, parent_.GetTransform().lock()->pos,*this);
 	shots_.push_back(std::move(slow));
 	shots_.push_back(std::move(midium));
 	shots_.push_back(std::move(fast));
 	for (int i = 0; i < RANDOM_SHOT_NUM; i++)
 	{
-		std::unique_ptr<FollowShot> random = std::make_unique<FollowShot>(target_, FollowShot::SPEED_TYPE::RANDOM, parent_.GetTransform().lock()->pos);
+		std::unique_ptr<FollowShot> random = std::make_unique<FollowShot>(target_, FollowShot::SPEED_TYPE::RANDOM, parent_.GetTransform().lock()->pos, *this);
 		shots_.push_back(std::move(random));
 	}
 }

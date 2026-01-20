@@ -6,9 +6,10 @@
 #include "../../../Common/Transform.h"
 #include "../../../Common/EffectController.h"
 #include "../../../Common/Geometry/Sphere.h"
+#include "../Type/FollowAttack.h"
 #include "FollowShot.h"
 
-FollowShot::FollowShot(std::weak_ptr<Transform> target, SPEED_TYPE speed, VECTOR startPos) : target_(target)
+FollowShot::FollowShot(std::weak_ptr<Transform> target, SPEED_TYPE speed, VECTOR startPos, FollowAttack& parent) : target_(target), SubObjectBase(parent)
 {
 	transform_ = std::make_shared<Transform>();
 	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::CHICKIN));

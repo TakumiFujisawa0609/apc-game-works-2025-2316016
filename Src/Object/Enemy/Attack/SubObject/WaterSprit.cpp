@@ -12,7 +12,7 @@
 #include "../Type/WaterSpritAttack.h"
 #include "WaterSprit.h"
 
-WaterSprit::WaterSprit(VECTOR direction, VECTOR startPos , float speed, WaterSpritAttack&parent): parent_(parent)
+WaterSprit::WaterSprit(VECTOR direction, VECTOR startPos , float speed, WaterSpritAttack&parent): SubObjectBase(parent)
 {
 	size_ = INIT_SIZE;
 	transform_ = std::make_shared<Transform>();

@@ -24,7 +24,6 @@ public:
 	void Update(void)override;
 	void Draw(void)override;
 private:
-	CrossAttack& parent_;
 	float& radian_;
 	VECTOR centerPos_;
 	float initRadian_;

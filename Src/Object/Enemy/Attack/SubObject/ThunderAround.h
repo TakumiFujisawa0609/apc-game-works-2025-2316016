@@ -40,7 +40,6 @@ public:
 	void Draw(void)override;
 	bool IsDead(void) const { return state_ == STATE::DEAD; }
 private:
-	ThunderAroundAttack& parent_;
 	//‘Šè‚Ì
 	VECTOR targetPos_;
 	float rad_; //’†S‚©‚ç‚ÌŠp“x

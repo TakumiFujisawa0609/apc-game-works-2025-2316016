@@ -33,7 +33,6 @@ public:
 	float GetRadius(void) { return radius_; }
 	void Hit(void);
 private:
-	FallDownAttack& parent_;
 	COLOR_F color_;	//F
 	float radius_;	//”¼Œa
 	float initY;	//‰ŠúYÀ•W

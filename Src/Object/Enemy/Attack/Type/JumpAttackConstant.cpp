@@ -1,5 +1,7 @@
 #include "../../Utility/Utility.h"
 #include "../../Manager/SceneManager.h"
+#include "../../Manager/ResourceManager.h"
+#include "../../Manager/DrawTranslucentManager.h"
 #include "../../../Common/Gravity.h"
 #include "../../../Common/AnimationController.h"
 #include "../../EnemyBase.h"
@@ -13,6 +15,17 @@ JumpAttackConstant::JumpAttackConstant(EnemyAttackManager& parent) : AttackBase(
 	time_ = 0.0f;
 	intervalTime_ = 0.0f;
 	myType_ = EnemyAttackManager::ATTACK_TYPE::JUMP_CONSTANT;
+	transform_ = std::make_shared<Transform>();
+	material_ = std::make_unique<Polygon3DMaterial>(
+		"WaveVS.cso", 0,
+		"WavePS.cso", 2
+	);
+	material_->AddConstBufPS(COLOR);
+	material_->AddConstBufPS({ time_, TIME_SCALE, 1.0f, 1.0f });
+	material_->AddTextureBuf(ResourceManager::GetInstance().Load(ResourceManager::SRC::WAVE_TEXTURE).handleId_);
+	material_->AddTextureBuf(ResourceManager::GetInstance().Load(ResourceManager::SRC::NOISE).handleId_);
+	renderer_ = std::make_shared<Polygon3DRenderer>(*material_, polygonInfo_);
+	renderer_->SetBuckCull(true);
 }
 
 JumpAttackConstant::~JumpAttackConstant(void)
@@ -29,15 +42,22 @@ void JumpAttackConstant::Update(void)
 	time_ -= deltaTime;
 	intervalTime_ -= deltaTime;
 	updateState_();
+	material_->SetConstBufPS(1, { TIME - time_, TIME_SCALE, 1.0f, 1.0f });
 }
 
 void JumpAttackConstant::Draw(void)
 {
+	polygonInfo_.clear();
 	for (auto& wave : wave_)
 	{
 		if (wave->IsEnd())continue;
 		wave->Draw();
 	}
+	if (polygonInfo_.vertex.size() == 0)
+	{
+		return;
+	}
+	DrawTranslucentManager::GetInstance().Add(transform_, renderer_);
 }
 
 void JumpAttackConstant::ChangeStateNone(void)
@@ -61,7 +81,7 @@ void JumpAttackConstant::ChangeStateStart(void)
 {
 	//ウェーブの作成
 	AttackBase::ChangeStateStart();
-	std::unique_ptr<Wave> fast = std::make_unique<Wave>(parent_.GetTransform().lock()->pos, Wave::SPEED_TYPE::FAST, Utility::RED);
+	std::unique_ptr<Wave> fast = std::make_unique<Wave>(parent_.GetTransform().lock()->pos, Wave::SPEED_TYPE::FAST, *this);
 	wave_.push_back(std::move(fast));
 	time_ = TIME;
 	intervalTime_ = INTERVAL_TIME;
@@ -116,7 +136,7 @@ void JumpAttackConstant::UpdateStateUpdate(void)
 
 	if (intervalTime_ <= 0.0f && time_ > 0.0f)
 	{
-		std::unique_ptr<Wave> wave = std::make_unique<Wave>(parent_.GetTransform().lock()->pos, Wave::SPEED_TYPE::FAST, Utility::RED);
+		std::unique_ptr<Wave> wave = std::make_unique<Wave>(parent_.GetTransform().lock()->pos, Wave::SPEED_TYPE::FAST,*this);
 		wave_.push_back(std::move(wave));
 		intervalTime_ = INTERVAL_TIME;
 	}

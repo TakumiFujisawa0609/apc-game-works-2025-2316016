@@ -24,7 +24,6 @@ public:
 	bool IsEnd(void)const { return isEnd_; }
 	float GetRadius(void)const { return size_; }
 private:
-	WaterSpritAttack& parent_;
 	VECTOR startPos_;
 	VECTOR dir_;
 	float time_;

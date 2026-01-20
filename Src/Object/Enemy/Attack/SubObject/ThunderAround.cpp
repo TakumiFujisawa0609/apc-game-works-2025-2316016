@@ -9,7 +9,7 @@
 #include "../Type/ThunderAroundAttack.h"
 #include "ThunderAround.h"
 
-ThunderAround::ThunderAround(VECTOR targetPos, VECTOR initPos,  float initRad, ThunderAroundAttack& parent) : initRad_(initRad),parent_(parent)
+ThunderAround::ThunderAround(VECTOR targetPos, VECTOR initPos,  float initRad, ThunderAroundAttack& parent) : initRad_(initRad),SubObjectBase(parent)
 {
 	sumTime_ = 0.0f;
 	targetPos_ = targetPos;
@@ -177,28 +177,6 @@ void ThunderAround::SetPolygonInfo(void)
 	}
 	auto& indices = polInfo_.Indices;
 	indices.clear();
-	//for (int i = 0; i < VERTEX_NUM; i++)
-	//{
-	//	int curTop = i * 2;
-	//	int curBot = curTop + 1;
-
-	//	int nextTop = ((i + 1) % VERTEX_NUM) * 2;
-	//	int nextBot = nextTop + 1;
-
-	//	// ŽOŠpŒ`1
-	//	indices.push_back(curTop);
-	//	indices.push_back(nextTop);
-	//	indices.push_back(curBot);
-
-	//	// ŽOŠpŒ`2
-	//	indices.push_back(nextTop);
-	//	indices.push_back(nextBot);
-	//	indices.push_back(curBot);
-	//}
-	//auto& indices = polInfo_.Indices;
-	//indices.clear();
-	//indices.reserve(VERTEX_NUM * (HEIGHT_VERTEX_NUM - 1) * 6);
-
 	for (int x = 0; x < VERTEX_NUM; x++)
 	{
 		int nextX = (x + 1);// % VERTEX_NUM;
@@ -222,6 +200,4 @@ void ThunderAround::SetPolygonInfo(void)
 			indices.push_back(curUp);
 		}
 	}
-
-
 }

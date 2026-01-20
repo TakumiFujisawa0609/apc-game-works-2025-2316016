@@ -240,5 +240,7 @@
     <FxCompile Include="Src\Shader\Polygon\BasePolygonVS.hlsl" />
     <FxCompile Include="Src\Shader\Polygon\BlastVS.hlsl" />
     <FxCompile Include="Src\Shader\Polygon\BlastPS.hlsl" />
+    <FxCompile Include="Src\Shader\Polygon\WaveVS.hlsl" />
+    <FxCompile Include="Src\Shader\Polygon\WavePS.hlsl" />
   </ItemGroup>
 </Project>
