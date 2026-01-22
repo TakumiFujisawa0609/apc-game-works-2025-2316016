@@ -18,7 +18,7 @@
 #include "../../Object/SkyDome/SkyDome.h"
 #include "../../Object/Stage/Stage.h"
 #include "../../Object/Player/PlayerShot.h"
-#include "../../Object/Enemy/EnemyBase.h"
+#include "../../Object/Enemy/EnemyGame.h"
 #include "../../Object/UI/EnemyHPUI.h"
 #include "../../Object/UI/PadUI.h"
 #include "../../Object/Log/GameLog.h"
@@ -59,7 +59,7 @@ bool SceneGame::Init(void)
 	player_ = std::make_unique<GamePlayer>(0);
 	player_->Init();
 	//ìGê∂ê¨
-	enemy_ = std::make_unique<EnemyBase>(player_->GetTransform());
+	enemy_ = std::make_unique<EnemyGame>(player_->GetTransform());
 	enemy_->Init();
 	player_->SetEnemyTransform(enemy_->GetTransform());
 	//ìGHPUIê∂ê¨

@@ -5,9 +5,9 @@
 #include "../EnemyBase.h"
 #include "Dragon.h"
 
-
-Dragon::Dragon(EnemyBase& parent):parent_(parent)
+Dragon::Dragon(EnemyBase& parent):EnemyTypeBase(parent)
 {
+	type_ = TYPE::DRAGON;
 	//敵のトランスフォームを自分のものとして扱う
 	transform_ = parent_.GetTransform().lock();
 	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::DRAGON));
@@ -22,53 +22,6 @@ Dragon::Dragon(EnemyBase& parent):parent_(parent)
 
 Dragon::~Dragon(void)
 {
-	framePos_.clear();
-	animInfoMap_.clear();
-}
-
-void Dragon::Init(void)
-{
-}
-
-void Dragon::Update(void)
-{
-	animCtrl_->Update();
-	UpdateFramePos();
-}
-
-void Dragon::Draw(void)
-{
-}
-
-void Dragon::UIDraw(void)
-{
-}
-
-void Dragon::OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos)
-{
-	parent_.OnHit(_hitCol, hitPos);
-}
-
-void Dragon::SetAnim(ANIM_TYPE type)
-{
-	animCtrl_->Play((int)type);
-}
-
-int Dragon::GetAnimType(EnemyAttackManager::ATTACK_STATE attackState, EnemyAttackManager::ATTACK_TYPE attackType)
-{
-	//ANIM_INFO info = {};
-	//info.attackState = attackState;
-	//info.attackType = attackType;
-	for (auto& map : animInfoMap_)
-	{
-		auto info = map.first;
-		if (info.attackState != attackState || info.attackType != attackType)
-		{
-			continue;
-		}
-		return static_cast<int>(map.second);
-	}
-	return -1;
 }
 
 void Dragon::InitAnimationController(void)
@@ -78,7 +31,7 @@ void Dragon::InitAnimationController(void)
 	{
 		animCtrl_->Add(i, 30.0f);
 	}
-	SetAnim(ANIM_TYPE::FLY_FORWARD);
+	SetAnim((int)ANIM_TYPE::FLY_FORWARD);
 }
 
 void Dragon::InitGeometry(void)
@@ -141,100 +94,23 @@ void Dragon::InitGeometry(void)
 	MakeCollider(tag, std::move(geo), notHitTags);
 }
 
-void Dragon::UpdateFramePos(void)
-{
-	int modelId = transform_->modelId;
-	for (auto& framePos : framePos_)
-	{
-		framePos.second = MV1GetFramePosition(modelId, framePos.first);
-	}
-}
-
 void Dragon::InitAnimMap(void)
 {
-	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::READY, EnemyAttackManager::ATTACK_TYPE::JUMP,ANIM_TYPE::TAKE_OFF);
-	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::READY, EnemyAttackManager::ATTACK_TYPE::JUMP_CONSTANT, ANIM_TYPE::LAND);
-	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::READY, EnemyAttackManager::ATTACK_TYPE::FOLLOW, ANIM_TYPE::DEFEND);
-	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::READY, EnemyAttackManager::ATTACK_TYPE::FALL_DOWN, ANIM_TYPE::LAND);
-	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::READY, EnemyAttackManager::ATTACK_TYPE::CROSS_LINE, ANIM_TYPE::FLY_GLIDE);
-	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::READY, EnemyAttackManager::ATTACK_TYPE::THUNDER_AROUND, ANIM_TYPE::TAKE_OFF);
-	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::READY, EnemyAttackManager::ATTACK_TYPE::WATER_SPRIT, ANIM_TYPE::FLY_FLAME);
+	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::READY, EnemyAttackManager::ATTACK_TYPE::JUMP,(int)ANIM_TYPE::TAKE_OFF);
+	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::READY, EnemyAttackManager::ATTACK_TYPE::JUMP_CONSTANT,(int) ANIM_TYPE::LAND);
+	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::READY, EnemyAttackManager::ATTACK_TYPE::FOLLOW,(int) ANIM_TYPE::DEFEND);
+	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::READY, EnemyAttackManager::ATTACK_TYPE::FALL_DOWN,(int) ANIM_TYPE::LAND);
+	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::READY, EnemyAttackManager::ATTACK_TYPE::CROSS_LINE,(int) ANIM_TYPE::FLY_GLIDE);
+	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::READY, EnemyAttackManager::ATTACK_TYPE::THUNDER_AROUND,(int) ANIM_TYPE::TAKE_OFF);
+	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::READY, EnemyAttackManager::ATTACK_TYPE::WATER_SPRIT,(int) ANIM_TYPE::FLY_FLAME);
 
-	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::PLAY, EnemyAttackManager::ATTACK_TYPE::JUMP, ANIM_TYPE::SCREAM);
-	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::PLAY, EnemyAttackManager::ATTACK_TYPE::JUMP_CONSTANT, ANIM_TYPE::SCREAM);
-	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::PLAY, EnemyAttackManager::ATTACK_TYPE::FOLLOW, ANIM_TYPE::FLY_FORWARD);
-	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::PLAY, EnemyAttackManager::ATTACK_TYPE::FALL_DOWN, ANIM_TYPE::FLAME_ATTACK);
-	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::PLAY, EnemyAttackManager::ATTACK_TYPE::CROSS_LINE, ANIM_TYPE::SCREAM);
-	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::PLAY, EnemyAttackManager::ATTACK_TYPE::THUNDER_AROUND, ANIM_TYPE::FLY_FLAME);
-	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::PLAY, EnemyAttackManager::ATTACK_TYPE::WATER_SPRIT, ANIM_TYPE::FLAME_ATTACK);
+	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::PLAY, EnemyAttackManager::ATTACK_TYPE::JUMP,(int) ANIM_TYPE::SCREAM);
+	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::PLAY, EnemyAttackManager::ATTACK_TYPE::JUMP_CONSTANT,(int) ANIM_TYPE::SCREAM);
+	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::PLAY, EnemyAttackManager::ATTACK_TYPE::FOLLOW,(int) ANIM_TYPE::FLY_FORWARD);
+	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::PLAY, EnemyAttackManager::ATTACK_TYPE::FALL_DOWN,(int) ANIM_TYPE::FLAME_ATTACK);
+	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::PLAY, EnemyAttackManager::ATTACK_TYPE::CROSS_LINE,(int) ANIM_TYPE::SCREAM);
+	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::PLAY, EnemyAttackManager::ATTACK_TYPE::THUNDER_AROUND,(int) ANIM_TYPE::FLY_FLAME);
+	AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE::PLAY, EnemyAttackManager::ATTACK_TYPE::WATER_SPRIT,(int) ANIM_TYPE::FLAME_ATTACK);
 	
 }
 
-void Dragon::AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE attackState, EnemyAttackManager::ATTACK_TYPE attackType,ANIM_TYPE animType)
-{
-	ANIM_INFO animInfo;
-	animInfo.attackState = attackState;
-	animInfo.attackType = attackType;
-	animInfoMap_[animInfo] = animType;
-}
-
-//const bool Dragon::ANIM_INFO::operator>(const ANIM_INFO& info)
-//{
-//	int myState = static_cast<int>(attackState);
-//	int state = static_cast<int>(info.attackState);
-//	if (myState != state)
-//	{
-//		return myState > state;
-//	}
-//	int myType = static_cast<int>(attackType);
-//	int type = static_cast<int>(info.attackType);
-//	return myType > type;
-//}
-//
-//const bool Dragon::ANIM_INFO::operator<(const ANIM_INFO& info)
-//{
-//	int myState = static_cast<int>(attackState);
-//	int state = static_cast<int>(info.attackState);
-//	if (myState != state)
-//	{
-//		return myState < state;
-//	}
-//	int myType = static_cast<int>(attackType);
-//	int type = static_cast<int>(info.attackType);
-//	return myType < type;
-//}
-//
-//const bool Dragon::ANIM_INFO::operator<=(const ANIM_INFO& info)
-//{
-//	int myState = static_cast<int>(attackState);
-//	int state = static_cast<int>(info.attackState);
-//	if (myState != state)
-//	{
-//		return myState <= state;
-//	}
-//	int myType = static_cast<int>(attackType);
-//	int type = static_cast<int>(info.attackType);
-//	return myType <= type;
-//}
-//
-//const bool Dragon::ANIM_INFO::operator>=(const ANIM_INFO& info)
-//{
-//	int myState = static_cast<int>(attackState);
-//	int state = static_cast<int>(info.attackState);
-//	if (myState != state)
-//	{
-//		return myState >= state;
-//	}
-//	int myType = static_cast<int>(attackType);
-//	int type = static_cast<int>(info.attackType);
-//	return myType >= type;
-//}
-//
-//const bool Dragon::ANIM_INFO::operator==(const ANIM_INFO& info)
-//{
-//	int myState = static_cast<int>(attackState);
-//	int myType = static_cast<int>(attackType);
-//	int state = static_cast<int>(info.attackState);
-//	int type = static_cast<int>(info.attackType);
-//	return myState == state && myType == type;
-//}

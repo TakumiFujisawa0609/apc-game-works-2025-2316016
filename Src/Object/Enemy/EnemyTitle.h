@@ -5,7 +5,7 @@ class EnemyTitle :  public EnemyBase
 public:
 	static constexpr int ANIM_POP = 180;
 
-	EnemyTitle(std::weak_ptr<Transform> trans);
+	EnemyTitle(void);
 	~EnemyTitle(void)override;
 	void Init(void)override;
 	void Update(void)override;
@@ -16,6 +16,5 @@ public:
 	void SetRot(VECTOR rot);
 	void SetScl(VECTOR scl);
 protected:
-	void InitAddAttack(void)override;
 };
 

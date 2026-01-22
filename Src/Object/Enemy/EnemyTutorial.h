@@ -1,7 +1,6 @@
 #pragma once
-#include "EnemyBase.h"
-class EnemyTutorial :
-    public EnemyBase
+#include "EnemyGame.h"
+class EnemyTutorial : public EnemyGame
 {
 public:
 	EnemyTutorial(std::weak_ptr<Transform> target);

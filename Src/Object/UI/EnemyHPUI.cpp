@@ -3,10 +3,10 @@
 #include "../../Manager/SceneManager.h"
 #include "../../Renderer/PixelMaterial.h"
 #include "../../Renderer/PixelRenderer.h"
-#include "../Enemy/EnemyBase.h"
+#include "../Enemy/EnemyGame.h"
 #include "EnemyHPUI.h"
 
-EnemyHPUI::EnemyHPUI(float maxHP, EnemyBase& enemy) :enemy_(enemy)
+EnemyHPUI::EnemyHPUI(float maxHP, EnemyGame& enemy) :enemy_(enemy)
 {
 	maxHP_ = maxHP;
 	lightDir_ = INIT_LIGHT_DIR;

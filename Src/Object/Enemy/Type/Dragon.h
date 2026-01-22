@@ -1,12 +1,7 @@
 #pragma once
-#include <map>
-#include "../../ObjectBase.h"
-#include "../EnemyAttackManager.h"
+#include "EnemyTypeBase.h"
 
-class AnimationController;
-class EnemyBase;
-
-class Dragon : public ObjectBase
+class Dragon : public EnemyTypeBase
 {
 public:
 
@@ -52,7 +47,7 @@ public:
 
 
 
-	enum class ANIM_TYPE
+	enum class ANIM_TYPE 
 	{
 		IDLE_1,	//待機1
 		FLY_FORWARD, //前飛び
@@ -75,63 +70,13 @@ public:
 		MAX
 	};
 
-	struct ANIM_INFO
-	{
-		EnemyAttackManager::ATTACK_STATE attackState; //攻撃状態
-		EnemyAttackManager::ATTACK_TYPE attackType; //攻撃の種類
-		//bool operator>(const ANIM_INFO& info);
-		//const bool operator<(const ANIM_INFO& info);
-		//const bool operator<=(const ANIM_INFO& info);
-		//const bool operator>=(const ANIM_INFO& info);
-		//const bool operator==(const ANIM_INFO& info);
-		// 比較子は const な参照を受け取り、const メソッドにする
-		bool operator>(const ANIM_INFO& info) const noexcept {
-			return info < *this;
-		}
-
-		bool operator<(const ANIM_INFO& info) const noexcept {
-			if (attackState != info.attackState) return attackState < info.attackState;
-			return attackType < info.attackType;
-		}
-
-		bool operator<=(const ANIM_INFO& info) const noexcept {
-			return !(*this > info);
-		}
-
-		bool operator>=(const ANIM_INFO& info) const noexcept {
-			return !(*this < info);
-		}
-
-		bool operator==(const ANIM_INFO& info) const noexcept {
-			return attackState == info.attackState && attackType == info.attackType;
-		}
-
-		bool operator!=(const ANIM_INFO& info) const noexcept {
-			return !(*this == info);
-		}
-	};
-
 	Dragon(EnemyBase& parent);
-	~Dragon(void)override;
-	void Init(void)override;
-	void Update(void)override;
-	void Draw(void)override;
-	void UIDraw(void)override;
-	void OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos)override;
+	virtual ~Dragon(void)override;
 
-	void SetAnim(ANIM_TYPE type);	//アニメーションを適用する
-	AnimationController& GetAnimController(void) { return *animCtrl_; }
-	int GetAnimType(EnemyAttackManager::ATTACK_STATE attackState, EnemyAttackManager::ATTACK_TYPE attackType);
-	int GetIdleAnim(void) { return static_cast<int>(ANIM_TYPE::IDLE_1); }
+	int GetIdleAnim(void)override { return static_cast<int>(ANIM_TYPE::IDLE_1); }
 private:
-	EnemyBase& parent_; //親EnemyBase
-	std::unique_ptr<AnimationController> animCtrl_;	//アニメーションコントローラー
-	std::map<int, VECTOR> framePos_;	//フレーム番号とフレーム座標
-	std::map<ANIM_INFO, ANIM_TYPE> animInfoMap_; //アニメーション情報マップ
-	void InitGeometry(void);
-	void InitAnimationController(void); //アニメーションコントローラー初期化
-	void InitAnimMap(void); //アニメーション情報マップ初期化
-	void AddAnimInfoMap(EnemyAttackManager::ATTACK_STATE attackState, EnemyAttackManager::ATTACK_TYPE attackType,ANIM_TYPE animType );
-	void UpdateFramePos(void);	//framePos_を更新する
+	void InitGeometry(void)override;
+	void InitAnimationController(void)override; //アニメーションコントローラー初期化
+	void InitAnimMap(void)override; //アニメーション情報マップ初期化
 };
 

@@ -6,7 +6,7 @@ class AnimationController;
 class AttackBase;
 class Transform;
 class Gravity;
-class EnemyBase;
+class EnemyGame;
 
 class EnemyAttackManager
 {
@@ -30,7 +30,7 @@ public:
 		PLAY,	//実行
 	};
 
-	EnemyAttackManager(EnemyBase& enemy);
+	EnemyAttackManager(EnemyGame& enemy);
 	~EnemyAttackManager(void);
 	void Init(void);
 	void Update(void);
@@ -47,7 +47,7 @@ public:
 	Gravity& GetGravity(void);
 	void SetTarget(std::weak_ptr<Transform> target) { target_ = target; }
 protected:
-	EnemyBase& enemy_;
+	EnemyGame& enemy_;
 	std::weak_ptr<Transform> target_; //ターゲット
 	std::vector<std::unique_ptr<AttackBase>> attackList_; //攻撃リスト
 private:

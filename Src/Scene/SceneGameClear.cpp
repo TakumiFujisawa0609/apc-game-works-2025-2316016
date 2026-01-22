@@ -29,7 +29,7 @@ bool SceneGameClear::Init(void)
     camera.SetCameraUp(Utility::DIR_U);
 
     player_ = std::make_unique<ClearPlayer>(0);
-    enemy_ = std::make_unique<EnemyClear>(player_->GetTransform());
+    enemy_ = std::make_unique<EnemyClear>();
     skyDome_ = std::make_unique<SkyDome>();
     skyDome_->SetColor(SKY_COL);
 

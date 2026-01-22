@@ -3,7 +3,7 @@
 #include "../../Application.h"
 #include "../ObjectPixelBase.h"
 
-class EnemyBase;
+class EnemyGame;
 
 class EnemyHPUI : public ObjectPixelBase
 {
@@ -26,7 +26,7 @@ public:
 	/// </summary>
 	/// <param name="maxHP">Å‘å‘Ì—Í</param>
 	/// <param name="enemy">“G‚ÌQÆŒ^</param>
-	EnemyHPUI(float maxHP ,EnemyBase& enemy);
+	EnemyHPUI(float maxHP ,EnemyGame& enemy);
 	~EnemyHPUI();
 	void Init(void);
 	void Update(void);
@@ -35,7 +35,7 @@ public:
 private:
 
 	//“G‚ÌƒNƒ‰ƒX
-	EnemyBase& enemy_;
+	EnemyGame& enemy_;
 
 	VECTOR lightDir_;
 	//Å‘å‘Ì—Í

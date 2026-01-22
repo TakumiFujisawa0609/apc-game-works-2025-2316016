@@ -1,0 +1,17 @@
+[2026/01/20 13:56:14] Time=12.3167, RollNum=0, RollSuccess=0, JumpNum=0, JumpSuccess=0, Damage=0, DamageNum=0, LastHP=100, EnemyHP=90
+[2026/01/20 14:09:40] Time=24.6665, RollNum=0, RollSuccess=0, JumpNum=0, JumpSuccess=0, Damage=0, DamageNum=0, LastHP=100, EnemyHP=100
+[2026/01/20 14:21:59] Time=2.86666, RollNum=0, RollSuccess=0, JumpNum=0, JumpSuccess=0, Damage=0, DamageNum=0, LastHP=100, EnemyHP=100
+[2026/01/20 14:23:23] Time=26.8164, RollNum=16, RollSuccess=7, JumpNum=0, JumpSuccess=0, Damage=37.5, DamageNum=6, LastHP=62.5, EnemyHP=100
+[2026/01/21 09:42:16] Time=16.1499, RollNum=0, RollSuccess=0, JumpNum=2, JumpSuccess=0, Damage=5, DamageNum=1, LastHP=95, EnemyHP=84
+[2026/01/21 09:44:33] Time=116.794, RollNum=2, RollSuccess=0, JumpNum=26, JumpSuccess=0, Damage=85, DamageNum=9, LastHP=100, EnemyHP=0
+[2026/01/21 13:26:24] Time=54.5827, RollNum=0, RollSuccess=0, JumpNum=7, JumpSuccess=0, Damage=0, DamageNum=0, LastHP=100, EnemyHP=52
+[2026/01/21 13:38:43] Time=140.726, RollNum=0, RollSuccess=0, JumpNum=15, JumpSuccess=0, Damage=0, DamageNum=0, LastHP=100, EnemyHP=0
+[2026/01/21 13:52:42] Time=50.6827, RollNum=0, RollSuccess=0, JumpNum=1, JumpSuccess=0, Damage=0, DamageNum=0, LastHP=100, EnemyHP=0
+[2026/01/21 14:41:48] Time=10.0834, RollNum=0, RollSuccess=0, JumpNum=0, JumpSuccess=0, Damage=0, DamageNum=0, LastHP=100, EnemyHP=100
+[2026/01/21 14:54:08] Time=11.35, RollNum=0, RollSuccess=0, JumpNum=2, JumpSuccess=0, Damage=0, DamageNum=0, LastHP=100, EnemyHP=100
+[2026/01/21 14:59:58] Time=17.1666, RollNum=0, RollSuccess=0, JumpNum=0, JumpSuccess=0, Damage=0, DamageNum=0, LastHP=100, EnemyHP=78
+[2026/01/21 15:00:59] Time=6.53336, RollNum=0, RollSuccess=0, JumpNum=0, JumpSuccess=0, Damage=0, DamageNum=0, LastHP=100, EnemyHP=96
+[2026/01/21 15:02:53] Time=25.3165, RollNum=0, RollSuccess=0, JumpNum=0, JumpSuccess=0, Damage=0, DamageNum=0, LastHP=100, EnemyHP=86
+[2026/01/21 15:10:16] Time=153.007, RollNum=0, RollSuccess=0, JumpNum=0, JumpSuccess=0, Damage=0, DamageNum=0, LastHP=100, EnemyHP=100
+[2026/01/22 10:43:34] Time=19.6832, RollNum=0, RollSuccess=0, JumpNum=1, JumpSuccess=0, Damage=10, DamageNum=2, LastHP=90, EnemyHP=82
+[2026/01/22 10:44:13] Time=3.33333, RollNum=0, RollSuccess=0, JumpNum=0, JumpSuccess=0, Damage=0, DamageNum=0, LastHP=100, EnemyHP=98

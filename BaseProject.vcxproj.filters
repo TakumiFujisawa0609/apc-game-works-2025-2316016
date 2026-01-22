@@ -98,6 +98,9 @@
     <ClCompile Include="Src\Object\Enemy\EnemyOver.cpp" />
     <ClCompile Include="Src\Object\UI\PadUI.cpp" />
     <ClCompile Include="Src\Scene\SceneChackPad.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Type\Chicken.cpp" />
+    <ClCompile Include="Src\Object\Enemy\Type\EnemyTypeBase.cpp" />
+    <ClCompile Include="Src\Object\Enemy\EnemyGame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Common\IntVector3.h" />
@@ -197,6 +200,9 @@
     <ClInclude Include="Src\Object\Enemy\EnemyOver.h" />
     <ClInclude Include="Src\Object\UI\PadUI.h" />
     <ClInclude Include="Src\Scene\SceneChackPad.h" />
+    <ClInclude Include="Src\Object\Enemy\Type\Chicken.h" />
+    <ClInclude Include="Src\Object\Enemy\Type\EnemyTypeBase.h" />
+    <ClInclude Include="Src\Object\Enemy\EnemyGame.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shader\Common\VertexToPixelHeader.hlsli" />
@@ -222,8 +228,8 @@
     <FxCompile Include="Src\Shader\Model\NoChangeVS.hlsl" />
     <FxCompile Include="Src\Shader\Model\PlayerVS.hlsl" />
     <FxCompile Include="Src\Shader\Model\PlayerPS.hlsl" />
-    <FxCompile Include="Src\Shader\Model\EnemyPS.hlsl" />
-    <FxCompile Include="Src\Shader\Model\EnemyVS.hlsl" />
+    <FxCompile Include="Src\Shader\Model\DragonPS.hlsl" />
+    <FxCompile Include="Src\Shader\Model\DragonVS.hlsl" />
     <FxCompile Include="Src\Shader\Model\NoTexturePS.hlsl" />
     <FxCompile Include="Src\Shader\Model\NoTextureVS.hlsl" />
     <FxCompile Include="Src\Shader\Polygon\FirePS.hlsl" />
@@ -242,5 +248,7 @@
     <FxCompile Include="Src\Shader\Polygon\BlastPS.hlsl" />
     <FxCompile Include="Src\Shader\Polygon\WaveVS.hlsl" />
     <FxCompile Include="Src\Shader\Polygon\WavePS.hlsl" />
+    <FxCompile Include="Src\Shader\Model\ChickenPS.hlsl" />
+    <FxCompile Include="Src\Shader\Model\ChickenVS.hlsl" />
   </ItemGroup>
 </Project>

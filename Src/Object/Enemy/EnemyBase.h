@@ -8,7 +8,7 @@
 class Gravity;
 class Geometry;
 class AnimationController;
-class Dragon;
+class EnemyTypeBase;
 class EnemyAttackManager;
 
 class EnemyBase : public ObjectModelBase
@@ -38,7 +38,7 @@ public:
 	/// コンストラクタ
 	/// </summary>
 	/// <param name=""></param>
-	EnemyBase(std::weak_ptr<Transform> target);
+	EnemyBase(void);
 
 	/// <summary>
 	/// デストラクタ
@@ -66,40 +66,19 @@ public:
 
 	virtual void UIDraw(void)override;
 
-	void OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos)override;
-
-	Gravity& GetGravity(void) { return *gravity_; }
-
-	void Damage(float damage); //ダメージ処理
-
-	float GetMaxHP(void) const { return maxHP_; }
-	float GetHP(void) const { return hp_; }
+	virtual void OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos)override;
 
 	void ChangeState(STATE state);
 
 	AnimationController& GetAnimController(void);
 
-	Dragon& GetModelType(void) { return *dragon_; }
+	EnemyTypeBase& GetModelType(void) { return *enemyType_; }
 protected:
 
-	std::unique_ptr<Dragon> dragon_; //ドラゴン
-
+	STATE state_; //状態
+	std::unique_ptr<EnemyTypeBase> enemyType_; //敵の種類
 	float damageTime_;
 	VECTOR hitPos_;
-
-	STATE state_; //状態
-	std::unique_ptr<Gravity> gravity_; //重力
-	
-	std::unique_ptr<EnemyAttackManager>attackManager_;
-
-	std::weak_ptr<Transform> target_; //ターゲット
-
-	//体力
-	float maxHP_; //最大体力
-	float hp_; //体力
-
-	void MoveLimit(void); //移動制限
-	void AplayGravity(void);	//重力適用
 
 	//状態変更用
 	std::map<STATE, std::function<void(void)>> changeState_; //状態変更時の関数格納用
@@ -112,11 +91,7 @@ protected:
 	virtual void UpdateAttack(void); //攻撃
 	virtual void UpdateDead(void); //死亡
 
-
 	virtual void AplayChangeStateFunc(void);
-
-	virtual void InitAddAttack(void);
-
 private:
 
 

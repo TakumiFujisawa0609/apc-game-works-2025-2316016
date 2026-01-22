@@ -6,7 +6,7 @@ class GamePlayer;
 class SkyDome;
 class Stage;
 class PadUI;
-class EnemyBase;
+class EnemyGame;
 class EnemyHPUI;
 class PixelMaterial;
 class PixelRenderer;
@@ -50,7 +50,7 @@ protected:
 	//プレイヤー
 	std::unique_ptr<GamePlayer> player_;
 	//敵
-	std::unique_ptr<EnemyBase> enemy_;
+	std::unique_ptr<EnemyGame> enemy_;
 	//スカイドーム
 	std::unique_ptr<SkyDome> skyDome_;
 	//PadUI

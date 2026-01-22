@@ -29,7 +29,7 @@ bool SceneGameOver::Init(void)
     camera.SetCameraUp(Utility::DIR_U);
 
     player_ = std::make_unique<OverPlayer>(0);
-    enemy_ = std::make_unique<EnemyOver>(player_->GetTransform());
+    enemy_ = std::make_unique<EnemyOver>();
     skyDome_ = std::make_unique<SkyDome>();
     skyDome_->SetColor(SKY_COL);
 	SoundManager::GetInstance().Play(SoundManager::SRC::OVER_BGM, Sound::TIMES::LOOP);

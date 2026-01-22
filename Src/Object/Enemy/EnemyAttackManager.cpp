@@ -9,11 +9,11 @@
 #include "Attack/Type/FallDownAttack.h"
 #include "Attack/Type/WaterSpritAttack.h"
 #include "Type/Dragon.h"
-#include "EnemyBase.h"
+#include "EnemyGame.h"
 #include "EnemyAttackManager.h"
 
 
-EnemyAttackManager::EnemyAttackManager(EnemyBase& enemy): enemy_(enemy)
+EnemyAttackManager::EnemyAttackManager(EnemyGame& enemy): enemy_(enemy)
 {
 }
 

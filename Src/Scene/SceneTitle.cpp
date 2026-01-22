@@ -35,7 +35,7 @@ bool SceneTitle::Init(void)
 	SetUseASyncLoadFlag(false);
 
 	player_ = std::make_unique<TitlePlayer>(0);
-	enemy_ = std::make_unique<EnemyTitle>(player_->GetTransform());
+	enemy_ = std::make_unique<EnemyTitle>();
 	skyDome_ = std::make_unique<SkyDome>();
 	skyDome_->SetColor(SKY_COL);
 	return true;
