@@ -101,6 +101,7 @@
     <ClCompile Include="Src\Object\Enemy\Type\Chicken.cpp" />
     <ClCompile Include="Src\Object\Enemy\Type\EnemyTypeBase.cpp" />
     <ClCompile Include="Src\Object\Enemy\EnemyGame.cpp" />
+    <ClCompile Include="Src\Scene\Game\Tutorial\TutorialLockOn.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Common\IntVector3.h" />
@@ -203,6 +204,7 @@
     <ClInclude Include="Src\Object\Enemy\Type\Chicken.h" />
     <ClInclude Include="Src\Object\Enemy\Type\EnemyTypeBase.h" />
     <ClInclude Include="Src\Object\Enemy\EnemyGame.h" />
+    <ClInclude Include="Src\Scene\Game\Tutorial\TutorialLockOn.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shader\Common\VertexToPixelHeader.hlsli" />
@@ -250,5 +252,7 @@
     <FxCompile Include="Src\Shader\Polygon\WavePS.hlsl" />
     <FxCompile Include="Src\Shader\Model\ChickenPS.hlsl" />
     <FxCompile Include="Src\Shader\Model\ChickenVS.hlsl" />
+    <FxCompile Include="Src\Shader\Polygon\FollowPS.hlsl" />
+    <FxCompile Include="Src\Shader\Polygon\FollowVS.hlsl" />
   </ItemGroup>
 </Project>

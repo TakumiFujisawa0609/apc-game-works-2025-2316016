@@ -135,7 +135,22 @@ void CrossAttack::UpdateStateUpdate(void)
 		sign_ *= -1;
 		reverseTime_ = LINE_DIR_REVERSE_TIME;
 	}
-	radian_ += Utility::Deg2RadF(deltaTime * SECOND_TO_DEGREE * sign_);
+	if(reverseTime_ < SPEED_FADE_TIME)
+	{
+		float t = reverseTime_ / SPEED_FADE_TIME;
+		//‰ñ“]‘¬“x‚ð—Ž‚Æ‚·
+		radian_ += Utility::Deg2RadF(deltaTime * SECOND_TO_DEGREE * sign_ * t);
+	}
+	else if (reverseTime_ > LINE_DIR_REVERSE_TIME - SPEED_FADE_TIME)
+	{
+		float t = (LINE_DIR_REVERSE_TIME - reverseTime_) / SPEED_FADE_TIME;
+		//‰ñ“]‘¬“x‚ðã‚°‚é
+		radian_ += Utility::Deg2RadF(deltaTime * SECOND_TO_DEGREE * sign_ * t);
+	}
+	else
+	{
+		radian_ += Utility::Deg2RadF(deltaTime * SECOND_TO_DEGREE * sign_);
+	}
 	if (time_ > TIME)
 	{
 		crossLines_.clear();

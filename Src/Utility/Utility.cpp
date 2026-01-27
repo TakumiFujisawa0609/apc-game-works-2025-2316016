@@ -1401,3 +1401,36 @@ VECTOR Utility::CalcCenter(const VECTOR& a, const VECTOR& b, const VECTOR& c, co
     center.z = (a.z + b.z + c.z + d.z) * 0.25f;
     return center;
 }
+
+FLOAT2 Utility::CalcSphericalUV(const VECTOR& normal)
+{
+    // --- 正規化（半径を除去） ---
+// 球面マッピングは方向ベクトルのみを使用する
+    float length = MagnitudeF(normal);
+
+    // ゼロ割り防止（理論上不要だが安全のため）
+    if (length == 0.0f)
+    {
+        return { 0.0f, 0.0f };
+    }
+
+    float nx = normal.x / length;
+    float ny = normal.y / length;
+    float nz = normal.z / length;
+
+    // --- U座標（経度） ---
+    // XZ平面での角度を取得
+    // atan2の戻り値範囲 : -PI ～ +PI
+    float u = (std::atan2(nz, nx) + DX_PI) / (2.0f * DX_PI);
+
+    // --- V座標（緯度） ---
+    // Y成分から上下角を取得
+    // asinの戻り値範囲 : -PI/2 ～ +PI/2
+    float v = (std::asin(ny) + DX_PI * 0.5f) / DX_PI;
+
+    // --- テクスチャ座標系補正 ---
+    // 画像の上をV=0に合わせる
+    v = 1.0f - v;
+
+    return { u, v };
+}

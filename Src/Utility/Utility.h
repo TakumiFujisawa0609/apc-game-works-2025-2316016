@@ -514,6 +514,13 @@ public:
 	static VECTOR CalcCenter(const VECTOR& a, const VECTOR& b, const VECTOR& c ,const VECTOR& d);
 
 	/// <summary>
+	/// 球面マッピングのUV座標を計算する
+	/// </summary>
+	/// <param name="normal">中心からの正規化された座標</param>
+	/// <returns>uv値</returns>
+	static FLOAT2 CalcSphericalUV(const VECTOR& normal);
+
+	/// <summary>
 	/// vector配列の中のnullptrを削除する
 	/// </summary>
 	/// <typeparam name="T">型名</typeparam>

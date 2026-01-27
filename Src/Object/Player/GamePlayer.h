@@ -42,7 +42,8 @@ public:
 	const int GetAvoidSaccessNum(void)const { return avoidSaccessNum_; }	//回避成功回数
 	const int GetJumpNum(void)const { return jumpNum_; }	//ジャンプ回数
 	const int GetJumpSaccessNum(void)const { return jumpSaccessNum_; }	//ジャンプ回避成功回数
-
+	
+	const float GetMoveDistance(void)const { return  static_cast<float>(Utility::Distance(prePos_, transform_->pos)); }
 protected:
 	int footNum_; //足音の数
 	std::weak_ptr<Transform> enemyTrans_; //敵の座標

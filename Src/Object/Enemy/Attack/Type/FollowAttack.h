@@ -9,6 +9,7 @@ class FollowAttack :    public AttackBase
 public:
 	static constexpr float COOL_DOWN = 3.0f;	//クールダウン
 	static constexpr int RANDOM_SHOT_NUM = 5;	//ランダムスピードの数
+	static constexpr float NOISE_POW = 4.0f;
 
 	FollowAttack(EnemyAttackManager& parent);
 	~FollowAttack(void)override;
@@ -18,6 +19,8 @@ public:
 	int GetSubObjectNum(void)override { return static_cast<int>(shots_.size()); }
 
 private:
+	float time_;			//時間
+
 	std::vector<std::unique_ptr<FollowShot>> shots_;
 	void ChangeStateNone(void) override;	//実行されていない
 	void ChangeStateReady(void) override;	//実行準備

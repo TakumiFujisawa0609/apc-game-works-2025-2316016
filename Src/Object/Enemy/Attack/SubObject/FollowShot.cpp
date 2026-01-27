@@ -14,6 +14,7 @@ FollowShot::FollowShot(std::weak_ptr<Transform> target, SPEED_TYPE speed, VECTOR
 	transform_ = std::make_shared<Transform>();
 	transform_->SetModel(ResourceManager::GetInstance().LoadModelDuplicate(ResourceManager::SRC::CHICKIN));
 	transform_->pos = startPos;
+	transform_->pos.y += RADIUS;
 	time_ = ATTACK_TIME;
 	transform_->Update();
 	std::unique_ptr<Geometry>geo = std::make_unique<Sphere>(transform_->pos, RADIUS);
@@ -42,11 +43,13 @@ void FollowShot::Update(void)
 	{
 		state_ = STATE::DEAD;
 	}
+	SetPolygonInfo();
 }
 
 void FollowShot::Draw(void)
 {
-	MV1DrawModel(transform_->modelId);
+	//MV1DrawModel(transform_->modelId);
+	parent_.AddVertexs(polInfo_);
 }
 
 void FollowShot::Hit(void)
@@ -68,5 +71,82 @@ float FollowShot::InitSpeed(SPEED_TYPE speedType) const
 		return GetRand(static_cast<int>((FAST_SPEED - SLOW_SPEED)*10))/10 + SLOW_SPEED;
 	default:
 		return 0.0f;
+	}
+}
+
+void FollowShot::SetPolygonInfo(void)
+{
+	auto& vertices = polInfo_.vertex;
+	vertices.clear();
+	auto& indices = polInfo_.Indices;
+	indices.clear();
+	VECTOR center = transform_->pos;
+	const float PI = DX_PI_F;
+
+	// =========================
+	// 頂点生成
+	// =========================
+	for (int lat = 0; lat <= VERTEX_NUM; lat++)
+	{
+		float v = static_cast<float>(lat) / VERTEX_NUM;
+		float theta = PI * v;
+
+		float sinT = sinf(theta);
+		float cosT = cosf(theta);
+
+		for (int lon = 0; lon <= VERTEX_NUM; lon++)
+		{
+			float u = static_cast<float>(lon) / VERTEX_NUM;
+			float phi = 2.0f * PI * u;
+
+			float sinP = sinf(phi);
+			float cosP = cosf(phi);
+
+			VECTOR pos;
+			pos.x = center.x + RADIUS * sinT * cosP;
+			pos.y = center.y + RADIUS * cosT;
+			pos.z = center.z + RADIUS * sinT * sinP;
+
+			VERTEX3DSHADER vtx{};
+			vtx.pos = pos;
+			vtx.norm = VNorm(VSub(pos, center));
+			vtx.tan = { 0,0,0 };
+			vtx.binorm = vtx.norm;
+			vtx.dif = COLOR_U8(255, 255, 255, 255);
+			vtx.spc = COLOR_U8(0, 0, 0, 0);
+			vtx.u = u;
+			vtx.v = v;
+			vtx.su = u;
+			vtx.sv = v;
+			vtx.spos = { 0,0,0,1 };
+
+			vertices.push_back(vtx);
+		}
+	}
+
+	// =========================
+	// インデックス生成
+	// =========================
+	int stride = VERTEX_NUM + 1;
+
+	for (int lat = 0; lat < VERTEX_NUM; lat++)
+	{
+		for (int lon = 0; lon < VERTEX_NUM; lon++)
+		{
+			int i0 = lat * stride + lon;
+			int i1 = i0 + 1;
+			int i2 = i0 + stride;
+			int i3 = i2 + 1;
+
+			// 三角形①
+			indices.push_back(i0);
+			indices.push_back(i2);
+			indices.push_back(i1);
+
+			// 三角形②
+			indices.push_back(i1);
+			indices.push_back(i2);
+			indices.push_back(i3);
+		}
 	}
 }

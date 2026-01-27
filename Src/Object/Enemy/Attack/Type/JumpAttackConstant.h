@@ -10,8 +10,8 @@ class JumpAttackConstant :    public AttackBase
 public:
 	static constexpr float COOL_DOWN = 15.0f;	//クールダウン
 	static constexpr float JUMP_POW = 30.0f; //ジャンプの高さ
-	static constexpr float INTERVAL_TIME = 0.4f; //波紋を出す間隔時間
-	static constexpr float TIME = 10.0f; //ジャンプしてから波紋を出し終わるまでの時間
+	static constexpr float INTERVAL_TIME = 0.6f; //波紋を出す間隔時間
+	static constexpr float TIME = 8.0f; //ジャンプしてから波紋を出し終わるまでの時間
 	static constexpr float TIME_SCALE = 3.0f; 
 	static constexpr FLOAT4 COLOR = { 0.5f,1.0f,0.5f,0.5f };
 

@@ -73,6 +73,9 @@ bool SceneTutorial::Init(void)
 		Vector2(Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y)
 	);
 	vignetteTime_ = 0.0f;
+	//移動チュートリアル生成
+	tutorialMove_ = std::make_unique<TutorialMove>();
+
 	ChangeStep(STEP::MOVE);
 	return true;
 }
@@ -145,7 +148,12 @@ void SceneTutorial::ChangeStepFinish(void)
 
 void SceneTutorial::UpdateStepMove(void)
 {
-	
+	tutorialMove_->AddMoveDistance(player_->GetMoveDistance());
+	tutorialMove_->Update();
+	if (tutorialMove_->GetState() == TutorialBase::STATE::END)
+	{
+		ChangeStep(STEP::LOCK_ON);
+	}
 }
 
 void SceneTutorial::UpdateStepLockOn(void)

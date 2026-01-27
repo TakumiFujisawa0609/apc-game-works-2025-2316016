@@ -30,7 +30,8 @@ public:
 
 	static constexpr float DAMAGE = 15.0f;	//É_ÉÅÅ[ÉW
 	static constexpr float ATTACK_TIME = 10.0f;	//çUåÇéûä‘
-	static constexpr float RADIUS = 20.0f;		//îºåa
+	static constexpr float RADIUS = 50.0f;		//îºåa
+	static constexpr int VERTEX_NUM = 16;		//í∏ì_êî
 
 	FollowShot(std::weak_ptr<Transform> target, SPEED_TYPE speed,VECTOR startPos ,FollowAttack& parent);
 	~FollowShot(void)override;
@@ -48,5 +49,5 @@ private:
 	float time_;
 
 	float InitSpeed(SPEED_TYPE speedType) const;
-
+	void SetPolygonInfo(void)override;
 };

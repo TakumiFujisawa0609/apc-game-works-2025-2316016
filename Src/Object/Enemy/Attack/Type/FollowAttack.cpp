@@ -1,16 +1,31 @@
 #include "../../Utility/Utility.h"
 #include "../../../Common/Transform.h"
 #include "../../../Common/AnimationController.h"
+#include "../../Manager/Camera.h"
 #include "../../Manager/SceneManager.h"
+#include "../../Manager/ResourceManager.h"
+#include "../../Manager/DrawTranslucentManager.h"
 #include "../../EnemyBase.h"
 #include "../SubObject/FollowShot.h"
 #include "FollowAttack.h"
 
 FollowAttack::FollowAttack(EnemyAttackManager& parent) : AttackBase(parent)
 {
+	time_ = 0.0f;
 	range_ = RANGE::LONG;
 	geo_ = GEOMETORY::SPHERE;
 	myType_ = EnemyAttackManager::ATTACK_TYPE::FOLLOW;
+	transform_ = std::make_shared<Transform>();
+	material_ = std::make_unique<Polygon3DMaterial>(
+		"FollowVS.cso", 0,
+		"FollowPS.cso", 1
+	);
+	VECTOR cameraPos = GetCameraPosition();
+	material_->AddConstBufPS({ time_, cameraPos.x, cameraPos.y, cameraPos.z });
+	material_->AddTextureBuf(ResourceManager::GetInstance().Load(ResourceManager::SRC::TEXTURE_1).handleId_);
+	material_->AddTextureBuf(ResourceManager::GetInstance().Load(ResourceManager::SRC::NOISE).handleId_);
+	renderer_ = std::make_shared<Polygon3DRenderer>(*material_, polygonInfo_);
+	//renderer_->SetBuckCull(true);
 }
 
 FollowAttack::~FollowAttack(void)
@@ -23,15 +38,23 @@ void FollowAttack::Init(void)
 
 void FollowAttack::Update(void)
 {
+	time_ += SceneManager::GetInstance().GetDeltaTime();
 	updateState_();
 }
 
 void FollowAttack::Draw(void)
 {
+	VECTOR cameraPos = SceneManager::GetInstance().GetCamera().GetPos();
+	material_->SetConstBufPS(0, { time_, cameraPos.x, cameraPos.y, cameraPos.z });
+	polygonInfo_.clear();
 	for (auto& shot : shots_)
 	{
 		if (!shot->IsShot())continue;
 		shot->Draw();
+	}
+	if (polygonInfo_.vertex.size() != 0)
+	{
+		DrawTranslucentManager::GetInstance().Add(transform_, renderer_);
 	}
 }
 
@@ -93,6 +116,7 @@ void FollowAttack::UpdateStateStart(void)
 
 void FollowAttack::UpdateStateUpdate(void)
 {
+	time_ += SceneManager::GetInstance().GetDeltaTime();
 	bool isFinish = true;
 	for (auto& shot : shots_)
 	{
@@ -111,6 +135,7 @@ void FollowAttack::UpdateStateUpdate(void)
 	{
 		ChangeState(STATE::FINISH);
 	}
+	material_->SetConstBufPS(0, { time_, NOISE_POW, 1.0f, 1.0f });
 }
 
 void FollowAttack::UpdateStateFinish(void)

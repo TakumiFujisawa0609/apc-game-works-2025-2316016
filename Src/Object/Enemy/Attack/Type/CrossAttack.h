@@ -9,6 +9,7 @@ public:
 	static constexpr float COOL_DOWN = 30.0f;	//クールダウン
 	static constexpr float TIME = 30.0f; //発動時間
 	static constexpr float SECOND_TO_DEGREE = 60.0f; //1秒で回転する角度
+	static constexpr float SPEED_FADE_TIME = 2.0f; //速度が0になるまでの時間
 	static constexpr int LINE_NUM = 4; //クロスラインの数
 	static constexpr int LINE_POINT_NUM = 12; //クロスラインの点の数
 	static constexpr float LINE_DIR_REVERSE_TIME = 10.0f; //ラインの向きが逆になる時間
