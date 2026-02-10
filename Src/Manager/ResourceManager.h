@@ -53,6 +53,8 @@ public:
 
 		//タイトル
 		TITLE_IMAGE,
+		OVER_IMAGE,
+		CLEAR_IMAGE,
 
 		//オブジェクト
 		SKY_DOME,	//スカイドーム
@@ -70,6 +72,7 @@ public:
 		ENEMY_HP_UI_MASK_IMG,	//敵HPのUIマスク
 		ENEMY_HP_UI_NORMAL_IMG,	//敵HPのUI法線
 		PAD_UI_IMG,		//パッドUI
+		PUSH_KEY_IMG,	//PUSH KEY画像
 
 		//テクスチャ
 		WAVE_TEXTURE,	//ギザギザテクスチャ

@@ -102,8 +102,12 @@ void ResourceManager::Init(void)
 
 
 	//タイトル
-	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "Title/Title.png");
+	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "Logo/Title.png");
 	resourcesMap_.emplace(SRC::TITLE_IMAGE, std::move(res));
+	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "Logo/GameOver.png");
+	resourcesMap_.emplace(SRC::OVER_IMAGE, std::move(res));
+	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "Logo/GameClear.png");
+	resourcesMap_.emplace(SRC::CLEAR_IMAGE, std::move(res));
 
 	//オブジェクト
 	res = Resource(Resource::TYPE::MODEL, Application::PATH_MODEL + "SkyDome/SkyDome.mv1");
@@ -132,6 +136,8 @@ void ResourceManager::Init(void)
 	resourcesMap_.emplace(SRC::ENEMY_HP_UI_NORMAL_IMG, std::move(res));
 	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "UI/Pad.png");
 	resourcesMap_.emplace(SRC::PAD_UI_IMG, std::move(res));
+	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "UI/PushKey.png");
+	resourcesMap_.emplace(SRC::PUSH_KEY_IMG, std::move(res));
 
 	//テクスチャ
 	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "Texture/Wave.png");

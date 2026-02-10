@@ -3,9 +3,9 @@
 #include <map>
 #include <functional>
 #include "../../EnemyAttackManager.h"
-#include "../../../ObjectPolygonBase.h"
+#include "../../../ObjectPolygon3DBase.h"
 
-class AttackBase : public ObjectPolygonBase
+class AttackBase : public ObjectPolygon3DBase
 {
 public:
 

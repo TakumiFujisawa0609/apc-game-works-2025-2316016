@@ -9,6 +9,7 @@
 #include "../Object/Player/TitlePlayer.h"
 #include "../Object/Enemy/EnemyTitle.h"
 #include "../Object/SkyDome/SkyDome.h"
+#include "../Object/UI/PushKeyUI.h"
 #include "SceneTitle.h"
 
 
@@ -38,12 +39,15 @@ bool SceneTitle::Init(void)
 	enemy_ = std::make_unique<EnemyTitle>();
 	skyDome_ = std::make_unique<SkyDome>();
 	skyDome_->SetColor(SKY_COL);
+
+	InitPushKeyUI();
 	return true;
 }
 
 //XVˆ—
 void SceneTitle::Update(void)
 {
+	pushKeyUI_->Update();
 	skyDome_->Update();
 	player_->Update();
 	enemy_->Update();
@@ -81,6 +85,7 @@ void SceneTitle::Draw(void)
 	//SetDrawBright(255, 0, 0);
 	//DrawExtendGraph(0, 0, Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y, ResourceManager::GetInstance().Load(ResourceManager::SRC::TITLE_IMAGE_2).handleId_, true);
 	DrawRotaGraph(Application::SCREEN_HALF_X, Application::SCREEN_HALF_Y, 1.0f, 0.0f, ResourceManager::GetInstance().Load(ResourceManager::SRC::TITLE_IMAGE).handleId_, true);
+	pushKeyUI_->Draw();
 	//SetDrawBright(255, 255, 255);
 	//DrawExtendGraph(0, 0, Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y, ResourceManager::GetInstance().Load(ResourceManager::SRC::TITLE_IMAGE_1).handleId_, true);
 }
@@ -88,4 +93,26 @@ void SceneTitle::Draw(void)
 void SceneTitle::Load(void)
 {
 
+}
+
+void SceneTitle::InitPushKeyUI(void)
+{
+	pushKeyUI_ = std::make_unique<PushKeyUI>(FLOAT3(1.0f, 1.0f, 1.0f),PushKeyUI::TYPE::TITLE,VECTOR{1.0f,1.0f,1.0f},FLOAT2{PUSH_KEY_SIZE_X,PUSH_KEY_SIZE_Y});
+	pushKeyInfo_.clear();
+	auto& vertex = pushKeyInfo_.vertex;
+	for (int i = 0; i < 4; i++)
+	{
+		VERTEX2DSHADER ver;
+		ver.pos = VGet(Application::SCREEN_HALF_X - (PUSH_KEY_SIZE_X / 2) + ((i % 2) * (PUSH_KEY_SIZE_X)),Application::SCREEN_SIZE_Y - MARGIN + (i / 2)* (PUSH_KEY_SIZE_Y),0.0f);
+		ver.dif = GetColorU8(255, 255, 255, 255);
+		ver.rhw = 1.0f;
+		ver.u = static_cast<float>(i % 2);
+		ver.v = static_cast<float>(i / 2);
+		ver.su = 1.0f;
+		ver.sv = 1.0f;
+		ver.spc = GetColorU8(0, 0, 0, 0);
+		vertex.push_back(ver);
+	}
+	pushKeyInfo_.Indices = { 0,1,2,1,3,2 };
+	pushKeyUI_->SetPolygonInfo(pushKeyInfo_);
 }

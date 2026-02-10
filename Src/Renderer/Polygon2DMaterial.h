@@ -4,11 +4,9 @@
 #include <map>
 #include <DxLib.h>
 
-class Polygon3DMaterial
+class Polygon2DMaterial
 {
-
 public:
-
 	// 設定できる最大のテクスチャの数
 	static constexpr int MAX_TEXTURES = 4;
 
@@ -24,21 +22,18 @@ public:
 	};
 
 	// コンストラクタ
-	Polygon3DMaterial(
-		std::string shaderFileNameVS, int constBufFloat4SizeVS,
-		std::string shaderFileNamePS, int constBufFloat4SizePS
+	Polygon2DMaterial(
+		std::string shaderFileName, int constBufFloat4Size
 	);
 
 	// デストラクタ
-	~Polygon3DMaterial(void);
+	~Polygon2DMaterial(void);
 
 	// 定数バッファを追加
-	void AddConstBufVS(const FLOAT4& contBuf);
-	void AddConstBufPS(const FLOAT4& contBuf);
+	void AddConstBuf(const FLOAT4& contBuf);
 
 	// 定数バッファを更新
-	void SetConstBufVS(int idx, const FLOAT4& contBuf);
-	void SetConstBufPS(int idx, const FLOAT4& contBuf);
+	void SetConstBuf(int idx, const FLOAT4& contBuf);
 
 	// テクスチャバッファを追加
 	void AddTextureBuf(int texDiffuse);
@@ -46,16 +41,13 @@ public:
 	void SetTextureBuf(int idx, int texDiffuse);
 
 	// シェーダ
-	int GetShaderVS(void) const;
-	int GetShaderPS(void) const;
+	int GetShader(void) const;
 
 	// 定数バッファハンドル
-	int GetConstBufVS(void) const;
-	int GetConstBufPS(void) const;
+	int GetConstBuf(void) const;
 
 	// 定数バッファ
-	const std::vector<FLOAT4>& GetConstBufsVS(void) const;
-	const std::vector<FLOAT4>& GetConstBufsPS(void) const;
+	const std::vector<FLOAT4>& GetConstBufs(void) const;
 
 	// 画像
 	//const std::map<int, int>& GetTextures(void) const;
@@ -70,37 +62,23 @@ public:
 
 private:
 
-	// 頂点シェーダ
-	int shaderVS_;
-
 	// ピクセルシェーダ
-	int shaderPS_;
-
-
-	// 頂点定数バッファの確保サイズ(FLOAT4をいくつ作るか)
-	int constBufFloat4SizeVS_;
-
-	// 頂点定数バッファハンドル
-	int constBufVS_;
+	int shader_;
 
 	// ピクセル定数バッファの確保サイズ(FLOAT4をいくつ作るか)
-	int constBufFloat4SizePS_;
+	int constBufFloat4Size_;
 
 	// ピクセル定数バッファハンドル
-	int constBufPS_;
+	int constBuf_;
 
 
 	// テクスチャアドレス
 	TEXADDRESS texAddress_;
 
-	// 定数定数バッファ
-	std::vector<FLOAT4> constBufsVS_;
-
 	// ピクセル定数バッファ
-	std::vector<FLOAT4> constBufsPS_;
+	std::vector<FLOAT4> constBufs_;
 
 	// 画像
 	std::vector<int> textures_;
-
 };
 

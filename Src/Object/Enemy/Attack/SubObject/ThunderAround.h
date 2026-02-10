@@ -14,7 +14,7 @@ public:
 	static constexpr float DAMAGE = 7.5f;
 	static constexpr float RADIUS = 40.0f;
 	static constexpr float HEIGHT = 750;	//‚‚³
-	static constexpr int HEIGHT_VERTEX_NUM = 4;	//‚‚³
+	static constexpr int HEIGHT_VERTEX_NUM = 2;	//‚‚³
 	static constexpr int VERTEX_NUM = 16;
 	static constexpr float MOVE_ADD_DISTANCE = 150.0f; //ˆÚ“®‹——£‚Ì‰ÁZ’l
 	static constexpr float REDUCTION_TIME = 1.5f; //k¬ŠÔ

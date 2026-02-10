@@ -69,6 +69,7 @@ public:
 		ATTACK, //UŒ‚
 		DAMAGE, //ƒ_ƒ[ƒW
 		DEAD,   //Ž€–S
+		WIN,		//Ÿ—˜
 	};
 
 

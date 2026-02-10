@@ -87,7 +87,7 @@
     <ClCompile Include="Src\Object\ObjectPixelBase.cpp" />
     <ClCompile Include="Src\Renderer\Polygon3DMaterial.cpp" />
     <ClCompile Include="Src\Renderer\Polygon3DRenderer.cpp" />
-    <ClCompile Include="Src\Object\ObjectPolygonBase.cpp" />
+    <ClCompile Include="Src\Object\ObjectPolygon3DBase.cpp" />
     <ClCompile Include="Src\Renderer\BaseRenderer.cpp" />
     <ClCompile Include="Src\Object\Gate\GateManager.cpp" />
     <ClCompile Include="Src\Object\Enemy\EnemyAttackManager.cpp" />
@@ -102,6 +102,10 @@
     <ClCompile Include="Src\Object\Enemy\Type\EnemyTypeBase.cpp" />
     <ClCompile Include="Src\Object\Enemy\EnemyGame.cpp" />
     <ClCompile Include="Src\Scene\Game\Tutorial\TutorialLockOn.cpp" />
+    <ClCompile Include="Src\Renderer\Polygon2DMaterial.cpp" />
+    <ClCompile Include="Src\Renderer\Polygon2DRenderer.cpp" />
+    <ClCompile Include="Src\Object\UI\PushKeyUI.cpp" />
+    <ClCompile Include="Src\Object\ObjectPolygon2DBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Common\IntVector3.h" />
@@ -190,7 +194,7 @@
     <ClInclude Include="Src\Object\ObjectPixelBase.h" />
     <ClInclude Include="Src\Renderer\Polygon3DMaterial.h" />
     <ClInclude Include="Src\Renderer\Polygon3DRenderer.h" />
-    <ClInclude Include="Src\Object\ObjectPolygonBase.h" />
+    <ClInclude Include="Src\Object\ObjectPolygon3DBase.h" />
     <ClInclude Include="Src\Renderer\BaseRenderer.h" />
     <ClInclude Include="Src\Object\Gate\GateManager.h" />
     <ClInclude Include="Src\Object\Enemy\EnemyAttackManager.h" />
@@ -205,6 +209,10 @@
     <ClInclude Include="Src\Object\Enemy\Type\EnemyTypeBase.h" />
     <ClInclude Include="Src\Object\Enemy\EnemyGame.h" />
     <ClInclude Include="Src\Scene\Game\Tutorial\TutorialLockOn.h" />
+    <ClInclude Include="Src\Renderer\Polygon2DMaterial.h" />
+    <ClInclude Include="Src\Renderer\Polygon2DRenderer.h" />
+    <ClInclude Include="Src\Object\UI\PushKeyUI.h" />
+    <ClInclude Include="Src\Object\ObjectPolygon2DBase.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shader\Common\VertexToPixelHeader.hlsli" />
@@ -254,5 +262,6 @@
     <FxCompile Include="Src\Shader\Model\ChickenVS.hlsl" />
     <FxCompile Include="Src\Shader\Polygon\FollowPS.hlsl" />
     <FxCompile Include="Src\Shader\Polygon\FollowVS.hlsl" />
+    <FxCompile Include="Src\Shader\Image\PushKeyUI.hlsl" />
   </ItemGroup>
 </Project>

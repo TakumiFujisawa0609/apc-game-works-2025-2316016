@@ -48,6 +48,8 @@ void PlayerBase::Update(void)
 
 void PlayerBase::Draw(void)
 {
+	auto cameraPos = SceneManager::GetInstance().GetCamera().GetPos();
+	material_->SetConstBufPS(1,{ cameraPos.x,cameraPos.y,cameraPos.z,rimPow_ });
 	int color = (state_ == STATE::DAMAGE) ? GetColor(255, 0, 0) : GetColor(0, 255, 0);
 	VECTOR landPos = transform_->pos;
 	landPos.y = MOVE_LIMIT_MIN.y;
@@ -89,6 +91,7 @@ void PlayerBase::InitAnimationController(void)
 	animCtrl_->Add((int)STATE::ATTACK, path + "Throw.mv1", 210.0f);
 	animCtrl_->Add((int)STATE::DAMAGE, path + "Damage.mv1", 120.0f);
 	animCtrl_->Add((int)STATE::DEAD, path + "Death.mv1", 60.0f);
+	animCtrl_->Add((int)STATE::WIN, path + "Win.mv1", 60.0f);
 
 	animCtrl_->Play((int)STATE::IDLE);
 }

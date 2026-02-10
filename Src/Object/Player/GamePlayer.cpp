@@ -517,6 +517,7 @@ void GamePlayer::StateChangeAvoid(void)
 		avoidDir_ = VNorm(avoidDir_);
 	}
 	animCtrl_->Play((int)STATE::AVOID, false, 0.0f, -1.0f, 0.1f, false, true);
+	SoundManager::GetInstance().Play(SoundManager::SRC::AVOID_SOUND, Sound::TIMES::ONCE);
 }
 
 

@@ -14,7 +14,8 @@ public:
 	static constexpr VECTOR CAMERA_TARGET_POS = { 0.0f,0.0f,0.0f };
 	static constexpr VECTOR ENEMY_SIZE = { 0.15f,0.15f,0.15f };
 	static constexpr float MARGIN = 150.0f;
-
+	static constexpr int PUSH_KEY_SIZE_X = 128;
+	static constexpr int PUSH_KEY_SIZE_Y = 32;
 	SceneGameOver(void);
 
 	virtual ~SceneGameOver(void) override;

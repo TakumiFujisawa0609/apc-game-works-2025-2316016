@@ -176,6 +176,7 @@ void SceneGame::Load(void)
 	SoundManager& ins = SoundManager::GetInstance();
 	ins.Load(SoundManager::SRC::FIRE);
 	ins.Load(SoundManager::SRC::PSHOT_HIT);
+	ins.Load(SoundManager::SRC::AVOID_SOUND);
 	ins.Load(SoundManager::SRC::PSHOT_THROW);
 	ins.Load(SoundManager::SRC::GAME_BGM);
 }

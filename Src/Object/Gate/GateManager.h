@@ -1,11 +1,11 @@
 #pragma once
-#include  "../ObjectPolygonBase.h"
+#include  "../ObjectPolygon3DBase.h"
 #include "../../Manager/SceneManager.h"
 
 class Gate;
 class GateMist;
 
-class GateManager : public ObjectPolygonBase
+class GateManager : public ObjectPolygon3DBase
 {
 public:
 

@@ -16,7 +16,7 @@ public:
 		OVER_BGM,	//ゲームオーバーのBGM
 
 		ENTER_SOUND,	//決定音
-
+		AVOID_SOUND,	//回避音
 		PSHOT_HIT,	//プレイヤーの球の衝突音
 		PSHOT_THROW,	//プレイヤーの球を投げる音
 		FIRE,	//炎

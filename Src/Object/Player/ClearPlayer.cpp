@@ -3,7 +3,7 @@
 
 ClearPlayer::ClearPlayer(int playerNum) : PlayerBase(playerNum)
 {
-	ChangeState(STATE::IDLE, true);
+	ChangeState(STATE::WIN, true);
 }
 
 ClearPlayer::~ClearPlayer(void)

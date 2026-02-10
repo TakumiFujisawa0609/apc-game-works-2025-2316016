@@ -1,9 +1,9 @@
 #pragma once
-#include "../ObjectPolygonBase.h"
+#include "../ObjectPolygon3DBase.h"
 
 class GateManager;
 
-class GateMist : public ObjectPolygonBase
+class GateMist : public ObjectPolygon3DBase
 {
 public:
 

@@ -45,7 +45,7 @@ EnemyOver::EnemyOver(void)
 	disolve_ = INIT_DISOLVE;
 	renderer_->SetBuckCull(true);
 	AplayChangeStateFunc();
-	ChangeState(STATE::IDLE);
+	//ChangeState(STATE::IDLE);
 }
 
 EnemyOver::~EnemyOver(void)

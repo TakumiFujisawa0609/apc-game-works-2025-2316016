@@ -73,7 +73,8 @@ void SceneGameOver::Draw(void)
 	//DrawString(100, 100, "Title", GetColor(255, 255, 255));
 	//SetDrawBright(255, 0, 0);
 	//DrawExtendGraph(0, 0, Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y, ResourceManager::GetInstance().Load(ResourceManager::SRC::TITLE_IMAGE_2).handleId_, true);
-	DrawRotaGraph(Application::SCREEN_HALF_X, Application::SCREEN_HALF_Y, 1.0f, 0.0f, ResourceManager::GetInstance().Load(ResourceManager::SRC::TITLE_IMAGE).handleId_, true);
+	DrawRotaGraph(Application::SCREEN_HALF_X, Application::SCREEN_HALF_Y / 2, 1.0f, 0.0f, ResourceManager::GetInstance().Load(ResourceManager::SRC::OVER_IMAGE).handleId_, true);
+	DrawGraph(Application::SCREEN_HALF_X -PUSH_KEY_SIZE_X / 2, Application::SCREEN_SIZE_Y - MARGIN - PUSH_KEY_SIZE_Y / 2,ResourceManager::GetInstance().Load(ResourceManager::SRC::PUSH_KEY_IMG).handleId_, true);
 	//SetDrawBright(255, 255, 255);
 	//DrawExtendGraph(0, 0, Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y, ResourceManager::GetInstance().Load(ResourceManager::SRC::TITLE_IMAGE_1).handleId_, true);
 }

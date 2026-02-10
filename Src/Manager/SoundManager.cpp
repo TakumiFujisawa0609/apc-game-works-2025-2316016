@@ -29,6 +29,9 @@ void SoundManager::Init(void)
 	soundType_[SOUND_TYPE::SE].push_back(SRC::PSHOT_HIT);
 	soundType_[SOUND_TYPE::SE].push_back(SRC::PSHOT_THROW);
 	soundType_[SOUND_TYPE::SE].push_back(SRC::FIRE);
+	soundType_[SOUND_TYPE::SE].push_back(SRC::BLAST);
+	soundType_[SOUND_TYPE::SE].push_back(SRC::DAMAGE);
+	soundType_[SOUND_TYPE::SE].push_back(SRC::THUNDER);
 	soundType_[SOUND_TYPE::SE].push_back(SRC::JAMP);
 	soundType_[SOUND_TYPE::SE].push_back(SRC::LAND);
 	soundType_[SOUND_TYPE::SE].push_back(SRC::FOOT_STEP1);
@@ -64,6 +67,10 @@ void SoundManager::Init(void)
 	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_SE + "PShotThrow.mp3");
 	res->ChengeMaxVolume(1.0f);
 	loadMap_.emplace(SRC::PSHOT_THROW, std::move(res));
+	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_SE + "PShotThrow.mp3");
+	res->ChengeMaxVolume(1.0f);
+	res->SetPitch(-200.0f);
+	loadMap_.emplace(SRC::AVOID_SOUND, std::move(res));
 	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_SE + "Fire.mp3");
 	res->ChengeMaxVolume(1.0f);
 	loadMap_.emplace(SRC::FIRE, std::move(res));
@@ -90,6 +97,9 @@ void SoundManager::Init(void)
 	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_SE + "Damage.mp3");
 	res->ChengeMaxVolume(1.0f);
 	loadMap_.emplace(SRC::DAMAGE, std::move(res));
+	res = std::make_unique<Sound>(Sound::TYPE::SOUND_2D, Application::PATH_SOUND_SE + "Enter.mp3");
+	res->ChengeMaxVolume(1.0f);
+	loadMap_.emplace(SRC::ENTER_SOUND, std::move(res));
 	ChangeVolume(SOUND_TYPE::BGM, volume_[SOUND_TYPE::BGM]);
 	ChangeVolume(SOUND_TYPE::SE, volume_[SOUND_TYPE::SE]);
 }

@@ -3,12 +3,12 @@
 #include "../Renderer/Polygon3DMaterial.h"
 #include "../Renderer/Polygon3DRenderer.h"
 
-class ObjectPolygonBase : public ObjectBase
+class ObjectPolygon3DBase : public ObjectBase
 {
 public:
 
-	ObjectPolygonBase() = default;
-	virtual ~ObjectPolygonBase()override;
+	ObjectPolygon3DBase() = default;
+	virtual ~ObjectPolygon3DBase()override;
 	virtual void Init(void)override = 0;
 	virtual void Update(void)override = 0;
 	virtual void Draw(void)override = 0;

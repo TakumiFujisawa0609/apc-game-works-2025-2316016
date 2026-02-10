@@ -1,10 +1,12 @@
 #pragma once
 #include <memory>
 #include "SceneBase.h"
+#include "../Renderer/Polygon2DRenderer.h"
 
 class SkyDome;
 class ClearPlayer;
 class EnemyClear;
+class PushKeyUI;
 
 class SceneGameClear :    public SceneBase
 {
@@ -14,6 +16,9 @@ public:
 	static constexpr VECTOR CAMERA_TARGET_POS = { 0.0f,0.0f,0.0f };
 	static constexpr VECTOR ENEMY_SIZE = { 0.15f,0.15f,0.15f };
 	static constexpr float MARGIN = 150.0f;
+	static constexpr int PUSH_KEY_SIZE_Y = 64;
+	static constexpr int PUSH_KEY_SIZE_X = PUSH_KEY_SIZE_Y * 4;
+	static constexpr VECTOR PUSH_KEY_COLOR = { 1.0f,1.0f,0.0f };
 
 	SceneGameClear(void);
 
@@ -30,5 +35,8 @@ private:
 	std::unique_ptr<SkyDome> skyDome_;
 	std::unique_ptr<ClearPlayer> player_;
 	std::unique_ptr<EnemyClear> enemy_;
+	std::unique_ptr<PushKeyUI> pushKeyUI_;
+	Polygon2DRenderer::PolygonInfo pushKeyInfo_;
+	void InitPushKeyUI(void);
 };
 

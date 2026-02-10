@@ -1,8 +1,8 @@
 #pragma once
 #include <memory>
-#include "../ObjectPolygonBase.h"
+#include "../ObjectPolygon3DBase.h"
 
-class ShockWave : public ObjectPolygonBase
+class ShockWave : public ObjectPolygon3DBase
 {
 public:
 	static constexpr int WAVE_VERTEX_NUM = 60; //ショックウェーブの頂点数
