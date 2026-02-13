@@ -3,6 +3,9 @@
 Texture2D Noise : register(t1);
 SamplerState noiseSampler : register(s1); //サンプラー
 
+Texture2D OriginTex : register(t2); //元のテクスチャ
+SamplerState OriginSampler : register(s2); //サンプラー
+
 // 定数バッファ：スロット4番目(b4と書く)
 cbuffer cbParam : register(b4)
 {
@@ -39,6 +42,7 @@ float4 main(PS_INPUT PSInput) : SV_TARGET
     //return float4(outlineColor,1.0f);
     //return float4(1.0f, 1.0f, 1.0f, 1.0f);
     float2 uv = PSInput.uv;
+    float2 suv = PSInput.suv;
     float4 col =tex.Sample(texSampler, uv);
     float4 retCol = float4(0.0f,0.0f,0.0f,0.0f);
     if(col.a < 0.1f)
@@ -63,7 +67,10 @@ float4 main(PS_INPUT PSInput) : SV_TARGET
         float4 noiseCol = Noise.Sample(noiseSampler, uv);
         retCol = col * noiseCol;
     }
-    retCol.a = abs(sin(time * power));
+    //retCol.a = abs(sin(time * power));
+    float4 originCol = OriginTex.Sample(OriginSampler, suv);
+    float percent = abs(sin(time * power));
+    retCol.rgb = retCol.rgb * percent + originCol.rgb * (1.0f - percent);
     return retCol;
     //return float4(color, 1.0f);
 }

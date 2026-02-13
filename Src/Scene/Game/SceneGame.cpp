@@ -238,7 +238,7 @@ void SceneGame::CheckCollision(void)
 void SceneGame::ChangeScene(void)
 {
 	//“G‚ÌHP‚ª0‚ðØ‚Á‚½‚çƒQ[ƒ€ƒNƒŠƒA‚ÉˆÚ“®
-	if (enemy_->GetHP() <= 0.0f)
+	if (enemy_->IsEnd())
 	{
 		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::GAMECLEAR, true);
 	}

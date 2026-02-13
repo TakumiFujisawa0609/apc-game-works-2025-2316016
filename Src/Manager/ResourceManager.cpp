@@ -146,6 +146,10 @@ void ResourceManager::Init(void)
 	resourcesMap_.emplace(SRC::NOISE, std::move(res));
 	res = Resource(Resource::TYPE::IMG, Application::PATH_IMAGE + "Texture/Texture1.png");
 	resourcesMap_.emplace(SRC::TEXTURE_1, std::move(res));
+	res = Resource(Resource::TYPE::IMG, Application::PATH_MODEL + "Dragon/DamageLowDiff.png");
+	resourcesMap_.emplace(SRC::DRAGON_LOW_DAMAGE_TEXTURE, std::move(res));
+	res = Resource(Resource::TYPE::IMG, Application::PATH_MODEL + "Dragon/DamageHighDiff.png");
+	resourcesMap_.emplace(SRC::DRAGON_HIGH_DAMAGE_TEXTURE, std::move(res));
 
 	//エフェクト
 	res = Resource(Resource::TYPE::EFFEKSEER, Application::PATH_EFFECT + "Hit.efkefc");

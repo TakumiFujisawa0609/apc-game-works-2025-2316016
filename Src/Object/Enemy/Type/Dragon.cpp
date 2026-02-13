@@ -36,32 +36,41 @@ void Dragon::InitAnimationController(void)
 
 void Dragon::InitGeometry(void)
 {
-	Collider::TAG tag = Collider::TAG::ENEMY;
+	Collider::TAG tag = Collider::TAG::ENEMY_WING;
 	std::vector<Collider::TAG> notHitTags;
 	notHitTags.push_back(Collider::TAG::ENEMY);
+	notHitTags.push_back(Collider::TAG::ENEMY_WING);
 	notHitTags.push_back(Collider::TAG::ENEMY_ATTACK);
+	std::vector<Collider::TAG> notHitTagWings;
+	notHitTagWings.push_back(Collider::TAG::ENEMY);
+	notHitTagWings.push_back(Collider::TAG::ENEMY_WING);
+	notHitTagWings.push_back(Collider::TAG::ENEMY_ATTACK);
+	notHitTagWings.push_back(Collider::TAG::PLAYER);
+	notHitTagWings.push_back(Collider::TAG::PLAYER_LAND);
+
 	//‰H‚Ì“–‚½‚è”»’è
 	std::unique_ptr<Geometry> geo = std::make_unique<Triangle3D>(framePos_[WING_L_BASE_BORN_NUM], framePos_[WING_L_1_BORN_NUM], framePos_[WING_L_2_BORN_NUM]);
-	MakeCollider(tag, std::move(geo), notHitTags);
+	MakeCollider(tag, std::move(geo), notHitTagWings);
 	geo = std::make_unique<Triangle3D>(framePos_[WING_L_BASE_BORN_NUM], framePos_[WING_L_2_BORN_NUM], framePos_[WING_L_3_BORN_NUM]);
-	MakeCollider(tag, std::move(geo), notHitTags);
+	MakeCollider(tag, std::move(geo), notHitTagWings);
 	geo = std::make_unique<Triangle3D>(framePos_[WING_L_BASE_BORN_NUM], framePos_[WING_L_3_BORN_NUM], framePos_[WING_L_4_BORN_NUM]);
-	MakeCollider(tag, std::move(geo), notHitTags);
+	MakeCollider(tag, std::move(geo), notHitTagWings);
 	geo = std::make_unique<Triangle3D>(framePos_[WING_L_BASE_BORN_NUM], framePos_[WING_L_4_BORN_NUM], framePos_[WING_L_5_BORN_NUM]);
-	MakeCollider(tag, std::move(geo), notHitTags);
+	MakeCollider(tag, std::move(geo), notHitTagWings);
 	geo = std::make_unique<Triangle3D>(framePos_[WING_L_BASE_BORN_NUM], framePos_[WING_L_5_BORN_NUM], framePos_[WING_L_NEAR_BODY_BORN_NUM]);
-	MakeCollider(tag, std::move(geo), notHitTags);
+	MakeCollider(tag, std::move(geo), notHitTagWings);
 	geo = std::make_unique<Triangle3D>(framePos_[WING_R_BASE_BORN_NUM], framePos_[WING_R_1_BORN_NUM], framePos_[WING_R_2_BORN_NUM]);
-	MakeCollider(tag, std::move(geo), notHitTags);
+	MakeCollider(tag, std::move(geo), notHitTagWings);
 	geo = std::make_unique<Triangle3D>(framePos_[WING_R_BASE_BORN_NUM], framePos_[WING_R_2_BORN_NUM], framePos_[WING_R_3_BORN_NUM]);
-	MakeCollider(tag, std::move(geo), notHitTags);
+	MakeCollider(tag, std::move(geo), notHitTagWings);
 	geo = std::make_unique<Triangle3D>(framePos_[WING_R_BASE_BORN_NUM], framePos_[WING_R_3_BORN_NUM], framePos_[WING_R_4_BORN_NUM]);
-	MakeCollider(tag, std::move(geo), notHitTags);
+	MakeCollider(tag, std::move(geo), notHitTagWings);
 	geo = std::make_unique<Triangle3D>(framePos_[WING_R_BASE_BORN_NUM], framePos_[WING_R_4_BORN_NUM], framePos_[WING_R_5_BORN_NUM]);
-	MakeCollider(tag, std::move(geo), notHitTags);
+	MakeCollider(tag, std::move(geo), notHitTagWings);
 	geo = std::make_unique<Triangle3D>(framePos_[WING_R_BASE_BORN_NUM], framePos_[WING_R_5_BORN_NUM], framePos_[WING_R_NEAR_BODY_BORN_NUM]);
-	MakeCollider(tag, std::move(geo), notHitTags);
+	MakeCollider(tag, std::move(geo), notHitTagWings);
 	//“·‘Ì‚Ì“–‚½‚è”»’è
+	tag = Collider::TAG::ENEMY;
 	geo = std::make_unique<Capsule>(framePos_[BODY_1_BORN_NUM], framePos_[BODY_2_BORN_NUM], BIG_RADIUS);
 	MakeCollider(tag, std::move(geo), notHitTags);
 	//Žñ‚Ì“–‚½‚è”»’è

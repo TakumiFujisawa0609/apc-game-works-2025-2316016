@@ -108,8 +108,8 @@ void SceneTitle::InitPushKeyUI(void)
 		ver.rhw = 1.0f;
 		ver.u = static_cast<float>(i % 2);
 		ver.v = static_cast<float>(i / 2);
-		ver.su = 1.0f;
-		ver.sv = 1.0f;
+		ver.su = ver.pos.x / Application::SCREEN_SIZE_X;
+		ver.sv = ver.pos.y / Application::SCREEN_SIZE_Y;
 		ver.spc = GetColorU8(0, 0, 0, 0);
 		vertex.push_back(ver);
 	}

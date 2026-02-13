@@ -24,6 +24,9 @@ public:
 	static constexpr float DAMAGE_EFECT_RADIUS = 20.0f;	//ダメージ状態のエフェクト範囲
 	static constexpr float DAMAGE_EFECT_TIME = 0.5f;	//ダメージエフェクトの時間
 
+	//溶解エフェクト関連
+	static constexpr float DISOLVE_MAX = 1.0f;
+	static constexpr float DISOLVE_TIME = 5.0f;
 	static constexpr float INIT_DISOLVE = -0.01f;
 	static constexpr float NOISE_SCALE = 5.0f;
 	enum class STATE

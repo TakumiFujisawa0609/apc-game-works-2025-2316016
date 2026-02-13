@@ -23,5 +23,6 @@ private:
 	int uiHandle_;
 	float time_ = 0.0f;
 	FLOAT2 size_;
+	int screenHandle_;
 };
 

@@ -23,6 +23,7 @@ public:
 
 	virtual void OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos);
 	std::weak_ptr<Transform> GetTransform(void) const{ return transform_; }
+	std::vector<ColParam>& GetColParams(void) { return colParam_; }
 protected:
 
 	//“–‚½‚è”»’èŠÖŒW

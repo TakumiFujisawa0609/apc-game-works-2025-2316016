@@ -11,6 +11,11 @@
 
 EnemyGame::EnemyGame(std::weak_ptr<Transform> target) : target_(target)
 {
+	wingDamageState_ = WING_DAMAGE_STATE::NONE;
+	wingDamageNum_ = 0;
+	wingHitDamage_ = WING_DAMAGE;
+	bodyHitDamage_ = BODY_DAMAGE;
+	disolve_ = INIT_DISOLVE;
 	transform_ = std::make_shared<Transform>();
 	enemyType_ = std::make_unique<Dragon>(*this);
 	std::string vsName, psName;
@@ -40,7 +45,7 @@ EnemyGame::EnemyGame(std::weak_ptr<Transform> target) : target_(target)
 	material_->AddConstBufPS(static_cast<FLOAT4>(Utility::COLOR_F2FLOAT4(DAMAGE_COLOR_ADD)));
 	material_->AddConstBufPS({ damageTime_, hitPos_.x, hitPos_.y, hitPos_.z });
 	material_->AddConstBufPS({ DAMAGE_EFECT_RADIUS,0.0f, 0.0f, 0.0f });
-	material_->AddConstBufPS({ INIT_DISOLVE,NOISE_SCALE, 0.0f, 0.0f });
+	material_->AddConstBufPS({ disolve_,NOISE_SCALE, 0.0f, 0.0f });
 	material_->SetTextureBuf(3, ResourceManager::GetInstance().Load(ResourceManager::SRC::NOISE).handleId_);
 	renderer_ = std::make_shared<ModelRenderer>(
 		transform_->modelId, *material_
@@ -110,7 +115,6 @@ void EnemyGame::OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos)
 	switch (tag)
 	{
 	case Collider::TAG::PLAYER_ATTACK:
-		Damage(2.0f);
 		break;
 	case Collider::TAG::PLAYER:
 	case Collider::TAG::PLAYER_LAND:
@@ -122,6 +126,24 @@ void EnemyGame::OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos)
 		break;
 	}
 	//auto& hit = hitCol->GetParent();
+	auto& colParam = enemyType_->GetColParams();
+	for(auto& col : colParam)
+	{
+		if(!col.collider_->IsHit())
+		{
+			continue;
+		}
+		if (col.collider_->GetTag() == Collider::TAG::ENEMY)
+		{
+			Damage(BODY_DAMAGE);
+		}
+		else
+		{
+			wingDamageNum_++;
+			Damage(WING_DAMAGE);
+			UpdateWingDamageState();
+		}
+	}
 	damageTime_ = DAMAGE_EFECT_TIME;
 	hitPos_ = hitPos;
 	material_->SetConstBufPS(2, { damageTime_, hitPos_.x, hitPos_.y, hitPos_.z });
@@ -150,6 +172,27 @@ void EnemyGame::AplayGravity(void)
 	transform_->pos = VAdd(transform_->pos, VScale(gravity_->GetDir(), gravity_->GetPower()));
 }
 
+void EnemyGame::UpdateWingDamageState(void)
+{
+	auto& resManager = ResourceManager::GetInstance();
+	int texIndex = MV1GetMaterialDifMapTexture(transform_->modelId, 0);
+	if (wingDamageNum_ == WING_LOW_DAMAGE_NUM)
+	{
+		wingHitDamage_ *= WING_LOW_DAMAGE_RATE;
+		wingDamageState_ = WING_DAMAGE_STATE::LOW;
+		int damageTexId = resManager.Load(ResourceManager::SRC::DRAGON_LOW_DAMAGE_TEXTURE).handleId_;
+		MV1SetTextureGraphHandle(transform_->modelId, texIndex, damageTexId, TRUE);
+	}
+	else if(wingDamageNum_ == WING_HIGH_DAMAGE_NUM)
+	{
+		wingHitDamage_ *= WING_HIGH_DAMAGE_RATE;
+		bodyHitDamage_ *= WING_HIGH_DAMAGE_BODY_DAMAGE_RATE;
+		wingDamageState_ = WING_DAMAGE_STATE::HIGH;
+		int damageTexId = resManager.Load(ResourceManager::SRC::DRAGON_HIGH_DAMAGE_TEXTURE).handleId_;
+		MV1SetTextureGraphHandle(transform_->modelId, texIndex, damageTexId, TRUE);
+	}
+}
+
 void EnemyGame::ChangeStateIdle(void)
 {
 	updateState_ = std::bind(&EnemyGame::UpdateIdle, this);
@@ -164,6 +207,13 @@ void EnemyGame::ChangeStateAttack(void)
 void EnemyGame::ChangeStateDead(void)
 {
 	updateState_ = std::bind(&EnemyGame::UpdateDead, this);
+	attackManager_->AllDeleteAttack();
+	GetAnimController().Play((int)Dragon::ANIM_TYPE::DIE,false);
+	auto& colParam = enemyType_->GetColParams();
+	for (auto& col : colParam)
+	{
+		col.collider_->Kill();
+	}
 }
 
 void EnemyGame::UpdateIdle(void)
@@ -175,6 +225,11 @@ void EnemyGame::UpdateIdle(void)
 
 void EnemyGame::UpdateAttack(void)
 {
+	if(hp_ <= 0.0f)
+	{
+		ChangeState(STATE::DEAD);
+		return;
+	}
 	bool isMove = attackManager_->CheckMove() == true;
 	if (isMove)
 	{
@@ -186,6 +241,18 @@ void EnemyGame::UpdateAttack(void)
 
 void EnemyGame::UpdateDead(void)
 {
+	enemyType_->Update();
+	auto& animCtrl = enemyType_->GetAnimController();
+	if (animCtrl.IsEnd())
+	{
+		float delta = SceneManager::GetInstance().GetDeltaTime();
+		disolve_ += DISOLVE_MAX * delta / DISOLVE_TIME;
+		material_->SetConstBufPS(4, { disolve_, NOISE_SCALE, 0.0f, 0.0f });
+	}
+	if (disolve_ >= DISOLVE_MAX)
+	{
+		isEnd_ = true;
+	}
 }
 
 void EnemyGame::InitAddAttack(void)

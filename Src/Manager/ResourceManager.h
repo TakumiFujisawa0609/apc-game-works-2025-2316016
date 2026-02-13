@@ -78,6 +78,8 @@ public:
 		WAVE_TEXTURE,	//ギザギザテクスチャ
 		NOISE,		//ノイズ
 		TEXTURE_1,	//水や雷等のテクスチャ
+		DRAGON_LOW_DAMAGE_TEXTURE, //ドラゴン低ダメージテクスチャ
+		DRAGON_HIGH_DAMAGE_TEXTURE, //ドラゴン高ダメージテクスチャ
 
 		//エフェクト
 		HIT_EFFECT,		//ヒットエフェクト

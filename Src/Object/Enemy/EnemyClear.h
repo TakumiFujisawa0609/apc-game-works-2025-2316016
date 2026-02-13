@@ -4,8 +4,6 @@ class EnemyClear :
     public EnemyBase
 {
 public:
-	static constexpr float DISOLVE_MAX = 1.0f;
-	static constexpr float DISOLVE_TIME = 5.0f;
 
 	EnemyClear(void);
 	~EnemyClear(void)override;
