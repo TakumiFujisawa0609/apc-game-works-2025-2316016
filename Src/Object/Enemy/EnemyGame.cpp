@@ -135,12 +135,12 @@ void EnemyGame::OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos)
 		}
 		if (col.collider_->GetTag() == Collider::TAG::ENEMY)
 		{
-			Damage(BODY_DAMAGE);
+			Damage(bodyHitDamage_);
 		}
 		else
 		{
 			wingDamageNum_++;
-			Damage(WING_DAMAGE);
+			Damage(wingHitDamage_);
 			UpdateWingDamageState();
 		}
 	}
