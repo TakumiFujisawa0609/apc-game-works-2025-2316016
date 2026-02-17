@@ -1,0 +1,2 @@
+[2026/02/17 11:05:24] Time=56.4493, RollNum=2, RollSuccess=0, JumpNum=7, JumpSuccess=0, Damage=125, DamageNum=7, LastHP=-10.3494, EnemyHP=32
+[2026/02/17 13:50:56] Time=100.774, RollNum=19, RollSuccess=9, JumpNum=25, JumpSuccess=227, Damage=52.5, DamageNum=6, LastHP=84.6003, EnemyHP=-4.5

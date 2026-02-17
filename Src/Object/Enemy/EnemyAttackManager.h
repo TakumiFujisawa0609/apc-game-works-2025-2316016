@@ -38,6 +38,7 @@ public:
 	void AddAttack(ATTACK_TYPE type);	//UŒ‚‚ğ’Ç‰Á
 	void DeleteAttack(ATTACK_TYPE type); //UŒ‚‚ğíœ
 	void AllDeleteAttack(void); //‘S‚Ä‚ÌUŒ‚‚ğíœ
+	void AllStopAtatck(void); //‘S‚Ä‚ÌUŒ‚‚ğ’â~
 	int GetAnimNumber(ATTACK_STATE state, ATTACK_TYPE type);
 	int GetAttackNum(void) { return static_cast<int>(attackList_.size()); }
 	bool CheckMove(void);//‰Ò“­’†‚Ì‚à‚Ì‚ª‚ ‚é‚©

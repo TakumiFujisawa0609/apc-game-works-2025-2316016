@@ -95,6 +95,7 @@ void FollowAttack::ChangeStateFinish(void)
 {
 	AttackBase::ChangeStateFinish();
 	deleyTime_ = COOL_DOWN;
+	shots_.clear();
 }
 
 void FollowAttack::UpdateStateNone(void)

@@ -93,6 +93,7 @@ void FallDownAttack::ChangeStateUpdate(void)
 
 void FallDownAttack::ChangeStateFinish(void)
 {
+	fallDownShots_.clear();
 	deleyTime_ = COOL_DOWN;
 	AttackBase::ChangeStateFinish();
 }

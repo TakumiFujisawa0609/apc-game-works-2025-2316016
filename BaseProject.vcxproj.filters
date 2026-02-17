@@ -106,6 +106,7 @@
     <ClCompile Include="Src\Renderer\Polygon2DRenderer.cpp" />
     <ClCompile Include="Src\Object\UI\PushKeyUI.cpp" />
     <ClCompile Include="Src\Object\ObjectPolygon2DBase.cpp" />
+    <ClCompile Include="Src\Object\Player\ShotGuide.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Common\IntVector3.h" />
@@ -213,6 +214,7 @@
     <ClInclude Include="Src\Renderer\Polygon2DRenderer.h" />
     <ClInclude Include="Src\Object\UI\PushKeyUI.h" />
     <ClInclude Include="Src\Object\ObjectPolygon2DBase.h" />
+    <ClInclude Include="Src\Object\Player\ShotGuide.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shader\Common\VertexToPixelHeader.hlsli" />

@@ -92,6 +92,7 @@ void ThunderAroundAttack::ChangeStateFinish(void)
 	AttackBase::ChangeStateFinish();
 	SoundManager::GetInstance().Stop(SoundManager::SRC::THUNDER);
 	deleyTime_ = COOL_DOWN;
+	thunders_.clear();
 }
 
 void ThunderAroundAttack::UpdateStateNone(void)

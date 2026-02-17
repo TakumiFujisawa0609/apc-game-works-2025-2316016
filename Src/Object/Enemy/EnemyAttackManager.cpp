@@ -99,6 +99,14 @@ void EnemyAttackManager::AllDeleteAttack(void)
 	attackList_.clear();
 }
 
+void EnemyAttackManager::AllStopAtatck(void)
+{
+	for (auto& attack : attackList_)
+	{
+		attack->ChangeState(AttackBase::STATE::FINISH);
+	}
+}
+
 int EnemyAttackManager::GetAnimNumber(ATTACK_STATE state, ATTACK_TYPE type)
 {
 	return enemy_.GetModelType().GetAnimType(state, type);

@@ -89,6 +89,7 @@ void CrossAttack::ChangeStateUpdate(void)
 void CrossAttack::ChangeStateFinish(void)
 {
 	deleyTime_ = COOL_DOWN;
+	crossLines_.clear();
 	SoundManager::GetInstance().Stop(SoundManager::SRC::FIRE);
 	AttackBase::ChangeStateFinish();
 }

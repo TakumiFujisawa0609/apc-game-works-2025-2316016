@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Object\Player\ShotGuide.cpp" />
     <ClCompile Include="Src\Object\ObjectPolygon2DBase.cpp" />
     <ClCompile Include="Src\Object\UI\PushKeyUI.cpp" />
     <ClCompile Include="Src\Renderer\Polygon2DRenderer.cpp" />
@@ -126,6 +127,7 @@
     <ClCompile Include="Src\Scene\Game\Tutorial\TutorialLockOn.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Object\Player\ShotGuide.h" />
     <ClInclude Include="Src\Object\ObjectPolygon2DBase.h" />
     <ClInclude Include="Src\Object\UI\PushKeyUI.h" />
     <ClInclude Include="Src\Renderer\Polygon2DRenderer.h" />

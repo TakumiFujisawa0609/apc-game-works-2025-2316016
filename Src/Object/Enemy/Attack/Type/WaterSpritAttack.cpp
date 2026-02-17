@@ -88,6 +88,7 @@ void WaterSpritAttack::ChangeStateFinish(void)
 	AttackBase::ChangeStateFinish();
 	deleyTime_ = COOL_DOWN;
 	waveNum_ = 0;
+	waterSprit_.clear();
 }
 
 void WaterSpritAttack::UpdateStateNone(void)

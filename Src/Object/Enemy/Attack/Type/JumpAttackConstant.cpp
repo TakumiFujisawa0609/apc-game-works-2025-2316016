@@ -97,6 +97,7 @@ void JumpAttackConstant::ChangeStateFinish(void)
 	AttackBase::ChangeStateFinish();
 	auto& animCtr = parent_.GetAnimController();
 	deleyTime_ = COOL_DOWN;
+	wave_.clear();
 }
 
 void JumpAttackConstant::UpdateStateNone(void)
