@@ -58,6 +58,7 @@ public:
 
 	EnemyAttackManager::ATTACK_TYPE GetMyType(void)const { return myType_; }
 	void AddVertexs(Polygon3DRenderer::PolygonInfo info);
+	void ResetDeleyTime(void) { deleyTime_ = 0.0f; }
 protected:
 	EnemyAttackManager& parent_; //êeÇÃEnemyBase
 

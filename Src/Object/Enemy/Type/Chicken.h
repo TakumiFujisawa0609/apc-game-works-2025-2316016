@@ -53,6 +53,7 @@ public:
 	~Chicken(void)override;
 
 	int GetIdleAnim(void)override { return static_cast<int>(ANIM_TYPE::IDLE); }
+	int GetBrakAnim(void)override { return static_cast<int>(ANIM_TYPE::RIDE_1); }
 private:
 	void InitGeometry(void)override;
 	void InitAnimationController(void)override; //アニメーションコントローラー初期化

@@ -7,6 +7,7 @@
 #include "../ObjectModelBase.h"
 
 class PlayerShot;
+class ShotGuide;
 class Gravity;
 class AnimationController;
 class PointLight;
@@ -54,6 +55,7 @@ public:
 
 	//攻撃関連
 	static constexpr float ATTACK_DELEY = 1.0f; //攻撃ディレイ
+	static constexpr int HAND_BONE_NO = 32; //手のボーン番号
 
 	//回復関連
 	static constexpr float HEAL_PER_SEC = 3.0f;	//１秒にどれくらい回復するか

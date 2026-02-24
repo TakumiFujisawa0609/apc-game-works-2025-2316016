@@ -48,6 +48,7 @@ protected:
 	int footNum_; //足音の数
 	std::weak_ptr<Transform> enemyTrans_; //敵の座標
 
+	VECTOR handPos_;	//手座標
 	VECTOR headPos_;	//頭座標
 	VECTOR prePos_;
 	VECTOR landPos_; //着地座標
@@ -57,7 +58,8 @@ protected:
 	std::unique_ptr<Gravity> gravity_;
 	//弾
 	std::vector<std::unique_ptr<PlayerShot>> shots_;
-
+	std::unique_ptr<ShotGuide> shotGuide_;
+	bool isShotGuide_;	//ショットガイド表示中か
 	//回避
 	VECTOR avoidDir_; //回避方向
 	float avoidTime_; //回避時間

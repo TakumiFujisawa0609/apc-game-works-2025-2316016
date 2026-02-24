@@ -29,7 +29,14 @@ void Dragon::InitAnimationController(void)
 	animCtrl_ = std::make_unique<AnimationController>(transform_->modelId);
 	for (int i = 0; i < (int)ANIM_TYPE::MAX; i++)
 	{
-		animCtrl_->Add(i, 30.0f);
+		if (i == static_cast<int>(ANIM_TYPE::HIT))
+		{
+			animCtrl_->Add(i, 10.0f);
+		}
+		else
+		{
+			animCtrl_->Add(i, 30.0f);
+		}
 	}
 	SetAnim((int)ANIM_TYPE::FLY_FORWARD);
 }

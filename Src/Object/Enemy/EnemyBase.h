@@ -33,6 +33,7 @@ public:
 	{
 		IDLE,	//‘Ò‹@
 		ATTACK, //UŒ‚
+		BREAK,	//‰ó‚ê
 		DEAD,   //€–S
 	};
 
@@ -87,11 +88,13 @@ protected:
 	std::map<STATE, std::function<void(void)>> changeState_; //ó‘Ô•ÏX‚ÌŠÖ”Ši”[—p
 	virtual void ChangeStateIdle(void);	//‘Ò‹@
 	virtual void ChangeStateAttack(void); //UŒ‚
+	virtual void ChangeStateBreak(void);	//‰ó‚ê
 	virtual void ChangeStateDead(void);   //€–S
 
 	std::function<void(void)> updateState_; //XVˆ——pŠÖ”
 	virtual void UpdateIdle(void); //‘Ò‹@
 	virtual void UpdateAttack(void); //UŒ‚
+	virtual void UpdateBreak(void);	//‰ó‚ê
 	virtual void UpdateDead(void); //€–S
 
 	virtual void AplayChangeStateFunc(void);

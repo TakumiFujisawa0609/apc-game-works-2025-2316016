@@ -15,6 +15,7 @@ public:
 		PLAYER,			//プレイヤー
 		PLAYER_LAND,	//プレイヤーの地面
 		PLAYER_ATTACK,	//プレイヤーの攻撃
+		PLAYER_ATTACK_GUIDE,	//プレイヤーの攻撃ガイド
 		ENEMY,			//敵
 		ENEMY_WING,		//敵の羽
 		ENEMY_ATTACK,	//敵の攻撃

@@ -118,6 +118,7 @@ void EnemyGame::OnHit(const std::weak_ptr<Collider> _hitCol, VECTOR hitPos)
 		break;
 	case Collider::TAG::PLAYER:
 	case Collider::TAG::PLAYER_LAND:
+	case Collider::TAG::PLAYER_ATTACK_GUIDE:
 	case Collider::TAG::ENEMY:
 	case Collider::TAG::ENEMY_ATTACK:
 		return;
@@ -182,6 +183,8 @@ void EnemyGame::UpdateWingDamageState(void)
 		wingDamageState_ = WING_DAMAGE_STATE::LOW;
 		int damageTexId = resManager.Load(ResourceManager::SRC::DRAGON_LOW_DAMAGE_TEXTURE).handleId_;
 		MV1SetTextureGraphHandle(transform_->modelId, texIndex, damageTexId, TRUE);
+		attackManager_->AllStopAtatck();
+		ChangeState(EnemyBase::STATE::BREAK);
 	}
 	else if(wingDamageNum_ == WING_HIGH_DAMAGE_NUM)
 	{
@@ -190,6 +193,8 @@ void EnemyGame::UpdateWingDamageState(void)
 		wingDamageState_ = WING_DAMAGE_STATE::HIGH;
 		int damageTexId = resManager.Load(ResourceManager::SRC::DRAGON_HIGH_DAMAGE_TEXTURE).handleId_;
 		MV1SetTextureGraphHandle(transform_->modelId, texIndex, damageTexId, TRUE);
+		attackManager_->AllStopAtatck();
+		ChangeState(EnemyBase::STATE::BREAK);
 	}
 }
 
@@ -202,6 +207,12 @@ void EnemyGame::ChangeStateIdle(void)
 void EnemyGame::ChangeStateAttack(void)
 {
 	updateState_ = std::bind(&EnemyGame::UpdateAttack, this);
+}
+
+void EnemyGame::ChangeStateBreak(void)
+{
+	updateState_ = std::bind(&EnemyGame::UpdateBreak, this);
+	GetAnimController().Play(enemyType_->GetBrakAnim(), false,0.0f,-1.0f,-1.0f);
 }
 
 void EnemyGame::ChangeStateDead(void)
@@ -239,6 +250,14 @@ void EnemyGame::UpdateAttack(void)
 	ChangeState(STATE::IDLE);
 }
 
+void EnemyGame::UpdateBreak(void)
+{
+	if(GetAnimController().IsEnd())
+	{
+		ChangeState(STATE::IDLE);
+	}
+}
+
 void EnemyGame::UpdateDead(void)
 {
 	enemyType_->Update();
@@ -270,5 +289,6 @@ void EnemyGame::AplayChangeStateFunc(void)
 {
 	changeState_[(STATE::IDLE)] = std::bind(&EnemyGame::ChangeStateIdle, this);
 	changeState_[(STATE::ATTACK)] = std::bind(&EnemyGame::ChangeStateAttack, this);
+	changeState_[(STATE::BREAK)] = std::bind(&EnemyGame::ChangeStateBreak, this);
 	changeState_[(STATE::DEAD)] = std::bind(&EnemyGame::ChangeStateDead, this);
 }

@@ -90,10 +90,12 @@ protected:
 
 	virtual void ChangeStateIdle(void)override;	//‘Ò‹@
 	virtual void ChangeStateAttack(void)override; //UŒ‚
+	virtual void ChangeStateBreak(void)override;	//‰ó‚ê
 	virtual void ChangeStateDead(void)override;   //€–S
 
 	virtual void UpdateIdle(void)override; //‘Ò‹@
 	virtual void UpdateAttack(void)override; //UŒ‚
+	virtual void UpdateBreak(void)override;	//‰ó‚ê
 	virtual void UpdateDead(void)override; //€–S
 
 	virtual void InitAddAttack(void);

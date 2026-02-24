@@ -74,6 +74,7 @@ public:
 	virtual ~Dragon(void)override;
 
 	int GetIdleAnim(void)override { return static_cast<int>(ANIM_TYPE::IDLE_1); }
+	int GetBrakAnim(void)override { return static_cast<int>(ANIM_TYPE::HIT); }
 private:
 	void InitGeometry(void)override;
 	void InitAnimationController(void)override; //アニメーションコントローラー初期化

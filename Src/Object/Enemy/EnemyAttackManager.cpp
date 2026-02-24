@@ -104,6 +104,7 @@ void EnemyAttackManager::AllStopAtatck(void)
 	for (auto& attack : attackList_)
 	{
 		attack->ChangeState(AttackBase::STATE::FINISH);
+		attack->ResetDeleyTime();
 	}
 }
 

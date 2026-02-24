@@ -60,6 +60,7 @@ public:
 	AnimationController& GetAnimController(void) { return *animCtrl_; }
 	int GetAnimType(EnemyAttackManager::ATTACK_STATE attackState, EnemyAttackManager::ATTACK_TYPE attackType);
 	virtual int GetIdleAnim(void) = 0;
+	virtual int GetBrakAnim(void) = 0;
 protected:
 	TYPE type_; //“G‚Ìí—Ş
 	EnemyBase& parent_; //eEnemyBase

@@ -11,10 +11,12 @@
 #include "../Enemy/EnemyBase.h"
 #include "../Enemy/Attack/SubObject/SubObjectBase.h"
 #include "PlayerShot.h"
+#include "ShotGuide.h"
 #include "GamePlayer.h"
 
 GamePlayer::GamePlayer(int playerNum) : PlayerBase(playerNum)//, keyIns_(KeyConfig::GetInstance())
 {
+	isShotGuide_ = false;
 	hp_ = MAX_HP;
 	avoidCoolTime_ = 0.0f;
 	attackDeley_ = 0.0f;
@@ -37,6 +39,8 @@ GamePlayer::GamePlayer(int playerNum) : PlayerBase(playerNum)//, keyIns_(KeyConf
 	healDeray_ = 0.0f;
 	headPos_ = Utility::VECTOR_ZERO;
 	landPos_ = Utility::VECTOR_ZERO;
+	handPos_ = Utility::VECTOR_ZERO;
+	shotGuide_ = std::make_unique<ShotGuide>(handPos_);
 
 	std::unique_ptr<Geometry>geo = std::make_unique<Sphere>(transform_->pos, RADIUS);
 	MakeCollider(Collider::TAG::PLAYER, std::move(geo), { Collider::TAG::PLAYER,Collider::TAG::PLAYER_ATTACK ,Collider::TAG::PLAYER_LAND });
@@ -61,6 +65,7 @@ void GamePlayer::Init(void)
 
 void GamePlayer::Update(void)
 {
+	isShotGuide_ = false;
 	if (playerNum_ != 0)
 	{
 		return;
@@ -84,6 +89,8 @@ void GamePlayer::Update(void)
 	damageTime_ -= deltaTime;
 	damageInvincibleTime_ -= deltaTime;
 	healDeray_ -= deltaTime;
+	shotGuide_->SetTargetPos(SceneManager::GetInstance().GetCamera().GetTargetPos());
+	shotGuide_->Update();
 	//状態ごとの更新
 	stateUpdate_();
 	//重力の更新
@@ -98,6 +105,7 @@ void GamePlayer::Update(void)
 	headPos_ = MV1GetFramePosition(transform_->modelId, HEAD_BONE_NO);
 	landPos_ = transform_->pos;
 	landPos_.y = MOVE_LIMIT_MIN.y;
+	handPos_ = MV1GetFramePosition(transform_->modelId, HAND_BONE_NO);
 	//攻撃のクールタイム中ではなく攻撃ボタンを押したら攻撃する
 	if (keyIns_.IsNew(KeyConfig::CONTROL_TYPE::PLAYER_ATTACK, KeyConfig::JOYPAD_NO::PAD1, controlType_) && attackDeley_ < 0.0f)
 	{
@@ -106,6 +114,11 @@ void GamePlayer::Update(void)
 			ChangeState(STATE::ATTACK);
 		}
 	}
+	if(state_ == STATE::IDLE|| state_ == STATE::MOVE)
+	{
+		isShotGuide_ = true;
+	}
+
 	//球の更新
 	for (auto& shot : shots_)
 	{
@@ -124,6 +137,10 @@ void GamePlayer::Draw(void)
 	for (auto& shot : shots_)
 	{
 		shot->Draw();
+	}
+	if(isShotGuide_)
+	{
+		shotGuide_->Draw();
 	}
 }
 
@@ -350,7 +367,7 @@ bool GamePlayer::IsPushMoveKey(void)
 
 void GamePlayer::CreateShot(void)
 {
-	std::unique_ptr<PlayerShot> shot = std::make_unique<PlayerShot>(transform_->pos, SceneManager::GetInstance().GetCamera().GetTargetPos());
+	std::unique_ptr<PlayerShot> shot = std::make_unique<PlayerShot>(handPos_, SceneManager::GetInstance().GetCamera().GetTargetPos());
 	shots_.push_back(std::move(shot));
 	SoundManager::GetInstance().Play(SoundManager::SRC::PSHOT_THROW, Sound::TIMES::ONCE);
 }

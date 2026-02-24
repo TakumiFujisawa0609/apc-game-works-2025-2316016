@@ -71,6 +71,11 @@ void EnemyBase::ChangeStateAttack(void)
 	updateState_ = std::bind(&EnemyBase::UpdateAttack, this);
 }
 
+void EnemyBase::ChangeStateBreak(void)
+{
+	updateState_ = std::bind(&EnemyBase::UpdateBreak, this);
+}
+
 void EnemyBase::ChangeStateDead(void)
 {
 	updateState_ = std::bind(&EnemyBase::UpdateDead, this);
@@ -84,6 +89,10 @@ void EnemyBase::UpdateIdle(void)
 void EnemyBase::UpdateAttack(void)
 {
 
+}
+
+void EnemyBase::UpdateBreak(void)
+{
 }
 
 void EnemyBase::UpdateDead(void)
